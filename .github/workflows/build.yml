@@ -45,7 +45,16 @@ jobs:
         shell: powershell
         run: |
           choco install -y cygwin
-          C:\tools\cygwin\cygwinsetup.exe -q -n -R C:\tools\cygwin -P bison,flex,gawk,gperf,gzip,nasm,sed,python38-lxml
+          # cygwinsetup.exe 是 GUI 子系统程序，PowerShell 直接调用不会等待它退出，
+          # 必须用 Start-Process -Wait；否则步骤「假绿」继续往下走，
+          # 包根本没装完（gperf.exe 不存在），后面怎么注入 PATH 都找不到
+          $setup = Start-Process -Wait -PassThru -FilePath C:\tools\cygwin\cygwinsetup.exe `
+            -ArgumentList '-q','-n','-R','C:\tools\cygwin','-P','bison,flex,gawk,gperf,gzip,nasm,sed,python38-lxml'
+          Write-Host "cygwinsetup exit code: $($setup.ExitCode)"
+          if (-not (Test-Path C:\tools\cygwin\bin\gperf.exe)) {
+            Get-Content C:\tools\cygwin\var\log\setup.log -Tail 40 -ErrorAction SilentlyContinue
+            throw "gperf.exe 未装上（cygwinsetup 未完成安装）"
+          }
           # cygwin link.exe 与 MSVC link.exe 冲突，改名
           Rename-Item C:\tools\cygwin\bin\link.exe link-cygwin.exe
           [Environment]::SetEnvironmentVariable('CYGWIN', 'winsymlinks:lnk', 'Machine')
