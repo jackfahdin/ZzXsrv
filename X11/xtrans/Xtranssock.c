@@ -70,6 +70,7 @@ from the copyright holders.
  */
 
 #include <ctype.h>
+#include <stdlib.h>
 #ifdef XTHREADS
 #include <X11/Xthreads.h>
 #endif
@@ -1283,6 +1284,23 @@ TRANS(SocketCreateListener) (XtransConnInfo ciptr,
 }
 
 #ifdef TCPCONN
+
+/*
+ * ZzXsrv patch: 默认仅绑定回环地址（安全基线，ZzClawTerm 内嵌场景
+ * 只接受本机 SSH 转发回连）。设置环境变量 ZZXSRV_LISTEN_ANY=1 恢复
+ * 上游全网卡监听行为（仅限隔离调试，不得用于交付形态）。
+ */
+static int
+TRANS(SocketINETListenAny) (void)
+{
+    static int cached = -1;
+    if (cached < 0) {
+	const char *env = getenv("ZZXSRV_LISTEN_ANY");
+	cached = (env && env[0] == '1') ? 1 : 0;
+    }
+    return cached;
+}
+
 static int
 TRANS(SocketINETCreateListener) (XtransConnInfo ciptr, const char *port,
                                  unsigned int flags)
@@ -1369,7 +1387,8 @@ TRANS(SocketINETCreateListener) (XtransConnInfo ciptr, const char *port,
 #endif
 	((struct sockaddr_in *)&sockname)->sin_family = AF_INET;
 	((struct sockaddr_in *)&sockname)->sin_port = htons(sport);
-	((struct sockaddr_in *)&sockname)->sin_addr.s_addr = htonl(INADDR_ANY);
+	((struct sockaddr_in *)&sockname)->sin_addr.s_addr =
+	    htonl(TRANS(SocketINETListenAny)() ? INADDR_ANY : INADDR_LOOPBACK);
     } else {
 #ifdef IPv6
 	namelen = sizeof (struct sockaddr_in6);
@@ -1378,7 +1397,8 @@ TRANS(SocketINETCreateListener) (XtransConnInfo ciptr, const char *port,
 #endif
 	((struct sockaddr_in6 *)&sockname)->sin6_family = AF_INET6;
 	((struct sockaddr_in6 *)&sockname)->sin6_port = htons(sport);
-	((struct sockaddr_in6 *)&sockname)->sin6_addr = in6addr_any;
+	((struct sockaddr_in6 *)&sockname)->sin6_addr =
+	    TRANS(SocketINETListenAny)() ? in6addr_any : in6addr_loopback;
 #else
         prmsg (1,
                "SocketINETCreateListener: unsupported address family %d\n",
