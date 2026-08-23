@@ -22,7 +22,7 @@ jobs:
         shell: powershell
         run: |
           choco install -y strawberryperl
-          choco install -y jom nasm winflexbison3 nsis
+          choco install -y jom nasm nsis
           choco install -y python3 --version 3.9.13
           C:\Python39\python.exe -m pip install lxml mako
 
@@ -33,10 +33,13 @@ jobs:
           New-Item -ItemType Junction -Path C:\perl -Target C:\Strawberry
           New-Item -ItemType Directory -Path C:\nasm -Force
           Copy-Item "C:\Program Files\NASM\nasm.exe" C:\nasm\
+          # tools/mhmake 自带 bison 3.8.2 骨架（BISON_PKGDATADIR=src/bisondata），
+          # 必须用 win_bison 3.8.2 即 winflexbison 2.5.25；choco winflexbison3 是
+          # 2.5.24（bison 3.7.4），muscle 接口不匹配会报 invalid header value
           New-Item -ItemType Directory -Path C:\winflexbison -Force
-          Copy-Item "$env:ProgramData\chocolatey\lib\winflexbison3\tools\win_bison.exe" C:\winflexbison\
-          Copy-Item "$env:ProgramData\chocolatey\lib\winflexbison3\tools\win_flex.exe" C:\winflexbison\
-          Copy-Item "$env:ProgramData\chocolatey\lib\winflexbison3\tools\data" C:\winflexbison\ -Recurse -ErrorAction SilentlyContinue
+          curl.exe -fsSL https://github.com/lexxmark/winflexbison/releases/download/v2.5.25/win_flex_bison-2.5.25.zip -o C:\winflexbison\winflexbison.zip
+          Expand-Archive C:\winflexbison\winflexbison.zip -DestinationPath C:\winflexbison
+          Remove-Item C:\winflexbison\winflexbison.zip
 
       - name: 安装 Cygwin 工具包
         shell: powershell
