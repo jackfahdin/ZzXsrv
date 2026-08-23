@@ -82,21 +82,24 @@ jobs:
           if (-not (Get-Command gperf.exe -ErrorAction SilentlyContinue)) { throw "gperf.exe 不在 PATH" }
           $p = (Get-Location).Path -replace '\\','/'
           $ws = '/mnt/' + $p.Substring(0,1).ToLower() + $p.Substring(2)
-          # openssl 阶段 jom 并行偶发 Error 2（cl 输出被重定向进 .d 无法取证，
-          # 历史上约一半 run 命中同一 target），疑似 Defender 实时扫描干扰
-          # 共享 PDB（-FS/mspdbsrv）：把工作区加入排除列表
+          # openssl 阶段 jom 并行偶发 Error 2（cl 输出被重定向进 .d 无法直接
+          # 看到，历史上约一半 run 命中，且失败 target 不固定）。Defender
+          # 排除实测无效（run 32657983662 两次 attempt 均挂），现假设为
+          # mspdbsrv（-FS 共享 PDB 协调服务）在 WSL1 interop 进程树下状态
+          # 腐烂——job 结束时它成了孤儿进程。每次 attempt 前宰掉它重启；
+          # 重试加到 4 次兜底（jom/nmake/mhmake 增量，开销可接受）
           Add-MpPreference -ExclusionPath 'D:\a' -ErrorAction SilentlyContinue
           # buildall.sh 的 check-error 会吞失败（裸 exit 继承上条 echo 的 0），
           # wsl 退出码不可信：Tee 落盘后扫描失败标记，防止 mesalib/installer
           # 等尾部阶段挂了还假绿（run 32654629928 的教训）。
-          # 偶发失败重试一次：jom/nmake/mhmake 均增量，重试开销小。
           # 注意：字符串字面量一律纯 ASCII——无 BOM 临时 ps1 被 PS5.1 按
           # cp1252 解码，中文 UTF-8 尾字节 0x82/0x84/0x91-0x94 会被解成
           # 智能引号炸解析；中文只放注释（多字节序列结构上不含 0x0A/0x60
           # 等结构字节，注释必安全）
           $ok = $false
-          foreach ($i in 1..2) {
-            Write-Host "=== buildall attempt $i of 2 ==="
+          foreach ($i in 1..4) {
+            Write-Host "=== buildall attempt $i of 4 ==="
+            Stop-Process -Name mspdbsrv -Force -ErrorAction SilentlyContinue
             wsl -d Ubuntu-22.04 bash -lc "cd '$ws/vcxsrv' && ./buildall.sh 1 5 R" | Tee-Object -FilePath "build-$i.log"
             $code = $LASTEXITCODE
             $hit = Select-String -Path "build-$i.log" -Pattern 'Error compiling','Error running command' -CaseSensitive -Quiet
@@ -104,8 +107,11 @@ jobs:
             Write-Host "attempt $i failed (exit=$code, marker=$hit), retrying"
           }
           if (-not $ok) {
-            Select-String -Path "build-2.log" -Pattern 'Error compiling','Error running command' -CaseSensitive
-            throw "buildall failed after 2 attempts"
+            # 失败取证：cl /Zs 依赖生成命令的输出在 .d 里，扫含 error 的 .d
+            Get-ChildItem vcxsrv\openssl\release64 -Recurse -Filter *.d -ErrorAction SilentlyContinue |
+              Select-String -Pattern 'error' -List -ErrorAction SilentlyContinue |
+              ForEach-Object { "=== $($_.Path)"; Get-Content $_.Path -TotalCount 80 -ErrorAction SilentlyContinue }
+            throw "buildall failed after 4 attempts"
           }
 
       - name: 失败取证（openssl buildtest 失败输出被重定向进 .d）
