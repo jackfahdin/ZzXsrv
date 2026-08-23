@@ -57,7 +57,8 @@ jobs:
       - name: 构建 vcxsrv（WSL + mhmake 原链）
         shell: powershell
         run: |
-          $ws = (Get-Location).Path -replace '^([A-Za-z]):', { '/mnt/' + $_.Groups[1].Value.ToLower() } -replace '\\', '/'
+          $p = (Get-Location).Path -replace '\\','/'
+          $ws = '/mnt/' + $p.Substring(0,1).ToLower() + $p.Substring(2)
           wsl -d Ubuntu-22.04 bash -lc "cd '$ws/vcxsrv' && ./buildall.sh 1 5 R"
 
       - name: 核验基线产物
