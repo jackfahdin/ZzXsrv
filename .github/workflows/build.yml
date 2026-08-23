@@ -69,7 +69,7 @@ jobs:
         with:
           distribution: Ubuntu-22.04
           wsl-version: 1
-          additional-packages: python-is-python3, patch
+          additional-packages: python-is-python3 patch
 
       - name: 构建 vcxsrv（WSL + mhmake 原链）
         shell: powershell
