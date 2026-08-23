@@ -49,10 +49,10 @@ jobs:
           $env:CYGWIN = 'winsymlinks:lnk'
 
       - name: 安装 WSL（Ubuntu）
-        shell: powershell
-        run: |
-          wsl --install -d Ubuntu-22.04 --no-launch
-          wsl --set-default-version 1
+        uses: Vampire/setup-wsl@v7
+        with:
+          distribution: Ubuntu-22.04
+          wsl-version: 1
 
       - name: 构建 vcxsrv（WSL + mhmake 原链）
         shell: powershell
