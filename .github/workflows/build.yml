@@ -1,0 +1,76 @@
+name: build
+
+on:
+  push:
+    branches: [master]
+    tags: ['zz-*']
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: windows-2022
+    timeout-minutes: 360
+    steps:
+      - name: git 行尾（必须在 checkout 前）
+        run: git config --global core.autocrlf false
+
+      - uses: actions/checkout@v4
+        with:
+          path: vcxsrv
+
+      - name: 安装 Windows 侧构建依赖
+        shell: powershell
+        run: |
+          choco install -y strawberryperl
+          choco install -y jom nasm winflexbison3 nsis
+          choco install -y python3 --version 3.9.13
+          C:\Python39\python.exe -m pip install lxml mako
+
+      - name: 复刻 setenv 硬编码路径
+        shell: powershell
+        run: |
+          # setenv.sh 期望 /mnt/c/perl、/mnt/c/nasm、/mnt/c/winflexbison、/mnt/c/Python39
+          New-Item -ItemType Junction -Path C:\perl -Target C:\Strawberry
+          New-Item -ItemType Directory -Path C:\nasm -Force
+          Copy-Item "C:\Program Files\NASM\nasm.exe" C:\nasm\
+          New-Item -ItemType Directory -Path C:\winflexbison -Force
+          Copy-Item "$env:ProgramData\chocolatey\lib\winflexbison3\tools\win_bison.exe" C:\winflexbison\
+          Copy-Item "$env:ProgramData\chocolatey\lib\winflexbison3\tools\win_flex.exe" C:\winflexbison\
+          Copy-Item "$env:ProgramData\chocolatey\lib\winflexbison3\tools\data" C:\winflexbison\ -Recurse -ErrorAction SilentlyContinue
+
+      - name: 安装 Cygwin 工具包
+        shell: powershell
+        run: |
+          choco install -y cygwin
+          C:\tools\cygwin\cygwinsetup.exe -q -n -R C:\tools\cygwin -P bison,flex,gawk,gperf,gzip,nasm,sed,python38-lxml
+          # cygwin link.exe 与 MSVC link.exe 冲突，改名
+          Rename-Item C:\tools\cygwin\bin\link.exe link-cygwin.exe
+          [Environment]::SetEnvironmentVariable('CYGWIN', 'winsymlinks:lnk', 'Machine')
+          $env:CYGWIN = 'winsymlinks:lnk'
+
+      - name: 安装 WSL（Ubuntu）
+        shell: powershell
+        run: |
+          wsl --install -d Ubuntu-22.04 --no-launch
+          wsl --set-default-version 1
+
+      - name: 构建 vcxsrv（WSL + mhmake 原链）
+        shell: powershell
+        run: |
+          $ws = (Get-Location).Path -replace '^([A-Za-z]):', { '/mnt/' + $_.Groups[1].Value.ToLower() } -replace '\\', '/'
+          wsl -d Ubuntu-22.04 bash -lc "cd '$ws/vcxsrv' && ./buildall.sh 1 5 R"
+
+      - name: 核验基线产物
+        shell: powershell
+        run: |
+          $exe = "vcxsrv\xorg-server\obj64\servrelease\vcxsrv.exe"
+          if (-not (Test-Path $exe)) { throw "vcxsrv.exe 未产出" }
+          (Get-Item $exe).Length
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: vcxsrv-baseline
+          path: |
+            vcxsrv/xorg-server/obj64/servrelease/vcxsrv.exe
+            vcxsrv/xorg-server/installer/*.exe
+          if-no-files-found: warn
