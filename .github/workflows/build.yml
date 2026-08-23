@@ -166,10 +166,10 @@ jobs:
       # 运行时布局：RELOCATE_PROJECTROOT 未定义（xwin-config.h），
       # include/dix-config.h 全是 CWD 相对路径——PROJECTROOT "."、
       # XKB_BASE_DIRECTORY "xkbdata"、XKB_BIN_DIRECTORY "."、
-      # COMPILEDDEFAULTFONTPATH "./fonts/..."。exe 裸跑缺 xkbdata/
-      # fonts/xkbcomp.exe 会 fatal error 卡模态对话框（session 0 不可见，
-      # 进程存活但 socket 未建，run 32664115895/32665624746/32667057143
-      # 三轮零监听的根因）。这里把运行时资源铺进 exe 目录并以其为 CWD
+      # COMPILEDDEFAULTFONTPATH "./fonts/..."。这里把运行时资源铺进
+      # exe 目录并以其为 CWD。注意：铺资源后（run 32668735441）6099 仍
+      # 零监听，「缺资源卡模态对话框」假设未证实，真正卡点待
+      # XWin.99.log 取证确认
       - name: 冒烟：监听地址断言
         shell: pwsh
         run: |
@@ -179,16 +179,27 @@ jobs:
           Copy-Item "$PWD\vcxsrv\xkbcomp\obj64\release\xkbcomp.exe" $serv -Force
           Copy-Item "$PWD\vcxsrv\xorg-server\XKeysymDB" $serv -Force
           $exe = "$serv\vcxsrv.exe"
-          # -logfile 无效：RELOCATE 关闭时 OsVendorPreInit 先 LogInit
-          # （CWD\XWin.log），命令行解析在其后（winprocarg.c），日志固定落 XWin.log
-          $p = Start-Process -FilePath $exe -ArgumentList ':99','-multiwindow','-ac','-listen','tcp' -WorkingDirectory $serv -PassThru
-          Start-Sleep -Seconds 10
+          # 日志真实落点：RELOCATE_PROJECTROOT 未定义时
+          # g_pszLogFile = DEFAULT_LOGDIR "/XWin.%s.log"（winglobals.c:67），
+          # %s=display 号，DEFAULT_LOGDIR "."（xwin-config.h:33），
+          # 且 main() 启动即 chdir 到 exe 目录（dix/main.c:170-183）
+          # → 日志固定为 exe 目录下的 XWin.99.log（不是 XWin.log！
+          # run 32668735441 按 XWin.log 取证扑空的原因）
+          $p = Start-Process -FilePath $exe -ArgumentList ':99','-multiwindow','-ac','-listen','tcp','-logverbose','3' -WorkingDirectory $serv -PassThru
+          Start-Sleep -Seconds 15
           $listen = netstat -ano | Select-String ':6099\s+.*LISTENING'
           $listen | ForEach-Object { $_.Line }
-          # 取证：该进程所有 socket + XWin.log（fatal error 全文在此）
-          netstat -ano | Select-String "\s+$($p.Id)$" | ForEach-Object { $_.Line }
-          $xlog = "$serv\XWin.log"
-          if (Test-Path $xlog) { Get-Content $xlog -Tail 80 }
+          # 取证1：全部 LISTENING（不过滤 PID，排除 PID 归属误判）
+          netstat -ano | Select-String 'LISTENING' | ForEach-Object { $_.Line }
+          # 取证2：进程状态——MainWindowTitle 非空/Responding=False 提示
+          # 模态 MessageBox 阻塞（session 0 无人点击，进程存活但启动卡住）
+          Get-Process -Id $p.Id -ErrorAction SilentlyContinue |
+            Select-Object Id,ProcessName,Responding,MainWindowTitle,StartTime | Format-List
+          # 取证3：XWin.99.log 全文（fatal error 全文在此）
+          Get-ChildItem "$serv\XWin*.log" -ErrorAction SilentlyContinue | ForEach-Object {
+            "===== $($_.FullName) ====="
+            Get-Content $_.FullName -Tail 120
+          }
           $hasAny = [bool]($listen | Select-String '0\.0\.0\.0:6099')
           $hasLoop = [bool]($listen | Select-String '127\.0\.0\.1:6099')
           if ($p.HasExited) { throw "vcxsrv 进程过早退出，代码 $($p.ExitCode)" }
