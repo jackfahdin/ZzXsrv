@@ -22,7 +22,7 @@ jobs:
         shell: powershell
         run: |
           choco install -y strawberryperl
-          choco install -y jom nasm nsis
+          choco install -y jom nasm nsis gperf
           choco install -y python3 --version 3.9.13
           C:\Python39\python.exe -m pip install lxml mako
 
@@ -47,13 +47,16 @@ jobs:
           choco install -y cygwin
           # cygwinsetup.exe 是 GUI 子系统程序，PowerShell 直接调用不会等待它退出，
           # 必须用 Start-Process -Wait；否则步骤「假绿」继续往下走，
-          # 包根本没装完（gperf.exe 不存在），后面怎么注入 PATH 都找不到
+          # 包根本没装完，后面怎么注入 PATH 都找不到
+          # -x gperf：排除 cygwin 版 gperf——它处理不了 mhmake 以 Windows 路径
+          # 生成的 fcobjshash.gperf（junk after declaration），gperf 改用 choco
+          # 的 Windows 原生包（上游 commit 39b02b2 的同款方案）
           $setup = Start-Process -Wait -PassThru -FilePath C:\tools\cygwin\cygwinsetup.exe `
-            -ArgumentList '-q','-n','-R','C:\tools\cygwin','-P','bison,flex,gawk,gperf,gzip,nasm,sed,python38-lxml'
+            -ArgumentList '-q','-n','-R','C:\tools\cygwin','-P','bison,flex,gawk,gzip,nasm,sed,python38-lxml','-x','gperf'
           Write-Host "cygwinsetup exit code: $($setup.ExitCode)"
-          if (-not (Test-Path C:\tools\cygwin\bin\gperf.exe)) {
+          if (-not (Test-Path C:\tools\cygwin\bin\flex.exe)) {
             Get-Content C:\tools\cygwin\var\log\setup.log -Tail 40 -ErrorAction SilentlyContinue
-            throw "gperf.exe 未装上（cygwinsetup 未完成安装）"
+            throw "cygwin 包未装上（cygwinsetup 未完成安装）"
           }
           # cygwin link.exe 与 MSVC link.exe 冲突，改名
           Rename-Item C:\tools\cygwin\bin\link.exe link-cygwin.exe
@@ -70,11 +73,12 @@ jobs:
       - name: 构建 vcxsrv（WSL + mhmake 原链）
         shell: powershell
         run: |
-          # mhmake 经 cmd 调用 gperf 等 cygwin 工具，cygwin bin 需在 PATH。
+          # mhmake 经 cmd 调用 cygwin 工具（flex/bison/sed 等），cygwin bin 需在 PATH。
           # 试过 Machine PATH（对运行中的 runner agent 无效）和 $GITHUB_PATH
-          # （未生效），最直接可靠的是本步骤进程内注入，wsl 子进程自然继承
+          # （未生效），最直接可靠的是本步骤进程内注入，wsl 子进程自然继承。
+          # gperf 是 choco 原生包（chocolatey\bin 本就在 PATH），此处一并校验
           $env:Path = "C:\tools\cygwin\bin;$env:Path"
-          if (-not (Get-Command gperf.exe -ErrorAction SilentlyContinue)) { throw "gperf.exe 不在 PATH（cygwin bin 注入失败）" }
+          if (-not (Get-Command gperf.exe -ErrorAction SilentlyContinue)) { throw "gperf.exe 不在 PATH" }
           $p = (Get-Location).Path -replace '\\','/'
           $ws = '/mnt/' + $p.Substring(0,1).ToLower() + $p.Substring(2)
           wsl -d Ubuntu-22.04 bash -lc "cd '$ws/vcxsrv' && ./buildall.sh 1 5 R"
