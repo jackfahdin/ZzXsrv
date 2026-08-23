@@ -69,7 +69,9 @@ jobs:
         with:
           distribution: Ubuntu-22.04
           wsl-version: 1
-          additional-packages: python-is-python3 patch
+          # meson/ninja：xorg-server/xkeyboard-config 的 build.sh 经 wsl 调 meson
+          # （run 32657983662 attempt 1 报 meson: command not found）
+          additional-packages: python-is-python3 patch meson ninja-build
 
       - name: 构建 vcxsrv（WSL + mhmake 原链）
         shell: powershell
