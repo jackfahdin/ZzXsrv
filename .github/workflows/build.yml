@@ -85,11 +85,14 @@ jobs:
           # buildall.sh 的 check-error 会吞失败（裸 exit 继承上条 echo 的 0），
           # wsl 退出码不可信：Tee 落盘后扫描失败标记，防止 mesalib/installer
           # 等尾部阶段挂了还假绿（run 32654629928 的教训）
+          # 注意：runner 生成的临时 ps1 无 BOM，PS5.1 按 ANSI(cp1252) 解码，
+          # 中文字符串字面量里 UTF-8 字节 0x91-0x94 会被当成智能引号导致解析
+          # 失败（如「输」=E8 BE 93）。字符串只用经字节检查的中文或纯 ASCII
           wsl -d Ubuntu-22.04 bash -lc "cd '$ws/vcxsrv' && ./buildall.sh 1 5 R" | Tee-Object -FilePath build.log
           if ($LASTEXITCODE -ne 0) { throw "buildall.sh 退出码 $LASTEXITCODE" }
           if (Select-String -Path build.log -Pattern 'Error compiling','Error running command' -CaseSensitive -Quiet) {
             Select-String -Path build.log -Pattern 'Error compiling','Error running command' -CaseSensitive
-            throw "buildall 日志含失败标记（构建输入源码不在本任务修改范围，需修环境）"
+            throw "buildall 日志含失败标记，构建中止"
           }
 
       - name: 核验基线产物
