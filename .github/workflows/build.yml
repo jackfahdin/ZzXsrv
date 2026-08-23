@@ -167,9 +167,10 @@ jobs:
       # include/dix-config.h 全是 CWD 相对路径——PROJECTROOT "."、
       # XKB_BASE_DIRECTORY "xkbdata"、XKB_BIN_DIRECTORY "."、
       # COMPILEDDEFAULTFONTPATH "./fonts/..."。这里把运行时资源铺进
-      # exe 目录并以其为 CWD。注意：铺资源后（run 32668735441）6099 仍
-      # 零监听，「缺资源卡模态对话框」假设未证实，真正卡点待
-      # XWin.99.log 取证确认
+      # exe 目录并以其为 CWD。真根因（run 32672126036 定位）：
+      # vcxsrv.exe 动态链接 freetype/libX11/libXau/libxcb/libcrypto/
+      # zlib1 等 DLL，servrelease 裸目录缺 DLL → 加载器 0xC0000135
+      # 退出（交互会话下表现为错误对话框阻塞、进程「假存活」）
       - name: 冒烟：监听地址断言
         shell: pwsh
         run: |
@@ -178,6 +179,22 @@ jobs:
           Copy-Item "$PWD\vcxsrv\xorg-server\fonts" "$serv\fonts" -Recurse -Force
           Copy-Item "$PWD\vcxsrv\xkbcomp\obj64\release\xkbcomp.exe" $serv -Force
           Copy-Item "$PWD\vcxsrv\xorg-server\XKeysymDB" $serv -Force
+          # 依赖 DLL（真根因，run 32672126036：退出码 -1073741515 =
+          # 0xC0000135 STATUS_DLL_NOT_FOUND——servrelease 里只有裸
+          # vcxsrv.exe，此前「进程存活」轮是加载器错误对话框阻塞变体）。
+          # 清单按 installer/mkzip-64.sh 的打包来源，依赖闭已经 artifact
+          # 的 NSIS 安装包解出逐个 objdump 验证：
+          # vcxsrv.exe→freetype/libX11/libXau/libxcb/libcrypto/zlib1，
+          # libX11→libxcb→libXau，GL 三件套被 exe 动态加载
+          Copy-Item "$PWD\vcxsrv\zlib\obj64\release\zlib1.dll" $serv -Force
+          Copy-Item "$PWD\vcxsrv\libxcb\src\obj64\release\libxcb.dll" $serv -Force
+          Copy-Item "$PWD\vcxsrv\libXau\obj64\release\libXau.dll" $serv -Force
+          Copy-Item "$PWD\vcxsrv\libX11\obj64\release\libX11.dll" $serv -Force
+          Copy-Item "$PWD\vcxsrv\openssl\release64\libcrypto-3-x64.dll" $serv -Force
+          Copy-Item "$PWD\vcxsrv\freetype\objs\x64\Release\freetype.dll" $serv -Force
+          Copy-Item "$PWD\vcxsrv\mesalib\src\obj64\release\swrast_dri.dll" $serv -Force
+          Copy-Item "$PWD\vcxsrv\xorg-server\hw\xwin\swrastwgl_dri\obj64\release\swrastwgl_dri.dll" $serv -Force
+          Copy-Item "$PWD\vcxsrv\dxtn\obj64\release\dxtn.dll" $serv -Force
           $exe = "$serv\vcxsrv.exe"
           # 日志真实落点：RELOCATE_PROJECTROOT 未定义时
           # g_pszLogFile = DEFAULT_LOGDIR "/XWin.%s.log"（winglobals.c:67），
