@@ -69,7 +69,7 @@ jobs:
         with:
           distribution: Ubuntu-22.04
           wsl-version: 1
-          additional-packages: python-is-python3
+          additional-packages: python-is-python3, patch
 
       - name: 构建 vcxsrv（WSL + mhmake 原链）
         shell: powershell
@@ -120,6 +120,10 @@ jobs:
           $exe = "vcxsrv\xorg-server\obj64\servrelease\vcxsrv.exe"
           if (-not (Test-Path $exe)) { throw "vcxsrv.exe 未产出" }
           (Get-Item $exe).Length
+          # installer 阶段（packageall.sh）失败无任何标记，只能靠产物核验兜底
+          $inst = Get-ChildItem "vcxsrv\xorg-server\installer\vcxsrv-64.*.installer.exe" -ErrorAction SilentlyContinue
+          if (-not $inst) { throw "installer exe missing" }
+          $inst | ForEach-Object { "$($_.Name) $($_.Length)" }
 
       - uses: actions/upload-artifact@v4
         with:
