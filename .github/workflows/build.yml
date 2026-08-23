@@ -49,9 +49,10 @@ jobs:
           # cygwin link.exe 与 MSVC link.exe 冲突，改名
           Rename-Item C:\tools\cygwin\bin\link.exe link-cygwin.exe
           # mhmake 经 cmd 调用 gperf 等 cygwin 工具，cygwin bin 需进 PATH。
-          # 注意：SetEnvironmentVariable(Machine) 对已在运行的 runner agent 无效，
-          # 必须用 $GITHUB_PATH 让后续步骤的进程 PATH 带上它
-          Add-Content $env:GITHUB_PATH 'C:\tools\cygwin\bin'
+          # 注意两点：1) SetEnvironmentVariable(Machine) 对已在运行的 runner agent
+          # 无效，必须走 $GITHUB_PATH；2) PS5.1 的 Add-Content 默认写 UTF-16，
+          # runner 按 UTF-8 解析会报废，必须用 AppendAllText（UTF-8 无 BOM）
+          [System.IO.File]::AppendAllText($env:GITHUB_PATH, "C:\tools\cygwin\bin`n")
           [Environment]::SetEnvironmentVariable('CYGWIN', 'winsymlinks:lnk', 'Machine')
           $env:CYGWIN = 'winsymlinks:lnk'
 
@@ -65,6 +66,7 @@ jobs:
       - name: 构建 vcxsrv（WSL + mhmake 原链）
         shell: powershell
         run: |
+          if (-not (Get-Command gperf.exe -ErrorAction SilentlyContinue)) { throw "gperf.exe 不在 PATH（cygwin bin 注入失败）" }
           $p = (Get-Location).Path -replace '\\','/'
           $ws = '/mnt/' + $p.Substring(0,1).ToLower() + $p.Substring(2)
           wsl -d Ubuntu-22.04 bash -lc "cd '$ws/vcxsrv' && ./buildall.sh 1 5 R"
