@@ -167,10 +167,16 @@ jobs:
         shell: pwsh
         run: |
           $exe = "$PWD\vcxsrv\xorg-server\obj64\servrelease\vcxsrv.exe"
-          $p = Start-Process -FilePath $exe -ArgumentList ':99','-multiwindow','-ac','-listen','tcp' -PassThru
+          $log = "$PWD\vcxsrv-smoke.log"
+          $p = Start-Process -FilePath $exe -ArgumentList ':99','-multiwindow','-ac','-listen','tcp','-logfile',$log -PassThru
           Start-Sleep -Seconds 10
           $listen = netstat -ano | Select-String ':6099\s+.*LISTENING'
           $listen | ForEach-Object { $_.Line }
+          # 取证：两轮 run（32664115895/32665624746）进程存活但 6099 零监听，
+          # 疑似 fatal error 模态对话框阻塞启动（session 0 不可见）。
+          # dump 该进程所有 socket 与 vcxsrv 日志定位
+          netstat -ano | Select-String "\s+$($p.Id)$" | ForEach-Object { $_.Line }
+          if (Test-Path $log) { Get-Content $log -Tail 60 }
           $hasAny = [bool]($listen | Select-String '0\.0\.0\.0:6099')
           $hasLoop = [bool]($listen | Select-String '127\.0\.0\.1:6099')
           if ($p.HasExited) { throw "vcxsrv 进程过早退出，代码 $($p.ExitCode)" }
