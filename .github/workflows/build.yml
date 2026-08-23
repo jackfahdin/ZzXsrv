@@ -50,6 +50,9 @@ jobs:
           Rename-Item C:\tools\cygwin\bin\link.exe link-cygwin.exe
           [Environment]::SetEnvironmentVariable('CYGWIN', 'winsymlinks:lnk', 'Machine')
           $env:CYGWIN = 'winsymlinks:lnk'
+          # 调试：确认 gperf 安装落点
+          Get-ChildItem C:\tools\cygwin\bin -Filter 'gperf*' | Select-Object Name,Length,LinkType,Target
+          Get-ChildItem C:\tools\cygwin\bin -Filter '*.exe' | Measure-Object | Select-Object -ExpandProperty Count
 
       - name: 安装 WSL（Ubuntu）
         uses: Vampire/setup-wsl@v7
