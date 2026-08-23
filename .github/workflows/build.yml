@@ -163,20 +163,32 @@ jobs:
       # 必须显式 -listen tcp：本仓库 mhmake 构建未定义 LISTEN_TCP，
       # os/utils.c 的 defaultNoListenList 使 tcp 默认 nolisten
       # （run 32664115895 未加该参数时 6099 无任何监听）
+      # 运行时布局：RELOCATE_PROJECTROOT 未定义（xwin-config.h），
+      # include/dix-config.h 全是 CWD 相对路径——PROJECTROOT "."、
+      # XKB_BASE_DIRECTORY "xkbdata"、XKB_BIN_DIRECTORY "."、
+      # COMPILEDDEFAULTFONTPATH "./fonts/..."。exe 裸跑缺 xkbdata/
+      # fonts/xkbcomp.exe 会 fatal error 卡模态对话框（session 0 不可见，
+      # 进程存活但 socket 未建，run 32664115895/32665624746/32667057143
+      # 三轮零监听的根因）。这里把运行时资源铺进 exe 目录并以其为 CWD
       - name: 冒烟：监听地址断言
         shell: pwsh
         run: |
-          $exe = "$PWD\vcxsrv\xorg-server\obj64\servrelease\vcxsrv.exe"
-          $log = "$PWD\vcxsrv-smoke.log"
-          $p = Start-Process -FilePath $exe -ArgumentList ':99','-multiwindow','-ac','-listen','tcp','-logfile',$log -PassThru
+          $serv = "$PWD\vcxsrv\xorg-server\obj64\servrelease"
+          Copy-Item "$PWD\vcxsrv\xorg-server\xkbdata" "$serv\xkbdata" -Recurse -Force
+          Copy-Item "$PWD\vcxsrv\xorg-server\fonts" "$serv\fonts" -Recurse -Force
+          Copy-Item "$PWD\vcxsrv\xkbcomp\obj64\release\xkbcomp.exe" $serv -Force
+          Copy-Item "$PWD\vcxsrv\xorg-server\XKeysymDB" $serv -Force
+          $exe = "$serv\vcxsrv.exe"
+          # -logfile 无效：RELOCATE 关闭时 OsVendorPreInit 先 LogInit
+          # （CWD\XWin.log），命令行解析在其后（winprocarg.c），日志固定落 XWin.log
+          $p = Start-Process -FilePath $exe -ArgumentList ':99','-multiwindow','-ac','-listen','tcp' -WorkingDirectory $serv -PassThru
           Start-Sleep -Seconds 10
           $listen = netstat -ano | Select-String ':6099\s+.*LISTENING'
           $listen | ForEach-Object { $_.Line }
-          # 取证：两轮 run（32664115895/32665624746）进程存活但 6099 零监听，
-          # 疑似 fatal error 模态对话框阻塞启动（session 0 不可见）。
-          # dump 该进程所有 socket 与 vcxsrv 日志定位
+          # 取证：该进程所有 socket + XWin.log（fatal error 全文在此）
           netstat -ano | Select-String "\s+$($p.Id)$" | ForEach-Object { $_.Line }
-          if (Test-Path $log) { Get-Content $log -Tail 60 }
+          $xlog = "$serv\XWin.log"
+          if (Test-Path $xlog) { Get-Content $xlog -Tail 80 }
           $hasAny = [bool]($listen | Select-String '0\.0\.0\.0:6099')
           $hasLoop = [bool]($listen | Select-String '127\.0\.0\.1:6099')
           if ($p.HasExited) { throw "vcxsrv 进程过早退出，代码 $($p.ExitCode)" }
