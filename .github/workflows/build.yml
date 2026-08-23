@@ -160,11 +160,14 @@ jobs:
       # 必须 pwsh：throw 字符串含中文，PS5.1 会把无 BOM 临时 ps1 按 cp1252
       # 解码，「应」「监」等字尾字节 0x94/0x91 被解成智能引号炸解析
       # （run 32655684994/32656197320 的教训）；pwsh 7 按 UTF-8 读取则安全
+      # 必须显式 -listen tcp：本仓库 mhmake 构建未定义 LISTEN_TCP，
+      # os/utils.c 的 defaultNoListenList 使 tcp 默认 nolisten
+      # （run 32664115895 未加该参数时 6099 无任何监听）
       - name: 冒烟：监听地址断言
         shell: pwsh
         run: |
           $exe = "$PWD\vcxsrv\xorg-server\obj64\servrelease\vcxsrv.exe"
-          $p = Start-Process -FilePath $exe -ArgumentList ':99','-multiwindow','-ac' -PassThru
+          $p = Start-Process -FilePath $exe -ArgumentList ':99','-multiwindow','-ac','-listen','tcp' -PassThru
           Start-Sleep -Seconds 10
           $listen = netstat -ano | Select-String ':6099\s+.*LISTENING'
           $listen | ForEach-Object { $_.Line }
