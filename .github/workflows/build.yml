@@ -154,3 +154,27 @@ jobs:
             vcxsrv/xorg-server/obj64/servrelease/vcxsrv.exe
             vcxsrv/xorg-server/installer/*.exe
           if-no-files-found: warn
+
+      # 冒烟断言放在 artifact 上传之后：反例轮（未 patch 基线）本步骤必红，
+      # 但基线产物已落 artifact 不受影响。
+      # 必须 pwsh：throw 字符串含中文，PS5.1 会把无 BOM 临时 ps1 按 cp1252
+      # 解码，「应」「监」等字尾字节 0x94/0x91 被解成智能引号炸解析
+      # （run 32655684994/32656197320 的教训）；pwsh 7 按 UTF-8 读取则安全
+      - name: 冒烟：监听地址断言
+        shell: pwsh
+        run: |
+          $exe = "$PWD\vcxsrv\xorg-server\obj64\servrelease\vcxsrv.exe"
+          $p = Start-Process -FilePath $exe -ArgumentList ':99','-multiwindow','-ac' -PassThru
+          Start-Sleep -Seconds 10
+          $listen = netstat -ano | Select-String ':6099\s+.*LISTENING'
+          $listen | ForEach-Object { $_.Line }
+          $hasAny = [bool]($listen | Select-String '0\.0\.0\.0:6099')
+          $hasLoop = [bool]($listen | Select-String '127\.0\.0\.1:6099')
+          if ($p.HasExited) { throw "vcxsrv 进程过早退出，代码 $($p.ExitCode)" }
+          Stop-Process -Id $p.Id -Force
+          if ($env:ZZXSRV_LISTEN_ANY -eq '1') {
+            if (-not $hasAny) { throw "旁路模式应监听 0.0.0.0:6099" }
+          } else {
+            if ($hasAny) { throw "默认模式不得监听 0.0.0.0:6099" }
+            if (-not $hasLoop) { throw "默认模式应监听 127.0.0.1:6099" }
+          }
