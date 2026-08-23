@@ -67,7 +67,11 @@ jobs:
       - name: 安装 WSL（Ubuntu）
         uses: Vampire/setup-wsl@v7
         with:
-          distribution: Ubuntu-22.04
+          # 必须 24.04：xkeyboard-config 2.44 的 meson 要求 python3 带 strenum
+          # 模块（即 python >= 3.11 的 StrEnum）；22.04 只有 python 3.10，
+          # meson setup 报 python3 is missing modules: strenum
+          # （run 32660002174 attempt 1）。24.04 自带 python 3.12
+          distribution: Ubuntu-24.04
           wsl-version: 1
           # meson/ninja：xorg-server/xkeyboard-config 的 build.sh 经 wsl 调 meson
           # （run 32657983662 attempt 1 报 meson: command not found）
@@ -102,7 +106,7 @@ jobs:
           foreach ($i in 1..4) {
             Write-Host "=== buildall attempt $i of 4 ==="
             Stop-Process -Name mspdbsrv -Force -ErrorAction SilentlyContinue
-            wsl -d Ubuntu-22.04 bash -lc "cd '$ws/vcxsrv' && ./buildall.sh 1 5 R" | Tee-Object -FilePath "build-$i.log"
+            wsl -d Ubuntu-24.04 bash -lc "cd '$ws/vcxsrv' && ./buildall.sh 1 5 R" | Tee-Object -FilePath "build-$i.log"
             $code = $LASTEXITCODE
             $hit = Select-String -Path "build-$i.log" -Pattern 'Error compiling','Error running command' -CaseSensitive -Quiet
             if ($code -eq 0 -and -not $hit) { $ok = $true; break }
@@ -132,6 +136,16 @@ jobs:
           $inst = Get-ChildItem "vcxsrv\xorg-server\installer\vcxsrv-64.*.installer.exe" -ErrorAction SilentlyContinue
           if (-not $inst) { throw "installer exe missing" }
           $inst | ForEach-Object { "$($_.Name) $($_.Length)" }
+          # xkeyboard-config 假绿兜底：meson 失败时 mhmake 的 mkdir 已建 xkbdata
+          # 目录，重试会因目录存在跳过 wsl ./build.sh，导致 xkbdata 为空但
+          # vcxsrv.exe/installer 照常产出（run 32660002174 实际发生：
+          # symbols.dir 等全部 The system cannot find the path specified）。
+          # symbols 正常应有数百个文件、symbols.dir 数百 KB
+          $sym = "vcxsrv\xorg-server\xkbdata\symbols"
+          $cnt = (Get-ChildItem $sym -File -ErrorAction SilentlyContinue).Count
+          if ($cnt -lt 100) { throw "xkbdata symbols files missing or too few: $cnt" }
+          $sd = Get-Item "vcxsrv\xorg-server\xkbdata\symbols.dir" -ErrorAction SilentlyContinue
+          if (-not $sd -or $sd.Length -lt 10000) { throw "xkbdata symbols.dir missing or too small" }
 
       - uses: actions/upload-artifact@v4
         with:
