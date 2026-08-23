@@ -48,10 +48,10 @@ jobs:
           C:\tools\cygwin\cygwinsetup.exe -q -n -R C:\tools\cygwin -P bison,flex,gawk,gperf,gzip,nasm,sed,python38-lxml
           # cygwin link.exe 与 MSVC link.exe 冲突，改名
           Rename-Item C:\tools\cygwin\bin\link.exe link-cygwin.exe
-          # mhmake 经 cmd 调用 gperf 等 cygwin 工具，cygwin bin 需进系统 PATH
-          # （choco cygwin 包不加 PATH；追加在末尾避免遮蔽 MSVC 工具）
-          $mp = [Environment]::GetEnvironmentVariable('Path', 'Machine')
-          [Environment]::SetEnvironmentVariable('Path', "$mp;C:\tools\cygwin\bin", 'Machine')
+          # mhmake 经 cmd 调用 gperf 等 cygwin 工具，cygwin bin 需进 PATH。
+          # 注意：SetEnvironmentVariable(Machine) 对已在运行的 runner agent 无效，
+          # 必须用 $GITHUB_PATH 让后续步骤的进程 PATH 带上它
+          Add-Content $env:GITHUB_PATH 'C:\tools\cygwin\bin'
           [Environment]::SetEnvironmentVariable('CYGWIN', 'winsymlinks:lnk', 'Machine')
           $env:CYGWIN = 'winsymlinks:lnk'
 
