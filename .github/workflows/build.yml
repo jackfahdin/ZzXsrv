@@ -185,18 +185,72 @@ jobs:
           # 且 main() 启动即 chdir 到 exe 目录（dix/main.c:170-183）
           # → 日志固定为 exe 目录下的 XWin.99.log（不是 XWin.log！
           # run 32668735441 按 XWin.log 取证扑空的原因）
-          $p = Start-Process -FilePath $exe -ArgumentList ':99','-multiwindow','-ac','-listen','tcp','-logverbose','3' -WorkingDirectory $serv -PassThru
+          # run 32670557589 结果：进程存活且无窗口、无 socket、且
+          # XWin.99.log 也不存在 → 连 LogInit 都没走到，卡点在
+          # OsVendorPreInit 之前（或 fopen 失败走 fatal→MessageBox）。
+          # 本轮升级取证：stderr/stdout 重定向（LogInit 前 ErrorF 走
+          # stderr）、线程等待原因（UserRequest=GUI 模态框）、
+          # EnumWindows 列窗口（捕捉加载器缺 DLL 对话框）、
+          # TcpListener 试绑 6099 + netsh 排除端口段（端口保留假设）
+          $out = "$serv\smoke-stdout.txt"; $err = "$serv\smoke-stderr.txt"
+          $p = Start-Process -FilePath $exe -ArgumentList ':99','-multiwindow','-ac','-listen','tcp','-logverbose','3' -WorkingDirectory $serv -RedirectStandardOutput $out -RedirectStandardError $err -PassThru
           Start-Sleep -Seconds 15
           $listen = netstat -ano | Select-String ':6099\s+.*LISTENING'
           $listen | ForEach-Object { $_.Line }
-          # 取证1：全部 LISTENING（不过滤 PID，排除 PID 归属误判）
-          netstat -ano | Select-String 'LISTENING' | ForEach-Object { $_.Line }
-          # 取证2：进程状态——MainWindowTitle 非空/Responding=False 提示
-          # 模态 MessageBox 阻塞（session 0 无人点击，进程存活但启动卡住）
-          Get-Process -Id $p.Id -ErrorAction SilentlyContinue |
-            Select-Object Id,ProcessName,Responding,MainWindowTitle,StartTime | Format-List
-          # 取证3：XWin.99.log 全文（fatal error 全文在此）
-          Get-ChildItem "$serv\XWin*.log" -ErrorAction SilentlyContinue | ForEach-Object {
+          # 取证1：进程身份与线程等待原因
+          Get-CimInstance Win32_Process -Filter "ProcessId=$($p.Id)" -ErrorAction SilentlyContinue |
+            Select-Object ProcessId,ExecutablePath,CommandLine | Format-List
+          Get-Process -Id $p.Id -ErrorAction SilentlyContinue | ForEach-Object {
+            $_.Threads | ForEach-Object {
+              $wr = ''
+              if ($_.ThreadState -eq [System.Diagnostics.ThreadState]::Wait) {
+                try { $wr = "$($_.WaitReason)" } catch { $wr = '?' }
+              }
+              [pscustomobject]@{ State = "$($_.ThreadState)"; WaitReason = $wr }
+            } | Group-Object State,WaitReason | Select-Object Count,Name
+          }
+          # 取证2：该进程全部窗口标题（模态 MessageBox / 加载器缺 DLL 框在此现形）
+          $wsrc = @'
+using System;
+using System.Text;
+using System.Runtime.InteropServices;
+public class WinEnum {
+  public delegate bool EnumProc(IntPtr h, IntPtr l);
+  [DllImport("user32.dll")] public static extern bool EnumWindows(EnumProc cb, IntPtr l);
+  [DllImport("user32.dll")] public static extern uint GetWindowThreadProcessId(IntPtr h, out uint pid);
+  [DllImport("user32.dll", CharSet=CharSet.Unicode)] public static extern int GetWindowTextW(IntPtr h, StringBuilder s, int n);
+  [DllImport("user32.dll")] public static extern bool IsWindowVisible(IntPtr h);
+  public static string Dump(uint target) {
+    var sb2 = new StringBuilder();
+    EnumWindows((h,l) => {
+      uint pid; GetWindowThreadProcessId(h, out pid);
+      if (pid == target) {
+        var t = new StringBuilder(512);
+        GetWindowTextW(h, t, 512);
+        sb2.AppendLine(string.Format("hwnd={0} visible={1} title=[{2}]", h, IsWindowVisible(h), t));
+      }
+      return true;
+    }, IntPtr.Zero);
+    return sb2.ToString();
+  }
+}
+'@
+          Add-Type -TypeDefinition $wsrc
+          "windows of pid $($p.Id):"
+          [WinEnum]::Dump([uint32]$p.Id)
+          # 取证3：stdout/stderr 重定向内容（LogInit 前的 ErrorF 走 stderr）
+          foreach ($f in @($out, $err)) {
+            "===== $f ====="
+            if (Test-Path $f) { Get-Content $f -Tail 60 } else { "(missing)" }
+          }
+          # 取证4：pwsh 直接试绑 6099 + 系统排除端口段（端口保留假设）
+          try {
+            $tl = New-Object System.Net.Sockets.TcpListener([System.Net.IPAddress]::Any, 6099)
+            $tl.Start(); "pwsh bind 0.0.0.0:6099 OK"; $tl.Stop()
+          } catch { "pwsh bind 6099 FAILED: $($_.Exception.Message)" }
+          netsh int ipv4 show excludedportrange protocol=tcp
+          # 取证5：日志文件（exe 目录 + TEMP 双搜）
+          Get-ChildItem "$serv\XWin*.log","$env:TEMP\VCXSrv*.log","$env:TEMP\XWin*.log" -ErrorAction SilentlyContinue | ForEach-Object {
             "===== $($_.FullName) ====="
             Get-Content $_.FullName -Tail 120
           }
