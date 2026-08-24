@@ -356,10 +356,25 @@ jobs:
           # 实证：进程存活 + 6098 监听 + 无任何边界窗口）。生产侧 Qt
           # 容器有事件循环无此问题，纯冒烟脚本假象
           $child = [System.IntPtr]::Zero
+          # 轮次 7 探针：从 embed-stderr 解析 ZzXsrv-DBG 打印的建窗句柄，
+          # 每轮迭代检查其 IsWindow/GetParent 状态变化（定案后随 DBG
+          # 打点一并回退）——区分「窗口建成后被销毁」「被改挂到别处」
+          $sig2 = '[DllImport("user32.dll")] public static extern System.IntPtr GetParent(System.IntPtr h);'
+          $u32b = Add-Type -MemberDefinition $sig2 -Name U32b -Namespace Win32 -PassThru
+          $dbgHwnd = [System.IntPtr]::Zero
+          $lastProbe = ''
           foreach ($i in 1..60) {
             [System.Windows.Forms.Application]::DoEvents()
             Start-Sleep -Milliseconds 500
             if ($p.HasExited) { break }
+            if ($dbgHwnd -eq [System.IntPtr]::Zero -and (Test-Path "$serv\embed-stderr.txt")) {
+              $m = Select-String -Path "$serv\embed-stderr.txt" -Pattern 'CreateWindowExA .* returned 0x([0-9a-fA-F]+)' | Select-Object -First 1
+              if ($m) { $dbgHwnd = [System.IntPtr][Convert]::ToInt64($m.Matches[0].Groups[1].Value, 16) }
+            }
+            if ($dbgHwnd -ne [System.IntPtr]::Zero) {
+              $probe = "i=$i dbgHwnd=$dbgHwnd IsWindow=$($u32::IsWindow($dbgHwnd)) GetParent=$($u32b::GetParent($dbgHwnd))"
+              if ($probe -ne $lastProbe) { $probe; $lastProbe = $probe }
+            }
             # 首选：精确匹配 ZzXsrv/x 类名
             $child = $u32::FindWindowEx($hwnd, [System.IntPtr]::Zero, 'ZzXsrv/x', $null)
             if ($child -ne [System.IntPtr]::Zero) { break }

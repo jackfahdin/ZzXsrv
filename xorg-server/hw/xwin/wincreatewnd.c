@@ -291,7 +291,12 @@ winCreateBoundingWindowWindowed(ScreenPtr pScreen)
                  WINDOW_TITLE, HostName, display, (int) pScreenInfo->dwScreen);
   }
 
-    /* ZzXsrv: embedded mode - child window of the -parent container */
+    /* ZzXsrv: embedded mode - child window of the -parent container.
+     * CreateWindowExA 直接以跨进程窗口为父创建 WS_CHILD 不可靠
+     * （CI run 32737485851 打点实证：g_hwndParent 正确、调用返回有效
+     * 句柄无错误，但父窗口存活期间其子窗口列表里始终没有该窗口），
+     * 故先建本进程 WS_POPUP 窗口，创建成功后由 SetParent 跨进程
+     * 挂接（窗口嵌入的标准路径，仍零 IPC） */
     if (g_hwndParent != NULL) {
         RECT rc;
         /* ZzXsrv-DBG: temporary embed diagnostics, revert before final */
@@ -300,14 +305,16 @@ winCreateBoundingWindowWindowed(ScreenPtr pScreen)
                (int) fGotRect, (long) rc.left, (long) rc.top,
                (long) rc.right, (long) rc.bottom,
                (unsigned long) GetLastError());
-        dwWindowStyle = WS_CHILD | WS_VISIBLE | WS_CLIPSIBLINGS;
+        dwWindowStyle = WS_POPUP | WS_CLIPSIBLINGS;
         iPosX = 0;
         iPosY = 0;
         iWidth = rc.right - rc.left;
         iHeight = rc.bottom - rc.top;
     }
 
-    /* Create the window */
+    /* Create the window (embed mode: 此处先建本进程 WS_POPUP 顶层窗口，
+     * parent 参数只在独立窗口模式下为 NULL，嵌入模式的挂接在创建
+     * 成功后用 SetParent 完成) */
     *phwnd = CreateWindowExA(0, /* Extended styles */
                              WINDOW_CLASS,      /* Class name */
                              szTitle,   /* Window name */
@@ -315,7 +322,7 @@ winCreateBoundingWindowWindowed(ScreenPtr pScreen)
                              iPosY,     /* Vertical position */
                              iWidth,    /* Right edge */
                              iHeight,   /* Bottom edge */
-                             g_hwndParent,   /* ZzXsrv: parent window (NULL = rootful standalone) */
+                             (HWND) NULL,      /* ZzXsrv: 独立/嵌入均先建顶层窗口，嵌入随后 SetParent */
                              (HMENU) NULL,      /* No menu */
                              g_hInstance,     /* Instance handle */
                              pScreenPriv);      /* ScreenPrivates */
@@ -326,6 +333,28 @@ winCreateBoundingWindowWindowed(ScreenPtr pScreen)
     if (*phwnd == NULL) {
         ErrorF("winCreateBoundingWindowWindowed - CreateWindowEx () failed\n");
         return FALSE;
+    }
+
+    /* ZzXsrv: embedded mode - 创建成功后跨进程挂接到 -parent 容器。
+     * SetParent 不改窗口样式（MSDN），需自行换 WS_POPUP→WS_CHILD
+     * 并把窗口移到父客户区原点 */
+    if (g_hwndParent != NULL) {
+        LONG dwStyle;
+        HWND hwndOldParent = SetParent(*phwnd, g_hwndParent);
+        /* ZzXsrv-DBG: temporary embed diagnostics, revert before final */
+        ErrorF("ZzXsrv-DBG: SetParent(%p -> %p) old=%p gle=%lu GetParent=%p\n",
+               (void *) *phwnd, (void *) g_hwndParent,
+               (void *) hwndOldParent, (unsigned long) GetLastError(),
+               (void *) GetParent(*phwnd));
+        if (hwndOldParent == NULL) {
+            ErrorF("winCreateBoundingWindowWindowed - SetParent () failed\n");
+            return FALSE;
+        }
+        dwStyle = GetWindowLong(*phwnd, GWL_STYLE);
+        dwStyle = (dwStyle & ~WS_POPUP) | WS_CHILD | WS_VISIBLE;
+        SetWindowLong(*phwnd, GWL_STYLE, dwStyle);
+        SetWindowPos(*phwnd, HWND_TOP, 0, 0, iWidth, iHeight,
+                     SWP_FRAMECHANGED);
     }
 
     winDebug("winCreateBoundingWindowWindowed - CreateWindowEx () returned\n");
