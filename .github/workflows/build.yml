@@ -39,6 +39,12 @@ jobs:
           # 2.5.24（bison 3.7.4），muscle 接口不匹配会报 invalid header value
           New-Item -ItemType Directory -Path C:\winflexbison -Force
           curl.exe -fsSL https://github.com/lexxmark/winflexbison/releases/download/v2.5.25/win_flex_bison-2.5.25.zip -o C:\winflexbison\winflexbison.zip
+          # 官方 zip 是唯一未钉哈希的外部输入：下载后 SHA256 对比硬编码值，
+          # 不等即 throw。哈希为 2026-08-24 从官方 release 实算（字符串必须
+          # 纯 ASCII，中文只放注释，防 PS5.1 无 BOM cp1252 解码炸解析）
+          $expected = '8d324b62be33604b2c45ad1dd34ab93d722534448f55a16ca7292de32b6ac135'
+          $actual = (Get-FileHash C:\winflexbison\winflexbison.zip -Algorithm SHA256).Hash.ToLower()
+          if ($actual -ne $expected) { throw "winflexbison.zip SHA256 mismatch: expected $expected, got $actual" }
           Expand-Archive C:\winflexbison\winflexbison.zip -DestinationPath C:\winflexbison
           Remove-Item C:\winflexbison\winflexbison.zip
 
