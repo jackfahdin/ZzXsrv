@@ -271,13 +271,17 @@ jobs:
             "===== $($_.FullName) ====="
             Get-Content $_.FullName -Tail 120
           }
+          # IPv4/IPv6 对称断言：若未来 IPv6 绑定点回归为 [::]:6099（全网卡），
+          # 仅匹配 0.0.0.0 的断言会漏检（审查发现：任务2报告 重要1）
           $hasAny = [bool]($listen | Select-String '0\.0\.0\.0:6099')
+          $hasAny6 = [bool]($listen | Select-String '\[::\]:6099')
           $hasLoop = [bool]($listen | Select-String '127\.0\.0\.1:6099')
+          $hasLoop6 = [bool]($listen | Select-String '\[::1\]:6099')
           if ($p.HasExited) { throw "vcxsrv 进程过早退出，代码 $($p.ExitCode)" }
           Stop-Process -Id $p.Id -Force
           if ($env:ZZXSRV_LISTEN_ANY -eq '1') {
-            if (-not $hasAny) { throw "旁路模式应监听 0.0.0.0:6099" }
+            if (-not ($hasAny -or $hasAny6)) { throw "旁路模式应监听 0.0.0.0:6099 或 [::]:6099" }
           } else {
-            if ($hasAny) { throw "默认模式不得监听 0.0.0.0:6099" }
-            if (-not $hasLoop) { throw "默认模式应监听 127.0.0.1:6099" }
+            if ($hasAny -or $hasAny6) { throw "默认模式不得监听全网卡（0.0.0.0 或 [::]）" }
+            if (-not ($hasLoop -or $hasLoop6)) { throw "默认模式应监听回环（127.0.0.1 或 [::1]）" }
           }
