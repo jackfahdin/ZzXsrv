@@ -320,6 +320,9 @@ jobs:
       # 回环 6098 监听。运行时布局（xkbdata/fonts/xkbcomp/XKeysymDB/依赖
       # DLL）由上一步「冒烟：监听地址断言」铺好，直接复用同一 $serv。
       # shell 必须 pwsh（throw 文案含中文，PS5.1 无 BOM cp1252 会炸解析）
+      # run 32715632855 教训：10s 单次 FindWindowEx 不够——进程存活但
+      # 30s 内窗口未必建完；改 6x5s 轮询 + null 类名任意子窗口兜底
+      # （简报预案：FindWindowEx 找不到改枚举任意子窗口）+ 失败取证
       - name: 冒烟：-parent 嵌入断言
         shell: pwsh
         run: |
@@ -333,21 +336,65 @@ jobs:
           $p = Start-Process -FilePath "$serv\ZzXsrv.exe" `
                -ArgumentList ':98','-parent',([string]$hwnd),'-screen','0','800x600','-ac','-listen','tcp' `
                -WorkingDirectory $serv -PassThru
-          Start-Sleep -Seconds 10
+          $sig = '[DllImport("user32.dll")] public static extern System.IntPtr FindWindowEx(System.IntPtr p, System.IntPtr c, string cls, string title);'
+          $u32 = Add-Type -MemberDefinition $sig -Name U32 -Namespace Win32 -PassThru
+          # 轮询等子窗口出现（初始化 + xkb 编译可能超过 10s）
+          $child = [System.IntPtr]::Zero
+          foreach ($i in 1..6) {
+            Start-Sleep -Seconds 5
+            if ($p.HasExited) { break }
+            # 首选：精确匹配 ZzXsrv/x 类名
+            $child = $u32::FindWindowEx($hwnd, [System.IntPtr]::Zero, 'ZzXsrv/x', $null)
+            if ($child -ne [System.IntPtr]::Zero) { break }
+            # 兜底（简报预案）：null 类名取任意子窗口，
+            # 等价 EnumChildWindows 取第一个（报告注明）
+            $child = $u32::FindWindowEx($hwnd, [System.IntPtr]::Zero, $null, $null)
+            if ($child -ne [System.IntPtr]::Zero) { break }
+          }
           # 取证：日志真实落点是 exe 目录下 XWin.<display>.log（见监听冒烟注释），
           # 简报里的 XWin.log 不存在，改用 glob（报告注明偏差）
           if ($p.HasExited) {
             Get-ChildItem "$serv\XWin*.log" -ErrorAction SilentlyContinue | ForEach-Object { "===== $($_.FullName) ====="; Get-Content $_.FullName -Tail 60 }
             throw "ZzXsrv 嵌入模式过早退出，代码 $($p.ExitCode)"
           }
-          # 断言父窗口下存在 WS_CHILD 子窗口（类名 ZzXsrv/x）
-          $sig = '[DllImport("user32.dll")] public static extern System.IntPtr FindWindowEx(System.IntPtr p, System.IntPtr c, string cls, string title);'
-          $u32 = Add-Type -MemberDefinition $sig -Name U32 -Namespace Win32 -PassThru
-          $child = $u32::FindWindowEx($hwnd, [System.IntPtr]::Zero, 'ZzXsrv/x', $null)
           if ($child -eq [System.IntPtr]::Zero) {
-            Get-ChildItem "$serv\XWin*.log" -ErrorAction SilentlyContinue | ForEach-Object { "===== $($_.FullName) ====="; Get-Content $_.FullName -Tail 60 }
-            throw "no child window of class ZzXsrv/x under parent"
+            # 取证：该进程顶层窗口（区分「嵌入分支未命中→顶层 ZzXsrv
+            # 窗口」与「根本没建窗」）、6098 端口状态、日志
+            "netstat 6098:"
+            netstat -ano | Select-String ':6098' | ForEach-Object { $_.Line }
+            $wsrc = @'
+          using System;
+          using System.Text;
+          using System.Runtime.InteropServices;
+          public class WinEnum2 {
+            public delegate bool EnumProc(IntPtr h, IntPtr l);
+            [DllImport("user32.dll")] public static extern bool EnumWindows(EnumProc cb, IntPtr l);
+            [DllImport("user32.dll")] public static extern uint GetWindowThreadProcessId(IntPtr h, out uint pid);
+            [DllImport("user32.dll", CharSet=CharSet.Unicode)] public static extern int GetWindowTextW(IntPtr h, StringBuilder s, int n);
+            [DllImport("user32.dll", CharSet=CharSet.Unicode)] public static extern int GetClassNameW(IntPtr h, StringBuilder s, int n);
+            [DllImport("user32.dll")] public static extern bool IsWindowVisible(IntPtr h);
+            public static string Dump(uint target) {
+              var sb2 = new StringBuilder();
+              EnumWindows((h,l) => {
+                uint pid; GetWindowThreadProcessId(h, out pid);
+                if (pid == target) {
+                  var t = new StringBuilder(512); var c = new StringBuilder(256);
+                  GetWindowTextW(h, t, 512); GetClassNameW(h, c, 256);
+                  sb2.AppendLine(string.Format("hwnd={0} visible={1} class=[{2}] title=[{3}]", h, IsWindowVisible(h), c, t));
+                }
+                return true;
+              }, IntPtr.Zero);
+              return sb2.ToString();
+            }
           }
+          '@
+            Add-Type -TypeDefinition $wsrc
+            "top-level windows of pid $($p.Id):"
+            [WinEnum2]::Dump([uint32]$p.Id)
+            Get-ChildItem "$serv\XWin*.log" -ErrorAction SilentlyContinue | ForEach-Object { "===== $($_.FullName) ====="; Get-Content $_.FullName -Tail 60 }
+            throw "no child window under parent after 30s"
+          }
+          "child window found under parent: $child"
           $listen = netstat -ano | Select-String '127\.0\.0\.1:6098\s+.*LISTENING'
           if (-not $listen) { throw "embedded server not listening on 127.0.0.1:6098" }
           Stop-Process -Id $p.Id -Force
