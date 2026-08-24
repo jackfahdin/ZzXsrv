@@ -143,6 +143,10 @@ winCreateBoundingWindowWindowed(ScreenPtr pScreen)
 
     gethostname(HostName,256);
 
+    /* ZzXsrv-DBG: temporary embed diagnostics, revert before final */
+    ErrorF("ZzXsrv-DBG: enter winCreateBoundingWindowWindowed g_hwndParent=%p\n",
+           (void *) g_hwndParent);
+
     winDebug("winCreateBoundingWindowWindowed - User w: %d h: %d\n",
              (int) pScreenInfo->dwUserWidth, (int) pScreenInfo->dwUserHeight);
     winDebug("winCreateBoundingWindowWindowed - Current w: %d h: %d\n",
@@ -290,7 +294,12 @@ winCreateBoundingWindowWindowed(ScreenPtr pScreen)
     /* ZzXsrv: embedded mode - child window of the -parent container */
     if (g_hwndParent != NULL) {
         RECT rc;
-        GetClientRect(g_hwndParent, &rc);
+        /* ZzXsrv-DBG: temporary embed diagnostics, revert before final */
+        BOOL fGotRect = GetClientRect(g_hwndParent, &rc);
+        ErrorF("ZzXsrv-DBG: embed branch taken, GetClientRect=%d rc=%ld,%ld,%ld,%ld gle=%lu\n",
+               (int) fGotRect, (long) rc.left, (long) rc.top,
+               (long) rc.right, (long) rc.bottom,
+               (unsigned long) GetLastError());
         dwWindowStyle = WS_CHILD | WS_VISIBLE | WS_CLIPSIBLINGS;
         iPosX = 0;
         iPosY = 0;
@@ -310,6 +319,10 @@ winCreateBoundingWindowWindowed(ScreenPtr pScreen)
                              (HMENU) NULL,      /* No menu */
                              g_hInstance,     /* Instance handle */
                              pScreenPriv);      /* ScreenPrivates */
+    /* ZzXsrv-DBG: temporary embed diagnostics, revert before final */
+    ErrorF("ZzXsrv-DBG: CreateWindowExA style=0x%08lx size=%dx%d returned %p gle=%lu\n",
+           (unsigned long) dwWindowStyle, (int) iWidth, (int) iHeight,
+           (void *) *phwnd, (unsigned long) GetLastError());
     if (*phwnd == NULL) {
         ErrorF("winCreateBoundingWindowWindowed - CreateWindowEx () failed\n");
         return FALSE;

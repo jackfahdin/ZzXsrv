@@ -346,7 +346,7 @@ jobs:
                -ArgumentList ':97','-screen','0','800x600','-ac','-listen','tcp' `
                -WorkingDirectory $serv -PassThru `
                -RedirectStandardOutput "$serv\ctrl-stdout.txt" -RedirectStandardError "$serv\ctrl-stderr.txt"
-          $sig = '[DllImport("user32.dll")] public static extern System.IntPtr FindWindowEx(System.IntPtr p, System.IntPtr c, string cls, string title);'
+          $sig = '[DllImport("user32.dll")] public static extern System.IntPtr FindWindowEx(System.IntPtr p, System.IntPtr c, string cls, string title); [DllImport("user32.dll")] public static extern bool IsWindow(System.IntPtr h);'
           $u32 = Add-Type -MemberDefinition $sig -Name U32 -Namespace Win32 -PassThru
           # 轮询等子窗口出现（初始化 + xkb 编译可能超过 10s）。
           # 关键：等待期间父线程必须泵消息——跨进程 WS_CHILD 创建时
@@ -436,7 +436,7 @@ jobs:
           }
           '@
             Add-Type -TypeDefinition $tsrc
-            "form hwnd = $hwnd"
+            "form hwnd = $hwnd IsWindow=$($u32::IsWindow($hwnd))"
             "thread windows of embed pid $($p.Id):"
             Get-Process -Id $p.Id -ErrorAction SilentlyContinue | ForEach-Object { $_.Threads } | ForEach-Object {
               "thread $($_.Id):"
