@@ -299,8 +299,9 @@ jobs:
           }
 
   # tag（zz-*）触发发布。release job 与 build job 文件系统不共享，
-  # 安装包走 artifact 传递：upload-artifact 以 workspace 根为公共祖先
-  # 保留相对路径，下载后安装包落在 dist/vcxsrv/xorg-server/installer/
+  # 安装包走 artifact 传递：upload-artifact 以各 path 的公共祖先
+  # （vcxsrv/xorg-server）为根保留相对路径，下载后安装包落在
+  # dist/installer/（run 32678143404 实测布局，非完整 workspace 路径）
   release:
     needs: build
     if: startsWith(github.ref, 'refs/tags/zz-')
@@ -317,7 +318,7 @@ jobs:
         shell: pwsh
         run: |
           New-Item -ItemType Directory -Path release -Force | Out-Null
-          Copy-Item dist\vcxsrv\xorg-server\installer\*.exe* release\
+          Copy-Item dist\installer\*.exe* release\
           Get-ChildItem release | ForEach-Object { "$($_.Name) $($_.Length)" }
           if (-not (Get-ChildItem release\*.installer.noadmin.exe -ErrorAction SilentlyContinue)) { throw "noadmin installer missing in artifact" }
           if (-not (Get-ChildItem release\*.installer.noadmin.exe.sha256 -ErrorAction SilentlyContinue)) { throw "noadmin sha256 missing in artifact" }
