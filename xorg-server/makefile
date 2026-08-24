@@ -71,18 +71,12 @@ $(OBJDIR)\$(APP).exe: $(LINKLIBS)
 load_makefile fonts.src\makefile MAKESERVER=0 DEBUG=$(DEBUG)
 load_makefile xkeyboard-config\makefile MAKESERVER=0 DEBUG=$(DEBUG)
 
-EXTRASTOBUILD =  \
- ..\xkbcomp\$(NOSERVOBJDIR)\xkbcomp.exe \
- hw\xwin\swrastwgl_dri\$(NOSERVOBJDIR)\swrastwgl_dri.dll \
- ..\dxtn\$(NOSERVOBJDIR)\dxtn.dll
+EXTRASTOBUILD = ..\xkbcomp\$(NOSERVOBJDIR)\xkbcomp.exe
 
 EXTRASTOBUILDDIRS=$(dir $(EXTRASTOBUILD))
 
 load_makefile $(EXTRASTOBUILDDIRS:%$(NOSERVOBJDIR)\=%makefile MAKESERVER=0 DEBUG=$(DEBUG);)
 all: $(EXTRASTOBUILD)
-
-load_makefile $(MHMAKECONF)\mesalib\src\makefile MAKESERVER=0 DEBUG=$(DEBUG)
-all: $(MHMAKECONF)\mesalib\src\$(NOSERVOBJDIR)\swrast_dri.lib $(MHMAKECONF)\mesalib\src\$(NOSERVOBJDIR)\swrast_dri.dll
 
 all: fonts.src\all xkeyboard-config\all
 

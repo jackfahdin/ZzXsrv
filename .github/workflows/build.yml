@@ -152,6 +152,14 @@ jobs:
           if ($cnt -lt 100) { throw "xkbdata symbols files missing or too few: $cnt" }
           $sd = Get-Item "vcxsrv\xorg-server\xkbdata\symbols.dir" -ErrorAction SilentlyContinue
           if (-not $sd -or $sd.Length -lt 10000) { throw "xkbdata symbols.dir missing or too small" }
+          # M4b 裁剪回退防线：xlaunch/apps/plink/mesa 软渲染产物已移出构建图
+          # （EXTRASTOBUILD 只留 xkbcomp），obj64 下再现即 throw
+          $cut = @('swrast_dri.dll','swrastwgl_dri.dll','dxtn.dll','xlaunch.exe','plink.exe','xcalc.exe','xclock.exe','xwininfo.exe','xhost.exe','xrdb.exe','xauth.exe')
+          foreach ($f in $cut) {
+            $hit = Get-ChildItem vcxsrv -Recurse -Filter $f -ErrorAction SilentlyContinue |
+                   Where-Object { $_.FullName -match 'obj64' }
+            if ($hit) { throw "cut artifact still built: $($hit.FullName)" }
+          }
 
       # NSIS 打包无需单独步骤：buildall.sh 已调 packageall.sh nox86，
       # admin + noadmin 双份 installer 随构建产出（任务1 run 32662240347
@@ -203,16 +211,16 @@ jobs:
           # 清单按 installer/mkzip-64.sh 的打包来源，依赖闭已经 artifact
           # 的 NSIS 安装包解出逐个 objdump 验证：
           # vcxsrv.exe→freetype/libX11/libXau/libxcb/libcrypto/zlib1，
-          # libX11→libxcb→libXau，GL 三件套被 exe 动态加载
+          # libX11→libxcb→libXau
+          # M4b 裁剪后 GL 三件套（swrast_dri/swrastwgl_dri/dxtn）已移出
+          # 构建图不再产出，此处不再拷贝（exe 运行时动态加载失败只影响
+          # GL 扩展，冒烟断言的监听行为不涉及 GL）
           Copy-Item "$PWD\vcxsrv\zlib\obj64\release\zlib1.dll" $serv -Force
           Copy-Item "$PWD\vcxsrv\libxcb\src\obj64\release\libxcb.dll" $serv -Force
           Copy-Item "$PWD\vcxsrv\libXau\obj64\release\libXau.dll" $serv -Force
           Copy-Item "$PWD\vcxsrv\libX11\obj64\release\libX11.dll" $serv -Force
           Copy-Item "$PWD\vcxsrv\openssl\release64\libcrypto-3-x64.dll" $serv -Force
           Copy-Item "$PWD\vcxsrv\freetype\objs\x64\Release\freetype.dll" $serv -Force
-          Copy-Item "$PWD\vcxsrv\mesalib\src\obj64\release\swrast_dri.dll" $serv -Force
-          Copy-Item "$PWD\vcxsrv\xorg-server\hw\xwin\swrastwgl_dri\obj64\release\swrastwgl_dri.dll" $serv -Force
-          Copy-Item "$PWD\vcxsrv\dxtn\obj64\release\dxtn.dll" $serv -Force
           $exe = "$serv\vcxsrv.exe"
           # 日志真实落点：RELOCATE_PROJECTROOT 未定义时
           # g_pszLogFile = DEFAULT_LOGDIR "/XWin.%s.log"（winglobals.c:67），
