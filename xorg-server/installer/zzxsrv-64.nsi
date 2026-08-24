@@ -18,31 +18,31 @@
 ;--------------------------------
 !include "FileFunc.nsh"
 
-!define NAME "VcXsrv"
+!define NAME "ZzXsrv"
 !define VERSION "21.1.16.1"
 !define UNINSTALL_PUBLISHER "${NAME}"
-!define UNINSTALL_URL "https://github.com/marchaesen/vcxsrv"
+!define UNINSTALL_URL "https://github.com/jackfahdin/ZzXsrv"
 
 ; The name of the installer
 Name "${NAME}"
 
 ; The file to write
-OutFile "vcxsrv-64.${VERSION}.installer.exe"
+OutFile "zzxsrv-64.${VERSION}.installer.exe"
 
 ; The default installation directory
-InstallDir $programfiles64\VcXsrv
+InstallDir $programfiles64\ZzXsrv
 
 SetCompressor /SOLID lzma
 
 ; Registry key to check for directory (so if you install again, it will
 ; overwrite the old one automatically)
-InstallDirRegKey HKLM SOFTWARE\VcXsrv "Install_Dir_64"
+InstallDirRegKey HKLM SOFTWARE\ZzXsrv "Install_Dir_64"
 
 LoadLanguageFile "${NSISDIR}\Contrib\Language files\English.nlf"
 
 VIProductVersion "${VERSION}"
 VIAddVersionKey /LANG=${LANG_ENGLISH} "ProductName" "${NAME}"
-VIAddVersionKey /LANG=${LANG_ENGLISH} "FileDescription" "VcXsrv windows xserver"
+VIAddVersionKey /LANG=${LANG_ENGLISH} "FileDescription" "ZzXsrv windows xserver"
 VIAddVersionKey /LANG=${LANG_ENGLISH} "FileVersion" "${VERSION}"
 VIAddVersionKey /LANG=${LANG_ENGLISH} "ProductVersion" "${VERSION}"
 
@@ -70,7 +70,7 @@ XPStyle on
 
 ;--------------------------------
 ; The stuff to install
-Section "VcXsrv (required)"
+Section "ZzXsrv (required)"
 
   SetShellVarContext All
 
@@ -99,15 +99,11 @@ Section "VcXsrv (required)"
     Delete "$INSTDIR\msvcp120.dll"
 
   ; Put files there
-  File "..\obj64\servrelease\vcxsrv.exe"
+  File "..\obj64\servrelease\ZzXsrv.exe"
   File "..\dix\protocol.txt"
   File "..\system.XWinrc"
   File "..\X0.hosts"
   File "..\..\xkbcomp\obj64\release\xkbcomp.exe"
-  File "..\..\apps\xcalc\app-defaults\xcalc"
-  File "..\..\apps\xcalc\app-defaults\xcalc-color"
-  File "..\..\apps\xclock\app-defaults\xclock"
-  File "..\..\apps\xclock\app-defaults\xclock-color"
   File "..\XKeysymDB"
   File "..\..\libX11\src\XErrorDB"
   File "..\..\libX11\src\xcms\Xcms.txt"
@@ -135,47 +131,21 @@ Section "VcXsrv (required)"
   File /r "..\bitmaps\*.*"
 
   ; Write the installation path into the registry
-  WriteRegStr HKLM SOFTWARE\VcXsrv "Install_Dir_64" "$INSTDIR"
+  WriteRegStr HKLM SOFTWARE\ZzXsrv "Install_Dir_64" "$INSTDIR"
 
   ; Write the uninstall keys for Windows
-  WriteRegStr HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\VcXsrv" "DisplayIcon" "$INSTDIR\vcxsrv.exe"
-  WriteRegStr HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\VcXsrv" "DisplayName" "${NAME}"
-  WriteRegStr HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\VcXsrv" "DisplayVersion" "${VERSION}"
-  WriteRegStr HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\VcXsrv" "Publisher" "https://github.com/marchaesen"
-  WriteRegStr HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\VcXsrv" "UninstallString" '"$INSTDIR\uninstall.exe"'
-  WriteRegDWORD HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\VcXsrv" "NoModify" 1
-  WriteRegDWORD HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\VcXsrv" "NoRepair" 1
+  WriteRegStr HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\ZzXsrv" "DisplayIcon" "$INSTDIR\ZzXsrv.exe"
+  WriteRegStr HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\ZzXsrv" "DisplayName" "${NAME}"
+  WriteRegStr HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\ZzXsrv" "DisplayVersion" "${VERSION}"
+  WriteRegStr HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\ZzXsrv" "Publisher" "https://github.com/jackfahdin/ZzXsrv"
+  WriteRegStr HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\ZzXsrv" "UninstallString" '"$INSTDIR\uninstall.exe"'
+  WriteRegDWORD HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\ZzXsrv" "NoModify" 1
+  WriteRegDWORD HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\ZzXsrv" "NoRepair" 1
   WriteUninstaller "uninstall.exe"
 
   ${GetSize} "$INSTDIR" "/S=0K" $0 $1 $2
   IntFmt $0 "0x%08X" $0
-  WriteRegDWORD HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\VcXsrv" "EstimatedSize" "$0"
-
-  ; Register the xlaunch file extension
-  WriteRegStr HKCR ".xlaunch" "" "XLaunchFile"
-  WriteRegStr HKCR "XLaunchFile" "" "XLaunch Configuration"
-  WriteRegStr HKCR "XLaunchFile\DefaultIcon" "" "$INSTDIR\xlaunch.exe,0"
-  WriteRegStr HKCR "XLaunchFile\shell" "" 'open'
-  WriteRegStr HKCR "XLaunchFile\shell\open\command" "" '"$INSTDIR\XLaunch.exe" -run "%1"'
-  WriteRegStr HKCR "XLaunchFile\shell\open\ddeexec\Application" "" "XLaunch"
-  WriteRegStr HKCR "XLaunchFile\shell\open\ddeexec\Topic" "" "System"
-  WriteRegStr HKCR "XLaunchFile\shell\edit\command" "" '"$INSTDIR\XLaunch.exe" -load "%1"'
-  WriteRegStr HKCR "XLaunchFile\shell\edit\ddeexec\Application" "" "XLaunch"
-  WriteRegStr HKCR "XLaunchFile\shell\edit\ddeexec\Topic" "" "System"
-  WriteRegStr HKCR "XLaunchFile\shell\Validate\command" "" '"$INSTDIR\XLaunch.exe" -validate "%1"'
-  WriteRegStr HKCR "XLaunchFile\shell\Validate\ddeexec\Application" "" "XLaunch"
-  WriteRegStr HKCR "XLaunchFile\shell\Validate\ddeexec\Topic" "" "System"
-
-  WriteRegStr HKCR "Applications\xlaunch.exe\shell" "" 'open'
-  WriteRegStr HKCR "Applications\xlaunch.exe\shell\open\command" "" '"$INSTDIR\XLaunch.exe" -run "%1"'
-  WriteRegStr HKCR "Applications\xlaunch.exe\shell\open\ddeexec\Application" "" "XLaunch"
-  WriteRegStr HKCR "Applications\xlaunch.exe\shell\open\ddeexec\Topic" "" "System"
-  WriteRegStr HKCR "Applications\xlaunch.exe\shell\edit\command" "" '"$INSTDIR\XLaunch.exe" -load "%1"'
-  WriteRegStr HKCR "Applications\xlaunch.exe\shell\edit\ddeexec\Application" "" "XLaunch"
-  WriteRegStr HKCR "Applications\xlaunch.exe\shell\edit\ddeexec\Topic" "" "System"
-  WriteRegStr HKCR "Applications\xlaunch.exe\shell\Validate\command" "" '"$INSTDIR\XLaunch.exe" -validate "%1"'
-  WriteRegStr HKCR "Applications\xlaunch.exe\shell\Validate\ddeexec\Application" "" "XLaunch"
-  WriteRegStr HKCR "Applications\xlaunch.exe\shell\Validate\ddeexec\Topic" "" "System"
+  WriteRegDWORD HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\ZzXsrv" "EstimatedSize" "$0"
 
 SectionEnd
 
@@ -201,23 +171,10 @@ Section "Start Menu Shortcuts"
 
   SetRegView 64
 
-  SetOutPath "$SMPROGRAMS\VcXsrv"
-  CreateDirectory "$SMPROGRAMS\VcXsrv"
-  CreateShortCut "$SMPROGRAMS\VcXsrv\Uninstall VcXsrv.lnk" "$INSTDIR\uninstall.exe" "" "$INSTDIR\uninstall.exe" 0
-  CreateShortCut "$SMPROGRAMS\VcXsrv\XLaunch.lnk" "$INSTDIR\xlaunch.exe" "" "$INSTDIR\xlaunch.exe" 0
-SectionEnd
-
-; Optional section (can be disabled by the user)
-Section "Desktop Shortcuts"
-  SectionIn 1 3
-
-  SetShellVarContext All
-
-  SetRegView 64
-
-  SetOutPath $DESKTOP
-  CreateShortCut "$DESKTOP\XLaunch.lnk" "$INSTDIR\xlaunch.exe" "" "$INSTDIR\xlaunch.exe" 0
-
+  SetOutPath "$SMPROGRAMS\ZzXsrv"
+  CreateDirectory "$SMPROGRAMS\ZzXsrv"
+  CreateShortCut "$SMPROGRAMS\ZzXsrv\ZzXsrv.lnk" "$INSTDIR\ZzXsrv.exe" "" "$INSTDIR\ZzXsrv.exe" 0
+  CreateShortCut "$SMPROGRAMS\ZzXsrv\Uninstall ZzXsrv.lnk" "$INSTDIR\uninstall.exe" "" "$INSTDIR\uninstall.exe" 0
 SectionEnd
 
 ;--------------------------------
@@ -231,43 +188,24 @@ Section "Uninstall"
   SetShellVarContext All
 
   ; Remove registry keys
-  DeleteRegKey HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\VcXsrv"
-  DeleteRegKey HKLM SOFTWARE\VcXsrv
-
-  ; Register the xlaunch file extension
-  DeleteRegKey HKCR ".xlaunch"
-  DeleteRegKey HKCR "XLaunchFile"
-  DeleteRegKey HKCR "Applications\xlaunch.exe"
+  DeleteRegKey HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\ZzXsrv"
+  DeleteRegKey HKLM SOFTWARE\ZzXsrv
 
   ; Remove files and uninstaller
-  Delete "$INSTDIR\vcxsrv.exe"
+  Delete "$INSTDIR\ZzXsrv.exe"
   Delete "$INSTDIR\uninstall.exe"
   Delete "$INSTDIR\protocol.txt"
   Delete "$INSTDIR\system.XWinrc"
   Delete "$INSTDIR\xkbcomp.exe"
-  Delete "$INSTDIR\xcalc.exe"
-  Delete "$INSTDIR\xcalc"
-  Delete "$INSTDIR\xcalc-color"
-  Delete "$INSTDIR\xclock.exe"
-  Delete "$INSTDIR\xclock"
-  Delete "$INSTDIR\xclock-color"
-  Delete "$INSTDIR\xwininfo.exe"
   Delete "$INSTDIR\XKeysymDB"
   Delete "$INSTDIR\XErrorDB"
   Delete "$INSTDIR\Xcms.txt"
   Delete "$INSTDIR\XtErrorDB"
   Delete "$INSTDIR\font-dirs"
   Delete "$INSTDIR\.Xdefaults"
-  Delete "$INSTDIR\xlaunch.exe"
-  Delete "$INSTDIR\plink.exe"
-  Delete "$INSTDIR\swrast_dri.dll"
-  Delete "$INSTDIR\dxtn.dll"
-  Delete "$INSTDIR\swrastwgl_dri.dll"
   Delete "$INSTDIR\libxcb.dll"
   Delete "$INSTDIR\libXau.dll"
   Delete "$INSTDIR\libX11.dll"
-  Delete "$INSTDIR\libXext.dll"
-  Delete "$INSTDIR\libXmu.dll"
   Delete "$INSTDIR\libxml2.dll"
   Delete "$INSTDIR\zlib1.dll"
   Delete "$INSTDIR\iconv.dll"
@@ -283,9 +221,6 @@ Section "Uninstall"
   Delete "$INSTDIR\libwinpthread-1.dll"
   Delete "$INSTDIR\libxml2-2.dll"
   Delete "$INSTDIR\X0.hosts"
-  Delete "$INSTDIR\xauth.exe"
-  Delete "$INSTDIR\xhost.exe"
-  Delete "$INSTDIR\xrdb.exe"
 
 
   RMDir /r "$INSTDIR\fonts"
@@ -294,12 +229,10 @@ Section "Uninstall"
   RMDir /r "$INSTDIR\bitmaps"
 
   ; Remove shortcuts, if any
-  Delete "$SMPROGRAMS\VcXsrv\*.*"
-  Delete "$DESKTOP\VcXsrv.lnk"
-  Delete "$DESKTOP\XLaunch.lnk"
+  Delete "$SMPROGRAMS\ZzXsrv\*.*"
 
   ; Remove directories used
-  RMDir "$SMPROGRAMS\VcXsrv"
+  RMDir "$SMPROGRAMS\ZzXsrv"
   RMDir "$INSTDIR"
 
 SectionEnd

@@ -52,10 +52,10 @@ OBJS = dix\$(OBJDIR)\main.obj
 LINKLIBS += $(PTHREADLIB) $(FREETYPELIB) $(OPENSSLLIB) opengl32.lib dwmapi.lib
 
 ifeq ($(DEBUG),1)
-TTYAPP=vcxsrv
+TTYAPP=ZzXsrv
 APP:=$(TTYAPP)
 else
-WINAPP=vcxsrv
+WINAPP=ZzXsrv
 APP:=$(WINAPP)
 endif
 

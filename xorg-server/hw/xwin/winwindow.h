@@ -43,10 +43,10 @@
 
 /* Constant strings */
 #ifndef PROJECT_NAME
-#define PROJECT_NAME		"VcXsrv"
+#define PROJECT_NAME		"ZzXsrv"
 #endif
-#define EXECUTABLE_NAME         "VcXsrv"
-#define WINDOW_CLASS            "VcXsrv/x"
+#define EXECUTABLE_NAME         "ZzXsrv"
+#define WINDOW_CLASS            "ZzXsrv/x"
 #define WINDOW_TITLE            PROJECT_NAME " Server - Display %s:%s.%d"
 #define WINDOW_TITLE_XDMCP      PROJECT_NAME " Server - %s - Display %s:%s.%d"
 extern const char WIN_SCR_PROP[];

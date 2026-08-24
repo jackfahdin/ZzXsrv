@@ -1,0 +1,13 @@
+ZzXsrv
+Copyright (c) 2026 ZzClawTerm Project
+
+本产品基于 VcXsrv（https://github.com/marchaesen/vcxsrv）修改，
+VcXsrv 基于 X.Org X Server。各源文件头部的 MIT/X11 许可声明
+全部保留，许可以各源文件头为准。
+
+与上游的差异：
+1. xtrans 默认仅绑定回环地址（ZZXSRV_LISTEN_ANY=1 恢复全网卡）
+2. 新增 -parent <HWND> 启动参数，rootful 窗口可嵌入外部容器
+3. 裁剪：mesa 软渲染 OpenGL、xlaunch、apps/*、plink、Xv/XDMCP/record
+4. 品牌化为 ZzXsrv
+tools/mhmake 为 GPLv3，仅构建期使用，不随产品分发。

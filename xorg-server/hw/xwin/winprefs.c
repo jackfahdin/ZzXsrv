@@ -359,7 +359,7 @@ HandleCustomWM_COMMAND(HWND hwnd, WORD command, winPrivScreenPtr pScreenPriv)
                     }
                     else
                         MessageBox(NULL, m->menuItem[j].param,
-                                   "VcXsrv Exec Command Error!",
+                                   "ZzXsrv Exec Command Error!",
                                    MB_OK | MB_ICONEXCLAMATION);
                 }
                     return TRUE;

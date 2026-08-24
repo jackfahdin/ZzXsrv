@@ -280,8 +280,8 @@ GetTimeInMicros(void)
 void
 UseMsg(void)
 {
-    ErrorF("Usage...\nVcxsrv [:<display>] [option]\n\n");
-    ErrorF(":display-number\n\tVcxsrv runs as the given display-number, which defaults to 0.\n");
+    ErrorF("Usage...\nZzXsrv [:<display>] [option]\n\n");
+    ErrorF(":display-number\n\tZzXsrv runs as the given display-number, which defaults to 0.\n");
     ErrorF("\tTo run multiple instances, use unique display-numbers.\n\n");
 
     ErrorF("-silent-dup-error      Do not show fatal exit error mesage box\n");

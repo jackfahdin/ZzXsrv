@@ -83,7 +83,7 @@ jobs:
           # （run 32657983662 attempt 1 报 meson: command not found）
           additional-packages: python-is-python3 patch meson ninja-build
 
-      - name: 构建 vcxsrv（WSL + mhmake 原链）
+      - name: 构建 ZzXsrv（WSL + mhmake 原链）
         shell: powershell
         run: |
           # mhmake 经 cmd 调用 cygwin 工具（flex/bison/sed 等），cygwin bin 需在 PATH。
@@ -135,16 +135,18 @@ jobs:
       - name: 核验基线产物
         shell: powershell
         run: |
-          $exe = "vcxsrv\xorg-server\obj64\servrelease\vcxsrv.exe"
-          if (-not (Test-Path $exe)) { throw "vcxsrv.exe 未产出" }
+          $exe = "vcxsrv\xorg-server\obj64\servrelease\ZzXsrv.exe"
+          if (-not (Test-Path $exe)) { throw "ZzXsrv.exe 未产出" }
           (Get-Item $exe).Length
+          # 品牌化反向断言：旧名产物不得再出现
+          if (Test-Path "vcxsrv\xorg-server\obj64\servrelease\vcxsrv.exe") { throw "vcxsrv.exe 仍存在（品牌化改名不完整）" }
           # installer 阶段（packageall.sh）失败无任何标记，只能靠产物核验兜底
-          $inst = Get-ChildItem "vcxsrv\xorg-server\installer\vcxsrv-64.*.installer.exe" -ErrorAction SilentlyContinue
+          $inst = Get-ChildItem "vcxsrv\xorg-server\installer\zzxsrv-64.*.installer.exe" -ErrorAction SilentlyContinue
           if (-not $inst) { throw "installer exe missing" }
           $inst | ForEach-Object { "$($_.Name) $($_.Length)" }
           # xkeyboard-config 假绿兜底：meson 失败时 mhmake 的 mkdir 已建 xkbdata
           # 目录，重试会因目录存在跳过 wsl ./build.sh，导致 xkbdata 为空但
-          # vcxsrv.exe/installer 照常产出（run 32660002174 实际发生：
+          # ZzXsrv.exe/installer 照常产出（run 32660002174 实际发生：
           # symbols.dir 等全部 The system cannot find the path specified）。
           # symbols 正常应有数百个文件、symbols.dir 数百 KB
           $sym = "vcxsrv\xorg-server\xkbdata\symbols"
@@ -154,7 +156,7 @@ jobs:
           if (-not $sd -or $sd.Length -lt 10000) { throw "xkbdata symbols.dir missing or too small" }
           # M4b 裁剪回退防线：xlaunch/apps/plink/mesa 软渲染产物已移出构建图
           # （EXTRASTOBUILD 只留 xkbcomp），obj64 下再现即 throw
-          $cut = @('swrast_dri.dll','swrastwgl_dri.dll','dxtn.dll','xlaunch.exe','plink.exe','xcalc.exe','xclock.exe','xwininfo.exe','xhost.exe','xrdb.exe','xauth.exe')
+          $cut = @('swrast_dri.dll','swrastwgl_dri.dll','dxtn.dll','xlaunch.exe','plink.exe','xcalc.exe','xclock.exe','xwininfo.exe','xhost.exe','xrdb.exe','xauth.exe','libXext.dll','libXmu.dll')
           foreach ($f in $cut) {
             $hit = Get-ChildItem vcxsrv -Recurse -Filter $f -ErrorAction SilentlyContinue |
                    Where-Object { $_.FullName -match 'obj64' }
@@ -177,7 +179,7 @@ jobs:
         with:
           name: vcxsrv-baseline
           path: |
-            vcxsrv/xorg-server/obj64/servrelease/vcxsrv.exe
+            vcxsrv/xorg-server/obj64/servrelease/ZzXsrv.exe
             vcxsrv/xorg-server/installer/*.exe*
           if-no-files-found: warn
 
@@ -194,7 +196,7 @@ jobs:
       # XKB_BASE_DIRECTORY "xkbdata"、XKB_BIN_DIRECTORY "."、
       # COMPILEDDEFAULTFONTPATH "./fonts/..."。这里把运行时资源铺进
       # exe 目录并以其为 CWD。真根因（run 32672126036 定位）：
-      # vcxsrv.exe 动态链接 freetype/libX11/libXau/libxcb/libcrypto/
+      # ZzXsrv.exe 动态链接 freetype/libX11/libXau/libxcb/libcrypto/
       # zlib1 等 DLL，servrelease 裸目录缺 DLL → 加载器 0xC0000135
       # 退出（交互会话下表现为错误对话框阻塞、进程「假存活」）
       - name: 冒烟：监听地址断言
@@ -207,10 +209,10 @@ jobs:
           Copy-Item "$PWD\vcxsrv\xorg-server\XKeysymDB" $serv -Force
           # 依赖 DLL（真根因，run 32672126036：退出码 -1073741515 =
           # 0xC0000135 STATUS_DLL_NOT_FOUND——servrelease 里只有裸
-          # vcxsrv.exe，此前「进程存活」轮是加载器错误对话框阻塞变体）。
+          # ZzXsrv.exe，此前「进程存活」轮是加载器错误对话框阻塞变体）。
           # 清单按 installer/mkzip-64.sh 的打包来源，依赖闭已经 artifact
           # 的 NSIS 安装包解出逐个 objdump 验证：
-          # vcxsrv.exe→freetype/libX11/libXau/libxcb/libcrypto/zlib1，
+          # ZzXsrv.exe→freetype/libX11/libXau/libxcb/libcrypto/zlib1，
           # libX11→libxcb→libXau
           # M4b 裁剪后 GL 三件套（swrast_dri/swrastwgl_dri/dxtn）已移出
           # 构建图不再产出，此处不再拷贝（exe 运行时动态加载失败只影响
@@ -221,7 +223,7 @@ jobs:
           Copy-Item "$PWD\vcxsrv\libX11\obj64\release\libX11.dll" $serv -Force
           Copy-Item "$PWD\vcxsrv\openssl\release64\libcrypto-3-x64.dll" $serv -Force
           Copy-Item "$PWD\vcxsrv\freetype\objs\x64\Release\freetype.dll" $serv -Force
-          $exe = "$serv\vcxsrv.exe"
+          $exe = "$serv\ZzXsrv.exe"
           # 日志真实落点：RELOCATE_PROJECTROOT 未定义时
           # g_pszLogFile = DEFAULT_LOGDIR "/XWin.%s.log"（winglobals.c:67），
           # %s=display 号，DEFAULT_LOGDIR "."（xwin-config.h:33），
@@ -303,7 +305,7 @@ jobs:
           $hasAny6 = [bool]($listen | Select-String '\[::\]:6099')
           $hasLoop = [bool]($listen | Select-String '127\.0\.0\.1:6099')
           $hasLoop6 = [bool]($listen | Select-String '\[::1\]:6099')
-          if ($p.HasExited) { throw "vcxsrv 进程过早退出，代码 $($p.ExitCode)" }
+          if ($p.HasExited) { throw "ZzXsrv 进程过早退出，代码 $($p.ExitCode)" }
           Stop-Process -Id $p.Id -Force
           if ($env:ZZXSRV_LISTEN_ANY -eq '1') {
             if (-not ($hasAny -or $hasAny6)) { throw "旁路模式应监听 0.0.0.0:6099 或 [::]:6099" }
