@@ -335,7 +335,17 @@ jobs:
           $hwnd = $form.Handle
           $p = Start-Process -FilePath "$serv\ZzXsrv.exe" `
                -ArgumentList ':98','-parent',([string]$hwnd),'-screen','0','800x600','-ac','-listen','tcp' `
-               -WorkingDirectory $serv -PassThru
+               -WorkingDirectory $serv -PassThru `
+               -RedirectStandardOutput "$serv\embed-stdout.txt" -RedirectStandardError "$serv\embed-stderr.txt"
+          # 对照组（第四轮新增）：同环境 rootful 独立窗口模式（无 -parent，
+          # 用 :97/6097 与嵌入实例并存）。区分「rootful 建窗本身在 runner
+          # 上就失败」与「仅 -parent 路径失败」——run 32721080932 后
+          # WM_PARENTNOTIFY 泵消息假设被证伪（DoEvents 无效），且既有
+          # 监听冒烟只测过 -multiwindow，rootful 从未在 runner 验证过
+          $q = Start-Process -FilePath "$serv\ZzXsrv.exe" `
+               -ArgumentList ':97','-screen','0','800x600','-ac','-listen','tcp' `
+               -WorkingDirectory $serv -PassThru `
+               -RedirectStandardOutput "$serv\ctrl-stdout.txt" -RedirectStandardError "$serv\ctrl-stderr.txt"
           $sig = '[DllImport("user32.dll")] public static extern System.IntPtr FindWindowEx(System.IntPtr p, System.IntPtr c, string cls, string title);'
           $u32 = Add-Type -MemberDefinition $sig -Name U32 -Namespace Win32 -PassThru
           # 轮询等子窗口出现（初始化 + xkb 编译可能超过 10s）。
@@ -396,8 +406,17 @@ jobs:
           }
           '@
             Add-Type -TypeDefinition $wsrc
-            "top-level windows of pid $($p.Id):"
+            "top-level windows of embed pid $($p.Id):"
             [WinEnum2]::Dump([uint32]$p.Id)
+            # 对照组状态：rootful 无 -parent 在 runner 上能否建出顶层窗口
+            "control (rootful standalone, :97) HasExited=$($q.HasExited)"
+            "top-level windows of control pid $($q.Id):"
+            [WinEnum2]::Dump([uint32]$q.Id)
+            # stdout/stderr（LogInit 前的 ErrorF 走 stderr）
+            foreach ($f in @("$serv\embed-stdout.txt","$serv\embed-stderr.txt","$serv\ctrl-stdout.txt","$serv\ctrl-stderr.txt")) {
+              "===== $f ====="
+              if (Test-Path $f) { Get-Content $f -Tail 80 } else { "(missing)" }
+            }
             Get-ChildItem "$serv\XWin*.log" -ErrorAction SilentlyContinue | ForEach-Object { "===== $($_.FullName) ====="; Get-Content $_.FullName -Tail 60 }
             throw "no child window under parent after 30s"
           }
@@ -405,6 +424,7 @@ jobs:
           $listen = netstat -ano | Select-String '127\.0\.0\.1:6098\s+.*LISTENING'
           if (-not $listen) { throw "embedded server not listening on 127.0.0.1:6098" }
           Stop-Process -Id $p.Id -Force
+          Stop-Process -Id $q.Id -Force -ErrorAction SilentlyContinue
           $form.Dispose()
 
   # tag（zz-*）触发发布。release job 与 build job 文件系统不共享，
