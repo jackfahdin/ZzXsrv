@@ -138,8 +138,9 @@ jobs:
           $exe = "vcxsrv\xorg-server\obj64\servrelease\ZzXsrv.exe"
           if (-not (Test-Path $exe)) { throw "ZzXsrv.exe 未产出" }
           (Get-Item $exe).Length
-          # 品牌化反向断言：旧名产物不得再出现
-          if (Test-Path "vcxsrv\xorg-server\obj64\servrelease\vcxsrv.exe") { throw "vcxsrv.exe 仍存在（品牌化改名不完整）" }
+          # 品牌化反向断言：旧名产物不得再出现（throw 文案必须纯 ASCII，
+          # 防 PS5.1 无 BOM cp1252 解码炸解析，中文只放注释）
+          if (Test-Path "vcxsrv\xorg-server\obj64\servrelease\vcxsrv.exe") { throw "vcxsrv.exe still exists: rebrand incomplete" }
           # installer 阶段（packageall.sh）失败无任何标记，只能靠产物核验兜底
           $inst = Get-ChildItem "vcxsrv\xorg-server\installer\zzxsrv-64.*.installer.exe" -ErrorAction SilentlyContinue
           if (-not $inst) { throw "installer exe missing" }
