@@ -288,11 +288,14 @@ winCreateBoundingWindowWindowed(ScreenPtr pScreen)
   }
 
     /* ZzXsrv: embedded mode - child window of the -parent container.
-     * CreateWindowExA 直接以跨进程窗口为父创建 WS_CHILD 不可靠
-     * （CI run 32737485851 打点实证：g_hwndParent 正确、调用返回有效
-     * 句柄无错误，但父窗口存活期间其子窗口列表里始终没有该窗口），
-     * 故先建本进程 WS_POPUP 窗口，创建成功后由 SetParent 跨进程
-     * 挂接（窗口嵌入的标准路径，仍零 IPC） */
+     * 先建本进程 WS_POPUP 顶层窗口，创建成功后由 SetParent 跨进程
+     * 挂接到容器（窗口嵌入的标准路径，与 Qt 容器侧 setParent 同款，
+     * 仍零 IPC）。早期版本曾在 CreateWindowExA 直接以跨进程窗口为
+     * 父建 WS_CHILD，CI 冒烟判其「窗口静默丢失」——run 32740317501
+     * 探针定案那是 pwsh $null 编组假阴性（冒烟脚本 bug，非本体
+     * bug），故该直接路径未再验证；SetParent 构造已实证稳定
+     * （run 32740317501：建窗句柄 30s 全程 IsWindow=True 且
+     * GetParent == 容器句柄），保留为最终形态 */
     if (g_hwndParent != NULL) {
         RECT rc;
         GetClientRect(g_hwndParent, &rc);
@@ -303,9 +306,9 @@ winCreateBoundingWindowWindowed(ScreenPtr pScreen)
         iHeight = rc.bottom - rc.top;
     }
 
-    /* Create the window (embed mode: 此处先建本进程 WS_POPUP 顶层窗口，
-     * parent 参数只在独立窗口模式下为 NULL，嵌入模式的挂接在创建
-     * 成功后用 SetParent 完成) */
+    /* Create the window (embed mode: 独立/嵌入两种模式 parent 参数
+     * 均为 NULL，先建本进程顶层窗口；嵌入模式的跨进程挂接在创建
+     * 成功后用 SetParent 完成，见下文) */
     *phwnd = CreateWindowExA(0, /* Extended styles */
                              WINDOW_CLASS,      /* Class name */
                              szTitle,   /* Window name */
