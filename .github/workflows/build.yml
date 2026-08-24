@@ -408,6 +408,40 @@ jobs:
             Add-Type -TypeDefinition $wsrc
             "top-level windows of embed pid $($p.Id):"
             [WinEnum2]::Dump([uint32]$p.Id)
+            # 第五轮新增：EnumThreadWindows 枚全部者窗口（含子窗口）——
+            # run 32723380213 对照实证 rootful 建窗在 runner 正常、
+            # embed stderr 无 CreateWindowEx 失败且初始化推进到 GLX
+            # （winScreenInit 之后）→ 窗口「应该已创建」。枚举 embed
+            # 进程每个线程的全部窗口并打印 GetParent，定位它到底在哪
+            $tsrc = @'
+          using System;
+          using System.Text;
+          using System.Runtime.InteropServices;
+          public class ThreadWinEnum {
+            public delegate bool EnumProc(IntPtr h, IntPtr l);
+            [DllImport("user32.dll")] public static extern bool EnumThreadWindows(uint tid, EnumProc cb, IntPtr l);
+            [DllImport("user32.dll")] public static extern System.IntPtr GetParent(System.IntPtr h);
+            [DllImport("user32.dll", CharSet=CharSet.Unicode)] public static extern int GetClassNameW(System.IntPtr h, StringBuilder s, int n);
+            [DllImport("user32.dll", CharSet=CharSet.Unicode)] public static extern int GetWindowTextW(System.IntPtr h, StringBuilder s, int n);
+            public static string Dump(uint tid) {
+              var sb = new StringBuilder();
+              EnumThreadWindows(tid, (h,l) => {
+                var c = new StringBuilder(256); var t = new StringBuilder(512);
+                GetClassNameW(h, c, 256); GetWindowTextW(h, t, 512);
+                sb.AppendLine(string.Format("  hwnd={0} parent={1} class=[{2}] title=[{3}]", h, GetParent(h), c, t));
+                return true;
+              }, System.IntPtr.Zero);
+              return sb.ToString();
+            }
+          }
+          '@
+            Add-Type -TypeDefinition $tsrc
+            "form hwnd = $hwnd"
+            "thread windows of embed pid $($p.Id):"
+            Get-Process -Id $p.Id -ErrorAction SilentlyContinue | ForEach-Object { $_.Threads } | ForEach-Object {
+              "thread $($_.Id):"
+              [ThreadWinEnum]::Dump([uint32]$_.Id)
+            }
             # 对照组状态：rootful 无 -parent 在 runner 上能否建出顶层窗口
             "control (rootful standalone, :97) HasExited=$($q.HasExited)"
             "top-level windows of control pid $($q.Id):"
