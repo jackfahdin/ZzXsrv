@@ -6,6 +6,10 @@ on:
     tags: ['zz-*']
   workflow_dispatch:
 
+# 顶层权限收缩：build job 只需读；release job 自身声明 contents: write 覆盖
+permissions:
+  contents: read
+
 jobs:
   build:
     runs-on: windows-2022
@@ -141,9 +145,12 @@ jobs:
           # 品牌化反向断言：旧名产物不得再出现（throw 文案必须纯 ASCII，
           # 防 PS5.1 无 BOM cp1252 解码炸解析，中文只放注释）
           if (Test-Path "vcxsrv\xorg-server\obj64\servrelease\vcxsrv.exe") { throw "vcxsrv.exe still exists: rebrand incomplete" }
-          # installer 阶段（packageall.sh）失败无任何标记，只能靠产物核验兜底
-          $inst = Get-ChildItem "vcxsrv\xorg-server\installer\zzxsrv-64.*.installer.exe" -ErrorAction SilentlyContinue
+          # installer 阶段（packageall.sh）失败无任何标记，只能靠产物核验兜底。
+          # glob 用 installer*.exe：admin（installer.exe）与 noadmin
+          # （installer.noadmin.exe）双覆盖，缺任一即 throw
+          $inst = Get-ChildItem "vcxsrv\xorg-server\installer\zzxsrv-64.*.installer*.exe" -ErrorAction SilentlyContinue
           if (-not $inst) { throw "installer exe missing" }
+          if (-not ($inst | Where-Object Name -Like '*.installer.noadmin.exe')) { throw "noadmin installer exe missing" }
           $inst | ForEach-Object { "$($_.Name) $($_.Length)" }
           # xkeyboard-config 假绿兜底：meson 失败时 mhmake 的 mkdir 已建 xkbdata
           # 目录，重试会因目录存在跳过 wsl ./build.sh，导致 xkbdata 为空但
@@ -200,7 +207,7 @@ jobs:
       # ZzXsrv.exe 动态链接 freetype/libX11/libXau/libxcb/libcrypto/
       # zlib1 等 DLL，servrelease 裸目录缺 DLL → 加载器 0xC0000135
       # 退出（交互会话下表现为错误对话框阻塞、进程「假存活」）
-      - name: 冒烟：监听地址断言
+      - name: 冒烟：监听地址断言（默认：仅回环）
         shell: pwsh
         run: |
           $serv = "$PWD\vcxsrv\xorg-server\obj64\servrelease"
@@ -308,11 +315,38 @@ jobs:
           $hasLoop6 = [bool]($listen | Select-String '\[::1\]:6099')
           if ($p.HasExited) { throw "ZzXsrv 进程过早退出，代码 $($p.ExitCode)" }
           Stop-Process -Id $p.Id -Force
-          if ($env:ZZXSRV_LISTEN_ANY -eq '1') {
-            if (-not ($hasAny -or $hasAny6)) { throw "旁路模式应监听 0.0.0.0:6099 或 [::]:6099" }
-          } else {
-            if ($hasAny -or $hasAny6) { throw "默认模式不得监听全网卡（0.0.0.0 或 [::]）" }
-            if (-not ($hasLoop -or $hasLoop6)) { throw "默认模式应监听回环（127.0.0.1 或 [::1]）" }
+          # 默认段语义：仅回环。旁路（ZZXSRV_LISTEN_ANY=1 必见全网卡）
+          # 由下一步独立断言
+          if ($hasAny -or $hasAny6) { throw "默认模式不得监听全网卡（0.0.0.0 或 [::]）" }
+          if (-not ($hasLoop -or $hasLoop6)) { throw "默认模式应监听回环（127.0.0.1 或 [::1]）" }
+
+      # 旁路段：ZZXSRV_LISTEN_ANY=1 时必须监听全网卡（xtrans 旁路语义，
+      # Xtranssock.c getenv 分支）。运行时布局（xkbdata/fonts/DLL）由上一段
+      # 铺好，同一 job 内文件持久，直接复用 $serv。shell 必须 pwsh
+      # （throw 文案含中文，PS5.1 无 BOM cp1252 会炸解析）。
+      # 步骤级 env 会被 Start-Process 子进程继承
+      - name: 冒烟：监听地址断言（旁路：必见全网卡）
+        shell: pwsh
+        env:
+          ZZXSRV_LISTEN_ANY: '1'
+        run: |
+          $serv = "$PWD\vcxsrv\xorg-server\obj64\servrelease"
+          $exe = "$serv\ZzXsrv.exe"
+          $out = "$serv\smoke-any-stdout.txt"; $err = "$serv\smoke-any-stderr.txt"
+          $p = Start-Process -FilePath $exe -ArgumentList ':99','-multiwindow','-ac','-listen','tcp','-logverbose','3' -WorkingDirectory $serv -RedirectStandardOutput $out -RedirectStandardError $err -PassThru
+          Start-Sleep -Seconds 15
+          $listen = netstat -ano | Select-String ':6099\s+.*LISTENING'
+          $listen | ForEach-Object { $_.Line }
+          if ($p.HasExited) {
+            if (Test-Path $err) { Get-Content $err -Tail 60 }
+            throw "ZzXsrv 旁路模式进程过早退出，代码 $($p.ExitCode)"
+          }
+          Stop-Process -Id $p.Id -Force
+          $hasAny = [bool]($listen | Select-String '0\.0\.0\.0:6099')
+          $hasAny6 = [bool]($listen | Select-String '\[::\]:6099')
+          if (-not ($hasAny -or $hasAny6)) {
+            if (Test-Path $err) { Get-Content $err -Tail 60 }
+            throw "旁路模式应监听 0.0.0.0:6099 或 [::]:6099"
           }
 
       # 嵌入冒烟（M4b 核心断言）：WinForms 容器窗口 + -parent <HWND> 启动，
@@ -406,6 +440,16 @@ jobs:
           Stop-Process -Id $p.Id -Force
           $form.Dispose()
 
+      # 失败日志上传：buildall 各 attempt 的 build-*.log（Tee 落盘于 workspace
+      # 根），红 run 事后可下载取证，不必靠重跑复现
+      - name: 失败日志上传
+        if: failure()
+        uses: actions/upload-artifact@v4
+        with:
+          name: build-logs
+          path: build-*.log
+          if-no-files-found: ignore
+
   # tag（zz-*）触发发布。release job 与 build job 文件系统不共享，
   # 安装包走 artifact 传递：upload-artifact 以各 path 的公共祖先
   # （vcxsrv/xorg-server）为根保留相对路径，下载后安装包落在
@@ -430,6 +474,17 @@ jobs:
           Get-ChildItem release | ForEach-Object { "$($_.Name) $($_.Length)" }
           if (-not (Get-ChildItem release\*.installer.noadmin.exe -ErrorAction SilentlyContinue)) { throw "noadmin installer missing in artifact" }
           if (-not (Get-ChildItem release\*.installer.noadmin.exe.sha256 -ErrorAction SilentlyContinue)) { throw "noadmin sha256 missing in artifact" }
+          # 交叉核验：每个 .exe 重算哈希与同名 .sha256 内容比对，不等即
+          # throw——防 artifact 传递/拷贝环节静默损坏进 release。
+          # .sha256 由 build job 以 "<hash>  <name>" ascii 格式落盘
+          Get-ChildItem release\*.exe | ForEach-Object {
+            $sum = "$($_.FullName).sha256"
+            if (-not (Test-Path $sum)) { throw "sha256 missing for $($_.Name)" }
+            $expect = ((Get-Content $sum -Raw) -split '\s+')[0].Trim().ToLower()
+            $actual = (Get-FileHash $_.FullName -Algorithm SHA256).Hash.ToLower()
+            if ($actual -ne $expect) { throw "sha256 mismatch: $($_.Name) expected $expect got $actual" }
+            "verified $($_.Name) $actual"
+          }
 
       # 必须 pwsh：title/notes 含中文，PS5.1 会把无 BOM 临时 ps1 按
       # cp1252 解码，中文尾字节 0x82/0x84/0x91-0x94 被解成智能引号炸解析
