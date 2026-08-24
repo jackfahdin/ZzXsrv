@@ -143,10 +143,6 @@ winCreateBoundingWindowWindowed(ScreenPtr pScreen)
 
     gethostname(HostName,256);
 
-    /* ZzXsrv-DBG: temporary embed diagnostics, revert before final */
-    ErrorF("ZzXsrv-DBG: enter winCreateBoundingWindowWindowed g_hwndParent=%p\n",
-           (void *) g_hwndParent);
-
     winDebug("winCreateBoundingWindowWindowed - User w: %d h: %d\n",
              (int) pScreenInfo->dwUserWidth, (int) pScreenInfo->dwUserHeight);
     winDebug("winCreateBoundingWindowWindowed - Current w: %d h: %d\n",
@@ -299,12 +295,7 @@ winCreateBoundingWindowWindowed(ScreenPtr pScreen)
      * 挂接（窗口嵌入的标准路径，仍零 IPC） */
     if (g_hwndParent != NULL) {
         RECT rc;
-        /* ZzXsrv-DBG: temporary embed diagnostics, revert before final */
-        BOOL fGotRect = GetClientRect(g_hwndParent, &rc);
-        ErrorF("ZzXsrv-DBG: embed branch taken, GetClientRect=%d rc=%ld,%ld,%ld,%ld gle=%lu\n",
-               (int) fGotRect, (long) rc.left, (long) rc.top,
-               (long) rc.right, (long) rc.bottom,
-               (unsigned long) GetLastError());
+        GetClientRect(g_hwndParent, &rc);
         dwWindowStyle = WS_POPUP | WS_CLIPSIBLINGS;
         iPosX = 0;
         iPosY = 0;
@@ -326,10 +317,6 @@ winCreateBoundingWindowWindowed(ScreenPtr pScreen)
                              (HMENU) NULL,      /* No menu */
                              g_hInstance,     /* Instance handle */
                              pScreenPriv);      /* ScreenPrivates */
-    /* ZzXsrv-DBG: temporary embed diagnostics, revert before final */
-    ErrorF("ZzXsrv-DBG: CreateWindowExA style=0x%08lx size=%dx%d returned %p gle=%lu\n",
-           (unsigned long) dwWindowStyle, (int) iWidth, (int) iHeight,
-           (void *) *phwnd, (unsigned long) GetLastError());
     if (*phwnd == NULL) {
         ErrorF("winCreateBoundingWindowWindowed - CreateWindowEx () failed\n");
         return FALSE;
@@ -341,11 +328,6 @@ winCreateBoundingWindowWindowed(ScreenPtr pScreen)
     if (g_hwndParent != NULL) {
         LONG dwStyle;
         HWND hwndOldParent = SetParent(*phwnd, g_hwndParent);
-        /* ZzXsrv-DBG: temporary embed diagnostics, revert before final */
-        ErrorF("ZzXsrv-DBG: SetParent(%p -> %p) old=%p gle=%lu GetParent=%p\n",
-               (void *) *phwnd, (void *) g_hwndParent,
-               (void *) hwndOldParent, (unsigned long) GetLastError(),
-               (void *) GetParent(*phwnd));
         if (hwndOldParent == NULL) {
             ErrorF("winCreateBoundingWindowWindowed - SetParent () failed\n");
             return FALSE;

@@ -320,14 +320,20 @@ jobs:
       # 回环 6098 监听。运行时布局（xkbdata/fonts/xkbcomp/XKeysymDB/依赖
       # DLL）由上一步「冒烟：监听地址断言」铺好，直接复用同一 $serv。
       # shell 必须 pwsh（throw 文案含中文，PS5.1 无 BOM cp1252 会炸解析）
-      # run 32715632855 教训：10s 单次 FindWindowEx 不够——进程存活但
-      # 30s 内窗口未必建完；改 6x5s 轮询 + null 类名任意子窗口兜底
-      # （简报预案：FindWindowEx 找不到改枚举任意子窗口）+ 失败取证
+      # 教训沉淀：
+      # - run 32715632855：10s 单次 FindWindowEx 不够，进程存活但窗口
+      #   未必建完，改 60x0.5s 轮询 + null 类名任意子窗口兜底；
+      # - run 32740317501：pwsh 把 $null 绑到 string 参数时 marshaling
+      #   成 ""（空串）而非 NULL——title="" 过滤掉一切非空标题窗口、
+      #   class="" 匹配不到任何窗口，断言必假阴性。传真 NULL 必须用
+      #   [NullString]::Value（此前各轮「找不到子窗口」主因即此）；
+      # - 等待期间父线程须泵消息（DoEvents）：跨进程 SetParent/WS_CHILD
+      #   创建伴随向父窗口 SendMessage，父线程不泵消息会阻塞服务端
+      #   线程；生产侧 Qt 容器有事件循环无此问题
       - name: 冒烟：-parent 嵌入断言
         shell: pwsh
         run: |
           $serv = "$PWD\vcxsrv\xorg-server\obj64\servrelease"
-          # 运行时布局（与监听冒烟同）：xkbdata/fonts/xkbcomp/XKeysymDB 已在上一步铺好则复用
           Add-Type -AssemblyName System.Windows.Forms
           $form = New-Object System.Windows.Forms.Form
           $form.Width = 800; $form.Height = 600
@@ -337,61 +343,29 @@ jobs:
                -ArgumentList ':98','-parent',([string]$hwnd),'-screen','0','800x600','-ac','-listen','tcp' `
                -WorkingDirectory $serv -PassThru `
                -RedirectStandardOutput "$serv\embed-stdout.txt" -RedirectStandardError "$serv\embed-stderr.txt"
-          # 对照组（第四轮新增）：同环境 rootful 独立窗口模式（无 -parent，
-          # 用 :97/6097 与嵌入实例并存）。区分「rootful 建窗本身在 runner
-          # 上就失败」与「仅 -parent 路径失败」——run 32721080932 后
-          # WM_PARENTNOTIFY 泵消息假设被证伪（DoEvents 无效），且既有
-          # 监听冒烟只测过 -multiwindow，rootful 从未在 runner 验证过
-          $q = Start-Process -FilePath "$serv\ZzXsrv.exe" `
-               -ArgumentList ':97','-screen','0','800x600','-ac','-listen','tcp' `
-               -WorkingDirectory $serv -PassThru `
-               -RedirectStandardOutput "$serv\ctrl-stdout.txt" -RedirectStandardError "$serv\ctrl-stderr.txt"
-          $sig = '[DllImport("user32.dll")] public static extern System.IntPtr FindWindowEx(System.IntPtr p, System.IntPtr c, string cls, string title); [DllImport("user32.dll")] public static extern bool IsWindow(System.IntPtr h);'
+          $sig = '[DllImport("user32.dll")] public static extern System.IntPtr FindWindowEx(System.IntPtr p, System.IntPtr c, string cls, string title);'
           $u32 = Add-Type -MemberDefinition $sig -Name U32 -Namespace Win32 -PassThru
-          # 轮询等子窗口出现（初始化 + xkb 编译可能超过 10s）。
-          # 关键：等待期间父线程必须泵消息——跨进程 WS_CHILD 创建时
-          # Windows 向父窗口 SendMessage WM_PARENTNOTIFY，父线程（本
-          # pwsh）若死在 Start-Sleep 不泵消息，ZzXsrv 主线程就阻塞在
-          # CreateWindowExA 内，子窗口永远不出现（run 32718141018
-          # 实证：进程存活 + 6098 监听 + 无任何边界窗口）。生产侧 Qt
-          # 容器有事件循环无此问题，纯冒烟脚本假象
+          # 轮询等子窗口出现（初始化 + xkb 编译可能超过 10s）
           $child = [System.IntPtr]::Zero
-          # 轮次 7 探针：从 embed-stderr 解析 ZzXsrv-DBG 打印的建窗句柄，
-          # 每轮迭代检查其 IsWindow/GetParent 状态变化（定案后随 DBG
-          # 打点一并回退）——区分「窗口建成后被销毁」「被改挂到别处」
-          $sig2 = '[DllImport("user32.dll")] public static extern System.IntPtr GetParent(System.IntPtr h);'
-          $u32b = Add-Type -MemberDefinition $sig2 -Name U32b -Namespace Win32 -PassThru
-          $dbgHwnd = [System.IntPtr]::Zero
-          $lastProbe = ''
           foreach ($i in 1..60) {
             [System.Windows.Forms.Application]::DoEvents()
             Start-Sleep -Milliseconds 500
             if ($p.HasExited) { break }
-            if ($dbgHwnd -eq [System.IntPtr]::Zero -and (Test-Path "$serv\embed-stderr.txt")) {
-              $m = Select-String -Path "$serv\embed-stderr.txt" -Pattern 'CreateWindowExA .* returned 0x([0-9a-fA-F]+)' | Select-Object -First 1
-              if ($m) { $dbgHwnd = [System.IntPtr][Convert]::ToInt64($m.Matches[0].Groups[1].Value, 16) }
-            }
-            if ($dbgHwnd -ne [System.IntPtr]::Zero) {
-              $probe = "i=$i dbgHwnd=$dbgHwnd IsWindow=$($u32::IsWindow($dbgHwnd)) GetParent=$($u32b::GetParent($dbgHwnd))"
-              if ($probe -ne $lastProbe) { $probe; $lastProbe = $probe }
-            }
             # 首选：精确匹配 ZzXsrv/x 类名
-            $child = $u32::FindWindowEx($hwnd, [System.IntPtr]::Zero, 'ZzXsrv/x', $null)
+            $child = $u32::FindWindowEx($hwnd, [System.IntPtr]::Zero, 'ZzXsrv/x', [NullString]::Value)
             if ($child -ne [System.IntPtr]::Zero) { break }
             # 兜底（简报预案）：null 类名取任意子窗口，
-            # 等价 EnumChildWindows 取第一个（报告注明）
-            $child = $u32::FindWindowEx($hwnd, [System.IntPtr]::Zero, $null, $null)
+            # 等价 EnumChildWindows 取第一个
+            $child = $u32::FindWindowEx($hwnd, [System.IntPtr]::Zero, [NullString]::Value, [NullString]::Value)
             if ($child -ne [System.IntPtr]::Zero) { break }
           }
-          # 取证：日志真实落点是 exe 目录下 XWin.<display>.log（见监听冒烟注释），
-          # 简报里的 XWin.log 不存在，改用 glob（报告注明偏差）
           if ($p.HasExited) {
-            Get-ChildItem "$serv\XWin*.log" -ErrorAction SilentlyContinue | ForEach-Object { "===== $($_.FullName) ====="; Get-Content $_.FullName -Tail 60 }
+            if (Test-Path "$serv\embed-stderr.txt") { Get-Content "$serv\embed-stderr.txt" -Tail 60 }
             throw "ZzXsrv 嵌入模式过早退出，代码 $($p.ExitCode)"
           }
           if ($child -eq [System.IntPtr]::Zero) {
-            # 取证：该进程顶层窗口（区分「嵌入分支未命中→顶层 ZzXsrv
-            # 窗口」与「根本没建窗」）、6098 端口状态、日志
+            # 失败取证：6098 端口状态、该进程顶层窗口（区分「嵌入分支
+            # 未命中→顶层 ZzXsrv 窗口」与「根本没建窗」）、embed stderr
             "netstat 6098:"
             netstat -ano | Select-String ':6098' | ForEach-Object { $_.Line }
             $wsrc = @'
@@ -423,57 +397,13 @@ jobs:
             Add-Type -TypeDefinition $wsrc
             "top-level windows of embed pid $($p.Id):"
             [WinEnum2]::Dump([uint32]$p.Id)
-            # 第五轮新增：EnumThreadWindows 枚全部者窗口（含子窗口）——
-            # run 32723380213 对照实证 rootful 建窗在 runner 正常、
-            # embed stderr 无 CreateWindowEx 失败且初始化推进到 GLX
-            # （winScreenInit 之后）→ 窗口「应该已创建」。枚举 embed
-            # 进程每个线程的全部窗口并打印 GetParent，定位它到底在哪
-            $tsrc = @'
-          using System;
-          using System.Text;
-          using System.Runtime.InteropServices;
-          public class ThreadWinEnum {
-            public delegate bool EnumProc(IntPtr h, IntPtr l);
-            [DllImport("user32.dll")] public static extern bool EnumThreadWindows(uint tid, EnumProc cb, IntPtr l);
-            [DllImport("user32.dll")] public static extern System.IntPtr GetParent(System.IntPtr h);
-            [DllImport("user32.dll", CharSet=CharSet.Unicode)] public static extern int GetClassNameW(System.IntPtr h, StringBuilder s, int n);
-            [DllImport("user32.dll", CharSet=CharSet.Unicode)] public static extern int GetWindowTextW(System.IntPtr h, StringBuilder s, int n);
-            public static string Dump(uint tid) {
-              var sb = new StringBuilder();
-              EnumThreadWindows(tid, (h,l) => {
-                var c = new StringBuilder(256); var t = new StringBuilder(512);
-                GetClassNameW(h, c, 256); GetWindowTextW(h, t, 512);
-                sb.AppendLine(string.Format("  hwnd={0} parent={1} class=[{2}] title=[{3}]", h, GetParent(h), c, t));
-                return true;
-              }, System.IntPtr.Zero);
-              return sb.ToString();
-            }
-          }
-          '@
-            Add-Type -TypeDefinition $tsrc
-            "form hwnd = $hwnd IsWindow=$($u32::IsWindow($hwnd))"
-            "thread windows of embed pid $($p.Id):"
-            Get-Process -Id $p.Id -ErrorAction SilentlyContinue | ForEach-Object { $_.Threads } | ForEach-Object {
-              "thread $($_.Id):"
-              [ThreadWinEnum]::Dump([uint32]$_.Id)
-            }
-            # 对照组状态：rootful 无 -parent 在 runner 上能否建出顶层窗口
-            "control (rootful standalone, :97) HasExited=$($q.HasExited)"
-            "top-level windows of control pid $($q.Id):"
-            [WinEnum2]::Dump([uint32]$q.Id)
-            # stdout/stderr（LogInit 前的 ErrorF 走 stderr）
-            foreach ($f in @("$serv\embed-stdout.txt","$serv\embed-stderr.txt","$serv\ctrl-stdout.txt","$serv\ctrl-stderr.txt")) {
-              "===== $f ====="
-              if (Test-Path $f) { Get-Content $f -Tail 80 } else { "(missing)" }
-            }
-            Get-ChildItem "$serv\XWin*.log" -ErrorAction SilentlyContinue | ForEach-Object { "===== $($_.FullName) ====="; Get-Content $_.FullName -Tail 60 }
+            if (Test-Path "$serv\embed-stderr.txt") { Get-Content "$serv\embed-stderr.txt" -Tail 80 }
             throw "no child window under parent after 30s"
           }
           "child window found under parent: $child"
           $listen = netstat -ano | Select-String '127\.0\.0\.1:6098\s+.*LISTENING'
           if (-not $listen) { throw "embedded server not listening on 127.0.0.1:6098" }
           Stop-Process -Id $p.Id -Force
-          Stop-Process -Id $q.Id -Force -ErrorAction SilentlyContinue
           $form.Dispose()
 
   # tag（zz-*）触发发布。release job 与 build job 文件系统不共享，
