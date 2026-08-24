@@ -338,10 +338,17 @@ jobs:
                -WorkingDirectory $serv -PassThru
           $sig = '[DllImport("user32.dll")] public static extern System.IntPtr FindWindowEx(System.IntPtr p, System.IntPtr c, string cls, string title);'
           $u32 = Add-Type -MemberDefinition $sig -Name U32 -Namespace Win32 -PassThru
-          # 轮询等子窗口出现（初始化 + xkb 编译可能超过 10s）
+          # 轮询等子窗口出现（初始化 + xkb 编译可能超过 10s）。
+          # 关键：等待期间父线程必须泵消息——跨进程 WS_CHILD 创建时
+          # Windows 向父窗口 SendMessage WM_PARENTNOTIFY，父线程（本
+          # pwsh）若死在 Start-Sleep 不泵消息，ZzXsrv 主线程就阻塞在
+          # CreateWindowExA 内，子窗口永远不出现（run 32718141018
+          # 实证：进程存活 + 6098 监听 + 无任何边界窗口）。生产侧 Qt
+          # 容器有事件循环无此问题，纯冒烟脚本假象
           $child = [System.IntPtr]::Zero
-          foreach ($i in 1..6) {
-            Start-Sleep -Seconds 5
+          foreach ($i in 1..60) {
+            [System.Windows.Forms.Application]::DoEvents()
+            Start-Sleep -Milliseconds 500
             if ($p.HasExited) { break }
             # 首选：精确匹配 ZzXsrv/x 类名
             $child = $u32::FindWindowEx($hwnd, [System.IntPtr]::Zero, 'ZzXsrv/x', $null)
