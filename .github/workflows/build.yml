@@ -315,6 +315,44 @@ jobs:
             if (-not ($hasLoop -or $hasLoop6)) { throw "默认模式应监听回环（127.0.0.1 或 [::1]）" }
           }
 
+      # 嵌入冒烟（M4b 核心断言）：WinForms 容器窗口 + -parent <HWND> 启动，
+      # 断言父窗口下出现 WS_CHILD 子窗口（类名 ZzXsrv/x）+ 进程存活 +
+      # 回环 6098 监听。运行时布局（xkbdata/fonts/xkbcomp/XKeysymDB/依赖
+      # DLL）由上一步「冒烟：监听地址断言」铺好，直接复用同一 $serv。
+      # shell 必须 pwsh（throw 文案含中文，PS5.1 无 BOM cp1252 会炸解析）
+      - name: 冒烟：-parent 嵌入断言
+        shell: pwsh
+        run: |
+          $serv = "$PWD\vcxsrv\xorg-server\obj64\servrelease"
+          # 运行时布局（与监听冒烟同）：xkbdata/fonts/xkbcomp/XKeysymDB 已在上一步铺好则复用
+          Add-Type -AssemblyName System.Windows.Forms
+          $form = New-Object System.Windows.Forms.Form
+          $form.Width = 800; $form.Height = 600
+          $form.Show(); $form.Hide()   # 创建句柄但不展示
+          $hwnd = $form.Handle
+          $p = Start-Process -FilePath "$serv\ZzXsrv.exe" `
+               -ArgumentList ':98','-parent',([string]$hwnd),'-screen','0','800x600','-ac','-listen','tcp' `
+               -WorkingDirectory $serv -PassThru
+          Start-Sleep -Seconds 10
+          # 取证：日志真实落点是 exe 目录下 XWin.<display>.log（见监听冒烟注释），
+          # 简报里的 XWin.log 不存在，改用 glob（报告注明偏差）
+          if ($p.HasExited) {
+            Get-ChildItem "$serv\XWin*.log" -ErrorAction SilentlyContinue | ForEach-Object { "===== $($_.FullName) ====="; Get-Content $_.FullName -Tail 60 }
+            throw "ZzXsrv 嵌入模式过早退出，代码 $($p.ExitCode)"
+          }
+          # 断言父窗口下存在 WS_CHILD 子窗口（类名 ZzXsrv/x）
+          $sig = '[DllImport("user32.dll")] public static extern System.IntPtr FindWindowEx(System.IntPtr p, System.IntPtr c, string cls, string title);'
+          $u32 = Add-Type -MemberDefinition $sig -Name U32 -Namespace Win32 -PassThru
+          $child = $u32::FindWindowEx($hwnd, [System.IntPtr]::Zero, 'ZzXsrv/x', $null)
+          if ($child -eq [System.IntPtr]::Zero) {
+            Get-ChildItem "$serv\XWin*.log" -ErrorAction SilentlyContinue | ForEach-Object { "===== $($_.FullName) ====="; Get-Content $_.FullName -Tail 60 }
+            throw "no child window of class ZzXsrv/x under parent"
+          }
+          $listen = netstat -ano | Select-String '127\.0\.0\.1:6098\s+.*LISTENING'
+          if (-not $listen) { throw "embedded server not listening on 127.0.0.1:6098" }
+          Stop-Process -Id $p.Id -Force
+          $form.Dispose()
+
   # tag（zz-*）触发发布。release job 与 build job 文件系统不共享，
   # 安装包走 artifact 传递：upload-artifact 以各 path 的公共祖先
   # （vcxsrv/xorg-server）为根保留相对路径，下载后安装包落在

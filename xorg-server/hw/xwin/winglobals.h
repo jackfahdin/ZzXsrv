@@ -93,4 +93,7 @@ extern Bool g_fButton[3];
 
 extern pthread_mutex_t g_pmTerminating;
 
+/* ZzXsrv: -parent <HWND> 指定的嵌入父窗口（NULL = 独立窗口模式） */
+extern HWND g_hwndParent;
+
 #endif                          /* WINGLOBALS_H */

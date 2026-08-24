@@ -96,6 +96,9 @@ Bool g_fClipboardLaunched = FALSE;
 Bool g_fClipboardStarted = FALSE;
 pthread_t g_ptClipboardProc;
 HWND g_hwndClipboard = NULL;
+
+/* ZzXsrv: -parent <HWND> 指定的嵌入父窗口（NULL = 独立窗口模式） */
+HWND g_hwndParent = NULL;
 void *g_pClipboardDisplay = NULL;
 Window g_iClipboardWindow = None;
 Atom g_atomLastOwnedSelection = None;

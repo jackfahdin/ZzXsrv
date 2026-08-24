@@ -698,6 +698,28 @@ ddxProcessArgument(int argc, char *argv[], int i)
     }
 
     /*
+     * ZzXsrv: look for the '-parent' argument
+     */
+    if (IS_OPTION("-parent")) {
+        /* Check for required value */
+        if (i + 1 >= argc) {
+            ErrorF("win: -parent requires a HWND (decimal) argument\n");
+            return 0;
+        }
+
+        g_hwndParent = (HWND) (UINT_PTR) strtoul(argv[i + 1], NULL, 10);
+        if (g_hwndParent == NULL || !IsWindow(g_hwndParent)) {
+            ErrorF("win: -parent 0x%p is not a valid window, exiting\n",
+                   g_hwndParent);
+            /* 无效句柄记日志并退出：不静默退化为独立窗口（行为可预期） */
+            exit(1);
+        }
+
+        /* Indicate that we have processed two arguments */
+        return 2;
+    }
+
+    /*
      * Look for the '-clipboard' argument
      */
     if (IS_OPTION("-clipboard")) {
@@ -1231,7 +1253,7 @@ winLogVersionInfo(void)
         return;
     s_fBeenHere = TRUE;
 
-    ErrorF("Welcome to the VcXsrv X Server\n");
+    ErrorF("Welcome to the ZzXsrv X Server\n");
     ErrorF("Vendor: %s\n", XVENDORNAME);
     ErrorF("Release: %d.%d.%d.%d\n\n", XORG_VERSION_MAJOR,
            XORG_VERSION_MINOR, XORG_VERSION_PATCH, XORG_VERSION_SNAP);

@@ -287,6 +287,17 @@ winCreateBoundingWindowWindowed(ScreenPtr pScreen)
                  WINDOW_TITLE, HostName, display, (int) pScreenInfo->dwScreen);
   }
 
+    /* ZzXsrv: embedded mode - child window of the -parent container */
+    if (g_hwndParent != NULL) {
+        RECT rc;
+        GetClientRect(g_hwndParent, &rc);
+        dwWindowStyle = WS_CHILD | WS_VISIBLE | WS_CLIPSIBLINGS;
+        iPosX = 0;
+        iPosY = 0;
+        iWidth = rc.right - rc.left;
+        iHeight = rc.bottom - rc.top;
+    }
+
     /* Create the window */
     *phwnd = CreateWindowExA(0, /* Extended styles */
                              WINDOW_CLASS,      /* Class name */
@@ -295,7 +306,7 @@ winCreateBoundingWindowWindowed(ScreenPtr pScreen)
                              iPosY,     /* Vertical position */
                              iWidth,    /* Right edge */
                              iHeight,   /* Bottom edge */
-                             (HWND) NULL,       /* No parent or owner window */
+                             g_hwndParent,   /* ZzXsrv: parent window (NULL = rootful standalone) */
                              (HMENU) NULL,      /* No menu */
                              g_hInstance,     /* Instance handle */
                              pScreenPriv);      /* ScreenPrivates */
