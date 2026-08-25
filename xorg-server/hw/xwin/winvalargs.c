@@ -103,6 +103,12 @@ winValidateArgs(void)
             }
         }
 
+        /* Check for -parent and -multiwindow */
+        if (g_hwndParent != NULL && g_ScreenInfo[i].fMultiWindow) {
+            ErrorF("winValidateArgs - -parent is invalid with -multiwindow.\n");
+            return FALSE;
+        }
+
         /* Check for -multiwindow and Xdmcp */
         /* allow xdmcp if screen 0 is normal. */
         if (g_fXdmcpEnabled && !fHasNormalScreen0 && (FALSE

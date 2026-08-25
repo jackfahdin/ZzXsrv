@@ -173,7 +173,7 @@ Section "Start Menu Shortcuts"
 
   SetOutPath "$SMPROGRAMS\ZzXsrv"
   CreateDirectory "$SMPROGRAMS\ZzXsrv"
-  CreateShortCut "$SMPROGRAMS\ZzXsrv\ZzXsrv.lnk" "$INSTDIR\ZzXsrv.exe" "" "$INSTDIR\ZzXsrv.exe" 0
+  CreateShortCut "$SMPROGRAMS\ZzXsrv\ZzXsrv.lnk" "$INSTDIR\ZzXsrv.exe" "-multiwindow" "$INSTDIR\ZzXsrv.exe" 0
   CreateShortCut "$SMPROGRAMS\ZzXsrv\Uninstall ZzXsrv.lnk" "$INSTDIR\uninstall.exe" "" "$INSTDIR\uninstall.exe" 0
 SectionEnd
 
