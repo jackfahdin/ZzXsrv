@@ -1,3 +1,84 @@
+Native Windows build (PowerShell, no WSL or Cygwin)
+=================================================
+
+Prerequisites:
+- Visual Studio 2022 with the Desktop development with C++ workload, v143
+  x86/x64 tools, and a Windows SDK.
+- Windows Python 3.11 or newer with lxml, mako and PyYAML in that interpreter.
+- Strawberry Perl, NASM, WinFlexBison, and a native Windows gperf.
+- Optional: JOM for parallel OpenSSL builds. NMake is used when JOM is absent.
+
+The script never downloads or installs tools. It finds VS2022 with vswhere and
+looks for generators on PATH. It also checks common Tools/SoftWare directories
+on local drives for WinFlexBison and Qt's gperf/JOM. Cygwin/MSYS executables are
+rejected. File filtering and font compression use Python instead of Unix tools.
+Core keyboard data is generated with the repository's Python/Perl generators;
+no Meson is needed. Gettext translation catalogs are not included in this step.
+
+From PowerShell in the repository root:
+
+    .\buildall.ps1 -CheckOnly
+    .\buildall.ps1 -Configuration Release -Architecture x64 -Jobs 8
+
+If script execution is restricted, a one-process invocation is sufficient:
+
+    powershell -NoProfile -ExecutionPolicy Bypass -File .\buildall.ps1 -CheckOnly
+
+Explicit tool paths take precedence and an invalid override fails immediately:
+
+    .\buildall.ps1 -CheckOnly `
+        -PythonPath D:\SoftWare\Python3\python.exe `
+        -WinFlexBisonPath D:\SoftWare\win_flex_bison-2.5.25 `
+        -GperfPath D:\SoftWare\Qt\5.15.2\Src\gnuwin32\bin\gperf.exe
+
+Other overrides: -VisualStudioPath (VS installation directory), -PerlPath,
+-NasmPath and -JomPath (executable paths). Quote paths containing spaces.
+Keep the source checkout in a path without spaces: the existing mhmake include
+and library lists still assume this. All environment changes are temporary.
+
+Stages:
+    -Stage All           Build everything and assemble the portable runtime.
+    -Stage Dependencies  Build FreeType, OpenSSL, pthreads and mhmake.
+    -Stage BuildTool     Build only mhmake (always Release).
+    -Stage Server        Reuse dependencies/mhmake, build and assemble runtime.
+    -Stage Portable      Assemble runtime from existing outputs; no compilation.
+
+The default is All, x64, Release. Debug and Win32 are also selectable; rebuild
+dependencies for the selected configuration before using -Stage Server.
+Run dist\x64\Release\xlaunch.exe for the startup wizard, or vcxsrv.exe in that
+same directory to start the server directly. Keep the whole folder together:
+it includes runtime DLLs, fonts, locale and keyboard data. The raw build output
+xorg-server\obj64\servrelease\vcxsrv.exe does not have its runtime DLLs beside
+it and cannot be launched on its own.
+
+To assemble the runtime again without recompiling:
+    .\buildall.ps1 -Stage Portable
+
+Runtime assembly reads the existing NSIS file list and copies local build
+outputs plus the matching Visual Studio CRT DLLs. It does not install anything,
+write registry entries or require NSIS. Installer packaging remains separate.
+The existing NSIS/packageall.sh route remains separate and requires NSIS.
+
+Validated on Windows with VS2022/MSVC 14.44, SDK 10.0.26100.0, Python 3.14,
+and WinFlexBison 2.5.25: x64 Release dependencies, mhmake, server, Mesa,
+utilities, fonts and core keyboard data build successfully. Windows PowerShell
+5.1 and PowerShell 7 preflight checks pass. The portable x64 Release server
+starts with a system-only PATH, initializes native WGL and accepts an
+authenticated local TCP connection from xwininfo (-root reports 1920x1080).
+All 35 packaged PE files have their imported DLLs available locally or in
+Windows. Debug/Win32 builds, installer packaging and broader application/GL
+compatibility have not been verified.
+
+Build-script tests (standard library unittest; no additional test framework):
+    python -B -m unittest discover -s tools/tests -v
+Set VCXSRV_TEST_LOCAL_TOOLS=1 to include checks against an installed toolchain.
+
+Legacy WSL/Docker build instructions
+====================================
+The following instructions describe the older shell entry point, which retains
+machine-specific paths and may require adjustment. Use buildall.ps1 above for
+native Windows builds.
+
 Prerequisites:
 - Visual Studio 2022 Community Edition
 - Strawberry perl portable edition installed in c:\perl

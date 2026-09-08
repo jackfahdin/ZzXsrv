@@ -9,7 +9,7 @@ LINKFLAGS := $(LINKFLAGS:/LTCG:STATUS=/LTCG:OFF)
 
 $(OBJDIR)/git_sha1.h:
 	@echo "updating $@"
-	@$(PYTHON3) $(top_srcdir)/bin/git_sha1_gen.py --output $@
+	@$(PYTHON) $(top_srcdir)/bin/git_sha1_gen.py --output $@
 
 HAVE_OPENGL=1
 
@@ -82,7 +82,7 @@ libglsl_util_la_SOURCES = \
 
 DEFINES = WIN32 SWRAST_DRI_EXPORT INSERVER _USE_MATH_DEFINES __STDC_CONSTANT_MACROS __STDC_CONSTANT_MACROS __STDC_FORMAT_MACROS XML_STATIC __STDC_LIMIT_MACROS HAVE_PIPE_LOADER_DRI GALLIUM_SOFTPIPE GALLIUM_STATIC_TARGETS PIPE_SEARCH_DIR=\".\" HAVE_STRUCT_TIMESPEC __STDC_NO_THREADS__
 
-PACKAGE_VERSION:=\"$(strip $(shell cat $(top_srcdir)/VERSION))\"
+PACKAGE_VERSION:=\"$(strip $(shell type $(subst /,\,$(top_srcdir)/VERSION)))\"
 DEFINES += PACKAGE_VERSION=$(PACKAGE_VERSION)
 
 CSRCS := $(notdir $(subst /,$/,$(libglsl_util_la_SOURCES)))

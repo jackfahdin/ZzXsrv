@@ -36,6 +36,21 @@ AR        ?= lib /nologo
 RC        ?= rc
 RCFLAGS   ?= /l 0x409
 
+# Native Windows tools, overridable by the build environment.
+PYTHON3   ?= python.exe
+WIN_FLEX  ?= win_flex.exe
+WIN_BISON ?= win_bison.exe
+GPERF     ?= gperf.exe
+PERL      ?= perl.exe
+# mhmake's command parser cannot start a redirected recipe with a quoted
+# executable. Launchers keep full tool paths (possibly containing spaces) in
+# the environment and quote them inside cmd.exe instead.
+PYTHON = $(MHMAKECONF)\tools\run-python.bat
+FLEX = $(MHMAKECONF)\tools\run-flex.bat
+BISON = $(MHMAKECONF)\tools\run-bison.bat
+GPERF_COMMAND = $(MHMAKECONF)\tools\run-gperf.bat
+BUILD_NATIVE = $(PYTHON) "$(MHMAKECONF)/tools/build_native.py"
+
 SKIPHEADERS=string map stdlib.h stddef.h string.h stdio.h windows.h stdarg.h
 
 ifeq ($(MAKESERVER),1)

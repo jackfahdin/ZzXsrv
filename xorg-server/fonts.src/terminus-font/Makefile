@@ -2,7 +2,7 @@ ifeq ($(MAKESERVER),1)
 $(error Please do not specify MAKESERVER=1)
 endif
 
-INT = $(PYTHON3)
+INT = $(PYTHON)
 EXT = py
 BIN = ./bin
 
@@ -132,82 +132,82 @@ BASETARGETNAME=$(notdir $(@:%.gz=%))
 
 $(DESTDIR)\ter-1%.psf.gz : ter-u%.bdf $(VGA_8859_1) $(DUP_8859_1)
 	$(UCS2ANY) $< $(REG_8859_1) $(VGA_8859_1) | $(BDF2PSF) -o $(BASETARGETNAME) $(DUP_8859_1)
-	gzip -c $(BASETARGETNAME) > $@
+	$(BUILD_NATIVE) gzip < $(BASETARGETNAME) > $@
 	del $(BASETARGETNAME)
 
 $(DESTDIR)\ter-2%.psf.gz : ter-u%.bdf $(VGA_8859_2) $(DUP_8859_2)
 	$(UCS2ANY) $< $(REG_8859_2) $(VGA_8859_2) | $(BDF2PSF) -o $(BASETARGETNAME) $(DUP_8859_2)
-	gzip -c $(BASETARGETNAME) > $@
+	$(BUILD_NATIVE) gzip < $(BASETARGETNAME) > $@
 	del $(BASETARGETNAME)
 
 $(DESTDIR)\ter-7%.psf.gz : ter-u%.bdf $(VGA_8859_7) $(DUP_8859_7)
 	$(UCS2ANY) $< $(REG_8859_7) $(VGA_8859_7) | $(BDF2PSF) -o $(BASETARGETNAME) $(DUP_8859_7)
-	gzip -c $(BASETARGETNAME) > $@
+	$(BUILD_NATIVE) gzip < $(BASETARGETNAME) > $@
 	del $(BASETARGETNAME)
 
 $(DESTDIR)\ter-9%.psf.gz : ter-u%.bdf $(VGA_8859_9) $(DUP_8859_9)
 	$(UCS2ANY) $< $(REG_8859_9) $(VGA_8859_9) | $(BDF2PSF) -o $(BASETARGETNAME) $(DUP_8859_9)
-	gzip -c $(BASETARGETNAME) > $@
+	$(BUILD_NATIVE) gzip < $(BASETARGETNAME) > $@
 	del $(BASETARGETNAME)
 
 $(DESTDIR)\ter-c%.psf.gz : ter-u%.bdf $(VGA_MS_1251) $(DUP_MS_1251)
 	$(UCS2ANY) $< $(REG_MS_1251) $(VGA_MS_1251) | $(BDF2PSF) -o $(BASETARGETNAME) $(DUP_MS_1251)
-	gzip -c $(BASETARGETNAME) > $@
+	$(BUILD_NATIVE) gzip < $(BASETARGETNAME) > $@
 	del $(BASETARGETNAME)
 
 $(DESTDIR)\ter-d%.psf.gz : ter-u%.bdf $(VGA_8859_13) $(DUP_8859_13)
 	$(UCS2ANY) $< $(REG_8859_13) $(VGA_8859_13) | $(BDF2PSF) -o $(BASETARGETNAME) $(DUP_8859_13)
-	gzip -c $(BASETARGETNAME) > $@
+	$(BUILD_NATIVE) gzip < $(BASETARGETNAME) > $@
 	del $(BASETARGETNAME)
 
 $(DESTDIR)\ter-g%.psf.gz : ter-u%.bdf $(VGA_8859_16) $(DUP_8859_16)
 	$(UCS2ANY) $< $(REG_8859_16) $(VGA_8859_16) | $(BDF2PSF) -o $(BASETARGETNAME) $(DUP_8859_16)
-	gzip -c $(BASETARGETNAME) > $@
+	$(BUILD_NATIVE) gzip < $(BASETARGETNAME) > $@
 	del $(BASETARGETNAME)
 
 $(DESTDIR)\ter-h%.psf.gz : ter-u%.bdf $(VGA_MS_1255) $(DUP_MS_1255)
 	$(UCS2ANY) $< $(REG_MS_1255) $(VGA_MS_1255) | $(BDF2PSF) -o $(BASETARGETNAME) $(DUP_MS_1255)
-	gzip -c $(BASETARGETNAME) > $@
+	$(BUILD_NATIVE) gzip < $(BASETARGETNAME) > $@
 	del $(BASETARGETNAME)
 
 $(DESTDIR)\ter-i%.psf.gz : ter-u%.bdf $(VGA_IBM_437) $(DUP_IBM_437)
 	$(UCS2ANY) $< $(REG_IBM_437) $(VGA_IBM_437) | $(BDF2PSF) -o $(BASETARGETNAME) $(DUP_IBM_437)
-	gzip -c $(BASETARGETNAME) > $@
+	$(BUILD_NATIVE) gzip < $(BASETARGETNAME) > $@
 	del $(BASETARGETNAME)
 
 $(DESTDIR)\ter-k%.psf.gz : ter-u%.bdf $(VGA_KOI8_RV) $(DUP_KOI8_RV)
 	$(UCS2ANY) $< $(REG_KOI8_R) $(VGA_KOI8_RV) | $(BDF2PSF) -o $(BASETARGETNAME) $(DUP_KOI8_RV)
-	gzip -c $(BASETARGETNAME) > $@
+	$(BUILD_NATIVE) gzip < $(BASETARGETNAME) > $@
 	del $(BASETARGETNAME)
 
 $(DESTDIR)\ter-k%.psf.gz : ter-u%.bdf $(VGA_KOI8_R) $(DUP_KOI8_R)
 	$(UCS2ANY) $< $(REG_KOI8_R) $(VGA_KOI8_R) | $(BDF2PSF) -o $(BASETARGETNAME) $(DUP_KOI8_R)
-	gzip -c $(BASETARGETNAME) > $@
+	$(BUILD_NATIVE) gzip < $(BASETARGETNAME) > $@
 	del $(BASETARGETNAME)
 
 $(DESTDIR)\ter-m%.psf.gz : ter-u%.bdf $(VGA_BG_MIK) $(DUP_BG_MIK)
 	$(UCS2ANY) $< $(REG_BG_MIK) $(VGA_BG_MIK) | $(BDF2PSF) -o $(BASETARGETNAME) $(DUP_BG_MIK)
-	gzip -c $(BASETARGETNAME) > $@
+	$(BUILD_NATIVE) gzip < $(BASETARGETNAME) > $@
 	del $(BASETARGETNAME)
 
 $(DESTDIR)\ter-p%.psf.gz : ter-u%.bdf $(VGA_PT_154) $(DUP_PT_154)
 	$(UCS2ANY) $< $(REG_PT_154) $(VGA_PT_154) | $(BDF2PSF) -o $(BASETARGETNAME) $(DUP_PT_154)
-	gzip -c $(BASETARGETNAME) > $@
+	$(BUILD_NATIVE) gzip < $(BASETARGETNAME) > $@
 	del $(BASETARGETNAME)
 
 $(DESTDIR)\ter-u%.psf.gz : ter-u%.bdf $(VGA_KOI8_UV) $(DUP_KOI8_UV)
 	$(UCS2ANY) $< $(REG_KOI8_R) $(VGA_KOI8_UV) | $(BDF2PSF) -o $(BASETARGETNAME) $(DUP_KOI8_UV)
-	gzip -c $(BASETARGETNAME) > $@
+	$(BUILD_NATIVE) gzip < $(BASETARGETNAME) > $@
 	del $(BASETARGETNAME)
 
 $(DESTDIR)\ter-u%.psf.gz : ter-u%.bdf $(VGA_KOI8_U) $(DUP_KOI8_U)
 	$(UCS2ANY) $< $(REG_KOI8_U) $(VGA_KOI8_U) | $(BDF2PSF) -o $(BASETARGETNAME) $(DUP_KOI8_U)
-	gzip -c $(BASETARGETNAME) > $@
+	$(BUILD_NATIVE) gzip < $(BASETARGETNAME) > $@
 	del $(BASETARGETNAME)
 
 $(DESTDIR)\ter-v%.psf.gz : ter-u%.bdf $(VGA_XOS4_2) $(DUP_XOS4_2)
 	$(UCS2ANY) $< $(REG_XOS4_2) $(VGA_XOS4_2) | $(BDF2PSF) -o $(BASETARGETNAME) $(DUP_XOS4_2)
-	gzip -c $(BASETARGETNAME) > $@
+	$(BUILD_NATIVE) gzip < $(BASETARGETNAME) > $@
 	del $(BASETARGETNAME)
 
 # X11 Window System
@@ -229,72 +229,72 @@ X11_10646_1 = uni/x11gr.uni uni/10646-1.uni
 
 $(DESTDIR)\ter-1%.pcf.gz : ter-u%.bdf $(X11_8859_1)
 	$(UCS2X11) $< $(REG_8859_1) $(X11_8859_1) | $(BDF2PCF) -o $(BASETARGETNAME)
-	gzip -c $(BASETARGETNAME) > $@
+	$(BUILD_NATIVE) gzip < $(BASETARGETNAME) > $@
 	del $(BASETARGETNAME)
 
 $(DESTDIR)\ter-2%.pcf.gz : ter-u%.bdf $(X11_8859_2)
 	$(UCS2X11) $< $(REG_8859_2) $(X11_8859_2) | $(BDF2PCF) -o $(BASETARGETNAME)
-	gzip -c $(BASETARGETNAME) > $@
+	$(BUILD_NATIVE) gzip < $(BASETARGETNAME) > $@
 	del $(BASETARGETNAME)
 
 $(DESTDIR)\ter-5%.pcf.gz : ter-u%.bdf $(X11_8859_5)
 	$(UCS2X11) $< $(REG_8859_5) $(X11_8859_5) | $(BDF2PCF) -o $(BASETARGETNAME)
-	gzip -c $(BASETARGETNAME) > $@
+	$(BUILD_NATIVE) gzip < $(BASETARGETNAME) > $@
 	del $(BASETARGETNAME)
 
 $(DESTDIR)\ter-7%.pcf.gz : ter-u%.bdf $(X11_8859_7)
 	$(UCS2X11) $< $(REG_8859_7) $(X11_8859_7) | $(BDF2PCF) -o $(BASETARGETNAME)
-	gzip -c $(BASETARGETNAME) > $@
+	$(BUILD_NATIVE) gzip < $(BASETARGETNAME) > $@
 	del $(BASETARGETNAME)
 
 $(DESTDIR)\ter-9%.pcf.gz : ter-u%.bdf $(X11_8859_9)
 	$(UCS2X11) $< $(REG_8859_9) $(X11_8859_9) | $(BDF2PCF) -o $(BASETARGETNAME)
-	gzip -c $(BASETARGETNAME) > $@
+	$(BUILD_NATIVE) gzip < $(BASETARGETNAME) > $@
 	del $(BASETARGETNAME)
 
 $(DESTDIR)\ter-c%.pcf.gz : ter-u%.bdf $(X11_MS_1251)
 	$(UCS2X11) $< $(REG_MS_1251) $(X11_MS_1251) | $(BDF2PCF) -o $(BASETARGETNAME)
-	gzip -c $(BASETARGETNAME) > $@
+	$(BUILD_NATIVE) gzip < $(BASETARGETNAME) > $@
 	del $(BASETARGETNAME)
 
 $(DESTDIR)\ter-d%.pcf.gz : ter-u%.bdf $(X11_8859_13)
 	$(UCS2X11) $< $(REG_8859_13) $(X11_8859_13) | $(BDF2PCF) -o $(BASETARGETNAME)
-	gzip -c $(BASETARGETNAME) > $@
+	$(BUILD_NATIVE) gzip < $(BASETARGETNAME) > $@
 	del $(BASETARGETNAME)
 
 $(DESTDIR)\ter-f%.pcf.gz : ter-u%.bdf $(X11_8859_15)
 	$(UCS2X11) $< $(REG_8859_15) $(X11_8859_15) | $(BDF2PCF) -o $(BASETARGETNAME)
-	gzip -c $(BASETARGETNAME) > $@
+	$(BUILD_NATIVE) gzip < $(BASETARGETNAME) > $@
 	del $(BASETARGETNAME)
 
 $(DESTDIR)\ter-g%.pcf.gz : ter-u%.bdf $(X11_8859_16)
 	$(UCS2X11) $< $(REG_8859_16) $(X11_8859_16) | $(BDF2PCF) -o $(BASETARGETNAME)
-	gzip -c $(BASETARGETNAME) > $@
+	$(BUILD_NATIVE) gzip < $(BASETARGETNAME) > $@
 	del $(BASETARGETNAME)
 
 $(DESTDIR)\ter-i%.pcf.gz : ter-u%.bdf $(X11_IBM_437)
 	$(UCS2X11) $< $(REG_IBM_437) $(X11_IBM_437) | $(BDF2PCF) -o $(BASETARGETNAME)
-	gzip -c $(BASETARGETNAME) > $@
+	$(BUILD_NATIVE) gzip < $(BASETARGETNAME) > $@
 	del $(BASETARGETNAME)
 
 $(DESTDIR)\ter-k%.pcf.gz : ter-u%.bdf $(X11_KOI8_R)
 	$(UCS2X11) $< $(REG_KOI8_R) $(X11_KOI8_R) | $(BDF2PCF) -o $(BASETARGETNAME)
-	gzip -c $(BASETARGETNAME) > $@
+	$(BUILD_NATIVE) gzip < $(BASETARGETNAME) > $@
 	del $(BASETARGETNAME)
 
 $(DESTDIR)\ter-p%.pcf.gz : ter-u%.bdf $(X11_PT_154)
 	$(UCS2X11) $< $(REG_PT_154) $(X11_PT_154) | $(BDF2PCF) -o $(BASETARGETNAME)
-	gzip -c $(BASETARGETNAME) > $@
+	$(BUILD_NATIVE) gzip < $(BASETARGETNAME) > $@
 	del $(BASETARGETNAME)
 
 $(DESTDIR)\ter-u%.pcf.gz : ter-u%.bdf $(X11_KOI8_U)
 	$(UCS2X11) $< $(REG_KOI8_U) $(X11_KOI8_U) | $(BDF2PCF) -o $(BASETARGETNAME)
-	gzip -c $(BASETARGETNAME) > $@
+	$(BUILD_NATIVE) gzip < $(BASETARGETNAME) > $@
 	del $(BASETARGETNAME)
 
 $(DESTDIR)\ter-x%.pcf.gz : ter-u%.bdf $(X11_10646_1)
 	$(UCS2X11) $< $(REG_10646_1) $(X11_10646_1) | $(BDF2PCF) -o $(BASETARGETNAME)
-	gzip -c $(BASETARGETNAME) > $@
+	$(BUILD_NATIVE) gzip < $(BASETARGETNAME) > $@
 	del $(BASETARGETNAME)
 
 # Open Type Bitmap

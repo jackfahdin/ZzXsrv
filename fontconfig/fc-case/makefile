@@ -8,5 +8,5 @@ TARG=$(OBJDIR)\fccase.h
 CASEFOLDING=CaseFolding.txt
 
 $(TARG): $(TMPL) fc-case.py $(CASEFOLDING)
-	$(PYTHON3) fc-case.py --template $(TMPL) $(CASEFOLDING) --output $@
+	$(PYTHON) fc-case.py --template $(TMPL) $(CASEFOLDING) --output $@
 

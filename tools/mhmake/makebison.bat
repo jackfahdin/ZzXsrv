@@ -1,9 +1,12 @@
 @echo off
 setlocal
 
-set BISON_PKGDATADIR=src/bisondata
+cd /d "%~dp0"
+call "%~dp0..\set-build-tools.bat"
+set "BISON_PKGDATADIR=%~dp0src\bisondata"
 
-c:\winflexbison\win_bison.exe -d -Ssrc/bisondata/skeletons/lalr1.cc -o%1/mhmakeparser.cpp src\mhmakeParser.y
-c:\Python39\python.exe addstdafxh.py %1\mhmakeparser.cpp
+"%WIN_BISON%" -d -Ssrc/bisondata/skeletons/lalr1.cc -o%1/mhmakeparser.cpp src\mhmakeParser.y
+if errorlevel 1 exit /b %errorlevel%
+"%PYTHON3%" addstdafxh.py %1\mhmakeparser.cpp
 
-endlocal
+endlocal & exit /b %errorlevel%

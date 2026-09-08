@@ -13,7 +13,7 @@ builddir=.
 top_srcdir=../..
 top_builddir=../..
 
-PYTHON_GEN = $(PYTHON3)
+PYTHON_GEN = $(PYTHON)
 
 main/get_hash.h: ../mapi/glapi/gen/gl_and_es_API.xml main/get_hash_params.py \
                  main/get_hash_generator.py
@@ -39,8 +39,8 @@ main/format_unpack.c: main/format_unpack.py main/formats.csv	\
 
 main/formats.c: main/format_info.h
 
-YACC_GEN = c:/winflexbison/win_bison.exe -d -v
-LEX_GEN = c:/winflexbison/win_flex.exe
+YACC_GEN = $(BISON) -d -v
+LEX_GEN = $(FLEX)
 
 program/lex.yy.c: program/program_lexer.l
 	$(LEX_GEN) -o $@ $(srcdir)/program/program_lexer.l

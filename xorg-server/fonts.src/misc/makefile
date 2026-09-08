@@ -199,112 +199,112 @@ $(DESTDIR)\%-ISO8859-1.pcf.gz: %.bdf
 	@del -e $(<:%.bdf=%-ISO8859-1.bdf)
 	$(UCS2ANY) $< $(UTIL_DIR)\map-ISO8859-1 ISO8859-1
 	@del -e $@
-	$(BDFTOPCF) -t $(<:%.bdf=%-ISO8859-1.bdf) | gzip > $@
+	$(BDFTOPCF) -t $(<:%.bdf=%-ISO8859-1.bdf) | $(BUILD_NATIVE) gzip > $@
 	@del $(<:%.bdf=%-ISO8859-1.bdf)
 
 $(DESTDIR)\%-ISO8859-2.pcf.gz: %.bdf
 	@del -e $(<:%.bdf=%-ISO8859-2.bdf)
 	$(UCS2ANY) $< $(UTIL_DIR)\map-ISO8859-2 ISO8859-2
 	@del -e $@
-	$(BDFTOPCF) -t $(<:%.bdf=%-ISO8859-2.bdf) | gzip > $@
+	$(BDFTOPCF) -t $(<:%.bdf=%-ISO8859-2.bdf) | $(BUILD_NATIVE) gzip > $@
 	@del $(<:%.bdf=%-ISO8859-2.bdf)
 
 $(DESTDIR)\%-ISO8859-3.pcf.gz: %.bdf
 	@del -e $(<:%.bdf=%-ISO8859-3.bdf)
 	$(UCS2ANY) $< $(UTIL_DIR)\map-ISO8859-3 ISO8859-3
 	@del -e $@
-	$(BDFTOPCF) -t $(<:%.bdf=%-ISO8859-3.bdf) | gzip > $@
+	$(BDFTOPCF) -t $(<:%.bdf=%-ISO8859-3.bdf) | $(BUILD_NATIVE) gzip > $@
 	@del $(<:%.bdf=%-ISO8859-3.bdf)
 
 $(DESTDIR)\%-ISO8859-4.pcf.gz: %.bdf
 	@del -e $(<:%.bdf=%-ISO8859-4.bdf)
 	$(UCS2ANY) $< $(UTIL_DIR)\map-ISO8859-4 ISO8859-4
 	@del -e $@
-	$(BDFTOPCF) -t $(<:%.bdf=%-ISO8859-4.bdf) | gzip > $@
+	$(BDFTOPCF) -t $(<:%.bdf=%-ISO8859-4.bdf) | $(BUILD_NATIVE) gzip > $@
 	@del $(<:%.bdf=%-ISO8859-4.bdf)
 
 $(DESTDIR)\%-ISO8859-5.pcf.gz: %.bdf
 	@del -e $(<:%.bdf=%-ISO8859-5.bdf)
 	$(UCS2ANY) $< $(UTIL_DIR)\map-ISO8859-5 ISO8859-5
 	@del -e $@
-	$(BDFTOPCF) -t $(<:%.bdf=%-ISO8859-5.bdf) | gzip > $@
+	$(BDFTOPCF) -t $(<:%.bdf=%-ISO8859-5.bdf) | $(BUILD_NATIVE) gzip > $@
 	@del $(<:%.bdf=%-ISO8859-5.bdf)
 
 $(DESTDIR)\%-ISO8859-7.pcf.gz: %.bdf
 	@del -e $(<:%.bdf=%-ISO8859-7.bdf)
 	$(UCS2ANY) $< $(UTIL_DIR)\map-ISO8859-7 ISO8859-7
 	@del -e $@
-	$(BDFTOPCF) -t $(<:%.bdf=%-ISO8859-7.bdf) | gzip > $@
+	$(BDFTOPCF) -t $(<:%.bdf=%-ISO8859-7.bdf) | $(BUILD_NATIVE) gzip > $@
 	@del $(<:%.bdf=%-ISO8859-7.bdf)
 
 $(DESTDIR)\%-ISO8859-8.pcf.gz: %.bdf
 	@del -e $(<:%.bdf=%-ISO8859-8.bdf)
 	$(UCS2ANY) $< $(UTIL_DIR)\map-ISO8859-8 ISO8859-8
 	@del -e $@
-	$(BDFTOPCF) -t $(<:%.bdf=%-ISO8859-8.bdf) | gzip > $@
+	$(BDFTOPCF) -t $(<:%.bdf=%-ISO8859-8.bdf) | $(BUILD_NATIVE) gzip > $@
 	@del $(<:%.bdf=%-ISO8859-8.bdf)
 
 $(DESTDIR)\%-ISO8859-9.pcf.gz: %.bdf
 	@del -e $(<:%.bdf=%-ISO8859-9.bdf)
 	$(UCS2ANY) $< $(UTIL_DIR)\map-ISO8859-9 ISO8859-9
 	@del -e $@
-	$(BDFTOPCF) -t $(<:%.bdf=%-ISO8859-9.bdf) | gzip > $@
+	$(BDFTOPCF) -t $(<:%.bdf=%-ISO8859-9.bdf) | $(BUILD_NATIVE) gzip > $@
 	@del $(<:%.bdf=%-ISO8859-9.bdf)
 
 $(DESTDIR)\%-ISO8859-10.pcf.gz: %.bdf
 	@del -e $(<:%.bdf=%-ISO8859-10.bdf)
 	$(UCS2ANY) $< $(UTIL_DIR)\map-ISO8859-10 ISO8859-10
 	@del -e $@
-	$(BDFTOPCF) -t $(<:%.bdf=%-ISO8859-10.bdf) | gzip > $@
+	$(BDFTOPCF) -t $(<:%.bdf=%-ISO8859-10.bdf) | $(BUILD_NATIVE) gzip > $@
 	@del $(<:%.bdf=%-ISO8859-10.bdf)
 
 $(DESTDIR)\%-ISO8859-11.pcf.gz: %.bdf
 	@del -e $(<:%.bdf=%-ISO8859-11.bdf)
 	$(UCS2ANY) $< $(UTIL_DIR)\map-ISO8859-11 ISO8859-11
 	@del -e $@
-	$(BDFTOPCF) -t $(<:%.bdf=%-ISO8859-11.bdf) | gzip > $@
+	$(BDFTOPCF) -t $(<:%.bdf=%-ISO8859-11.bdf) | $(BUILD_NATIVE) gzip > $@
 	@del $(<:%.bdf=%-ISO8859-11.bdf)
 
 $(DESTDIR)\%-ISO8859-13.pcf.gz: %.bdf
 	@del -e $(<:%.bdf=%-ISO8859-13.bdf)
 	$(UCS2ANY) $< $(UTIL_DIR)\map-ISO8859-13 ISO8859-13
 	@del -e $@
-	$(BDFTOPCF) -t $(<:%.bdf=%-ISO8859-13.bdf) | gzip > $@
+	$(BDFTOPCF) -t $(<:%.bdf=%-ISO8859-13.bdf) | $(BUILD_NATIVE) gzip > $@
 	@del $(<:%.bdf=%-ISO8859-13.bdf)
 
 $(DESTDIR)\%-ISO8859-14.pcf.gz: %.bdf
 	@del -e $(<:%.bdf=%-ISO8859-14.bdf)
 	$(UCS2ANY) $< $(UTIL_DIR)\map-ISO8859-14 ISO8859-14
 	@del -e $@
-	$(BDFTOPCF) -t $(<:%.bdf=%-ISO8859-14.bdf) | gzip > $@
+	$(BDFTOPCF) -t $(<:%.bdf=%-ISO8859-14.bdf) | $(BUILD_NATIVE) gzip > $@
 	@del $(<:%.bdf=%-ISO8859-14.bdf)
 
 $(DESTDIR)\%-ISO8859-15.pcf.gz: %.bdf
 	@del -e $(<:%.bdf=%-ISO8859-15.bdf)
 	$(UCS2ANY) $< $(UTIL_DIR)\map-ISO8859-15 ISO8859-15
 	@del -e $@
-	$(BDFTOPCF) -t $(<:%.bdf=%-ISO8859-15.bdf) | gzip > $@
+	$(BDFTOPCF) -t $(<:%.bdf=%-ISO8859-15.bdf) | $(BUILD_NATIVE) gzip > $@
 	@del $(<:%.bdf=%-ISO8859-15.bdf)
 
 $(DESTDIR)\%-ISO8859-16.pcf.gz: %.bdf
 	@del -e $(<:%.bdf=%-ISO8859-16.bdf)
 	$(UCS2ANY) $< $(UTIL_DIR)\map-ISO8859-16 ISO8859-16
 	@del -e $@
-	$(BDFTOPCF) -t $(<:%.bdf=%-ISO8859-16.bdf) | gzip > $@
+	$(BDFTOPCF) -t $(<:%.bdf=%-ISO8859-16.bdf) | $(BUILD_NATIVE) gzip > $@
 	@del $(<:%.bdf=%-ISO8859-16.bdf)
 
 $(DESTDIR)\%-KOI8-R.pcf.gz: %.bdf
 	@del -e $(<:%.bdf=%-KOI8-R.bdf)
 	$(UCS2ANY) $< $(UTIL_DIR)\map-KOI8-R KOI8-R
 	@del -e $@
-	$(BDFTOPCF) -t $(<:%.bdf=%-KOI8-R.bdf) | gzip > $@
+	$(BDFTOPCF) -t $(<:%.bdf=%-KOI8-R.bdf) | $(BUILD_NATIVE) gzip > $@
 	@del $(<:%.bdf=%-KOI8-R.bdf)
 
 $(DESTDIR)\%-JISX0201.1976-0.pcf.gz: %.bdf
 	@del -e $(<:%.bdf=%-JISX0201.1976-0.bdf)
 	$(UCS2ANY) $< $(UTIL_DIR)\map-JISX0201.1976-0 JISX0201.1976-0
 	@del -e $@
-	$(BDFTOPCF) -t $(<:%.bdf=%-JISX0201.1976-0.bdf) | gzip > $@
+	$(BDFTOPCF) -t $(<:%.bdf=%-JISX0201.1976-0.bdf) | $(BUILD_NATIVE) gzip > $@
 	@del $(<:%.bdf=%-JISX0201.1976-0.bdf)
 
 font_DATA = \

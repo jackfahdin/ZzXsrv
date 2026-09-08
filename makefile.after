@@ -35,7 +35,7 @@ endif
 all: $(LIBRARYS)
 
 $(LIBRARYS) : $(OBJS) $(INCLUDELIBFILES) $(INCLUDESERVLIBFILES) $(RESOBJS) $(DEFFILE)
-	rm -f $(relpath $(basename $@)).lib
+	del -e $(relpath $(basename $@)).lib
 	$(LINK) $(LINKFLAGS) /OUT:$(relpath $(basename $@)).dll $(INCLUDELIBFILES) $(INCLUDESERVLIBFILES) $(SYSTEMLIBS) $(LINKLIBS) $(OBJS)
 
 endif
@@ -142,10 +142,10 @@ export PATH
 
 $(DESTDIR)\%.pcf.gz: %.bdf
 	@del -e $@
-	$(BDFTOPCF) -t $< | gzip > $@
+	$(BDFTOPCF) -t $< | $(BUILD_NATIVE) gzip > $@
 
 $(DESTDIR)\%.enc.gz: %.enc
-	gzip -c < $< > $@
+	$(BUILD_NATIVE) gzip < $< > $@
 endif
 
 ifdef DESTDIR

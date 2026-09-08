@@ -48,7 +48,7 @@ libdix_la_SOURCES = 	\
 	touch.c		\
 	window.c
 
-initatoms.c:
-	wsl ./generate-atoms BuiltInAtoms $(notdir $@)
+initatoms.c: BuiltInAtoms generate-atoms.py
+	$(PYTHON) generate-atoms.py BuiltInAtoms $(notdir $@)
 
 CSRCS = $(filter %.c,$(libdix_la_SOURCES)) $(filter %.c,$(libmain_la_SOURCES))

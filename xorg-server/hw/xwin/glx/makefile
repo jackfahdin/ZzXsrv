@@ -33,8 +33,8 @@ getspecfiles:
 	wget https://raw.githubusercontent.com/KhronosGroup/OpenGL-Registry/main/xml/wgl.xml
 
 $(OBJDIR)\generated_gl_wrappers.c: gen_gl_wrappers.py gl.xml gen_gl_wrappers.py reg.py
-	$(PYTHON3) gen_gl_wrappers.py -outfile $@ -staticwrappers -dispatchheader ../../../glx/dispatch.h
+	$(PYTHON) gen_gl_wrappers.py -outfile $@ -staticwrappers -dispatchheader ../../../glx/dispatch.h
 
 $(OBJDIR)\generated_wgl_wrappers.c: gen_gl_wrappers.py wgl.xml gen_gl_wrappers.py reg.py
-	$(PYTHON3) gen_gl_wrappers.py -outfile $@ -registry wgl.xml -prefix wgl -preresolve
+	$(PYTHON) gen_gl_wrappers.py -outfile $@ -registry wgl.xml -prefix wgl -preresolve
 

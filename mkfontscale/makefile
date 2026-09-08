@@ -24,8 +24,8 @@ LINKLIBS += $(FREETYPELIB)
 $(OBJDIR)/$(TTYAPP).exe: $(OBJDIR)/freetype.dll $(OBJDIR)/zlib1.dll
 
 $(OBJDIR)/freetype.dll: $(FREETYPELIB:lib=dll)
-	cp $< $@
+	copy $< $@
 
 $(OBJDIR)/zlib1.dll: $(MHMAKECONF)\zlib\$(OBJDIR)\zlib1.dll
-	cp $< $@
+	copy $< $@
 

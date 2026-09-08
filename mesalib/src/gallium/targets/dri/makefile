@@ -2,7 +2,7 @@ top_srcdir=../../../..
 
 DEFINES = WIN32 SWRAST_DRI_EXPORT INSERVER _USE_MATH_DEFINES __STDC_CONSTANT_MACROS __STDC_CONSTANT_MACROS __STDC_FORMAT_MACROS XML_STATIC __STDC_LIMIT_MACROS HAVE_PIPE_LOADER_DRI GALLIUM_SOFTPIPE GALLIUM_STATIC_TARGETS PIPE_SEARCH_DIR=\".\" HAVE_STRUCT_TIMESPEC __STDC_NO_THREADS__ HAVE_DRI
 
-PACKAGE_VERSION:=\"$(strip $(shell cat $(top_srcdir)/VERSION))\"
+PACKAGE_VERSION:=\"$(strip $(shell type $(subst /,\,$(top_srcdir)/VERSION)))\"
 DEFINES += PACKAGE_VERSION=$(PACKAGE_VERSION)
 
 INCLUDES += $(MHMAKECONF)/include ../../../loader ../../auxiliary ../../auxiliary/util ../../auxiliary/driver_rbug ../../include ../../.. $(top_srcdir)/include ../../frontends/dri \
@@ -13,7 +13,7 @@ LIBRARY = libgallium
 vpath %.c ../../frontends/dri:../../auxiliary/os:../../auxiliary/indices:../../auxiliary/postprocess:../../auxiliary/driver_noop:../../auxiliary/driver_rbug:../../auxiliary/driver_trace:../../auxiliary/driver_ddebug:../../auxiliary/cso_cache:../../auxiliary/util:../../auxiliary/translate:../../auxiliary/rtasm:../../auxiliary/tgsi:../../auxiliary/hud:../../auxiliary/draw:../../auxiliary/nir:../../auxiliary/pipe-loader:../../drivers/softpipe:../../winsys/sw/dri::../../winsys/sw/wrapper:../../winsys/sw/null:../dril
 
 tr_util.c ../../auxiliary/tr_util.h: ../../include/pipe/p_defines.h ../../include/pipe/p_video_enums.h ../../../util/blend.h
-	$(PYTHON3) ../../auxiliary/driver_trace/enums2names.py $^ -C tr_util.c -H ../../auxiliary/tr_util.h -I tr_util.h
+	$(PYTHON) ../../auxiliary/driver_trace/enums2names.py $^ -C tr_util.c -H ../../auxiliary/tr_util.h -I tr_util.h
 
 
 CSRCS := dri_target.c drisw.c dri2.c dri_context.c dri_screen.c dri_drawable.c dri_helpers.c dri_query_renderer.c dri_util.c \

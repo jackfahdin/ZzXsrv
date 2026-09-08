@@ -1,9 +1,12 @@
 @echo off
 setlocal
 
-c:\winflexbison\win_flex.exe --nounistd -Ssrc/flex.skl -o%1/mhmakelexer.cpp src/mhmakelexer.l
+cd /d "%~dp0"
+call "%~dp0..\set-build-tools.bat"
+"%WIN_FLEX%" --nounistd -Ssrc/flex.skl -o%1/mhmakelexer.cpp src/mhmakelexer.l
+if errorlevel 1 exit /b %errorlevel%
 
-c:\Python39\python.exe addstdafxh.py %1\mhmakelexer.cpp
+"%PYTHON3%" addstdafxh.py %1\mhmakelexer.cpp
 
-endlocal
+endlocal & exit /b %errorlevel%
 

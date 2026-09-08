@@ -266,5 +266,5 @@ DEFINES += HAVE_CONFIG_H
 INCLUDES := .. $(INCLUDES) $(OBJDIR) ..\fc-case\$(OBJDIR)
 
 $(TARG):$(ORTH) $(TMPL) fc-lang.py
-	$(PYTHON3) fc-lang.py $(ORTH) --template $(TMPL) --output $@ --directory .
+	$(PYTHON) fc-lang.py $(ORTH) --template $(TMPL) --output $@ --directory .
 

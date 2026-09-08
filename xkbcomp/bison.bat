@@ -1,11 +1,12 @@
 @echo off
 setlocal
 
-cd "%~dp0"
+cd /d "%~dp0"
+call "%~dp0..\tools\set-build-tools.bat"
 
-set BISON_PKGDATADIR=../tools/mhmake/src/bisondata
+set "BISON_PKGDATADIR=%~dp0..\tools\mhmake\src\bisondata"
 
-c:\winflexbison\win_bison.exe %1 %2 %3
+"%WIN_BISON%" %*
 
-endlocal
+endlocal & exit /b %errorlevel%
 

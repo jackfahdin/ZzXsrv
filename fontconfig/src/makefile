@@ -1,14 +1,15 @@
 $(OBJDIR)\fcobjshash.gperf: fcobjshash.gperf.h fcobjs.h
-	cp $< $<.c
+	copy $< $<.c
 	$(CPP) -EP -I.. $<.c | \
-	$(PYTHON3) cleangperf.py | \
-	gawk "/CUT_OUT_BEGIN/ { no_write=1; next; }; /CUT_OUT_END/ { no_write=0; next; }; { if (!no_write) print; next; };" - > $@.tmp
-	mv -f $@.tmp $@
-	rm $<.c
+	$(PYTHON) cleangperf.py | \
+	$(BUILD_NATIVE) cut-out > $@.tmp
+	copy $@.tmp $@
+	del $@.tmp
+	del $<.c
 
 $(OBJDIR)\fcobjshash.h: $(OBJDIR)\fcobjshash.gperf
-	gperf -m 100 $< > $@
-	$(PYTHON3) converttype.py $@
+	$(GPERF_COMMAND) -m 100 $< > $@
+	$(PYTHON) converttype.py $@
 
 DEFINES+=FC_TEMPLATEDIR=\"./conf.avail\"
 
