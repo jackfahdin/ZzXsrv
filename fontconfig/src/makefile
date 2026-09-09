@@ -8,7 +8,7 @@ $(OBJDIR)\fcobjshash.gperf: fcobjshash.gperf.h fcobjs.h
 	del $<.c
 
 $(OBJDIR)\fcobjshash.h: $(OBJDIR)\fcobjshash.gperf
-	$(GPERF_COMMAND) -m 100 $< > $@
+	$(GPERF_COMMAND) -m 100 < $< > $@
 	$(PYTHON) converttype.py $@
 
 DEFINES+=FC_TEMPLATEDIR=\"./conf.avail\"
