@@ -31,3 +31,6 @@ tools/mhmake/Release64/
 tools/mhmake/Debug64/
 xorg-server/xkbdata/
 /dist/
+/.worktrees/
+/.local-validation/
+/.superpowers/
