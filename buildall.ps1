@@ -308,7 +308,9 @@ try {
             In-BuildDirectory $opensslDirectory {
                 $opensslTarget = if ($Architecture -eq 'x64') { 'VC-WIN64A' } else { 'VC-WIN32' }
                 Invoke-BuildCommand $perl @('..\Configure', $opensslTarget, ('--' + $Configuration.ToLowerInvariant()))
-                if ($jom) { Invoke-BuildCommand $jom @("/J$Jobs") }
+                # OpenSSL's tools/tests share app.pdb; parallel builds can fail
+                # with C1041 even with -FS. Keep only this stage serial.
+                if ($jom) { Invoke-BuildCommand $jom @('/J1') }
                 else { Invoke-BuildCommand 'nmake.exe' @('/nologo') }
             }
             In-BuildDirectory (Join-Path $repoRoot 'pthreads') {
