@@ -5,15 +5,19 @@ This fork starts from marchaesen/vcxsrv commit
 copyright and license materials remain intact. See [FORK.md](FORK.md) for provenance
 and the old-to-new commit mapping.
 
+Current work and remaining items: [plan status](docs/PLAN_STATUS.md).
+Manual application coverage: [compatibility record](docs/COMPATIBILITY.md).
+
 Branches:
 
-- upstream: snapshots of the original author's integrated VcXsrv sources.
+- upstream: dependency source snapshots in the imported component layout, without our integration changes.
 - master: our native Windows build support, fixes, verification and development.
 - archive/pre-restructure-20260909: the complete local history before restructuring.
 
-The original author's `released` branch contains component source imports; it is
-different from this fork's `upstream`. See [upstream maintenance rules](docs/UPSTREAM.md)
-for snapshot imports, component updates and validation requirements.
+The initial dependency baseline comes from the original author's `released`
+component collection. We maintain dependencies directly; there is no separate
+branch tracking integrated VcXsrv snapshots. See [upstream maintenance rules](docs/UPSTREAM.md)
+and the [baseline manifest](docs/DEPENDENCIES.json) for provenance and updates.
 
 For a native Windows build without WSL or Cygwin, run `./buildall.ps1 -CheckOnly`
 from PowerShell, then `./buildall.ps1 -Jobs 8`. See [HOW_TO_BUILD.txt](HOW_TO_BUILD.txt)
