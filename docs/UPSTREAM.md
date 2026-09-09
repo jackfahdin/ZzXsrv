@@ -23,7 +23,7 @@
 
 首轮 [组件更新评估](validation/2026-09-09-component-update-assessment.md) 是固定于旧源码的历史评估。当前 GLX 与 XFIXES 均已完成验证、取得用户可用反馈并合入 master；后续待办统一见 [计划状态](PLAN_STATUS.md)，候选证据见 [XFIXES 报告](validation/2026-09-09-xfixes-request-length.md)。
 
-当前 `upstream` 已前移到 `7f8950836`，包含三笔输入处理上游补丁，尚未进入 master。对应[开发草稿](validation/2026-09-09-xserver-input.md)未完成错误处理审查及完整构建。主线 `DEPENDENCIES.json` 固定最近已整合快照 `9971201a6`，候选清单固定新快照，避免把来源已取得误写为主线已验收。
+当前 `upstream` 已前移到 `7f8950836`，包含三笔输入处理上游补丁，尚未进入 master。对应[输入候选](validation/2026-09-09-xserver-input.md)已经完成本地终止适配、新适配静态审查、完整构建和 71 项自动测试，待实际使用确认。主线 `DEPENDENCIES.json` 固定最近已整合快照 `9971201a6`，候选清单固定新快照，避免把来源已取得误写为主线已验收。
 
 ## 更新依赖快照并整合
 

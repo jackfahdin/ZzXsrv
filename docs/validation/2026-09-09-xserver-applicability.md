@@ -22,9 +22,9 @@
 | 项目 | 当前判断 | 具体依据及实施归组 |
 | --- | --- | --- |
 | CVE-2025-49175，动画光标 | 需回补 | `ProcRenderCreateAnimCursor` 和 `AnimCursorCreate` 均缺少正数量检查；归入 RENDER |
-| CVE-2025-49176，大请求长度 | 需回补；[输入草稿](2026-09-09-xserver-input.md)未构建未合入 | `os/io.c` 两处转换前缺上限检查；包含 June 18 补充修复，不能只补第一条路径 |
+| CVE-2025-49176，大请求长度 | 需回补；[输入候选](2026-09-09-xserver-input.md)自动验证通过，待实际使用确认及合入 | `os/io.c` 两处转换前缺上限检查；包含 June 18 补充修复，不能只补第一条路径 |
 | CVE-2025-49177，XFIXES | 已含修复并验收 | SetClientDisconnectMode 使用 `REQUEST_SIZE_MATCH`；[已有报告](2026-09-09-xfixes-request-length.md)记录 59 项测试与本候选用户反馈 |
-| CVE-2025-49178，输入缓冲区共享 | 需回补；[输入草稿](2026-09-09-xserver-input.md)未构建未合入 | 缺少 `!oci->ignoreBytes` 条件；与大请求读取一起验证 |
+| CVE-2025-49178，输入缓冲区共享 | 需回补；[输入候选](2026-09-09-xserver-input.md)自动验证通过，待实际使用确认及合入 | 缺少 `!oci->ignoreBytes` 条件；与大请求读取一起验证 |
 | CVE-2025-49179，RECORD | 需回补 | 请求数量/范围计算缺上限检查；RECORD 编译并注册，不能当成 xfree86 专用 |
 | CVE-2025-49180，RANDR provider | 源码需回补；Windows 前置受限 | `RRChangeProviderProperty` 缺乘法前上限检查；文件编译，但 xwin 未发现创建有效 provider，具体运行可达性未证实；其 xfree86 配套空指针检查单独排除 |
 | CVE-2025-62229，PRESENT | 需回补 | `added = i` 未改为计数递增；另须同时核对输出 notifies 指针修复 |

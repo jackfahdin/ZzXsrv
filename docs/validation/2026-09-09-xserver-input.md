@@ -1,10 +1,10 @@
 # X Server 输入处理候选记录
 
-日期：2026-09-09。状态：**开发草稿，错误处理审查未闭合，未完成完整构建，未合入 master**。
+日期：2026-09-09。状态：**候选待实际使用验收。新适配静态审查、x64 Release All 构建、71 项测试及运行检查均通过，尚未合入 master**。
 
 ## 已做的工作
 
-从 master `dd555fe9febd00dc2880553a55e82a27dace284f` 创建 `codex/update-xserver-input`，补回两个请求长度转换前检查和输入缓冲区共享条件。测试提交 `1c50e7686`；普通合并提交 `8a970b1c9`；固定候选源码和来源清单提交 `75c0c8ea7`。
+从 master `dd555fe9febd00dc2880553a55e82a27dace284f` 创建 `codex/update-xserver-input`，补回两个请求长度转换前检查和输入缓冲区共享条件。测试提交 `1c50e7686`；普通合并提交 `8a970b1c9`；初版候选源码和来源清单提交 `75c0c8ea7`。本轮在 `c06e0db1669afaee649bdaf407c7c76c9fa3ae56` 单独加入本地终止适配，并固定该提交进行干净构建。
 
 本批来源是公开 X.Org 补丁，按 `xorg-server/` 映射导入依赖快照；保留原作者信息与许可证，无其他组件变化。
 
@@ -16,35 +16,47 @@
 
 正式源码包、摘要与核对边界见 [适用性报告](2026-09-09-xserver-applicability.md)。逐文件补丁由 `https://api.github.com/repos/LizardByte-infrastructure/xserver/commits/<完整SHA>` 取得，返回 SHA、补丁内容与正式 21.1.24 ChangeLog 和源码交叉核对。候选的 `DEPENDENCIES.json` 保存来源、补丁 SHA-256、映射与全部根目录对象。
 
-upstream 从 `9971201a6` 正常前移到 `7f8950836`，master 尚未整合它。主线 `DEPENDENCIES.json` 仍固定已整合的 `9971201a6`，候选清单固定新的快照；二者不同是待整合状态，不是遗漏更新。合并未使用 ours/空合并；唯一冲突在 `dispatch.c` 返回值分支的括号风格，保留本地格式。生产差异限于 `os/io.c` 和 `dix/dispatch.c`，共 12 行增加、5 行删除。
+upstream 从 `9971201a6` 正常前移到 `7f8950836`，master 尚未整合它。主线 `DEPENDENCIES.json` 仍固定已整合的 `9971201a6`，候选清单固定新的快照；二者不同是待整合状态，不是遗漏更新。合并未使用 ours/空合并；唯一冲突在 `dispatch.c` 返回值分支的括号风格，保留本地格式。初版生产差异限于 `os/io.c` 和 `dix/dispatch.c`，共 12 行增加、5 行删除。加入本地适配后，`dispatch.c` 恢复为主线完全相同的 blob；最终相对检查基线的生产差异仅 `os/io.c`，11 行增加、1 行删除。
 
 ## 已执行验证
 
-使用 MSVC x64 和 AddressSanitizer 直接编译实际 `os/io.c`；内存传输替身，无网络连接。10 项覆盖普通/交换字节序的普通请求、合法 BigRequest、已缓冲/新读入头的超长请求，以及丢弃未完成/完成时的缓冲区状态。
+使用 MSVC x64 和 AddressSanitizer 直接编译实际 `os/io.c`；内存传输替身，无网络连接。初版 10 项覆盖普通/交换字节序的普通请求、合法 BigRequest、已缓冲/新读入头的超长请求，以及丢弃未完成/完成时的缓冲区状态。
 
 | 检查 | 结果 | 范围 |
 | --- | --- | --- |
 | 未修改生产源码的回归测试 | 预期失败：10 项中 5 通过、5 失败 | 两条超长路径各含两种字节序，另有未完成丢弃时所有权失败 |
 | 原始上游补丁合并后的同一测试 | PASS：10 项通过，0 跳过 | 仅解析器单元场景；不覆盖完整调度器错误响应及后续状态 |
-| 独立代码审查 | 未完成 | 代理被平台安全检测中止，没有通过结论；调用方契约是本次静态阅读发现的待核实疑点 |
-| x64 Release All 干净构建 | NOT_RUN | 新检出目录已创建，构建未启动 |
-| 全部现有测试、运行依赖、认证启动、根窗口查询 | NOT_RUN（本候选） | 不能用此前 XFIXES 的 59 项通过代替 |
-| 实际图形使用 | NOT_RUN | 本草稿尚不交付用户验收，不沿用旧版本反馈 |
+| 本地终止适配回归 | PASS：12 项通过，0 跳过 | 适配前 4 项预期失败、适配后通过；另有 2 项可表示长度边界用例，确认保留既有处理路径 |
+| 新适配的限定范围静态审查 | 无阻断问题 | 见[独立审查报告](2026-09-09-xserver-input-review.md)；不包含动态调查或完整服务器行为证明 |
+| x64 Release All 干净构建 | PASS | 新目录 `vcxsrv-input-20260909-2110`，源码 `c06e0db16`；开始 21:10:02，构建于 21:21:16 结束 |
+| 全部项目测试 | PASS：71 项，0 跳过 | 使用新构建程序；32.228 秒；包括本批 12 项输入解析器用例 |
+| 运行依赖、版本、认证启动、根窗口查询与进程清理 | PASS | 对新运行目录单独执行 `verify_runtime.py`；全部检查于 21:21:52 结束 |
+| 旧运行文件 | PASS：175 个 SHA-256 不变 | 主目录、旧 GLX 工作区、初始基线、GLX 与 XFIXES 独立运行目录 |
+| 实际图形使用 | 待维护者确认 | 已提供新运行目录，不沿用旧版本反馈；确认后才合入 master |
 
 本机原始记录：主仓库 `.local-validation/xserver-audit-20260909/red.log`、`green.log`、`source-import.json` 和 `patches/`。早期测试框架编译错误只用于接入夹具，不记作生产代码的预期失败证据。
 
-文档和来源校验另有 225 项断言通过，包含 38 个本地链接、175 个旧运行文件 SHA-256 不变、两套清单与其固定 Git 树一致、upstream 仅修改两个目标文件及候选合并关系。原始结果为 `document-verification.json`。这组检查不计为产品功能测试。独立文档核对确认 CVE 计数和分组一致，指出的审查状态措辞已修正；该文档核对不替代被中止的代码审查。
+初版文档和来源校验另有 225 项断言通过，包含 38 个本地链接、175 个旧运行文件 SHA-256 不变、两套清单与其固定 Git 树一致、upstream 仅修改两个目标文件及候选合并关系。原始结果为 `document-verification.json`。这组检查不计为产品功能测试。独立文档核对确认 CVE 计数和分组一致，指出的审查状态措辞已修正；该文档核对不替代被中止的代码审查。
 
-## 未闭合事项
+## 错误返回适配与验证边界
 
-上游两处 `-BadLength` 提前返回发生在 `ReadRequestFromClient` 尾部更新请求缓冲区状态之前，而 `Dispatch` 在判断该错误前仍读取 `client->requestBuffer`。现有 10 项测试只证明解析器返回值和所列局部状态，尚不能证明整个错误响应和后续调度正确；不能凭单元测试通过就放行。
+上游两处 `-BadLength` 提前返回发生在 `ReadRequestFromClient` 尾部更新请求缓冲区状态之前，而 `Dispatch` 在判断该错误前仍读取 `client->requestBuffer`。初版 10 项测试只证明解析器返回值和所列局部状态，尚不能证明整个错误响应和后续调度正确；不能凭单元测试通过就放行。
 
-需要先核对这一契约，决定是否在开发分支增加保守的异常连接终止适配或完整的状态处理，再运行相应回归。原始来源快照与本地适配必须继续分开记录。尚未作出的技术选择不能记成已修复结论。
+本轮采用本地保守终止适配：两个不可表示的长度分支调用 `YieldControlDeath()` 后返回 `-1`，沿用解析器原有失败契约。调用方恢复到主线代码，遇到负值先调用 `CloseDownClient` 并退出当前循环，因此不会将未准备的缓冲区交给后续请求分发。可表示长度（包括超过服务器限制但仍可用正 int 表示的值）的原有处理路径保留。原始来源快照仍保留上游代码，本地行为变化独立记录于 `c06e0db16`。
 
-审查代理返回原文：`This content was flagged for possible cybersecurity risk.`。该审查没有成功完成，也没有产生通过报告；该独立代码审查未完成且未重试。后续先完成代码审查检查点，再按 [实施计划](../superpowers/plans/2026-09-09-xserver-input.md) 继续构建与验收。
+12 项原生测试直接执行生产解析器；完整调用方的早退顺序由源码与 blob 相等检查证明。该组合没有动态遍历异常调度状态，也不等于所有请求状态或整台服务器的安全证明。新适配的静态审查已完成且无阻断问题，完整构建与自动运行验证也已通过；实际图形使用仍需这份新版本自己的反馈。
+
+初版独立审查曾返回 `This content was flagged for possible cybersecurity risk.`，未形成通过结论。该旧结果保留为历史；本轮审查限定于新增的防御性终止适配和最终源码差异，没有重试旧的动态调查。
+
+本轮原始记录位于 `.local-validation/xserver-audit-20260909/`：`terminal-red-20260909.log`、`terminal-green-20260909.log`、`terminal-source-check.json`、`terminal-static-review.md`。完整构建材料另存于新检出中的 `.local-validation/input-build-20260909-211002/`。最初构建包装器在检查旧产物时误用了未生成 dist 的早期目录，尚未启动编译即停止；已依据原 175 文件清单更正为实际 GLX 工作区路径，未把这次准备失败记成构建失败或通过。
 
 ## 目录与回退边界
 
 - 开发工作区：`D:/File/Program/GitHub/vcxsrv/.worktrees/xserver-input`。
-- 为固定源码创建的干净检出：`D:/File/Program/GitHub/vcxsrv-input-20260909-2130`，来源 `75c0c8ea7`。这里只是源码检出，没有新建可验收运行产物。
+- 初版仅源码检出：`D:/File/Program/GitHub/vcxsrv-input-20260909-2130`，来源 `75c0c8ea7`。该目录没有构建产物，不能用于验收。
+- 本轮干净构建目录：`D:/File/Program/GitHub/vcxsrv-input-20260909-2110`，来源 `c06e0db16`。实际可用候选在其 `dist/x64/Release` 中。
 - master 保持已验收的 GLX/XFIXES 生产代码；旧运行目录没有被构建覆盖。没有新基线标签，也没有远程推送。
+
+完整构建使用 PowerShell 5.1 执行 `buildall.ps1 -Stage All -Configuration Release -Architecture x64 -Jobs 8`，外层记录器为 PowerShell 7。MSVC 14.44.35227、Python 3.14.2、SDK 10.0.26100.0；实际工具详情见本轮 `environment.json`。All 构建仍沿用 libxml2 预编译库，不表示所有依赖已从源码重建。
+
+本轮最终文档与来源核对为 227 项断言通过，包含 41 个本地链接和 175 个旧运行文件哈希，原始结果为主仓库 `.local-validation/xserver-audit-20260909/final-verification.json`。这些是元数据与不变性检查，不计入 71 项项目测试。
