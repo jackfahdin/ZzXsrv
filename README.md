@@ -14,3 +14,6 @@ Windows folder (a case insensitive filesystem is needed).
 After building, launch `dist/x64/Release/xlaunch.exe` (startup wizard) or
 `dist/x64/Release/vcxsrv.exe`. Keep the complete runtime folder together.
 Use `./buildall.ps1 -Stage Portable` to assemble it from existing build outputs.
+
+Local maintenance direction, verification criteria and the next implementation
+plan are documented in [docs/MAINTENANCE.md](docs/MAINTENANCE.md) (Chinese).
