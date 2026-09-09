@@ -126,7 +126,7 @@ python -B -m unittest discover -s tools/tests -p test_verify_runtime.py -v
 
 **文件：** 实际结果报告、`HOW_TO_BUILD.txt` 的验证范围；不创建新的编译框架。
 
-- [ ] 确认前两个任务已提交，使用以下命令新建从当前提交派生的本地 detached worktree。路径由现有项目父目录和时间戳生成；目标必须尚不存在。检查磁盘空间并记录，不因为空间不足清理用户目录。
+- [x] 确认前两个任务已提交，使用以下命令新建从当前提交派生的本地 detached worktree。路径由现有项目父目录和时间戳生成；目标必须尚不存在。检查磁盘空间并记录，不因为空间不足清理用户目录。
 
 ```powershell
 $repoRoot = (git rev-parse --show-toplevel).Trim()
@@ -141,9 +141,9 @@ if ($LASTEXITCODE -ne 0) { throw 'Cannot create clean checkout' }
 git -C $cleanRoot status --porcelain --untracked-files=all
 ```
 
-- [ ] 确认状态为空；记录 worktree 提交与 `$testedCommit` 相同。列出 Git 跟踪的预编译 DLL/LIB，说明哪些会按既有构建流程使用，尤其是 libxml2。不要用“目录干净”推导“全部依赖从源码构建”。
+- [x] 确认状态为空；记录 worktree 提交与 `$testedCommit` 相同。列出 Git 跟踪的预编译 DLL/LIB，说明哪些会按既有构建流程使用，尤其是 libxml2。不要用“目录干净”推导“全部依赖从源码构建”。
 
-- [ ] 从新目录运行完整 All 阶段，记录环境和完整输出。命令失败立即保留日志并定位；不要继续生成通过标签。
+- [x] 从新目录运行完整 All 阶段，记录环境和完整输出。命令失败立即保留日志并定位；不要继续生成通过标签。
 
 ```powershell
 Push-Location -LiteralPath $cleanRoot
@@ -153,6 +153,10 @@ try {
     $environment = Get-Content (Join-Path $evidenceRoot 'environment.json') -Raw | ConvertFrom-Json
     $selectedPython = $environment.tools.python.path
     $env:VCXSRV_TEST_LOCAL_TOOLS = '1'
+    $env:VCXSRV_TEST_RUNTIME = '1'
+    $env:VCXSRV_RUNTIME_DIR = (Resolve-Path dist/x64/Release).Path
+    $env:VCXSRV_DUMPBIN = $environment.tools.dumpbin.path
+    $env:VCXSRV_SOURCE_COMMIT = $testedCommit
     & $selectedPython -B -m unittest discover -s tools/tests -v *> (Join-Path $evidenceRoot 'tests.log')
     if ($LASTEXITCODE -ne 0) { throw 'Script tests failed; inspect tests.log' }
     & $selectedPython -B tools/verify_runtime.py --runtime dist/x64/Release --dumpbin $environment.tools.dumpbin.path --source-commit $testedCommit --output (Join-Path $evidenceRoot 'runtime') --display 97 --timeout 30
@@ -164,11 +168,13 @@ try {
 
 此段在单独 PowerShell 进程中执行，避免测试开关残留在维护者终端。检查 tests.log 中跳过项目的原因；BuildTool 已成功构建后，mhmake 集成用例必须实际运行。
 
-- [ ] 保存 EXE/DLL 相对路径、大小和 SHA-256 清单用于识别本次产物；不要求与前一次编译逐字节相同。检查新 worktree 的受跟踪源码没有意外变化，保留日志、运行目录和 worktree 供复查。
+实际执行结果见 [2026-09-09 基线报告](../../validation/2026-09-09-baseline.md)：43 项测试全部执行，无跳过。外层日志执行器使用 PowerShell 7，完整构建由 Windows PowerShell 5.1 执行。
 
-- [ ] 创建实际结果摘要，写入源码提交、主机/工具版本、预编译依赖说明、各步骤退出码、测试数量及跳过原因、启动结果、原始证据位置、已知限制。B1–B6 各项逐一对照；只填写真实执行结果。
+- [x] 保存 EXE/DLL 相对路径、大小和 SHA-256 清单用于识别本次产物；不要求与前一次编译逐字节相同。检查新 worktree 的受跟踪源码没有意外变化，保留日志、运行目录和 worktree 供复查。
 
-- [ ] 检查文档链接和 `git diff --check`，提交结果摘要。在被验证的源码提交上创建注释标签，名称规则为 `local-baseline-YYYYMMDD-短提交号`。标签说明指出结果摘要的位置。标签只引用 `$testedCommit`，不错误地声称随后文档提交也重新编译过。
+- [x] 创建实际结果摘要，写入源码提交、主机/工具版本、预编译依赖说明、各步骤退出码、测试数量及跳过原因、启动结果、原始证据位置、已知限制。B1–B6 各项逐一对照；只填写真实执行结果。
+
+- [x] 检查文档链接和 `git diff --check`，提交结果摘要。在被验证的源码提交上创建注释标签，名称规则为 `local-baseline-YYYYMMDD-短提交号`。标签说明指出结果摘要的位置。标签只引用 `$testedCommit`，不错误地声称随后文档提交也重新编译过。
 
 ```powershell
 $baselineTag = 'local-baseline-' + (Get-Date -Format 'yyyyMMdd') + '-' + $testedCommit.Substring(0, 8)
@@ -178,7 +184,7 @@ git show --no-patch --format=fuller $baselineTag
 
 ## 自检与完成报告
 
-- [ ] B1 对应任务 1；B2/B3 对应任务 2；B4 对应任务 3；B5 贯穿任务 1/2/3；B6 对应任务 3 最后两步。
-- [ ] 参数、JSON 字段和示例命令一致；工具路径均能从实际环境报告取得。
-- [ ] 明确区分已执行证据、未验证场景和后续阶段；失败/跳过不算通过。
-- [ ] 汇报本地提交、标签、证据位置和剩余限制；不执行远程操作。
+- [x] B1 对应任务 1；B2/B3 对应任务 2；B4 对应任务 3；B5 贯穿任务 1/2/3；B6 对应任务 3 最后两步。
+- [x] 参数、JSON 字段和示例命令一致；工具路径均能从实际环境报告取得。
+- [x] 明确区分已执行证据、未验证场景和后续阶段；失败/跳过不算通过。
+- [x] 汇报本地提交、标签、证据位置和剩余限制；不执行远程操作。

@@ -133,6 +133,13 @@ verify full GUI/OpenGL, clipboard, input-method or multi-monitor behavior.
 The clean-build baseline and precise validated source are recorded separately
 under docs/validation; see docs/validation/README.md for evidence conventions.
 
+Validated on 2026-09-09: a fresh worktree at source commit
+a4adc3dc3f2158c2308133cecee19a71cf62bcc8 completed Windows x64 Release All,
+43 tests with no skips, 35 PE dependency checks and an authenticated root query.
+Local tag: local-baseline-20260909-a4adc3dc. See
+docs/validation/2026-09-09-baseline.md for exact tools, evidence and limitations.
+The later report-only commit was not the source used to build these binaries.
+
 Legacy WSL/Docker build instructions
 ====================================
 The following instructions describe the older shell entry point, which retains
