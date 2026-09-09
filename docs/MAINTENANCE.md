@@ -23,7 +23,7 @@
 
 第一阶段的执行入口见 [执行计划](superpowers/plans/2026-09-09-maintenance-baseline.md)，验收依据见 [验收规格](superpowers/specs/2026-09-09-maintenance-baseline-design.md)。原生构建的历史记录见 [原生构建计划](superpowers/plans/2026-09-08-native-windows-build.md)。
 
-首轮 [组件更新评估](validation/2026-09-09-component-update-assessment.md) 已记录实际消费者、候选版本、证据边界和验证门槛。下一项建议先处理 X Server 相关安全补丁，随后分批维护字体、XML 与 OpenSSL，保留当前可用基线。
+首轮 [组件更新评估](validation/2026-09-09-component-update-assessment.md) 已记录实际消费者、候选版本、证据边界和验证门槛。首项 GLX 修复及构建中发现的问题见 [GLX 修复记录](validation/2026-09-09-glx-context-tags.md)；实际应用验收后再整合主线，随后分批维护字体、XML 与 OpenSSL，保留当前可用基线。
 
 ## 验证层次
 
