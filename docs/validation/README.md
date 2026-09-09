@@ -1,5 +1,7 @@
 # 本地验证记录
 
+新增：[X Server 适用性盘点](2026-09-09-xserver-applicability.md)已完成本轮逐项核对；[输入处理草稿](2026-09-09-xserver-input.md)只通过局部回归，审查与完整构建尚未完成。
+
 当前状态见 [计划状态](../PLAN_STATUS.md)；逐项人工场景见 [兼容性记录](../COMPATIBILITY.md)。[XFIXES 修复报告](2026-09-09-xfixes-request-length.md) 记录用户使用确认、主线整合及合入后的 59 项测试结果。
 
 分支职责的最新整理见 [依赖快照与开发主线](2026-09-09-component-baseline.md)。本次只验证来源、合并关系和文件不变性。
