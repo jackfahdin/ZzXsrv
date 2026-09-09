@@ -1,9 +1,19 @@
 Windows X-server based on the xorg git sources (like xming or cygwin's xwin), compiled with Visual Studio 2022.
 
+This fork starts from marchaesen/vcxsrv commit
+`d0a1eaf7ee15fcdf4f683388a88fec49078e6408`. Original history is archived locally;
+copyright and license materials remain intact. See [FORK.md](FORK.md) for provenance
+and the old-to-new commit mapping.
+
 Branches:
 
-- released: contains original sources of all used packages.
-- master: contains all necessary changes to be able to compile with Visual Studio. From this branch the binary releases are built.
+- upstream: snapshots of the original author's integrated VcXsrv sources.
+- master: our native Windows build support, fixes, verification and development.
+- archive/pre-restructure-20260909: the complete local history before restructuring.
+
+The original author's `released` branch contains component source imports; it is
+different from this fork's `upstream`. See [upstream maintenance rules](docs/UPSTREAM.md)
+for snapshot imports, component updates and validation requirements.
 
 For a native Windows build without WSL or Cygwin, run `./buildall.ps1 -CheckOnly`
 from PowerShell, then `./buildall.ps1 -Jobs 8`. See [HOW_TO_BUILD.txt](HOW_TO_BUILD.txt)
