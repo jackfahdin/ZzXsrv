@@ -1,6 +1,6 @@
 # 本地维护基线实现计划
 
-> **面向 AI 代理的工作者：** 必需子技能：使用 executing-plans 在当前任务中逐任务实施；需要独立子任务时可使用 subagent-driven-development。步骤使用复选框跟踪。当前文档是计划，未勾选项尚未执行。
+> **面向 AI 代理的工作者：** 必需子技能：使用 executing-plans 推进任务；独立子任务使用 subagent-driven-development。步骤使用复选框跟踪。2026-09-09 开始执行，未勾选项尚未验收完成。
 
 **目标：** 建立 Windows x64 Release 的干净构建与自动运行验证基线，并保留可复查的本地证据。
 
@@ -38,7 +38,7 @@
 
 **文件：** `buildall.ps1`、`tools/tests/test_windows_build.py`、`.gitignore`、`docs/validation/README.md`。
 
-- [ ] 在 `WindowsBuildTests` 增加真实 CheckOnly 用例，报告输出路径使用含空格的临时目录；断言所选 Python 与包版本来自指定解释器。
+- [x] 在 `WindowsBuildTests` 增加真实 CheckOnly 用例，报告输出路径使用含空格的临时目录；断言所选 Python 与包版本来自指定解释器。
 
 ```python
 def test_check_only_reports_selected_python(self):
@@ -55,25 +55,25 @@ def test_check_only_reports_selected_python(self):
         self.assertTrue({"lxml", "mako", "PyYAML"} <= data["python_packages"].keys())
 ```
 
-- [ ] 用下列命令确认当前缺少参数导致该用例失败；新用例遵循现有 `VCXSRV_TEST_LOCAL_TOOLS` 本机测试开关。
+- [x] 用下列命令确认当前缺少参数导致该用例失败；新用例遵循现有 `VCXSRV_TEST_LOCAL_TOOLS` 本机测试开关。
 
 ```powershell
 $env:VCXSRV_TEST_LOCAL_TOOLS = '1'
 python -B -m unittest discover -s tools/tests -p test_windows_build.py -v
 ```
 
-- [ ] 新增可选字符串参数 `EnvironmentReport`。在 CheckOnly 返回之前收集规格定义的字段，通过选中的 Python 查询 `importlib.metadata.version()`，通过已初始化的 MSVC 环境记录 SDK/MSVC。`ConvertTo-Json -Depth 6` 导出 UTF-8；先完成采集再写文件。版本不可用填 null，命令失败不伪造成功。
+- [x] 新增可选字符串参数 `EnvironmentReport`。在 CheckOnly 返回之前收集规格定义的字段，通过选中的 Python 查询 `importlib.metadata.version()`，通过已初始化的 MSVC 环境记录 SDK/MSVC。`ConvertTo-Json -Depth 6` 导出 UTF-8；先完成采集再写文件。版本不可用填 null，命令失败不伪造成功。
 
-- [ ] 将已有环境恢复/目录恢复用例扩展到提供报告路径的调用；失败路径使用不存在的显式 Python 路径，断言未输出一份成功报告。保留不触发编译的时间戳检查。
+- [x] 将已有环境恢复/目录恢复用例扩展到提供报告路径的调用；失败路径使用不存在的显式 Python 路径，断言未输出一份成功报告。保留不触发编译的时间戳检查。
 
-- [ ] 写明报告字段和原始日志位置，在 `.gitignore` 增加 `/.local-validation/`。复跑本文件测试，并分别在 Windows PowerShell 5.1 和 PowerShell 7 下执行 CheckOnly 报告命令，检查 JSON 能解析。
+- [x] 写明报告字段和原始日志位置，在 `.gitignore` 增加 `/.local-validation/`。复跑本文件测试，并分别在 Windows PowerShell 5.1 和 PowerShell 7 下执行 CheckOnly 报告命令，检查 JSON 能解析。
 
 ```powershell
 powershell -NoProfile -ExecutionPolicy Bypass -File .\buildall.ps1 -CheckOnly -EnvironmentReport .local-validation\environment-ps51.json
 pwsh -NoProfile -File .\buildall.ps1 -CheckOnly -EnvironmentReport .local-validation\environment-ps7.json
 ```
 
-- [ ] 检查 diff 后提交：`git commit -m "Record selected native build environment"`。只暂存本任务文件。
+- [x] 检查 diff 后提交，中文标题为“记录实际构建环境（任务 1）”，中文正文说明选中工具、报告字段和验证结果。只暂存本任务文件。
 
 ## 任务 2：运行目录自动验收（B2、B3、B5）
 
@@ -118,7 +118,7 @@ python -B -m unittest discover -s tools/tests -p test_verify_runtime.py -v
 
 此段在单独 PowerShell 进程执行；临时运行副本的测试按顺序启动服务器，不能争用同一个显示号。
 
-- [ ] 执行完整现有脚本测试；所有已启用的必要用例通过后更新用法、证据格式并提交：`git commit -m "Verify portable runtime dependencies and X server startup"`。
+- [ ] 执行完整现有脚本测试；所有已启用的必要用例通过后更新用法、证据格式并提交，中文标题为“验证运行依赖与服务器启动（任务 2）”，中文正文说明行为与测试结果。
 
 结果 JSON 的必需字段：`schema_version`、`source_commit`、`runtime`、`started_at`、`duration_seconds`、`status`、`steps`；每个 step 含 `name`、`status`、`exit_code`、`log_paths`、`reason`。`source_commit` 取必需参数 `--source-commit`；不要把验证器自身所在的另一个 checkout 误认为运行产物来源。
 
@@ -172,7 +172,7 @@ try {
 
 ```powershell
 $baselineTag = 'local-baseline-' + (Get-Date -Format 'yyyyMMdd') + '-' + $testedCommit.Substring(0, 8)
-git tag -a $baselineTag $testedCommit -m 'Validated local Windows x64 Release build and runtime; see docs/validation'
+git tag -a $baselineTag $testedCommit -m '已验证本地 Windows x64 Release 构建和启动，证据见 docs/validation'
 git show --no-patch --format=fuller $baselineTag
 ```
 

@@ -7,6 +7,8 @@ Build VcXsrv with native Windows tools. Does not download or install anything.
 .\buildall.ps1 -Configuration Release -Architecture x64 -Jobs 8
 .EXAMPLE
 .\buildall.ps1 -WinFlexBisonPath D:\Tools\win_flex_bison -PythonPath D:\Python\python.exe
+.EXAMPLE
+.\buildall.ps1 -CheckOnly -EnvironmentReport .local-validation\environment.json
 #>
 [CmdletBinding()]
 param(
@@ -21,7 +23,8 @@ param(
     [string]$PerlPath,
     [string]$NasmPath,
     [string]$GperfPath,
-    [string]$JomPath
+    [string]$JomPath,
+    [string]$EnvironmentReport
 )
 
 Set-StrictMode -Version Latest
@@ -32,6 +35,9 @@ $repoRoot = $PSScriptRoot
 if ($repoRoot -match '\s') {
     throw 'The existing mhmake rules require a source checkout path without spaces.'
 }
+$environmentReportPath = if ($EnvironmentReport) {
+    $ExecutionContext.SessionState.Path.GetUnresolvedProviderPathFromPSPath($EnvironmentReport)
+} else { $null }
 
 function Find-BuildTool {
     param([string]$Name, [string]$ExplicitPath, [string[]]$Candidates = @(), [switch]$Optional)
@@ -73,6 +79,102 @@ function In-BuildDirectory {
     try { & $Action } finally { Pop-Location }
 }
 
+function Get-ToolVersion {
+    param([string]$Path)
+    if (-not $Path) { return $null }
+    try {
+        $version = (Get-Item -LiteralPath $Path -ErrorAction Stop).VersionInfo.ProductVersion
+        if ($version) { return $version.Trim() }
+    } catch {
+        return $null
+    }
+    return $null
+}
+
+function New-ToolReportEntry {
+    param([string]$Path, [AllowNull()][object]$Version = $null)
+    [ordered]@{
+        path = if ($Path) { [System.IO.Path]::GetFullPath($Path) } else { $null }
+        version = if ($null -eq $Version -or [string]::IsNullOrWhiteSpace([string]$Version)) {
+            $null
+        } else { [string]$Version }
+    }
+}
+
+function Write-EnvironmentReport {
+    param(
+        [string]$Path,
+        [string]$Python,
+        [string]$Cl,
+        [string]$MSBuild,
+        [string]$Dumpbin,
+        [string]$Flex,
+        [string]$Bison,
+        [AllowNull()][string]$Perl = $null,
+        [AllowNull()][string]$Nasm = $null,
+        [AllowNull()][string]$Gperf = $null,
+        [AllowNull()][string]$Jom = $null
+    )
+
+    $pythonMetadataText = & $Python '-B' '-c' "import importlib.metadata as m, json, platform; print(json.dumps({'version': platform.python_version(), 'packages': {name: m.version(name) for name in ('lxml', 'mako', 'PyYAML')}}))" 2>&1
+    if ($LASTEXITCODE -ne 0) { throw "Cannot query package metadata from the selected Python: $Python" }
+    try {
+        $pythonMetadata = ($pythonMetadataText -join "`n") | ConvertFrom-Json -ErrorAction Stop
+    } catch {
+        throw "Selected Python returned invalid package metadata: $Python"
+    }
+
+    $git = Find-BuildTool 'git.exe'
+    $sourceCommitText = & $git '-C' $repoRoot 'rev-parse' 'HEAD' 2>&1
+    if ($LASTEXITCODE -ne 0) { throw 'Cannot determine the source commit for the environment report.' }
+    $sourceCommit = ([string]($sourceCommitText | Select-Object -First 1)).Trim()
+    if ($sourceCommit -notmatch '^[0-9a-fA-F]{40}$') { throw 'Git returned an invalid source commit for the environment report.' }
+
+    $tools = [ordered]@{}
+    $tools['python'] = New-ToolReportEntry $Python ([string]$pythonMetadata.version)
+    $tools['cl'] = New-ToolReportEntry $Cl (Get-ToolVersion $Cl)
+    $tools['msbuild'] = New-ToolReportEntry $MSBuild (Get-ToolVersion $MSBuild)
+    $tools['dumpbin'] = New-ToolReportEntry $Dumpbin (Get-ToolVersion $Dumpbin)
+    $tools['flex'] = New-ToolReportEntry $Flex (Get-ToolVersion $Flex)
+    $tools['bison'] = New-ToolReportEntry $Bison (Get-ToolVersion $Bison)
+    if ($Perl) { $tools['perl'] = New-ToolReportEntry $Perl (Get-ToolVersion $Perl) }
+    if ($Nasm) { $tools['nasm'] = New-ToolReportEntry $Nasm (Get-ToolVersion $Nasm) }
+    if ($Gperf) { $tools['gperf'] = New-ToolReportEntry $Gperf (Get-ToolVersion $Gperf) }
+    if ($Jom) { $tools['jom'] = New-ToolReportEntry $Jom (Get-ToolVersion $Jom) }
+    $tools['msvc'] = New-ToolReportEntry $env:VCToolsInstallDir $env:VCToolsVersion
+    $sdkVersion = if ($env:WindowsSDKVersion) { $env:WindowsSDKVersion.TrimEnd('\') } else { $null }
+    $tools['sdk'] = New-ToolReportEntry $env:WindowsSdkDir $sdkVersion
+
+    $report = [ordered]@{
+        schema_version = 1
+        source_commit = $sourceCommit.ToLowerInvariant()
+        target = [ordered]@{
+            architecture = $Architecture
+            configuration = $Configuration
+        }
+        host = [ordered]@{
+            name = $env:COMPUTERNAME
+            windows_version = [Environment]::OSVersion.VersionString
+            powershell_version = $PSVersionTable.PSVersion.ToString()
+        }
+        tools = $tools
+        python_packages = [ordered]@{
+            lxml = [string]$pythonMetadata.packages.lxml
+            mako = [string]$pythonMetadata.packages.mako
+            PyYAML = [string]$pythonMetadata.packages.PyYAML
+        }
+    }
+
+    $json = $report | ConvertTo-Json -Depth 6
+    $parent = Split-Path -Parent $Path
+    if ($parent -and -not (Test-Path -LiteralPath $parent)) {
+        $null = New-Item -ItemType Directory -Path $parent -Force
+    }
+    [System.IO.File]::WriteAllText($Path, $json + [Environment]::NewLine,
+        [System.Text.UTF8Encoding]::new($false))
+    Write-Host "Environment report: $Path"
+}
+
 # Environment changes are scoped to this invocation, including calls from an
 # existing Developer PowerShell. Never change the user's persistent PATH.
 $savedEnvironment = @{}
@@ -101,9 +203,12 @@ try {
         }
     } finally { Pop-Location }
 
+    $nativeTools = @{}
     foreach ($name in 'cl.exe', 'link.exe', 'lib.exe', 'rc.exe', 'nmake.exe', 'dumpbin.exe') {
-        $null = Find-BuildTool $name
+        $nativeTools[$name] = Find-BuildTool $name
     }
+    $cl = $nativeTools['cl.exe']
+    $dumpbin = $nativeTools['dumpbin.exe']
     $msbuild = Find-BuildTool 'MSBuild.exe' -Candidates @((Join-Path $VisualStudioPath 'MSBuild\Current\Bin\MSBuild.exe'))
     $searchRoots = @($env:ProgramFiles, ${env:ProgramFiles(x86)}, (Join-Path $env:LOCALAPPDATA 'Programs'))
     foreach ($drive in Get-PSDrive -PSProvider FileSystem) {
@@ -169,6 +274,24 @@ try {
         if ($jom) { Write-Host "OpenSSL make: $jom" } else { Write-Host 'OpenSSL make: NMake (serial)' }
     }
     Write-Host "Visual Studio: $VisualStudioPath`nTarget: $Architecture $Configuration; stage: $Stage"
+    if ($environmentReportPath) {
+        $reportArguments = @{
+            Path = $environmentReportPath
+            Python = $python
+            Cl = $cl
+            MSBuild = $msbuild
+            Dumpbin = $dumpbin
+            Flex = $flex
+            Bison = $bison
+        }
+        if ($Stage -ne 'BuildTool') {
+            $reportArguments['Perl'] = $perl
+            $reportArguments['Nasm'] = $nasm
+            $reportArguments['Gperf'] = $gperf
+            if ($jom) { $reportArguments['Jom'] = $jom }
+        }
+        Write-EnvironmentReport @reportArguments
+    }
     if ($CheckOnly) {
         Write-Host 'Environment check passed. No build commands were executed.'
         return
