@@ -20,9 +20,9 @@
 - [x] `git bundle create <独立归档路径> --all` 后 `git bundle verify`；从 bundle `git clone --mirror` 恢复，核对 106 个 show-ref 条目并执行 `git fsck --connectivity-only`。
 - [x] 从来源 tree 执行无父 `git commit-tree`；以六个原 tree 顺序连接新父提交，保留作者信息并记录新旧 SHA。逐项 tree 相等，计数七个且只有一个根。
 - [x] 建立 upstream 和 codex/history-restructure，在独立 worktree 编写来源说明、规则、组件清单、迁移记录、规格与计划，并更新 README 和维护路线。
-- [ ] 独立审查；检查 Markdown 本地链接、路径及 `git diff --check`。排除新增维护文档后，与旧 HEAD 的源码必须无差异。
+- [x] 独立审查；检查 Markdown 本地链接、路径及 `git diff --check`。排除新增维护文档后，与旧 HEAD 的源码必须无差异。
 - [x] 新历史下执行 Windows PowerShell CheckOnly，报告 source_commit 必须等于运行该脚本的 HEAD；不得把它当成实际编译证据。
-- [ ] 中文提交文档；将旧 master 保存为 archive/pre-restructure-20260909，主目录切换到新 master，取消旧 origin/master 跟踪关系，不更改远程地址。
-- [ ] 核对最终分支关系、工作区清洁、标签指向和运行程序存在，记录完成证据。
+- [x] 中文提交文档；将旧 master 保存为 archive/pre-restructure-20260909，主目录切换到新 master，取消旧 origin/master 跟踪关系，不更改远程地址。
+- [x] 核对最终分支关系、工作区清洁、标签指向和运行程序存在，记录完成证据。
 
 详细命令和机器结果保存在原工作区 `.local-validation/history-restructure`，bundle 与恢复镜像在仓库外的独立归档目录。与最初草案相比，验证收敛为 tree 等同性和 CheckOnly 来源验证：没有程序代码变化，不为纯历史/文档改动重复运行整套构建与桌面测试。

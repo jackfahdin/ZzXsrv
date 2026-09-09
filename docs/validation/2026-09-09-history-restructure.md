@@ -41,11 +41,15 @@
 
 本次针对新提交执行 `buildall.ps1 -CheckOnly -EnvironmentReport ...`，确认实际工具可用、报告来源属于新提交；它不生成程序。报告保存在原工作区 `.local-validation/history-restructure/environment-new-history.json`。最终交付只增加或修改维护文档，程序源码与旧 master 一致。
 
+实际 CheckOnly 的 `source_commit` 为 `acf73afca2a389f63738508c3717b7eff8c4657e`，命令退出 0。新增维护文档共 21 个本地 Markdown 链接检查通过，Git 差异格式检查通过。独立审查核对了 tree、作者元数据、归档引用、bundle SHA-256 和对象连接；两处关于二进制来源范围及合并祖先的文档问题修正后，定向复查通过。
+
 原运行目录 `D:\File\Program\GitHub\vcxsrv\dist\x64\Release` 和此前新构建目录 `D:\File\Program\GitHub\vcxsrv-baseline-20260909-121720\dist\x64\Release` 均保留。历史 worktree 不清理，不覆盖认证测试及构建记录。
 
 ## 主目录切换与后续恢复
 
 主目录继续使用 `master`。旧 HEAD 保存在 `archive/pre-restructure-20260909`，切换前先确认主目录状态干净且其 HEAD 未被其他操作改变。新 master 取消旧 `origin/master` 的跟踪关联，原 GitCode 远程地址保持不变。后续远程仓库由维护者另行安排。
+
+主目录已成功切换到维护文档提交 `38e804e2d90a3bc5c9fba0dad31e7c5d35cea0be`，随后追加本核验记录。切换后状态干净，upstream 只有一个根提交，新 master 的唯一根与之相同，旧 master 归档指向正确，全部旧标签未移动。切换前后两个运行目录共 70 个 EXE/DLL 的大小和 SHA-256 全部相同，检查退出 0。机器记录保存在 `.local-validation/history-restructure/integration.log` 和 `runtime-before-switch.json`。
 
 需要恢复旧源码时，可在新的独立 worktree 检出 `archive/pre-restructure-20260909`。也可以从保存的 bundle 克隆到一个尚不存在的新目录；不需要覆盖当前主目录或强制重置当前工作。本文和其他新增维护文档不在重组前 bundle 中，属于新的开发历史。
 
