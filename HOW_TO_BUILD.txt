@@ -73,6 +73,66 @@ Build-script tests (standard library unittest; no additional test framework):
     python -B -m unittest discover -s tools/tests -v
 Set VCXSRV_TEST_LOCAL_TOOLS=1 to include checks against an installed toolchain.
 
+Local build and runtime evidence (Windows x64 Release)
+---------------------------------------------------
+Export the selected native tools and Python package versions during preflight:
+
+    .\buildall.ps1 -CheckOnly -EnvironmentReport .local-validation\environment.json
+
+Use the same option on an actual build to record the tools used by that build.
+The report contains selected paths and available versions, not the full process
+environment. Keep the source checkout path free of spaces; tool paths and the
+portable runtime directory may contain spaces.
+
+Verify an assembled runtime with 64-bit Windows Python 3.11 or newer:
+
+    $environment = Get-Content .local-validation\environment.json -Raw | ConvertFrom-Json
+    $builtCommit = (git rev-parse HEAD).Trim()
+    python -B tools/verify_runtime.py --runtime dist/x64/Release `
+        --dumpbin $environment.tools.dumpbin.path --source-commit $builtCommit `
+        --output .local-validation/runtime-001 --display 97 --timeout 30
+
+Supply the full commit used to build those binaries; the verifier cannot infer
+or prove their source provenance. Use a fresh output directory for every run,
+outside the runtime (neither directory may contain the other). Existing evidence
+is never overwritten. The output contains result.json, dependencies.json and
+separate dumpbin, version, authentication, server and client logs. A rejected
+output path cannot receive a JSON report; the CLI explains that error on stderr.
+
+The verifier checks all packaged EXE/DLL Machine fields and direct/delay imports,
+including Mesa's import from vcxsrv.exe. Imports must resolve in the runtime root
+or native System32; API-set names are recorded as Windows system contracts. It
+then checks the server version and runs an authenticated TCP root-window query.
+PASS requires positive root dimensions; server process liveness is insufficient.
+The subprocess PATH contains only the runtime and System32. Temporary random
+Xauthority credentials are redacted from logs and removed after owned children
+exit. Global environment, registry and firewall settings are not changed.
+
+Display 97 uses TCP port 6097; choose another --display if occupied. The tool
+does not stop other X servers. --timeout bounds each dependency/version/auth
+command and the startup/query loop; cleanup has its own bounded process waits.
+Exit 0 means PASS. Missing prerequisites produce NOT_RUN and a nonzero exit;
+dependency, startup, connection or cleanup failures produce FAIL and nonzero.
+
+To include real desktop integration in the runtime tests, set the following in
+a separate PowerShell process (the three parameters are mandatory when enabled):
+
+    $environment = Get-Content .local-validation\environment.json -Raw | ConvertFrom-Json
+    $builtCommit = (git rev-parse HEAD).Trim() # Use the actual build's commit.
+    $env:VCXSRV_TEST_RUNTIME = '1'
+    $env:VCXSRV_RUNTIME_DIR = (Resolve-Path dist/x64/Release).Path
+    $env:VCXSRV_DUMPBIN = $environment.tools.dumpbin.path
+    $env:VCXSRV_SOURCE_COMMIT = $builtCommit
+    python -B -m unittest discover -s tools/tests -p test_verify_runtime.py -v
+
+Integration covers the original runtime, a temporary copy missing libX11.dll,
+and a restored copy whose path contains spaces. It runs sequentially and removes
+only its own temporary copies. Default unit tests do not launch desktop apps.
+Static imports cannot cover every LoadLibrary path, and a root query does not
+verify full GUI/OpenGL, clipboard, input-method or multi-monitor behavior.
+The clean-build baseline and precise validated source are recorded separately
+under docs/validation; see docs/validation/README.md for evidence conventions.
+
 Legacy WSL/Docker build instructions
 ====================================
 The following instructions describe the older shell entry point, which retains

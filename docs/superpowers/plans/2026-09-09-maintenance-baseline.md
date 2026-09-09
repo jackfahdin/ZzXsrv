@@ -79,7 +79,7 @@ pwsh -NoProfile -File .\buildall.ps1 -CheckOnly -EnvironmentReport .local-valida
 
 **文件：** `tools/verify_runtime.py`、`tools/tests/test_verify_runtime.py`、`HOW_TO_BUILD.txt`、`docs/validation/README.md`。
 
-- [ ] 编写依赖解析的失败测试。实现接口约定为 `parse_dependencies(text) -> list[str]`，去重、忽略 dumpbin 的统计段，兼容 CRLF；包括直接和延迟导入段。
+- [x] 编写依赖解析的失败测试。实现接口约定为 `parse_dependencies(text) -> list[str]`，去重、忽略 dumpbin 的统计段，兼容 CRLF；包括直接和延迟导入段。
 
 ```python
 def test_parse_dependency_sections(self):
@@ -88,17 +88,17 @@ def test_parse_dependency_sections(self):
                      ["libX11.dll", "KERNEL32.dll", "OPENGL32.dll"])
 ```
 
-- [ ] 增加行为用例：目录缺少 vcxsrv/xauth/xwininfo 时不启动任何进程；dumpbin 非零退出不能当成“没有依赖”；32 位 PE 混入 x64 目录失败；无法解析的导入失败并指出引用者；报告不含认证 cookie。用 `python -B -m unittest discover -s tools/tests -p test_verify_runtime.py -v` 记录失败结果。
+- [x] 增加行为用例：目录缺少 vcxsrv/xauth/xwininfo 时不启动任何进程；dumpbin 非零退出不能当成“没有依赖”；32 位 PE 混入 x64 目录失败；无法解析的导入失败并指出引用者；报告不含认证 cookie。用 `python -B -m unittest discover -s tools/tests -p test_verify_runtime.py -v` 记录失败结果。
 
-- [ ] 实现 CLI 和检查逻辑。PE 架构直接读取 DOS/PE 标头的 Machine 字段并验证标头长度；dumpbin 通过参数数组调用，不拼 shell 命令。遍历运行目录全部 EXE/DLL，搜索顺序为运行目录和正确位数系统目录；API-set 记录为系统契约。Windows 64 位 Python 是本工具的执行条件，不满足则明确报错。
+- [x] 实现 CLI 和检查逻辑。PE 架构直接读取 DOS/PE 标头的 Machine 字段并验证标头长度；dumpbin 通过参数数组调用，不拼 shell 命令。遍历运行目录全部 EXE/DLL，搜索顺序为运行目录和正确位数系统目录；API-set 记录为系统契约。Windows 64 位 Python 是本工具的执行条件，不满足则明确报错。
 
-- [ ] 实现 `run_smoke(runtime, output, display, timeout)`。复用本机已验证过的调用方式：`vcxsrv -version`、`xauth -f ... add 127.0.0.1:97 . cookie`、带 `-auth` 的服务器、`xwininfo -display 127.0.0.1:97 -root`。显示号使用参数而非硬编码。通过单调时钟截止时间轮询，单次命令也有超时；输出根窗口正尺寸才算成功。
+- [x] 实现 `run_smoke(runtime, output, display, timeout)`。复用本机已验证过的调用方式：`vcxsrv -version`、`xauth -f ... add 127.0.0.1:97 . cookie`、带 `-auth` 的服务器、`xwininfo -display 127.0.0.1:97 -root`。显示号使用参数而非硬编码。通过单调时钟截止时间轮询，单次命令也有超时；输出根窗口正尺寸才算成功。
 
-- [ ] 子进程使用最小 PATH 和规格定义的环境清理；启动窗口隐藏，服务器与客户端输出写入独立文件，避免 PIPE 填满。捕获加载器错误、端口占用、提前退出、超时，均写入 JSON 并返回非零。`finally` 只结束本次仍在运行的子进程，等待退出后清理临时认证文件。
+- [x] 子进程使用最小 PATH 和规格定义的环境清理；启动窗口隐藏，服务器与客户端输出写入独立文件，避免 PIPE 填满。捕获加载器错误、端口占用、提前退出、超时，均写入 JSON 并返回非零。`finally` 只结束本次仍在运行的子进程，等待退出后清理临时认证文件。
 
-- [ ] 增加可控失败测试：模拟客户端失败及超时，验证服务器清理发生；模拟预先存在的占用端口，验证未结束外部进程；调用命令参数含空格仍正常。测试这些行为，不断言无关内部调用次数。
+- [x] 增加可控失败测试：模拟客户端失败及超时，验证服务器清理发生；模拟预先存在的占用端口，验证未结束外部进程；调用命令参数含空格仍正常。测试这些行为，不断言无关内部调用次数。
 
-- [ ] 在真实运行目录上执行以下命令。实际 dumpbin 路径从任务 1 报告取出；工具键名统一为 `dumpbin`。
+- [x] 在真实运行目录上执行以下命令。实际 dumpbin 路径从任务 1 报告取出；工具键名统一为 `dumpbin`。
 
 ```powershell
 $environment = Get-Content .local-validation\environment-ps51.json -Raw | ConvertFrom-Json
@@ -106,7 +106,7 @@ $testedCommit = (git rev-parse HEAD).Trim()
 python -B tools/verify_runtime.py --runtime dist/x64/Release --dumpbin $environment.tools.dumpbin.path --source-commit $testedCommit --output .local-validation/runtime --display 97 --timeout 30
 ```
 
-- [ ] 新建临时运行副本，删除该副本中的 `libX11.dll`，确认验证失败并指出缺失导入。仅操作测试自己创建的临时目录，主运行目录保持完整。再在名称含空格的运行副本上验证成功。真实集成用例受 `VCXSRV_TEST_RUNTIME=1` 控制，并要求环境变量 `VCXSRV_RUNTIME_DIR`、`VCXSRV_DUMPBIN`、`VCXSRV_SOURCE_COMMIT`；默认不启动桌面程序。开关已启用却缺少参数时必须失败，不能跳过。
+- [x] 新建临时运行副本，删除该副本中的 `libX11.dll`，确认验证失败并指出缺失导入。仅操作测试自己创建的临时目录，主运行目录保持完整。再在名称含空格的运行副本上验证成功。真实集成用例受 `VCXSRV_TEST_RUNTIME=1` 控制，并要求环境变量 `VCXSRV_RUNTIME_DIR`、`VCXSRV_DUMPBIN`、`VCXSRV_SOURCE_COMMIT`；默认不启动桌面程序。开关已启用却缺少参数时必须失败，不能跳过。
 
 ```powershell
 $env:VCXSRV_TEST_RUNTIME = '1'
@@ -118,7 +118,7 @@ python -B -m unittest discover -s tools/tests -p test_verify_runtime.py -v
 
 此段在单独 PowerShell 进程执行；临时运行副本的测试按顺序启动服务器，不能争用同一个显示号。
 
-- [ ] 执行完整现有脚本测试；所有已启用的必要用例通过后更新用法、证据格式并提交，中文标题为“验证运行依赖与服务器启动（任务 2）”，中文正文说明行为与测试结果。
+- [x] 执行完整现有脚本测试；所有已启用的必要用例通过后更新用法、证据格式并提交，中文标题为“验证运行依赖与服务器启动（任务 2）”，中文正文说明行为与测试结果。
 
 结果 JSON 的必需字段：`schema_version`、`source_commit`、`runtime`、`started_at`、`duration_seconds`、`status`、`steps`；每个 step 含 `name`、`status`、`exit_code`、`log_paths`、`reason`。`source_commit` 取必需参数 `--source-commit`；不要把验证器自身所在的另一个 checkout 误认为运行产物来源。
 
