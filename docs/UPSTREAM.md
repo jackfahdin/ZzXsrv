@@ -21,7 +21,7 @@
 
 每次准备维护版本时检查更新；出现相关公告或实际问题时及时评估。未建立无人值守监控，不默认定期执行远程操作。开发主线可以保持稳定快照，不能为了追求最新版本一次性替换全部组件。
 
-首轮 [组件更新评估](validation/2026-09-09-component-update-assessment.md) 是固定于旧源码的历史评估。当前 GLX 已合入，XFIXES 是已完成自动验证的独立候选；后续待办统一见 [计划状态](PLAN_STATUS.md)，候选证据见 [XFIXES 报告](validation/2026-09-09-xfixes-request-length.md)。
+首轮 [组件更新评估](validation/2026-09-09-component-update-assessment.md) 是固定于旧源码的历史评估。当前 GLX 与 XFIXES 均已完成验证、取得用户可用反馈并合入 master；后续待办统一见 [计划状态](PLAN_STATUS.md)，候选证据见 [XFIXES 报告](validation/2026-09-09-xfixes-request-length.md)。
 
 ## 更新依赖快照并整合
 

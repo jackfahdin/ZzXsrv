@@ -1,6 +1,6 @@
 # 本地验证记录
 
-当前状态见 [计划状态](../PLAN_STATUS.md)；逐项人工场景见 [兼容性记录](../COMPATIBILITY.md)。[XFIXES 候选报告](2026-09-09-xfixes-request-length.md) 已完成自动验证，人工验收与主线整合单独记录。
+当前状态见 [计划状态](../PLAN_STATUS.md)；逐项人工场景见 [兼容性记录](../COMPATIBILITY.md)。[XFIXES 修复报告](2026-09-09-xfixes-request-length.md) 记录用户使用确认、主线整合及合入后的 59 项测试结果。
 
 分支职责的最新整理见 [依赖快照与开发主线](2026-09-09-component-baseline.md)。本次只验证来源、合并关系和文件不变性。
 

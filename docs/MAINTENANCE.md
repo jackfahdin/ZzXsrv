@@ -10,7 +10,7 @@
 
 首个支持目标是 Windows x64 Release。构建使用 PowerShell、VS2022/MSVC 和原生 Windows 辅助工具，不依赖 WSL/Cygwin，不自动下载或安装工具。Python 下限为 3.11。源码路径保持无空格；已有工具路径含空格的测试继续保留。
 
-最初已验证基线提交为 `a4adc3dc3f2158c2308133cecee19a71cf62bcc8`，本地标签为 `local-baseline-20260909-a4adc3dc`。已完成新 worktree 中的完整构建、43 项测试（无跳过）、35 个 PE 的依赖检查与经认证的本地 TCP X 根窗口查询。详情见 [实际验证报告](validation/2026-09-09-baseline.md)。目前主线已包含后续 GLX 修复，XFIXES 仍为独立候选，具体来源和运行目录见计划状态。最初基线标签保留原指向，不将其当作当前主线的最新产物。这不代表多机兼容性或完整应用兼容性已经完成。
+最初已验证基线提交为 `a4adc3dc3f2158c2308133cecee19a71cf62bcc8`，本地标签为 `local-baseline-20260909-a4adc3dc`。已完成新 worktree 中的完整构建、43 项测试（无跳过）、35 个 PE 的依赖检查与经认证的本地 TCP X 根窗口查询。详情见 [实际验证报告](validation/2026-09-09-baseline.md)。目前主线已包含后续 GLX 和 XFIXES 修复，具体来源和运行目录见计划状态。最初基线标签保留原指向，不将其当作当前主线的最新产物。这不代表多机兼容性或完整应用兼容性已经完成。
 
 ## 阶段安排
 
@@ -19,11 +19,11 @@
 | 1：构建与运行基线 | 环境报告、运行验证工具、干净检出构建记录、本地标签 | 第一阶段规格中 B1–B6 全部满足 | 2026-09-09 已完成，见实际验证报告 |
 | 2：日常兼容性 | 场景清单、复现材料、逐项结果 | 每个实际使用场景都有通过、失败或有原因的未验证状态 | 2026-09-09 用户反馈实际测试无问题；尚未逐项记录应用和场景 |
 | 3：使用体验 | 启动配置、日志入口、错误提示、中文说明的独立改动 | 每项改动解决已记录的问题，有相应验证 | 按第二阶段问题的影响排序 |
-| 4：工程演进 | 第三方组件清单、更新流程、分组件 CMake 试验 | 能说明变更范围，旧流程可作对照，运行结果无已知回归 | 依赖基线与更新规则已建立；GLX 已整合、XFIXES 候选待验收；整包依赖升级与 CMake 试验未执行 |
+| 4：工程演进 | 第三方组件清单、更新流程、分组件 CMake 试验 | 能说明变更范围，旧流程可作对照，运行结果无已知回归 | 依赖基线与更新规则已建立；GLX 与 XFIXES 均已整合；整包依赖升级与 CMake 试验未执行 |
 
 第一阶段的执行入口见 [执行计划](superpowers/plans/2026-09-09-maintenance-baseline.md)，验收依据见 [验收规格](superpowers/specs/2026-09-09-maintenance-baseline-design.md)。原生构建的历史记录见 [原生构建计划](superpowers/plans/2026-09-08-native-windows-build.md)。
 
-首轮 [组件更新评估](validation/2026-09-09-component-update-assessment.md) 已记录实际消费者、候选版本、证据边界和验证门槛。首项 GLX 修复及构建中发现的问题见 [GLX 修复记录](validation/2026-09-09-glx-context-tags.md)；2026-09-09 维护者对新版本反馈“能用”后，已本地快进整合到 master，合入后 51 项测试通过。具体应用与场景覆盖仍待补充，新旧运行目录和验证证据均保留。下一项为 [XFIXES 候选收尾](superpowers/plans/2026-09-09-xfixes-request-length.md)，再继续其余 X Server 适用性核对和字体、XML、OpenSSL 等维护评估。
+首轮 [组件更新评估](validation/2026-09-09-component-update-assessment.md) 已记录实际消费者、候选版本、证据边界和验证门槛。首项 GLX 修复及构建中发现的问题见 [GLX 修复记录](validation/2026-09-09-glx-context-tags.md)；2026-09-09 维护者对新版本反馈“能用”后，已本地快进整合到 master，合入后 51 项测试通过。具体应用与场景覆盖仍待补充，新旧运行目录和验证证据均保留。[XFIXES 实施计划](superpowers/plans/2026-09-09-xfixes-request-length.md) 也已完成：维护者确认使用正常，合入后 59 项测试通过。下一项继续其余 X Server 适用性核对和字体、XML、OpenSSL 等维护评估。
 
 ## 验证层次
 
