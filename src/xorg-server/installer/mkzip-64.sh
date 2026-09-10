@@ -20,8 +20,8 @@ tar -rf $OutFile -C ../../../third_party/xorg/apps/xclock/app-defaults xclock
 tar -rf $OutFile -C ../../../third_party/xorg/apps/xclock/app-defaults xclock-color
 tar -rf $OutFile -C ../../../third_party/xorg/apps/xwininfo/obj64/release xwininfo.exe
 tar -rf $OutFile -C .. XKeysymDB
-tar -rf $OutFile -C ../.. libX11/src/XErrorDB
-tar -rf $OutFile -C ../.. libX11/src/xcms/Xcms.txt
+tar -rf $OutFile -C ../../../third_party/xorg libX11/src/XErrorDB
+tar -rf $OutFile -C ../../../third_party/xorg libX11/src/xcms/Xcms.txt
 tar -rf $OutFile -C .. XtErrorDB
 tar -rf $OutFile -C .. font-dirs
 tar -rf $OutFile -C .. .Xdefaults
