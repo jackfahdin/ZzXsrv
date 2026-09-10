@@ -5019,6 +5019,65 @@
         "evidence": "../validation/2026-09-09-xserver-applicability.md"
       },
       "report": "../validation/2026-09-10-xserver-input-integration.md"
+    },
+    {
+      "component": "xserver",
+      "name": "RENDER animated cursor count (CVE-2025-49175)",
+      "upstream_commit": "0885e0b26225c90534642fe911632ec0779eebee",
+      "upstream_stable_commit": "ea7b770952dbcf6c769db7538b55b4f92e1f95c5",
+      "upstream_url": "https://gitlab.freedesktop.org/xorg/xserver/-/commit/0885e0b26225c90534642fe911632ec0779eebee",
+      "actual_source_url": "https://api.github.com/repos/LizardByte-infrastructure/xserver/commits/0885e0b26225c90534642fe911632ec0779eebee",
+      "source_download_date": "2026-09-10",
+      "source_downloaded_at": "2026-09-10T06:50:52.225643+00:00",
+      "source_response_sha256": "adf1f617c5da54538294cc9cd6f7680c2390dddafe915fb6e67da3656f32f6bd",
+      "patch_sha256": "b34dbb36ede04610a01bb4d37a1eb3b19f41593896c74e68979715996331d159",
+      "patch_hash_scope": "extracted per-file GitHub API patch with diff --git headers before local path adaptation",
+      "upstream_author": {
+        "name": "Olivier Fourdan",
+        "email": "ofourdan@redhat.com",
+        "date": "2025-03-28T08:43:52Z"
+      },
+      "local_commit": "d7af5de4c3b6350ccb0e7e112bf55c501c4a3930",
+      "local_paths": [
+        "src/xorg-server/render/animcur.c",
+        "src/xorg-server/render/render.c"
+      ],
+      "local_adaptation": "Prefix paths with src/xorg-server/; all nonblank added production lines match the upstream patch. render.c has one extra blank line after the guard. Preserve inherited Windows APIs and existing byte swapping.",
+      "cross_check_archive": {
+        "url": "https://xorg.freedesktop.org/archive/individual/xserver/xorg-server-21.1.24.tar.xz",
+        "sha256": "1a4eb36ca65cc3b1b936566d677a9786e13c11cd5806e951ac55f3f5ce3984af",
+        "evidence": "../validation/2026-09-09-xserver-applicability.md"
+      },
+      "report": "../validation/2026-09-10-render-record.md"
+    },
+    {
+      "component": "xserver",
+      "name": "RECORD registration counts (CVE-2025-49179)",
+      "upstream_commit": "2bde9ca49a8fd9a1e6697d5e7ef837870d66f5d4",
+      "upstream_stable_commit": "8592cab6820f77c209c2ea9a7b94e0d4d1ac848c",
+      "upstream_url": "https://gitlab.freedesktop.org/xorg/xserver/-/commit/2bde9ca49a8fd9a1e6697d5e7ef837870d66f5d4",
+      "actual_source_url": "https://api.github.com/repos/LizardByte-infrastructure/xserver/commits/2bde9ca49a8fd9a1e6697d5e7ef837870d66f5d4",
+      "source_download_date": "2026-09-10",
+      "source_downloaded_at": "2026-09-10T06:50:52.242943+00:00",
+      "source_response_sha256": "f7669645f6c3da1152fd90e552336db0cad91d4a9ee752d7e913c862a2d67d63",
+      "patch_sha256": "228970a1f4c24868056276492434708e074f9daeb8dc802338833ba44c9f077d",
+      "patch_hash_scope": "extracted per-file GitHub API patch with diff --git headers before local path adaptation",
+      "upstream_author": {
+        "name": "Olivier Fourdan",
+        "email": "ofourdan@redhat.com",
+        "date": "2025-04-28T09:47:15Z"
+      },
+      "local_commit": "13f058a646a69f4a8b13a56e56d2bb4fb6980ef7",
+      "local_paths": [
+        "src/xorg-server/record/record.c"
+      ],
+      "local_adaptation": "Prefix paths with src/xorg-server/; all nonblank added production lines match the upstream patch. Preserve inherited Windows APIs and existing byte swapping.",
+      "cross_check_archive": {
+        "url": "https://xorg.freedesktop.org/archive/individual/xserver/xorg-server-21.1.24.tar.xz",
+        "sha256": "1a4eb36ca65cc3b1b936566d677a9786e13c11cd5806e951ac55f3f5ce3984af",
+        "evidence": "../validation/2026-09-09-xserver-applicability.md"
+      },
+      "report": "../validation/2026-09-10-render-record.md"
     }
   ],
   "layout_note": "2026-09-10 源码分层后，path/evidence 表示当前仓库位置；完整旧路径映射见 docs/history/2026-09-10-source-path-mapping.json。actual_import_urls、inherited_material_urls 和 declaration_url 保留原固定提交的路径。"

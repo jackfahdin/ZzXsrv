@@ -33,6 +33,8 @@
 
 ## 输入处理候选的实际使用反馈
 
+本组后续 RENDER/RECORD 候选位于 `D:/File/Program/GitHub/zzxsrv-render-record-20260910/dist/x64/Release`，人工使用结果尚未取得，见[候选报告](../validation/2026-09-10-render-record.md)。以下输入候选的反馈不能作为该新候选的人工验收。
+
 运行目录：`D:/File/Program/GitHub/vcxsrv-input-20260909-2110/dist/x64/Release`，历史源码 `c06e0db1669afaee649bdaf407c7c76c9fa3ae56`。2026-09-10 维护者明确确认本次使用的是该候选，而非主目录重新编译的版本。历史新适配静态审查、干净构建、71 项测试和认证启动/根窗口检查已通过；本段记录的是旧候选的人工反馈。随后修复已按当前目录恢复并合入 master，新构建和 73 项测试见[整合报告](../validation/2026-09-10-xserver-input-integration.md)；不把旧候选反馈改写成新构建的全场景人工验收。
 
 | 场景 | 人工结果 | 证据边界 |

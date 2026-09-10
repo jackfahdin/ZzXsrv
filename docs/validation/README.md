@@ -1,10 +1,12 @@
 # 本地验证记录
 
+本轮 R3 的 [RENDER/RECORD 候选报告](2026-09-10-render-record.md)记录两项修复、来源及验证结果。当前保留临时分支 `codex/render-record-20260910`，待本组实际使用确认后快进整合；不将输入候选的反馈替代本组验收。
+
 更新日期：2026-09-10。[源码目录分层报告](2026-09-10-source-layout.md)记录本次完整构建、61 项测试与运行验证。[中文 README 与目录迁移报告](2026-09-10-readme-layout.md)记录前次脚本路径调整、文档导航、构建与验证范围；当前源码分层见[设计](../designs/2026-09-10-source-layout.md)与[路径映射](../history/2026-09-10-source-path-mapping.json)。此前[仓库整理报告](2026-09-10-repository-reorganization.md)记录历史线性化、旧引用归档和首次推送。[依赖来源清单](../dependencies/SOURCES.md)记录组件来源证据和未知项。
 
 当前状态见 [计划状态](../maintenance/PLAN_STATUS.md)；逐项人工场景见 [兼容性记录](../maintenance/COMPATIBILITY.md)。[XFIXES 修复报告](2026-09-09-xfixes-request-length.md) 记录用户使用确认、主线整合及合入后的 59 项测试结果。
 
-当前只保留线性 master，origin 为 `git@github.com:jackfahdin/ZzXsrv.git`；不再保留 upstream、旧工作分支或旧 tags。[依赖快照与开发主线](2026-09-09-component-baseline.md)只记录当时的历史方案。旧报告中的提交号、标签名、分支名和 worktree 命令属于历史语境，不代表当前引用或目录仍可按原方式使用。
+当前唯一长期分支为线性 master，origin 为 `git@github.com:jackfahdin/ZzXsrv.git`；不再保留 upstream、旧工作分支或旧 tags。[依赖快照与开发主线](2026-09-09-component-baseline.md)只记录当时的历史方案。旧报告中的提交号、标签名、分支名和 worktree 命令属于历史语境，不代表当前引用或目录仍可按原方式使用。
 
 [X Server 适用性盘点](2026-09-09-xserver-applicability.md)保留此前逐项核对结果；[输入处理候选](2026-09-09-xserver-input.md)已取得本版本实际使用反馈，修复按当前目录恢复并合入主线。本次完整构建、73 项测试与运行检查见[输入整合报告](2026-09-10-xserver-input-integration.md)。历史候选的源码、运行目录和归档继续保留，不能再当作 worktree 或未完成任务重复导入。GUI-001 暂缓排查，剪贴板/OpenGL 等未验证范围继续保留。
 
