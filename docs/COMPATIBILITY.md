@@ -1,6 +1,6 @@
 # 日常使用兼容性记录
 
-更新日期：2026-09-09。任务状态见 [PLAN_STATUS.md](PLAN_STATUS.md)。本表记录实际操作结果，不把自动启动成功或笼统的“能用”换算成全部场景通过。
+更新日期：2026-09-10。任务状态见 [PLAN_STATUS.md](PLAN_STATUS.md)。本表记录实际操作结果，不把自动启动成功或笼统的“能用”换算成全部场景通过。本轮仅整理仓库，未新增实际使用验收；下列源码号为历史构建来源。
 
 ## 已有反馈
 
@@ -12,7 +12,7 @@
 
 ## 已确认 XFIXES 版本的逐项场景
 
-运行目录：`D:/File/Program/GitHub/vcxsrv-xfixes-20260909-1800/dist/x64/Release`。
+运行目录：`D:/File/Program/GitHub/vcxsrv-xfixes-20260909-1800/dist/x64/Release`。原 worktree 已解除登记，目录和运行文件保留，XFIXES 代码仍已合入 master。
 
 | 场景 | 人工结果 | 需要记录的内容 |
 | --- | --- | --- |
@@ -32,6 +32,6 @@
 
 ## 待验收的输入处理候选
 
-运行目录：`D:/File/Program/GitHub/vcxsrv-input-20260909-2110/dist/x64/Release`，源码 `c06e0db1669afaee649bdaf407c7c76c9fa3ae56`。已完成新适配静态审查、干净构建、71 项测试和认证启动/根窗口检查。维护者实际使用结果尚未收到；旧 GLX/XFIXES 反馈仍只对应旧目录。
+运行目录：`D:/File/Program/GitHub/vcxsrv-input-20260909-2110/dist/x64/Release`，历史源码 `c06e0db1669afaee649bdaf407c7c76c9fa3ae56`。已完成新适配静态审查、干净构建、71 项测试和认证启动/根窗口检查。维护者实际使用结果尚未收到，候选未合入 master；旧 GLX/XFIXES 反馈仍只对应旧目录。
 
-请在常用图形应用中验证启动、基本操作、关闭和重连；记录本版本结果后再合入主线。未提供的详细兼容性场景继续按本表补录。验证详情见[输入候选报告](validation/2026-09-09-xserver-input.md)。
+该目录现为普通保留目录，不能再按 Git worktree 操作。候选源码另有 `.local-validation/reorganize-20260910/pending-input-source.patch` 和同目录 `current-development.bundle` 归档，恢复入口见 [仓库整理报告](validation/2026-09-10-repository-reorganization.md)。本轮不继续候选验收；后续实际使用需记录启动、基本操作、关闭和重连结果，再决定主线整合。验证详情见[输入候选报告](validation/2026-09-09-xserver-input.md)。

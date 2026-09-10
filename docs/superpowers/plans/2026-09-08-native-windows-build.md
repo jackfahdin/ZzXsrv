@@ -1,5 +1,7 @@
 # Native Windows build implementation plan
 
+> 2026-09-10 历史说明：本文保留当时的方案、提交号与验证结果。旧分支、标签和工作区登记已清理，源码及运行目录保留为普通目录；旧命令不应直接照搬执行。现行规则见[维护规则](../../UPSTREAM.md)，对应关系与恢复材料见[整理记录](../../validation/2026-09-10-repository-reorganization.md)。旧依赖快照清单见[历史 JSON](../../history/2026-09-09-dependency-snapshot.json)；当前不再维护上游源码分支。
+
 **Goal:** Run the existing MSVC build from PowerShell without WSL/Cygwin or automatic downloads.
 
 **Approved scope:** The preceding discussion selected PowerShell orchestration, existing MSBuild/NMake/mhmake rules, native Windows generators, x64 Release first, and no installer. The user has now requested implementation. CMake migration is separate.

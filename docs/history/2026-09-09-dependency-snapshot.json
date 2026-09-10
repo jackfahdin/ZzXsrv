@@ -1,0 +1,279 @@
+{
+  "schema_version": 1,
+  "description": "依赖源码集合基线；树与对象用于精确复核，初始来源继承 released 的布局、裁剪和辅助文件。",
+  "initial_collection": {
+    "repository": "https://github.com/marchaesen/vcxsrv",
+    "branch_at_import": "released",
+    "commit": "3244d44e08ca6a350b8caad28e47b2fc90bcf59c",
+    "tree": "6cebd341e7682d5c455f0ad01fbcd050f9d6eb7c",
+    "already_integrated_by": "d0a1eaf7ee15fcdf4f683388a88fec49078e6408"
+  },
+  "snapshot_commit": "9971201a65e6f8ec2d34f9c8d4fbc45479cf9578",
+  "snapshot_tree": "6cebd341e7682d5c455f0ad01fbcd050f9d6eb7c",
+  "entries": [
+    {
+      "path": "X11",
+      "mode": "040000",
+      "type": "tree",
+      "object": "6c19c3558f0fc5b9799e544fcfcc6f79fda9b2b7"
+    },
+    {
+      "path": "apps",
+      "mode": "040000",
+      "type": "tree",
+      "object": "8a14023deba36836480154c6c7385d23afd7b4b8"
+    },
+    {
+      "path": "bdftopcf",
+      "mode": "040000",
+      "type": "tree",
+      "object": "887c6fc389931815484b4a44cfd2fe43defe4907"
+    },
+    {
+      "path": "compare.bat",
+      "mode": "100755",
+      "type": "blob",
+      "object": "90fe65d84a40bf9d0b7c5fe9ca5fb5966f9fd214"
+    },
+    {
+      "path": "dxtn",
+      "mode": "040000",
+      "type": "tree",
+      "object": "0156b39f272d902adcc225dbd344242638adfd22"
+    },
+    {
+      "path": "expat",
+      "mode": "040000",
+      "type": "tree",
+      "object": "c12877ae1f7afce15c60c34c2f804cd96591847c"
+    },
+    {
+      "path": "fastforwardotherbranch.sh",
+      "mode": "100755",
+      "type": "blob",
+      "object": "f710b052c088a88e4b7f2e24ccbdb7f85169d09a"
+    },
+    {
+      "path": "fontconfig",
+      "mode": "040000",
+      "type": "tree",
+      "object": "e0d8087a2503c32ed2af8b2800253b7ed639e6c4"
+    },
+    {
+      "path": "freetype",
+      "mode": "040000",
+      "type": "tree",
+      "object": "bd309f465f4ccbaef2143a41afeeb20e35bf30e1"
+    },
+    {
+      "path": "gl",
+      "mode": "040000",
+      "type": "tree",
+      "object": "45a4986d54f854a379f4407addaca237a5cdb612"
+    },
+    {
+      "path": "include",
+      "mode": "040000",
+      "type": "tree",
+      "object": "e6b93f4209ef3835a37b0085eb894d2cf064d84f"
+    },
+    {
+      "path": "libX11",
+      "mode": "040000",
+      "type": "tree",
+      "object": "d50f744821b4bce6c547006eebafff20d915708e"
+    },
+    {
+      "path": "libXau",
+      "mode": "040000",
+      "type": "tree",
+      "object": "a5e4f224b7b03fe7c1207668e1d2fd9ea61bc7ef"
+    },
+    {
+      "path": "libXaw",
+      "mode": "040000",
+      "type": "tree",
+      "object": "7e07a441695ed690d3bed001e6c960c0c02521a9"
+    },
+    {
+      "path": "libXdmcp",
+      "mode": "040000",
+      "type": "tree",
+      "object": "a656c9c40a6031f72fe9a87c2231bcc59177758a"
+    },
+    {
+      "path": "libXext",
+      "mode": "040000",
+      "type": "tree",
+      "object": "57275f4fd2899a1241689db32d6976ea1570aa4a"
+    },
+    {
+      "path": "libXfixes",
+      "mode": "040000",
+      "type": "tree",
+      "object": "f8df267a79869d704ea516a148ac8a391cf3e046"
+    },
+    {
+      "path": "libXfont2",
+      "mode": "040000",
+      "type": "tree",
+      "object": "7bc52918a6d0529f6a8d544568f2c8aed7261abc"
+    },
+    {
+      "path": "libXft",
+      "mode": "040000",
+      "type": "tree",
+      "object": "d1cd8800b130578eecbd37547a5236c47995b490"
+    },
+    {
+      "path": "libXinerama",
+      "mode": "040000",
+      "type": "tree",
+      "object": "c79bce3bc4f3f5d38d274cacb31111ac79820413"
+    },
+    {
+      "path": "libXmu",
+      "mode": "040000",
+      "type": "tree",
+      "object": "7a8d4bc12b9cd7ff86d5ff2f197e774015a796a7"
+    },
+    {
+      "path": "libXpm",
+      "mode": "040000",
+      "type": "tree",
+      "object": "27e6916acb7e71a980868d636d4e4c9080aee744"
+    },
+    {
+      "path": "libXrender",
+      "mode": "040000",
+      "type": "tree",
+      "object": "5a031fbc20d71060cb7e1283e3fd8a57d060f62b"
+    },
+    {
+      "path": "libXt",
+      "mode": "040000",
+      "type": "tree",
+      "object": "52c57dcab924feff141f0df8a5560f908098c14f"
+    },
+    {
+      "path": "libfontenc",
+      "mode": "040000",
+      "type": "tree",
+      "object": "a1ec4b5bf395b6c0168d81ca05fb1837449d751d"
+    },
+    {
+      "path": "libxcb",
+      "mode": "040000",
+      "type": "tree",
+      "object": "e5857a8f4f735b478ddca45b74064db5449c2472"
+    },
+    {
+      "path": "libxkbfile",
+      "mode": "040000",
+      "type": "tree",
+      "object": "e6a2e1ae40fc795e20aa6072b18d98c669826b7f"
+    },
+    {
+      "path": "mesalib",
+      "mode": "040000",
+      "type": "tree",
+      "object": "843fe6d0b181b1dc4a227007ac53490c9b3ab5ae"
+    },
+    {
+      "path": "mkfontscale",
+      "mode": "040000",
+      "type": "tree",
+      "object": "29b160dc61bd918996284326f291871e24d528bf"
+    },
+    {
+      "path": "openssl",
+      "mode": "040000",
+      "type": "tree",
+      "object": "99f24b13a0469081805642f6c2a04874a0a94c2a"
+    },
+    {
+      "path": "packages.txt",
+      "mode": "100644",
+      "type": "blob",
+      "object": "8a7c6a70bedab1a8d47ffc852478091e520276bc"
+    },
+    {
+      "path": "pixman",
+      "mode": "040000",
+      "type": "tree",
+      "object": "3fc5a7d13a2bafe59711e51a4bbf9db4f47e89f1"
+    },
+    {
+      "path": "pthreads",
+      "mode": "040000",
+      "type": "tree",
+      "object": "4d1e5af17a0cf62f49ce8786619eddc4ccf95790"
+    },
+    {
+      "path": "showcommits.sh",
+      "mode": "100644",
+      "type": "blob",
+      "object": "96a91fd642f5c5ce4498c6cb244f6d061735f387"
+    },
+    {
+      "path": "sync.bat",
+      "mode": "100755",
+      "type": "blob",
+      "object": "4cdcf4fe044fea65cba94912f5950b414d79f41a"
+    },
+    {
+      "path": "synchronise.py",
+      "mode": "100755",
+      "type": "blob",
+      "object": "f2dbc7414d4d013a1b0c8d06c57f55926212b1b8"
+    },
+    {
+      "path": "tools",
+      "mode": "040000",
+      "type": "tree",
+      "object": "91f07c3d7229c3c6d55092050f855f3a1cff2821"
+    },
+    {
+      "path": "updategit.bat",
+      "mode": "100755",
+      "type": "blob",
+      "object": "91dfb584aca1798541fd298015a37157066454b7"
+    },
+    {
+      "path": "updategit.sh",
+      "mode": "100755",
+      "type": "blob",
+      "object": "904cc465141ccaf7713d12c8b60e847fd2f7c323"
+    },
+    {
+      "path": "xcb-util-errors",
+      "mode": "040000",
+      "type": "tree",
+      "object": "e932b3d96a16ed2c04c933ba0b3ec55f38f4e6d0"
+    },
+    {
+      "path": "xkbcomp",
+      "mode": "040000",
+      "type": "tree",
+      "object": "09b4be61f6bf1f57ade8324adf242cc252c3c72d"
+    },
+    {
+      "path": "xorg-server",
+      "mode": "040000",
+      "type": "tree",
+      "object": "055d52bf80a5cd039c6f4bc7aaec969fab0763a5"
+    },
+    {
+      "path": "zlib",
+      "mode": "040000",
+      "type": "tree",
+      "object": "f71d19dc6db814d9c980113f6aa4b6e751ec86c0"
+    }
+  ],
+  "component_updates": [],
+  "limitations": [
+    "未将初始集合的所有目录独立与组件官方仓库逐文件核验；组件同步点参考 UPSTREAM.md。",
+    "libxml2、libregex、libwinmain 等初始整合树独有目录不在本依赖基线中，保留在 master。",
+    "清单记录本开发版本对应的快照；尚待验收的 upstream 更新可以领先本清单。"
+  ]
+}

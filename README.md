@@ -1,3 +1,5 @@
+# ZzXsrv
+
 Windows X-server based on the xorg git sources (like xming or cygwin's xwin), compiled with Visual Studio 2022.
 
 This fork starts from marchaesen/vcxsrv commit
@@ -8,16 +10,12 @@ and the old-to-new commit mapping.
 Current work and remaining items: [plan status](docs/PLAN_STATUS.md).
 Manual application coverage: [compatibility record](docs/COMPATIBILITY.md).
 
-Branches:
+Repository: [jackfahdin/ZzXsrv](https://github.com/jackfahdin/ZzXsrv).
 
-- upstream: dependency source snapshots in the imported component layout, without our integration changes.
-- master: our native Windows build support, fixes, verification and development.
-- archive/pre-restructure-20260909: the complete local history before restructuring.
-
-The initial dependency baseline comes from the original author's `released`
-component collection. We maintain dependencies directly; there is no separate
-branch tracking integrated VcXsrv snapshots. See [upstream maintenance rules](docs/UPSTREAM.md)
-and the [baseline manifest](docs/DEPENDENCIES.json) for provenance and updates.
+`master` is the single long-lived branch and keeps a linear history. Dependency
+origins, pinned commits/versions and inherited source URLs are recorded in
+[dependency sources](docs/DEPENDENCY_SOURCES.md). There is no upstream source
+branch. See [maintenance rules](docs/UPSTREAM.md) for future updates.
 
 For a native Windows build without WSL or Cygwin, run `./buildall.ps1 -CheckOnly`
 from PowerShell, then `./buildall.ps1 -Jobs 8`. See [HOW_TO_BUILD.txt](HOW_TO_BUILD.txt)

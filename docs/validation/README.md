@@ -1,12 +1,14 @@
 # 本地验证记录
 
-新增：[X Server 适用性盘点](2026-09-09-xserver-applicability.md)已完成本轮逐项核对；[输入处理候选](2026-09-09-xserver-input.md)已完成本地适配、静态审查、完整构建和 71 项测试，等待新版本实际使用确认。
+更新日期：2026-09-10。本轮[仓库整理报告](2026-09-10-repository-reorganization.md)记录 23 个首父步骤的等树重建、旧引用归档、11 个旧 worktree 解除登记、运行文件保留及普通首次推送结果。[依赖来源清单](../DEPENDENCY_SOURCES.md)记录组件来源证据和未知项。本轮没有构建程序、升级依赖或推进功能。
 
 当前状态见 [计划状态](../PLAN_STATUS.md)；逐项人工场景见 [兼容性记录](../COMPATIBILITY.md)。[XFIXES 修复报告](2026-09-09-xfixes-request-length.md) 记录用户使用确认、主线整合及合入后的 59 项测试结果。
 
-分支职责的最新整理见 [依赖快照与开发主线](2026-09-09-component-baseline.md)。本次只验证来源、合并关系和文件不变性。
+当前只保留线性 master，origin 为 `git@github.com:jackfahdin/ZzXsrv.git`；不再保留 upstream、旧工作分支或旧 tags。[依赖快照与开发主线](2026-09-09-component-baseline.md)只记录当时的历史方案。旧报告中的提交号、标签名、分支名和 worktree 命令属于历史语境，不代表当前引用或目录仍可按原方式使用。
 
-已完成的首轮基线：[2026-09-09 Windows x64 Release](2026-09-09-baseline.md)。报告记录被测源码提交、本地标签、实际结果和未验证范围。
+[X Server 适用性盘点](2026-09-09-xserver-applicability.md)保留此前逐项核对结果；[输入处理候选](2026-09-09-xserver-input.md)的历史源码 `c06e0db16` 已完成本地适配、静态审查、完整构建和 71 项测试，仍未取得实际使用确认、未合入 master。其普通源码/运行目录、`.local-validation/reorganize-20260910/pending-input-source.patch` 和同目录 `current-development.bundle` 已保留。本轮不继续该候选，恢复时先查仓库整理报告，不能再把旧目录当作 worktree。
+
+已完成的首轮基线：[2026-09-09 Windows x64 Release](2026-09-09-baseline.md)。报告记录历史被测源码提交、当时标签、实际结果和未验证范围；标签已归档后删除，验证结论仍限于原源码和运行目录。
 
 后续 GLX 修复、构建问题及候选程序的验证见 [2026-09-09 GLX 上下文标签修复](2026-09-09-glx-context-tags.md)。实际应用验收与自动检查分别记录。
 
