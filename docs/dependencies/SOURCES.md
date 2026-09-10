@@ -12,7 +12,7 @@
 
 ## 已应用的后续上游补丁
 
-本节描述当前检出的补丁集合；RENDER/RECORD 本轮位于临时候选分支，尚待本组人工确认后快进合入 master，详见[候选验证报告](../validation/2026-09-10-render-record.md)。
+本节描述当前检出的补丁集合；RENDER/RECORD 已取得本组“没问题”的使用反馈并快进合入 master，详见[验证与整合报告](../validation/2026-09-10-render-record.md)。
 
 | 改动 | 上游 commit | 实际取得差异的链接 | 本地提交 / 验证 |
 | --- | --- | --- | --- |
@@ -21,8 +21,8 @@
 | BigRequest length guard (CVE-2025-49176) | [03731b326a80b582e48d939fe62cb1e2b10400d9](https://gitlab.freedesktop.org/xorg/xserver/-/commit/03731b326a80b582e48d939fe62cb1e2b10400d9) | [同 SHA 镜像 API](https://api.github.com/repos/LizardByte-infrastructure/xserver/commits/03731b326a80b582e48d939fe62cb1e2b10400d9) | `e356623330a568afd254aa8804d6fafdfef29d95` / [整合记录](../validation/2026-09-10-xserver-input-integration.md) |
 | BigRequest newly read header guard (CVE-2025-49176 follow-up) | [4fc4d76b2c7aaed61ed2653f997783a3714c4fe1](https://gitlab.freedesktop.org/xorg/xserver/-/commit/4fc4d76b2c7aaed61ed2653f997783a3714c4fe1) | [同 SHA 镜像 API](https://api.github.com/repos/LizardByte-infrastructure/xserver/commits/4fc4d76b2c7aaed61ed2653f997783a3714c4fe1) | `e356623330a568afd254aa8804d6fafdfef29d95` / [整合记录](../validation/2026-09-10-xserver-input-integration.md) |
 | Input buffer sharing (CVE-2025-49178) | [d55c54cecb5e83eaa2d56bed5cc4461f9ba318c2](https://gitlab.freedesktop.org/xorg/xserver/-/commit/d55c54cecb5e83eaa2d56bed5cc4461f9ba318c2) | [同 SHA 镜像 API](https://api.github.com/repos/LizardByte-infrastructure/xserver/commits/d55c54cecb5e83eaa2d56bed5cc4461f9ba318c2) | `e356623330a568afd254aa8804d6fafdfef29d95` / [整合记录](../validation/2026-09-10-xserver-input-integration.md) |
-| RENDER animated cursor count (CVE-2025-49175) | [0885e0b26225c90534642fe911632ec0779eebee](https://gitlab.freedesktop.org/xorg/xserver/-/commit/0885e0b26225c90534642fe911632ec0779eebee) | [实际下载的固定 SHA API](https://api.github.com/repos/LizardByte-infrastructure/xserver/commits/0885e0b26225c90534642fe911632ec0779eebee) | `d7af5de4c3b6350ccb0e7e112bf55c501c4a3930` / [本组候选](../validation/2026-09-10-render-record.md) |
-| RECORD registration counts (CVE-2025-49179) | [2bde9ca49a8fd9a1e6697d5e7ef837870d66f5d4](https://gitlab.freedesktop.org/xorg/xserver/-/commit/2bde9ca49a8fd9a1e6697d5e7ef837870d66f5d4) | [实际下载的固定 SHA API](https://api.github.com/repos/LizardByte-infrastructure/xserver/commits/2bde9ca49a8fd9a1e6697d5e7ef837870d66f5d4) | `13f058a646a69f4a8b13a56e56d2bb4fb6980ef7` / [本组候选](../validation/2026-09-10-render-record.md) |
+| RENDER animated cursor count (CVE-2025-49175) | [0885e0b26225c90534642fe911632ec0779eebee](https://gitlab.freedesktop.org/xorg/xserver/-/commit/0885e0b26225c90534642fe911632ec0779eebee) | [实际下载的固定 SHA API](https://api.github.com/repos/LizardByte-infrastructure/xserver/commits/0885e0b26225c90534642fe911632ec0779eebee) | `d7af5de4c3b6350ccb0e7e112bf55c501c4a3930` / [整合报告](../validation/2026-09-10-render-record.md) |
+| RECORD registration counts (CVE-2025-49179) | [2bde9ca49a8fd9a1e6697d5e7ef837870d66f5d4](https://gitlab.freedesktop.org/xorg/xserver/-/commit/2bde9ca49a8fd9a1e6697d5e7ef837870d66f5d4) | [实际下载的固定 SHA API](https://api.github.com/repos/LizardByte-infrastructure/xserver/commits/2bde9ca49a8fd9a1e6697d5e7ef837870d66f5d4) | `13f058a646a69f4a8b13a56e56d2bb4fb6980ef7` / [整合报告](../validation/2026-09-10-render-record.md) |
 
 输入处理修复从已实测的历史候选 `c06e0db1669afaee649bdaf407c7c76c9fa3ae56` 恢复至 `src/xorg-server/os/io.c`。2026-09-09 实际取得的补丁 URL、日期、SHA-256、作者和正式包交叉核对信息保存在 JSON；2026-09-10 复用归档材料，没有重新下载或创建上游源码分支。前两条上游补丁的错误返回已作本地适配：不可表示的长度终止对应客户端并返回 `-1`，`dispatch.c` 保持原有处理；不声称逐字采用原始上游的 BadLength 返回方案。普通请求行为和 Windows 适配保留。验证及未覆盖范围见[整合报告](../validation/2026-09-10-xserver-input-integration.md)。
 

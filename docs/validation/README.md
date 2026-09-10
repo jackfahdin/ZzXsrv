@@ -1,6 +1,6 @@
 # 本地验证记录
 
-本轮 R3 的 [RENDER/RECORD 候选报告](2026-09-10-render-record.md)记录两项修复、来源及验证结果。当前保留临时分支 `codex/render-record-20260910`，待本组实际使用确认后快进整合；不将输入候选的反馈替代本组验收。
+本轮 R3 的 [RENDER/RECORD 验证与整合报告](2026-09-10-render-record.md)记录两项修复、来源及验证结果。维护者已确认本组使用正常，修复已快进合入 master；合入后 97 项测试通过，临时分支及工作区登记已清理，运行目录保留。
 
 更新日期：2026-09-10。[源码目录分层报告](2026-09-10-source-layout.md)记录本次完整构建、61 项测试与运行验证。[中文 README 与目录迁移报告](2026-09-10-readme-layout.md)记录前次脚本路径调整、文档导航、构建与验证范围；当前源码分层见[设计](../designs/2026-09-10-source-layout.md)与[路径映射](../history/2026-09-10-source-path-mapping.json)。此前[仓库整理报告](2026-09-10-repository-reorganization.md)记录历史线性化、旧引用归档和首次推送。[依赖来源清单](../dependencies/SOURCES.md)记录组件来源证据和未知项。
 
