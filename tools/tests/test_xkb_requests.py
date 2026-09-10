@@ -149,6 +149,9 @@ class XkbRequestsTests(unittest.TestCase):
     def test_compat_skipped(self):
         self.run_case("compat-skipped")
 
+    def test_compat_skipped_existing_tail(self):
+        self.run_case("compat-skipped-tail")
+
     def test_compat_grow(self):
         self.run_case("compat-grow")
 

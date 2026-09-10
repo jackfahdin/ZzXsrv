@@ -167,10 +167,16 @@ static void compat_case(const char *name)
     if (strstr(name,"truncate")) { compat.num_si = 4; req->truncateSI = TRUE; }
     if (strstr(name,"grow")) compat.size_si = 1;
     if (strstr(name,"skipped")) { wire[0].sym = NoSymbol; wire[0].match = XkbSI_AnyOfOrNone; wire[0].mods = 0xff; wire[0].act.type = XkbSA_XFree86Private; }
+    if (strstr(name,"tail")) { compat.num_si = 4; compat.sym_interpret[3].sym = 99; }
     req->length = (sizeof(*req) + req->nSI * sizeof(*wire)) / 4;
     int result = _XkbSetCompatMap(&client, &dev, req, (char *)(req + 1), FALSE);
     if (strstr(name,"overflow")) CHECK(result == BadValue && compat.num_si == USHRT_MAX);
-    else { CHECK(result == Success); CHECK(compat.num_si == (strstr(name,"skipped") ? 2 : 3)); CHECK(compat.sym_interpret[1].sym == (strstr(name,"skipped") ? 66 : 65)); }
+    else {
+        CHECK(result == Success);
+        CHECK(compat.num_si == (strstr(name,"skipped") && !strstr(name,"tail") ? 2 : 3));
+        CHECK(compat.sym_interpret[1].sym == (strstr(name,"skipped") ? 66 : 65));
+        if (strstr(name,"tail")) CHECK(compat.sym_interpret[2].sym == 99 && compat.size_si == 4);
+    }
     free(compat.sym_interpret);
 }
 
