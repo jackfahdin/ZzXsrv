@@ -3,7 +3,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-#include "../../../xorg-server/xfixes/disconnect.c"
+#include "../../../src/xorg-server/xfixes/disconnect.c"
 
 int (*ProcXFixesVector[XFixesNumberRequests])(ClientPtr);
 char dispatchExceptionAtReset;

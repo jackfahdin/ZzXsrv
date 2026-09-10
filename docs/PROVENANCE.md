@@ -11,6 +11,8 @@
 
 版权、许可证和第三方署名继续保留，许可证入口为 [COPYING](../COPYING) 及各组件目录中的许可文件。
 
+当前源码按职责分为产品源码 [`src/`](../src/)、随仓第三方组件 [`third_party/`](../third_party/) 和公共头文件 [`include/`](../include/)。分层只改变仓库内位置，不改变组件来源结论；完整旧路径对应关系见[源码路径映射](history/2026-09-10-source-path-mapping.json)。
+
 ## 当前规则（2026-09-10 起）
 
 只维护线性的 `master` 主线，不再维护 `upstream`、`released` 或原作者整合快照分支。临时开发可以隔离进行，交付时使用快进、rebase 后快进或 squash，不向 master 增加 merge commit。组件来源、固定修订和实际导入链接统一见 [依赖来源文档](dependencies/SOURCES.md)，更新流程见 [维护规则](maintenance/UPSTREAM.md)。

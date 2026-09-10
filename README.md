@@ -10,6 +10,18 @@ ZzXsrv 是运行于 Windows 的 X Server，让 X11 图形程序在 Windows 桌�
 
 来源说明与历史对应关系见[项目来源](docs/PROVENANCE.md)，各组件的固定修订、继承来源及未知项见[依赖来源清单](docs/dependencies/SOURCES.md)。
 
+## 源码目录
+
+| 目录 | 职责 |
+| --- | --- |
+| [`src/`](src/) | ZzXsrv 产品源码：X Server、Windows 入口适配、XLaunch、字体数据和安装清单 |
+| [`third_party/`](third_party/) | 随仓维护的 X.Org、图形、字体及其他第三方组件；目录归类不表示组件未经修改 |
+| [`include/`](include/) | 跨组件使用的兼容头文件，以及整体迁入的 `X11/` 和 `gl/` 头文件树 |
+| [`tools/`](tools/) / [`scripts/`](scripts/) | 构建工具、验证器和面向维护者的脚本入口 |
+| [`docs/`](docs/) | 构建、来源、维护、设计、计划、历史和验证文档 |
+
+完整目录边界与旧路径映射见[源码目录分层设计](docs/designs/2026-09-10-source-layout.md)和[机器可读路径映射](docs/history/2026-09-10-source-path-mapping.json)。XLaunch 仍是 X Server 源码的一部分，位于 `src/xorg-server/hw/xwin/xlaunch/`；`tools/plink/` 和 `tools/mhmake/` 保留在工具目录。
+
 ## 已有能力与验证边界
 
 - 继承 VcXsrv 的 XLaunch 启动向导、配置加载、窗口、剪贴板和键盘等产品能力。
@@ -27,7 +39,7 @@ ZzXsrv 是运行于 Windows 的 X Server，让 X11 图形程序在 Windows 桌�
 .\dist\x64\Release\xlaunch.exe
 ```
 
-也可以直接运行同一目录下的 `vcxsrv.exe`。可执行文件沿用上游名称。运行目录包含所需 DLL、字体、区域设置和键盘数据，请保留整个文件夹；不要只复制一个 EXE，也不要直接启动缺少相邻运行依赖的 `xorg-server\obj64\servrelease\vcxsrv.exe`。
+也可以直接运行同一目录下的 `vcxsrv.exe`。可执行文件沿用上游名称。运行目录包含所需 DLL、字体、区域设置和键盘数据，请保留整个文件夹；不要只复制一个 EXE，也不要直接启动缺少相邻运行依赖的 `src\xorg-server\obj64\servrelease\vcxsrv.exe`。
 
 ## 从源码构建
 

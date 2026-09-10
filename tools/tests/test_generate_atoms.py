@@ -9,7 +9,8 @@ import unittest
 
 
 ROOT = Path(__file__).resolve().parents[2]
-GENERATOR = ROOT / "xorg-server" / "dix" / "generate-atoms.py"
+XORG_SERVER = ROOT / "src" / "xorg-server"
+GENERATOR = XORG_SERVER / "dix" / "generate-atoms.py"
 
 
 class GenerateAtomsTests(unittest.TestCase):
@@ -58,7 +59,7 @@ MakePredeclaredAtoms(void)
     def test_repository_atoms_match_predefined_protocol_order(self):
         with tempfile.TemporaryDirectory() as temporary:
             output = Path(temporary) / "initatoms.c"
-            result = self.invoke(ROOT / "xorg-server" / "dix" / "BuiltInAtoms", output)
+            result = self.invoke(XORG_SERVER / "dix" / "BuiltInAtoms", output)
             self.assertEqual(result.returncode, 0, result.stderr.decode(errors="replace"))
             content = output.read_text(encoding="ascii")
             atoms = re.findall(r'MakeAtom\("([A-Z0-9_]+)", (\d+), 1\) != XA_([A-Z0-9_]+)', content)
@@ -66,7 +67,7 @@ MakePredeclaredAtoms(void)
             self.assertEqual(atoms[0], ("PRIMARY", "7", "PRIMARY"))
             self.assertEqual(atoms[-1], ("WM_TRANSIENT_FOR", "16", "WM_TRANSIENT_FOR"))
             self.assertEqual(content.count("AtomError();"), 68)
-            protocol = (ROOT / "X11" / "Xatom.h").read_text(encoding="ascii")
+            protocol = (ROOT / "include" / "X11" / "Xatom.h").read_text(encoding="ascii")
             last_predefined = re.search(r"#define XA_LAST_PREDEFINED\s+\(\(Atom\)\s*(\d+)\)", protocol)
             self.assertIsNotNone(last_predefined)
             self.assertEqual(len(atoms), int(last_predefined.group(1)))

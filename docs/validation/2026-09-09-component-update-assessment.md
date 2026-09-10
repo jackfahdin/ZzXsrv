@@ -25,48 +25,48 @@
 
 ## X Server：已经找到代码层面的对应关系
 
-本地 [meson.build](../../xorg-server/meson.build) 标识为 21.1.99.1，不能只凭产品的 21.1.16.1 判断其等于官方稳定版 21.1.16。
+本地 [meson.build](../../src/xorg-server/meson.build) 标识为 21.1.99.1，不能只凭产品的 21.1.16.1 判断其等于官方稳定版 21.1.16。
 
 对 CVE-2026-56000，已核对以下路径：
 
-- [vndcmds.c](../../xorg-server/glx/vndcmds.c) 的 `CommonMakeCurrent` 先取得 `oldTag`，再调用 `CommonMakeNewCurrent`，最后调用 `GlxFreeContextTag(oldTag)`。
+- [vndcmds.c](../../src/xorg-server/glx/vndcmds.c) 的 `CommonMakeCurrent` 先取得 `oldTag`，再调用 `CommonMakeNewCurrent`，最后调用 `GlxFreeContextTag(oldTag)`。
 - `CommonLoseCurrent` 本身只转发 vendor 回调，没有在这里释放标签槽。`CommonMakeNewCurrent` 会调用 `GlxAllocContextTag`。
-- [vndservermapping.c](../../xorg-server/glx/vndservermapping.c) 中，标签直接指向数组元素；数组空间不足时使用 `realloc`，之后释放旧标签的代码仍通过旧指针写字段，没有重新查找标签。
-- [GLX makefile](../../xorg-server/glx/makefile) 包含上述两个源文件；[dix-config.h](../../include/dix-config.h) 启用 GLXEXT。
+- [vndservermapping.c](../../src/xorg-server/glx/vndservermapping.c) 中，标签直接指向数组元素；数组空间不足时使用 `realloc`，之后释放旧标签的代码仍通过旧指针写字段，没有重新查找标签。
+- [GLX makefile](../../src/xorg-server/glx/makefile) 包含上述两个源文件；[dix-config.h](../../include/dix-config.h) 启用 GLXEXT。
 
 结论：本地代码存在公告描述的“扩容可能移动数组，旧元素指针随后被写入”的路径，列为首个回补候选。尚未对本机成品复现内存错误，也未完成 vendor 回调和所有失败分支的动态验证，不能声称已确认当前运行程序可被利用。
 
 公告明确区分了稳定版 21.1.16 与开发分支，不能忽略这个适用条件。修复提交为 `2779affbdb4354e894f490e56f962527d6125043`，来源为 [X.Org 维护者公告的邮件归档副本](https://www.mail-archive.com/xorg-devel@lists.x.org/msg58557.html)。本次 [官方提交页面](https://gitlab.freedesktop.org/xorg/xserver/-/commit/2779affbdb4354e894f490e56f962527d6125043) 访问受限，尚未取得并审查补丁差异，不把公告说明当成可直接应用的补丁。
 
-其他候选尚需逐项对照：本地启用了 XKB、XSYNC、PRESENT、XFIXES；[XFIXES disconnect.c](../../xorg-server/xfixes/disconnect.c) 的普通请求处理函数未见对应长度匹配检查，需核对 CVE-2025-49177；[os/io.c](../../xorg-server/os/io.c) 的大请求长度运算需核对 CVE-2025-49176 及其补充修复。还需覆盖 2025 年 6 月、10 月及 2026 年 4 月、6 月、7 月的相关公告，不能只处理最后一批。依据：[X.Org 安全索引](https://www.x.org/Development/Security/)。
+其他候选尚需逐项对照：本地启用了 XKB、XSYNC、PRESENT、XFIXES；[XFIXES disconnect.c](../../src/xorg-server/xfixes/disconnect.c) 的普通请求处理函数未见对应长度匹配检查，需核对 CVE-2025-49177；[os/io.c](../../src/xorg-server/os/io.c) 的大请求长度运算需核对 CVE-2025-49176 及其补充修复。还需覆盖 2025 年 6 月、10 月及 2026 年 4 月、6 月、7 月的相关公告，不能只处理最后一批。依据：[X.Org 安全索引](https://www.x.org/Development/Security/)。
 
 glamor 专属问题不能直接套用：当前检查的 Windows 服务器构建入口未包含 glamor 目标。扩展宏启用只证明值得继续检查，不证明每条公告的触发条件都成立。
 
 ## 字体与 XML 依赖：确有消费者，逐项确认适用性
 
-[libXfont2 makefile](../../libXfont2/makefile) 编入 `bitscale.c`、`pcfread.c`、`bdfutils.c`，与后续字体解析修复涉及的模块有交集；FreeType 由原生构建入口编译，并被 libXfont2、Fontconfig 等使用。应先对照修复，再验证 PCF/BDF、TrueType/OpenType、中文显示及字体缓存。本轮只确认构建路径，不认定后续所有字体漏洞都适用；例如 [FreeType 配置](../../freetype/include/freetype/config/ftoption.h) 未启用 PNG 支持。
+[libXfont2 makefile](../../third_party/xorg/libXfont2/makefile) 编入 `bitscale.c`、`pcfread.c`、`bdfutils.c`，与后续字体解析修复涉及的模块有交集；FreeType 由原生构建入口编译，并被 libXfont2、Fontconfig 等使用。应先对照修复，再验证 PCF/BDF、TrueType/OpenType、中文显示及字体缓存。本轮只确认构建路径，不认定后续所有字体漏洞都适用；例如 [FreeType 配置](../../third_party/fonts/freetype/include/freetype/config/ftoption.h) 未启用 PNG 支持。
 
 libxml2 使用情况：
 
-- [XLaunch config.cc](../../xorg-server/hw/xwin/xlaunch/config.cc) 通过 `xmlReadFile(filename, NULL, 0)` 读取配置。
-- [Fontconfig 配置](../../fontconfig/config.h) 启用 `ENABLE_LIBXML2`；xclock 也链接这条依赖链。
-- 对已有完整运行目录中的 `libxml2-2.dll` 调用 `__xmlParserVersion`，返回 `20901`，与 [头文件版本](../../libxml2/include/libxml/xmlversion.h) 的 2.9.1 一致。DLL SHA-256 为 `3c68a190dc6d550334ff9d0a506e9526105b008364dad0915562413ceec092cb`，与仓库 `libxml2/bin64` 中的 DLL 相同。
+- [XLaunch config.cc](../../src/xorg-server/hw/xwin/xlaunch/config.cc) 通过 `xmlReadFile(filename, NULL, 0)` 读取配置。
+- [Fontconfig 配置](../../third_party/fonts/fontconfig/config.h) 启用 `ENABLE_LIBXML2`；xclock 也链接这条依赖链。
+- 对已有完整运行目录中的 `libxml2-2.dll` 调用 `__xmlParserVersion`，返回 `20901`，与 [头文件版本](../../third_party/libxml2/include/libxml/xmlversion.h) 的 2.9.1 一致。DLL SHA-256 为 `3c68a190dc6d550334ff9d0a506e9526105b008364dad0915562413ceec092cb`，与仓库 `libxml2/bin64` 中的 DLL 相同。
 
 这确认了 DLL 自报版本，仍不能证明其精确源码、编译选项及补丁。仓库携带头文件、导入库和 DLL，更新前要补齐可重建来源，不能只换一个新版 DLL。
 
 2.15 系列移除了旧的 Windows 构建系统，改用 CMake，并改变内置网络访问、压缩输入等行为。因此 2.15.4 是兼容性试验候选，尚不是已批准可替换版本。试验应覆盖头文件、导入库、DLL 及全部消费者的重建，并验证 XLaunch 配置保存/加载、中文路径、错误 XML、Fontconfig 配置与缓存。它适合作为以后单组件 CMake 试验，不要求现在迁移全仓库。依据：[libxml2 2.15.0 变更说明](https://download.gnome.org/sources/libxml2/2.15/libxml2-2.15.0.news)。
 
-Expat 的实际消费者是 Mesa：[Mesa makefile](../../mesalib/src/makefile) 链接 `libexpat.lib`，[xmlconfig.c](../../mesalib/src/util/xmlconfig.c) 使用 `XML_ParserCreate` 和 `XML_ParseBuffer` 解析配置。它可以单独更新，不要求同时替换整个 Mesa。需核对 [Expat 2.8.4 变更记录](https://github.com/libexpat/libexpat/blob/R_2_8_4/expat/Changes) 中各问题的配置条件；不能因 Windows 平台就认定启用了 Expat 的 16 位字符接口。
+Expat 的实际消费者是 Mesa：[Mesa makefile](../../third_party/graphics/mesalib/src/makefile) 链接 `libexpat.lib`，[xmlconfig.c](../../third_party/graphics/mesalib/src/util/xmlconfig.c) 使用 `XML_ParserCreate` 和 `XML_ParseBuffer` 解析配置。它可以单独更新，不要求同时替换整个 Mesa。需核对 [Expat 2.8.4 变更记录](https://github.com/libexpat/libexpat/blob/R_2_8_4/expat/Changes) 中各问题的配置条件；不能因 Windows 平台就认定启用了 Expat 的 16 位字符接口。
 
 ## OpenSSL、Mesa 与其他组件的取舍
 
 OpenSSL 3.4 分支支持到 2026-10-22；3.5 LTS 支持到 2030-04-08。因此应排入近期维护窗口，优先评估 3.5.8，而不是只长期停留在 3.4 的补丁版。依据：[官方版本与支持周期](https://openssl-library.org/source/)。
 
-本地 [xsha1.c](../../xorg-server/os/xsha1.c) 明确使用 OpenSSL SHA-1 API。[makefile.before](../../makefile.before) 列出 `libssl.lib`、`libcrypto.lib`，但本轮在服务器与 xkbcomp 源码检查中没有找到建立 TLS 会话的典型调用。不能据此把所有 TLS/CMS 漏洞都认定为当前功能风险，也不能把普通 X11 TCP 连接描述成 OpenSSL 加密连接。后续核对实际链接符号与 API 兼容性；`tools/plink` 的 PuTTY 加密代码需另行维护。
+本地 [xsha1.c](../../src/xorg-server/os/xsha1.c) 明确使用 OpenSSL SHA-1 API。[makefile.before](../../makefile.before) 列出 `libssl.lib`、`libcrypto.lib`，但本轮在服务器与 xkbcomp 源码检查中没有找到建立 TLS 会话的典型调用。不能据此把所有 TLS/CMS 漏洞都认定为当前功能风险，也不能把普通 X11 TCP 连接描述成 OpenSSL 加密连接。后续核对实际链接符号与 API 兼容性；`tools/plink` 的 PuTTY 加密代码需另行维护。
 
 Mesa 当前构建启用 `GALLIUM_SOFTPIPE`，还保留 Windows 自定义 makefile 和服务器整合代码。升级至 26.2.2 的改动面较大，本轮未发现足以支持立即整包替换的已复现图形故障；其上游发布不能直接视为我们这套 Windows 整合代码已验证。先处理 Expat 等独立依赖，再按真实 GLX/OpenGL 场景选择相关修复。
 
-zlib 使用仓库自己的 [makefile](../../zlib/makefile)，不是直接依赖上游 Visual Studio 工程；上游构建系统变化不意味着我们必须迁移整个项目到 CMake。当前目标未编入 `contrib/minizip`，不能把该子目录的安全修复自动视为当前程序受影响。更新仍需检查导出、压缩/解压、异常数据和字体消费者。
+zlib 使用仓库自己的 [makefile](../../third_party/zlib/makefile)，不是直接依赖上游 Visual Studio 工程；上游构建系统变化不意味着我们必须迁移整个项目到 CMake。当前目标未编入 `contrib/minizip`，不能把该子目录的安全修复自动视为当前程序受影响。更新仍需检查导出、压缩/解压、异常数据和字体消费者。
 
 xkbcomp 与 libXpm 已纳入后续候选：前者关系到键盘规则编译，后者由 xcalc、xclock 等工具使用。libX11、libxcb、Pixman、Fontconfig 自身以及 PuTTY 等其余组件尚未完成同等深度的更新审查，不能标记为“无需更新”或“没有漏洞”。
 

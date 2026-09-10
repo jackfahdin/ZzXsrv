@@ -62,30 +62,30 @@ if [[ "$BUILDDEPS" == "1" ]] ; then
 
 if [[ "$IS64" == "1" ]]; then
 	if [[ "$BUILDRELEASE" == "1" ]] ; then
-		echo MSBuild.exe freetype/MSBuild.sln -t:Build -p:Configuration="Release" -p:Platform=x64 -m:$2
-		MSBuild.exe freetype/MSBuild.sln -t:Build -p:Configuration="Release" -p:Platform=x64 -m:$2
+		echo MSBuild.exe third_party/fonts/freetype/MSBuild.sln -t:Build -p:Configuration="Release" -p:Platform=x64 -m:$2
+		MSBuild.exe third_party/fonts/freetype/MSBuild.sln -t:Build -p:Configuration="Release" -p:Platform=x64 -m:$2
 		check-error 'Error compiling freetype'
 	fi
 	if [[ "$BUILDDEBUG" == "1" ]] ; then
-		echo MSBuild.exe freetype/MSBuild.sln -t:Build -p:Configuration="Debug" -p:Platform=x64 -m:$2
-		MSBuild.exe freetype/MSBuild.sln -t:Build -p:Configuration="Debug" -p:Platform=x64 -m:$2
+		echo MSBuild.exe third_party/fonts/freetype/MSBuild.sln -t:Build -p:Configuration="Debug" -p:Platform=x64 -m:$2
+		MSBuild.exe third_party/fonts/freetype/MSBuild.sln -t:Build -p:Configuration="Debug" -p:Platform=x64 -m:$2
 		check-error 'Error compiling freetype'
 	fi
 else
 	if [[ "$BUILDRELEASE" == "1" ]] ; then
-		echo MSBuild.exe freetype/MSBuild/freetype.sln -t:Build -p:Configuration="Release" -p:Platform=Win32 -m:$2
-		MSBuild.exe freetype/MSBuild.sln -t:Build -p:Configuration="Release" -p:Platform=Win32 -m:$2
+		echo MSBuild.exe third_party/fonts/freetype/MSBuild.sln -t:Build -p:Configuration="Release" -p:Platform=Win32 -m:$2
+		MSBuild.exe third_party/fonts/freetype/MSBuild.sln -t:Build -p:Configuration="Release" -p:Platform=Win32 -m:$2
 		check-error 'Error compiling freetype'
 	fi
 	if [[ "$BUILDDEBUG" == "1" ]] ; then
-		echo MSBuild.exe freetype/MSBuild.sln -t:Build -p:Configuration="Debug" -p:Platform=Win32 -m:$2
-		MSBuild.exe freetype/MSBuild.sln -t:Build -p:Configuration="Debug" -p:Platform=Win32 -m:$2
+		echo MSBuild.exe third_party/fonts/freetype/MSBuild.sln -t:Build -p:Configuration="Debug" -p:Platform=Win32 -m:$2
+		MSBuild.exe third_party/fonts/freetype/MSBuild.sln -t:Build -p:Configuration="Debug" -p:Platform=Win32 -m:$2
 		check-error 'Error compiling freetype'
 	fi
 fi
 
 if [[ "$BUILDRELEASE" == "1" ]] ; then
-	cd openssl
+	cd third_party/openssl
 
 	if [[ "$IS64" == "1" ]]; then
 
@@ -109,11 +109,11 @@ if [[ "$BUILDRELEASE" == "1" ]] ; then
 	jom.exe /J$2
 	check-error 'Error compiling openssl for release'
 
-	cd ../..
+	cd "$REPO_ROOT"
 fi
 
 if [[ "$BUILDDEBUG" == "1" ]] ; then
-	cd openssl
+	cd third_party/openssl
 	if [[ "$IS64" == "1" ]]; then
 		if [[ ! -d "debug64" ]]; then
 		  mkdir debug64
@@ -132,10 +132,10 @@ if [[ "$BUILDDEBUG" == "1" ]] ; then
 	jom.exe /J$2
 	check-error 'Error compiling openssl for debug'
 
-	cd ../..
+	cd "$REPO_ROOT"
 fi
 
-cd pthreads
+cd third_party/pthreads
 if [[ "$BUILDRELEASE" == "1" ]] ; then
 	nmake.exe VC-static
 	check-error 'Error compiling pthreads for release'
@@ -144,7 +144,7 @@ if [[ "$BUILDDEBUG" == "1" ]] ; then
 	nmake.exe VC-static-debug
 	check-error 'Error compiling pthreads for debug'
 fi
-cd ..
+cd "$REPO_ROOT"
 
 fi
 # fi BUILDDEPS
@@ -167,16 +167,16 @@ if [[ "$IS64" == "1" ]]; then
   fi
 
 	if [[ "$BUILDRELEASE" == "1" ]]; then
-		tools/mhmake/Release64/mhmake.exe -P$2 -C xorg-server MAKESERVER=1
+		tools/mhmake/Release64/mhmake.exe -P$2 -C src/xorg-server MAKESERVER=1
 		check-error 'Error compiling vcxsrv for release'
 	fi
 
 	if [[ "$BUILDDEBUG" == "1" ]]; then
-		tools/mhmake/Release64/mhmake.exe -P$2 -C xorg-server MAKESERVER=1 DEBUG=1
+		tools/mhmake/Release64/mhmake.exe -P$2 -C src/xorg-server MAKESERVER=1 DEBUG=1
 		check-error 'Error compiling vcxsrv for debug'
 	fi
 
-	cd xorg-server/installer
+	cd src/xorg-server/installer
 	./packageall.sh nox86
 
 else
@@ -195,15 +195,15 @@ else
   	fi
 
   	if [[ "$BUILDRELEASE" == "1" ]]; then
-  		tools/mhmake/Release/mhmake.exe -P$2 -C xorg-server MAKESERVER=1
+		tools/mhmake/Release/mhmake.exe -P$2 -C src/xorg-server MAKESERVER=1
   		check-error 'Error compiling vcxsrv for release'
   	fi
   	if [[ "$BUILDDEBUG" == "1" ]]; then
-  		tools/mhmake/Release/mhmake.exe -P$2 -C xorg-server MAKESERVER=1 DEBUG=1
+		tools/mhmake/Release/mhmake.exe -P$2 -C src/xorg-server MAKESERVER=1 DEBUG=1
   		check-error 'Error compiling vcxsrv for debug'
   	fi
 
-  	cd xorg-server/installer
+	cd src/xorg-server/installer
   	./packageall.sh nox64
   fi
 

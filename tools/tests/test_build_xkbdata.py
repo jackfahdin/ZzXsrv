@@ -9,7 +9,7 @@ import unittest
 
 ROOT = Path(__file__).resolve().parents[2]
 HELPER = ROOT / "tools" / "build_xkbdata.py"
-SOURCE = ROOT / "xorg-server" / "xkeyboard-config"
+SOURCE = ROOT / "src" / "xorg-server" / "xkeyboard-config"
 
 
 class BuildXkbdataTests(unittest.TestCase):

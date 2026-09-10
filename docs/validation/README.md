@@ -1,6 +1,6 @@
 # 本地验证记录
 
-更新日期：2026-09-10。当前[中文 README 与目录迁移报告](2026-09-10-readme-layout.md)记录脚本路径调整、文档导航、构建与验证范围。此前[仓库整理报告](2026-09-10-repository-reorganization.md)记录历史线性化、旧引用归档和首次推送。[依赖来源清单](../dependencies/SOURCES.md)记录组件来源证据和未知项。
+更新日期：2026-09-10。[源码目录分层报告](2026-09-10-source-layout.md)记录本次完整构建、61 项测试与运行验证。[中文 README 与目录迁移报告](2026-09-10-readme-layout.md)记录前次脚本路径调整、文档导航、构建与验证范围；当前源码分层见[设计](../designs/2026-09-10-source-layout.md)与[路径映射](../history/2026-09-10-source-path-mapping.json)。此前[仓库整理报告](2026-09-10-repository-reorganization.md)记录历史线性化、旧引用归档和首次推送。[依赖来源清单](../dependencies/SOURCES.md)记录组件来源证据和未知项。
 
 当前状态见 [计划状态](../maintenance/PLAN_STATUS.md)；逐项人工场景见 [兼容性记录](../maintenance/COMPATIBILITY.md)。[XFIXES 修复报告](2026-09-09-xfixes-request-length.md) 记录用户使用确认、主线整合及合入后的 59 项测试结果。
 
@@ -51,8 +51,8 @@
 可分别检查 Windows PowerShell 5.1 与 PowerShell 7：
 
 ```powershell
-powershell -NoProfile -ExecutionPolicy Bypass -File .\buildall.ps1 -CheckOnly -EnvironmentReport .local-validation\environment-ps51.json
-pwsh -NoProfile -File .\buildall.ps1 -CheckOnly -EnvironmentReport .local-validation\environment-ps7.json
+powershell -NoProfile -ExecutionPolicy Bypass -File .\scripts\build\buildall.ps1 -CheckOnly -EnvironmentReport .local-validation\environment-ps51.json
+pwsh -NoProfile -File .\scripts\build\buildall.ps1 -CheckOnly -EnvironmentReport .local-validation\environment-ps7.json
 Get-Content .local-validation\environment-ps51.json -Raw | ConvertFrom-Json | Out-Null
 Get-Content .local-validation\environment-ps7.json -Raw | ConvertFrom-Json | Out-Null
 ```

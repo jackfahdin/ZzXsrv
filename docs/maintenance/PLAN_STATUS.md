@@ -2,7 +2,9 @@
 
 更新日期：2026-09-10。仓库保持线性 `master`；此前历史整理及首次 GitHub 推送已完成，见[仓库整理报告](../validation/2026-09-10-repository-reorganization.md)。GLX、XFIXES 已合入，输入处理候选仍待验收。
 
-本文件为当前任务状态入口。当前整理中文 README、文档目录和脚本入口，验证记录见[目录迁移报告](../validation/2026-09-10-readme-layout.md)。构建入口为 `scripts/build/buildall.ps1`；不推进组件升级或候选验收。`origin` 为 `git@github.com:jackfahdin/ZzXsrv.git`，各项历史验证仍以对应报告中的源码、时间和范围为准。
+本文件为当前任务状态入口。源码按产品源码、第三方组件和公共头文件分层，目录边界与旧路径对应见[源码目录设计](../designs/2026-09-10-source-layout.md)和[路径映射](../history/2026-09-10-source-path-mapping.json)；前次中文 README、脚本和文档整理见[目录迁移报告](../validation/2026-09-10-readme-layout.md)。构建入口仍为 `scripts/build/buildall.ps1`；不推进组件升级或候选验收。`origin` 为 `git@github.com:jackfahdin/ZzXsrv.git`，各项历史验证仍以对应报告中的源码、时间和范围为准。
+
+本次源码分层已完成，完整 x64 Release 构建、61 项测试及运行验证通过，见[验证报告](../validation/2026-09-10-source-layout.md)。
 
 ## 当前结论
 

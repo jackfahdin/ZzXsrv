@@ -4,7 +4,7 @@
 
 ## 维护目标和边界
 
-先维护一个自己能够长期使用、能够解释构建过程和定位故障的 Windows 版本。`origin` 为 `git@github.com:jackfahdin/ZzXsrv.git`，首次源码推送已完成。当前中文 README 和目录迁移的验证见[目录迁移报告](../validation/2026-09-10-readme-layout.md)，不包含产品发布、CI 配置或功能开发。
+先维护一个自己能够长期使用、能够解释构建过程和定位故障的 Windows 版本。`origin` 为 `git@github.com:jackfahdin/ZzXsrv.git`，首次源码推送已完成。前次中文 README、脚本和文档整理的验证见[目录迁移报告](../validation/2026-09-10-readme-layout.md)；当前源码分层边界与旧路径对应见[源码目录设计](../designs/2026-09-10-source-layout.md)和[路径映射](../history/2026-09-10-source-path-mapping.json)。这些整理不包含产品发布、CI 配置或功能开发。
 
 仓库仅保留线性 `master`，不再保留 `upstream`、旧工作分支或旧标签。23 个首父步骤已按 tree 无损重建，重建终点 `b8be16d` 的文件树与整理前 `a296b1553` 相同；后续提交记录本轮文档变更。11 个旧 worktree 已解除登记，源码和运行文件仍在原路径，后续应按普通目录使用。来源见 [docs/PROVENANCE.md](../PROVENANCE.md) 和 [依赖来源清单](../dependencies/SOURCES.md)，维护方法见 [上游更新规则](UPSTREAM.md)，映射与归档见 [仓库整理报告](../validation/2026-09-10-repository-reorganization.md)。旧报告中的提交号和标签名作为历史证据保留，不能当作当前 Git 引用使用。
 

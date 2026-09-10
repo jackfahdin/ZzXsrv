@@ -60,7 +60,7 @@ powershell -NoProfile -ExecutionPolicy Bypass -File .\scripts\build\buildall.ps1
 .\dist\x64\Release\xlaunch.exe
 ```
 
-`xlaunch.exe` 是启动向导，也可直接启动同目录的 `vcxsrv.exe`。请完整保留目录中的运行 DLL、字体、区域设置和键盘数据。原始产物 `xorg-server\obj64\servrelease\vcxsrv.exe` 旁没有齐全的运行 DLL，不能独立启动。
+`xlaunch.exe` 是启动向导，也可直接启动同目录的 `vcxsrv.exe`。请完整保留目录中的运行 DLL、字体、区域设置和键盘数据。原始产物 `src\xorg-server\obj64\servrelease\vcxsrv.exe` 旁没有齐全的运行 DLL，不能独立启动。
 
 不重新编译，只整理已有产物：
 
@@ -72,7 +72,7 @@ powershell -NoProfile -ExecutionPolicy Bypass -File .\scripts\build\buildall.ps1
 
 ## 依赖来源与构建边界
 
-当前流程仍使用仓库随附的 **libxml2 预编译库**。x64 构建链接 `libxml2/lib64/libxml2-2.lib`，运行目录从 `libxml2/bin64` 取得 `libxml2-2.dll`、`libiconv-2.dll`、`libwinpthread-1.dll` 和 `libgcc_s_sjlj-1.dll`。仓库同时保留 32 位文件，但它们不属于已记录的 x64 运行依赖。
+当前流程仍使用仓库随附的 **libxml2 预编译库**。x64 构建链接 `third_party/libxml2/lib64/libxml2-2.lib`，运行目录从 `third_party/libxml2/bin64` 取得 `libxml2-2.dll`、`libiconv-2.dll`、`libwinpthread-1.dll` 和 `libgcc_s_sjlj-1.dll`。仓库同时保留 32 位文件，但它们不属于已记录的 x64 运行依赖。
 
 libxml2 头文件声明为 2.9.1，随附二进制的供应者、准确源码和重建来源尚未完全确认。构建通过不表示所有第三方依赖都从源码重建，也不表示重复构建的二进制逐字节相同。来源与未知项见[依赖来源清单](../dependencies/SOURCES.md)，预编译文件清单与产物哈希的历史记录见[本地维护基线](../validation/2026-09-09-baseline.md)。
 
@@ -155,6 +155,6 @@ $env:VCXSRV_SOURCE_COMMIT = $builtCommit
 
 2026-09-09 的干净构建基线以历史源码提交 `a4adc3dc3f2158c2308133cecee19a71cf62bcc8` 为输入，完成 Windows x64 Release `All`、43 项测试（无跳过）、35 个 PE 依赖检查和经认证的根窗口查询。环境包括 VS2022 / MSVC 14.44、SDK 10.0.26100.0、Python 3.14 和 WinFlexBison 2.5.25；Windows PowerShell 5.1 与 PowerShell 7 的预检另有记录。基线还记录了最小 PATH 下原生 WGL 初始化和 1920×1080 根窗口结果，该尺寸只是当时主机的结果。
 
-上述为历史证据。当前目录迁移后的构建与检查单独记录于[目录迁移报告](../validation/2026-09-10-readme-layout.md)。旧标签和提交的现状以[仓库整理记录](../validation/2026-09-10-repository-reorganization.md)为准。GLX、XFIXES 后续验证分别见[验证索引](../validation/README.md)，当前候选与主线状态见[计划状态](../maintenance/PLAN_STATUS.md)。
+上述为历史证据。前次脚本与文档目录整理的构建和检查记录于[目录迁移报告](../validation/2026-09-10-readme-layout.md)；当前源码分层边界见[源码目录设计](../designs/2026-09-10-source-layout.md)。旧标签和提交的现状以[仓库整理记录](../validation/2026-09-10-repository-reorganization.md)为准。GLX、XFIXES 后续验证分别见[验证索引](../validation/README.md)，当前候选与主线状态见[计划状态](../maintenance/PLAN_STATUS.md)。
 
 静态导入检查不能覆盖所有动态 `LoadLibrary` 路径；根窗口查询不能验证完整 GUI / OpenGL、剪贴板、输入法或多显示器行为。Debug、Win32、安装包和更广泛应用兼容性尚未全面验收。证据格式及后续记录方式见[验证说明](../validation/README.md)。

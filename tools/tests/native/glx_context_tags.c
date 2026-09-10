@@ -29,9 +29,9 @@ static void *moving_realloc(void *old, size_t size)
     return fresh;
 }
 
-#include "../../../xorg-server/glx/vndcmds.c"
+#include "../../../src/xorg-server/glx/vndcmds.c"
 #define realloc moving_realloc
-#include "../../../xorg-server/glx/vndservermapping.c"
+#include "../../../src/xorg-server/glx/vndservermapping.c"
 #undef realloc
 
 static GlxClientPriv tags;

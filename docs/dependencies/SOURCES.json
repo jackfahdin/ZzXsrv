@@ -15,12 +15,12 @@
   "components": [
     {
       "name": "libX11",
-      "path": "libX11",
+      "path": "third_party/xorg/libX11",
       "revision": "5f8077b257ea27a5fd6f114d2bc15284b2416b3c",
       "revision_kind": "recorded_sync_commit",
       "upstream_url": "https://gitlab.freedesktop.org/xorg/lib/libx11",
       "evidence": [
-        "libX11/configure.ac: AC_INIT declares 1.8.11",
+        "third_party/xorg/libX11/configure.ac: AC_INIT declares 1.8.11",
         "docs/history/upstream-releases/releasenote_21.1.16.1.txt: Changes in 21.1.16 records 5f8077b257ea27a5fd6f114d2bc15284b2416b3c",
         "docs/dependencies/packages.txt"
       ],
@@ -40,12 +40,12 @@
     },
     {
       "name": "libXau",
-      "path": "libXau",
+      "path": "third_party/xorg/libXau",
       "revision": "eb1d1d7f2dc9888609ed65df6348dc3a46bc207d",
       "revision_kind": "recorded_sync_commit",
       "upstream_url": "https://gitlab.freedesktop.org/xorg/lib/libxau",
       "evidence": [
-        "libXau/configure.ac: AC_INIT declares 1.0.12",
+        "third_party/xorg/libXau/configure.ac: AC_INIT declares 1.0.12",
         "docs/history/upstream-releases/releasenote_21.1.16.1.txt: Changes in 21.1.16 records eb1d1d7f2dc9888609ed65df6348dc3a46bc207d",
         "docs/dependencies/packages.txt"
       ],
@@ -65,12 +65,12 @@
     },
     {
       "name": "libXaw",
-      "path": "libXaw",
+      "path": "third_party/xorg/libXaw",
       "revision": "1.0.15",
       "revision_kind": "declared_version",
       "upstream_url": "https://gitlab.freedesktop.org/xorg/lib/libxaw",
       "evidence": [
-        "libXaw/configure.ac: AC_INIT declares 1.0.15",
+        "third_party/xorg/libXaw/configure.ac: AC_INIT declares 1.0.15",
         "docs/history/upstream-releases/releasenote_21.1.16.1.txt: Changes in 21.1.10 lists libXaw-1.0.15",
         "docs/dependencies/packages.txt"
       ],
@@ -89,12 +89,12 @@
     },
     {
       "name": "libXdmcp",
-      "path": "libXdmcp",
+      "path": "third_party/xorg/libXdmcp",
       "revision": "8f3408f3936bacd08f76d5ee22cbc86e6b627287",
       "revision_kind": "recorded_sync_commit",
       "upstream_url": "https://gitlab.freedesktop.org/xorg/lib/libxdmcp",
       "evidence": [
-        "libXdmcp/configure.ac: AC_INIT declares 1.1.5",
+        "third_party/xorg/libXdmcp/configure.ac: AC_INIT declares 1.1.5",
         "docs/history/upstream-releases/releasenote_21.1.16.1.txt: Changes in 21.1.16 records 8f3408f3936bacd08f76d5ee22cbc86e6b627287",
         "docs/dependencies/packages.txt"
       ],
@@ -114,12 +114,12 @@
     },
     {
       "name": "libXext",
-      "path": "libXext",
+      "path": "third_party/xorg/libXext",
       "revision": "424b67ad03fafdb0d6caf2e9bf5a103e9717e71f",
       "revision_kind": "recorded_sync_commit",
       "upstream_url": "https://gitlab.freedesktop.org/xorg/lib/libxext",
       "evidence": [
-        "libXext/configure.ac: AC_INIT declares 1.3.6",
+        "third_party/xorg/libXext/configure.ac: AC_INIT declares 1.3.6",
         "docs/history/upstream-releases/releasenote_21.1.16.1.txt: Changes in 21.1.16 records 424b67ad03fafdb0d6caf2e9bf5a103e9717e71f",
         "docs/dependencies/packages.txt"
       ],
@@ -139,12 +139,12 @@
     },
     {
       "name": "libXfixes",
-      "path": "libXfixes",
+      "path": "third_party/xorg/libXfixes",
       "revision": "6.0.1",
       "revision_kind": "declared_version",
       "upstream_url": "https://gitlab.freedesktop.org/xorg/lib/libxfixes",
       "evidence": [
-        "libXfixes/configure.ac: AC_INIT declares 6.0.1",
+        "third_party/xorg/libXfixes/configure.ac: AC_INIT declares 6.0.1",
         "docs/history/upstream-releases/releasenote_21.1.16.1.txt: Changes in 21.1.10 lists libXfixes-6.0.1",
         "docs/dependencies/packages.txt"
       ],
@@ -163,12 +163,12 @@
     },
     {
       "name": "libXfont2",
-      "path": "libXfont2",
+      "path": "third_party/xorg/libXfont2",
       "revision": "2.0.6",
       "revision_kind": "declared_version",
       "upstream_url": "https://gitlab.freedesktop.org/xorg/lib/libxfont",
       "evidence": [
-        "libXfont2/configure.ac: AC_INIT declares 2.0.6",
+        "third_party/xorg/libXfont2/configure.ac: AC_INIT declares 2.0.6",
         "docs/history/upstream-releases/releasenote_21.1.16.1.txt: Changes in 21.1.10 lists libXfont2-2.0.6",
         "docs/dependencies/packages.txt"
       ],
@@ -187,12 +187,12 @@
     },
     {
       "name": "libXft",
-      "path": "libXft",
+      "path": "third_party/xorg/libXft",
       "revision": "a074c10e1b396d26e729080ce50a18f6a22de6ad",
       "revision_kind": "recorded_sync_commit",
       "upstream_url": "https://gitlab.freedesktop.org/xorg/lib/libxft",
       "evidence": [
-        "libXft/configure.ac: AC_INIT declares 2.3.8",
+        "third_party/xorg/libXft/configure.ac: AC_INIT declares 2.3.8",
         "docs/history/upstream-releases/releasenote_21.1.16.1.txt: Changes in 21.1.16 records a074c10e1b396d26e729080ce50a18f6a22de6ad",
         "docs/dependencies/packages.txt"
       ],
@@ -212,12 +212,12 @@
     },
     {
       "name": "libXinerama",
-      "path": "libXinerama",
+      "path": "third_party/xorg/libXinerama",
       "revision": "2344df8f821f9becc8aaa6af939b535b51d4a332",
       "revision_kind": "recorded_sync_commit",
       "upstream_url": "https://gitlab.freedesktop.org/xorg/lib/libxinerama",
       "evidence": [
-        "libXinerama/configure.ac: AC_INIT declares 1.1.5",
+        "third_party/xorg/libXinerama/configure.ac: AC_INIT declares 1.1.5",
         "docs/history/upstream-releases/releasenote_21.1.16.1.txt: Changes in 21.1.16 records 2344df8f821f9becc8aaa6af939b535b51d4a332",
         "docs/dependencies/packages.txt"
       ],
@@ -237,12 +237,12 @@
     },
     {
       "name": "libXmu",
-      "path": "libXmu",
+      "path": "third_party/xorg/libXmu",
       "revision": "291feb3d6d70758185de71a21cf87d23a4b965cd",
       "revision_kind": "recorded_sync_commit",
       "upstream_url": "https://gitlab.freedesktop.org/xorg/lib/libxmu",
       "evidence": [
-        "libXmu/configure.ac: AC_INIT declares 1.2.1",
+        "third_party/xorg/libXmu/configure.ac: AC_INIT declares 1.2.1",
         "docs/history/upstream-releases/releasenote_21.1.16.1.txt: Changes in 21.1.16 records 291feb3d6d70758185de71a21cf87d23a4b965cd",
         "docs/dependencies/packages.txt"
       ],
@@ -262,12 +262,12 @@
     },
     {
       "name": "libXpm",
-      "path": "libXpm",
+      "path": "third_party/xorg/libXpm",
       "revision": "3.5.17",
       "revision_kind": "declared_version",
       "upstream_url": "https://gitlab.freedesktop.org/xorg/lib/libxpm",
       "evidence": [
-        "libXpm/configure.ac: AC_INIT declares 3.5.17",
+        "third_party/xorg/libXpm/configure.ac: AC_INIT declares 3.5.17",
         "docs/history/upstream-releases/releasenote_21.1.16.1.txt: Changes in 21.1.10 lists libXpm-3.5.17",
         "docs/dependencies/packages.txt"
       ],
@@ -286,12 +286,12 @@
     },
     {
       "name": "libXrender",
-      "path": "libXrender",
+      "path": "third_party/xorg/libXrender",
       "revision": "0.9.11",
       "revision_kind": "declared_version",
       "upstream_url": "https://gitlab.freedesktop.org/xorg/lib/libxrender",
       "evidence": [
-        "libXrender/configure.ac: AC_INIT declares 0.9.11",
+        "third_party/xorg/libXrender/configure.ac: AC_INIT declares 0.9.11",
         "docs/history/upstream-releases/releasenote_21.1.16.1.txt: Changes in 21.1.10 lists libXrender-0.9.11",
         "docs/dependencies/packages.txt"
       ],
@@ -310,12 +310,12 @@
     },
     {
       "name": "libXt",
-      "path": "libXt",
+      "path": "third_party/xorg/libXt",
       "revision": "1.3.0",
       "revision_kind": "declared_version",
       "upstream_url": "https://gitlab.freedesktop.org/xorg/lib/libxt",
       "evidence": [
-        "libXt/configure.ac: AC_INIT declares 1.3.0",
+        "third_party/xorg/libXt/configure.ac: AC_INIT declares 1.3.0",
         "docs/history/upstream-releases/releasenote_21.1.16.1.txt: Changes in 21.1.10 lists libXt-1.3.0",
         "docs/dependencies/packages.txt"
       ],
@@ -334,12 +334,12 @@
     },
     {
       "name": "libfontenc",
-      "path": "libfontenc",
+      "path": "third_party/xorg/libfontenc",
       "revision": "dcdbcce903ee49200040c0da092b45253c20c6df",
       "revision_kind": "recorded_sync_commit",
       "upstream_url": "https://gitlab.freedesktop.org/xorg/lib/libfontenc",
       "evidence": [
-        "libfontenc/configure.ac: AC_INIT declares 1.1.8",
+        "third_party/xorg/libfontenc/configure.ac: AC_INIT declares 1.1.8",
         "docs/history/upstream-releases/releasenote_21.1.16.1.txt: Changes in 21.1.16 records dcdbcce903ee49200040c0da092b45253c20c6df",
         "docs/dependencies/packages.txt"
       ],
@@ -359,12 +359,12 @@
     },
     {
       "name": "libxcb",
-      "path": "libxcb",
+      "path": "third_party/xorg/libxcb",
       "revision": "daf2c5397607c32c3814f02831b9c1158fd1e52c",
       "revision_kind": "recorded_sync_commit",
       "upstream_url": "https://gitlab.freedesktop.org/xorg/lib/libxcb",
       "evidence": [
-        "libxcb/configure.ac: AC_INIT declares 1.17.0",
+        "third_party/xorg/libxcb/configure.ac: AC_INIT declares 1.17.0",
         "docs/history/upstream-releases/releasenote_21.1.16.1.txt: Changes in 21.1.16 records daf2c5397607c32c3814f02831b9c1158fd1e52c",
         "docs/dependencies/packages.txt"
       ],
@@ -384,12 +384,12 @@
     },
     {
       "name": "libxkbfile",
-      "path": "libxkbfile",
+      "path": "third_party/xorg/libxkbfile",
       "revision": "1.1.2",
       "revision_kind": "declared_version",
       "upstream_url": "https://gitlab.freedesktop.org/xorg/lib/libxkbfile",
       "evidence": [
-        "libxkbfile/configure.ac: AC_INIT declares 1.1.2",
+        "third_party/xorg/libxkbfile/configure.ac: AC_INIT declares 1.1.2",
         "docs/history/upstream-releases/releasenote_21.1.16.1.txt: Changes in 21.1.10 lists libxkbfile-1.1.2",
         "docs/dependencies/packages.txt"
       ],
@@ -408,12 +408,12 @@
     },
     {
       "name": "xcb-util-errors",
-      "path": "xcb-util-errors",
+      "path": "third_party/xorg/xcb-util-errors",
       "revision": "1.0.1",
       "revision_kind": "declared_version",
       "upstream_url": "https://gitlab.freedesktop.org/xorg/lib/libxcb-errors",
       "evidence": [
-        "xcb-util-errors/configure.ac: AC_INIT declares 1.0.1",
+        "third_party/xorg/xcb-util-errors/configure.ac: AC_INIT declares 1.0.1",
         "docs/history/upstream-releases/releasenote_21.1.16.1.txt: Changes in 21.1.10 lists xcb-util-errors-1.0.1",
         "docs/dependencies/packages.txt"
       ],
@@ -432,13 +432,13 @@
     },
     {
       "name": "xcb-proto",
-      "path": "libxcb/xcb-proto",
+      "path": "third_party/xorg/libxcb/xcb-proto",
       "revision": "4d2879ad9e394ff832762e8961eca9415cc9934c",
       "revision_kind": "recorded_sync_commit",
       "upstream_url": "https://gitlab.freedesktop.org/xorg/proto/xcbproto",
       "evidence": [
-        "docs/history/upstream-releases/releasenote_21.1.16.1.txt: Changes in 21.1.16 records libxcb/xcb-proto 4d2879ad9e394ff832762e8961eca9415cc9934c",
-        "libxcb/xcb-proto/configure.ac: 1.17.0"
+        "docs/history/upstream-releases/releasenote_21.1.16.1.txt: Changes in 21.1.16 records nested xcb-proto under libxcb at 4d2879ad9e394ff832762e8961eca9415cc9934c",
+        "third_party/xorg/libxcb/xcb-proto/configure.ac: 1.17.0"
       ],
       "confidence": "high",
       "notes": "原作者记录同步 SHA，未逐文件证实等同上游。",
@@ -456,13 +456,13 @@
     },
     {
       "name": "xtrans",
-      "path": "X11/xtrans",
+      "path": "include/X11/xtrans",
       "revision": "c8c291390f4befb7d813d7fce6caeb6607561903",
       "revision_kind": "recorded_sync_commit",
       "upstream_url": "https://gitlab.freedesktop.org/xorg/lib/libxtrans",
       "evidence": [
         "docs/history/upstream-releases/releasenote_21.1.16.1.txt: Changes in 21.1.16 records libxtrans c8c291390f4befb7d813d7fce6caeb6607561903",
-        "X11/xtrans/configure.ac: 1.5.2"
+        "include/X11/xtrans/configure.ac: 1.5.2"
       ],
       "confidence": "high",
       "notes": "原作者记录同步 SHA，未逐文件证实等同上游。",
@@ -480,13 +480,13 @@
     },
     {
       "name": "pixman",
-      "path": "pixman",
+      "path": "third_party/graphics/pixman",
       "revision": "aafb4caea2f440c8ca9fad2cfa2c2fb9e2779ae6",
       "revision_kind": "recorded_sync_commit",
       "upstream_url": "https://gitlab.freedesktop.org/pixman/pixman",
       "evidence": [
         "docs/history/upstream-releases/releasenote_21.1.16.1.txt: Changes in 21.1.16 records pixman aafb4caea2f440c8ca9fad2cfa2c2fb9e2779ae6",
-        "pixman/meson.build: 0.44.3"
+        "third_party/graphics/pixman/meson.build: 0.44.3"
       ],
       "confidence": "high",
       "notes": "原作者记录同步 SHA，未逐文件证实等同上游。",
@@ -504,13 +504,13 @@
     },
     {
       "name": "fontconfig",
-      "path": "fontconfig",
+      "path": "third_party/fonts/fontconfig",
       "revision": "25f58a52b0b30efbba0ea27c98dc58e411a42b84",
       "revision_kind": "recorded_sync_commit",
       "upstream_url": "https://gitlab.freedesktop.org/fontconfig/fontconfig",
       "evidence": [
         "docs/history/upstream-releases/releasenote_21.1.16.1.txt: Changes in 21.1.16 records fontconfig 25f58a52b0b30efbba0ea27c98dc58e411a42b84",
-        "fontconfig/configure.ac: 2.16.0"
+        "third_party/fonts/fontconfig/configure.ac: 2.16.0"
       ],
       "confidence": "high",
       "notes": "原作者记录同步 SHA，未逐文件证实等同上游。",
@@ -528,13 +528,13 @@
     },
     {
       "name": "Mesa",
-      "path": "mesalib",
+      "path": "third_party/graphics/mesalib",
       "revision": "cf7fa16f8ce0a7bccbf68fab087eacce2d681fa8",
       "revision_kind": "recorded_sync_commit",
       "upstream_url": "https://gitlab.freedesktop.org/mesa/mesa",
       "evidence": [
         "docs/history/upstream-releases/releasenote_21.1.16.1.txt: Changes in 21.1.16 records mesa cf7fa16f8ce0a7bccbf68fab087eacce2d681fa8",
-        "mesalib/VERSION: 25.1.0-devel"
+        "third_party/graphics/mesalib/VERSION: 25.1.0-devel"
       ],
       "confidence": "high",
       "notes": "原作者记录同步 SHA，未逐文件证实等同上游。",
@@ -552,13 +552,13 @@
     },
     {
       "name": "pthreads4w",
-      "path": "pthreads",
+      "path": "third_party/pthreads",
       "revision": "8e467a62a14fd9de15af33beec0a913d23f4d2f9",
       "revision_kind": "recorded_sync_commit",
       "upstream_url": "https://sourceforge.net/p/pthreads4w/code/",
       "evidence": [
         "docs/history/upstream-releases/releasenote_21.1.16.1.txt: Changes in 21.1.16 records pthreads 8e467a62a14fd9de15af33beec0a913d23f4d2f9",
-        "pthreads/configure.ac: git"
+        "third_party/pthreads/configure.ac: git"
       ],
       "confidence": "high",
       "notes": "原作者记录同步 SHA，未逐文件证实等同上游。",
@@ -575,12 +575,12 @@
     },
     {
       "name": "expat",
-      "path": "expat",
+      "path": "third_party/expat",
       "revision": "2.6.2",
       "revision_kind": "declared_version",
       "upstream_url": "https://github.com/libexpat/libexpat",
       "evidence": [
-        "expat/lib/expat.h:1067-1069",
+        "third_party/expat/lib/expat.h:1067-1069",
         "docs/dependencies/packages.txt",
         "docs/history/upstream-releases/releasenote_21.1.16.1.txt"
       ],
@@ -599,12 +599,12 @@
     },
     {
       "name": "freetype",
-      "path": "freetype",
+      "path": "third_party/fonts/freetype",
       "revision": "2.13.3",
       "revision_kind": "declared_version",
       "upstream_url": "https://gitlab.freedesktop.org/freetype/freetype",
       "evidence": [
-        "freetype/include/freetype/freetype.h:5175-5177",
+        "third_party/fonts/freetype/include/freetype/freetype.h:5175-5177",
         "docs/dependencies/packages.txt",
         "docs/history/upstream-releases/releasenote_21.1.16.1.txt"
       ],
@@ -623,12 +623,12 @@
     },
     {
       "name": "openssl",
-      "path": "openssl",
+      "path": "third_party/openssl",
       "revision": "3.4.1",
       "revision_kind": "declared_version",
       "upstream_url": "https://github.com/openssl/openssl",
       "evidence": [
-        "openssl/VERSION.dat",
+        "third_party/openssl/VERSION.dat",
         "docs/dependencies/packages.txt",
         "docs/history/upstream-releases/releasenote_21.1.16.1.txt"
       ],
@@ -665,14 +665,14 @@
     },
     {
       "name": "libxml2 headers and binaries",
-      "path": "libxml2",
+      "path": "third_party/libxml2",
       "revision": "2.9.1",
       "revision_kind": "declared_header_version",
       "upstream_url": "https://gitlab.gnome.org/GNOME/libxml2",
       "evidence": [
-        "libxml2/include/libxml/xmlversion.h:32",
-        "libxml2/createimplib.txt",
-        "git ls-files libxml2"
+        "third_party/libxml2/include/libxml/xmlversion.h:32",
+        "third_party/libxml2/createimplib.txt",
+        "git ls-files third_party/libxml2"
       ],
       "confidence": "medium",
       "notes": "目录是头文件、32/64 位 DLL、导入库与导出表；完整源码未内嵌。DLL/导入库原始下载提供方、构建参数、精确源码提交未知；2.9.1 仅来自头文件。",
@@ -689,14 +689,14 @@
     },
     {
       "name": "GNU regex / GNU portability snippets",
-      "path": "libregex",
+      "path": "third_party/libregex",
       "revision": null,
       "revision_kind": "unknown",
       "upstream_url": "https://sourceware.org/git/glibc.git",
       "evidence": [
-        "libregex/src/regex.c:1-19 identifies GNU C Library",
-        "libregex/src/nl_langinfo.c:1-16",
-        "libregex/src/langinfo.h:1-15"
+        "third_party/libregex/src/regex.c:1-19 identifies GNU C Library",
+        "third_party/libregex/src/nl_langinfo.c:1-16",
+        "third_party/libregex/src/langinfo.h:1-15"
       ],
       "confidence": "medium",
       "notes": "regex 主体为 glibc 派生；nl_langinfo/langinfo 为 GNU 可移植片段，精确 glibc/gnulib 导入版本及来源打包者未知。不能用版权年份推版本。",
@@ -713,13 +713,13 @@
     },
     {
       "name": "WinMain console adapter",
-      "path": "libwinmain",
+      "path": "src/platform/libwinmain",
       "revision": null,
       "revision_kind": "unknown",
       "upstream_url": null,
       "evidence": [
-        "libwinmain/winmain.c",
-        "libwinmain/makefile"
+        "src/platform/libwinmain/winmain.c",
+        "src/platform/libwinmain/makefile"
       ],
       "confidence": "low",
       "notes": "继承 VcXsrv 的 Windows 入口/控制台适配；未发现独立第三方上游声明或版本。可追溯继承源 https://github.com/marchaesen/vcxsrv/tree/d0a1eaf7ee15fcdf4f683388a88fec49078e6408",
@@ -736,13 +736,13 @@
     },
     {
       "name": "libtxc_dxtn (O3D copy)",
-      "path": "dxtn",
+      "path": "third_party/graphics/dxtn",
       "revision": null,
       "revision_kind": "unpinned_svn_source",
       "upstream_url": "http://o3d.googlecode.com/svn/trunk/googleclient/third_party/libtxc_dxtn/files",
       "evidence": [
-        "dxtn/getsrc.btm:1",
-        "dxtn/Changelog"
+        "third_party/graphics/dxtn/getsrc.btm:1",
+        "third_party/graphics/dxtn/Changelog"
       ],
       "confidence": "medium",
       "notes": "脚本记录 Google O3D 的 libtxc_dxtn 副本；svn export 未固定 revision。Changelog 最后 20070518 不是已确认导入版本；原 URL 为历史来源。",
@@ -759,12 +759,12 @@
     },
     {
       "name": "Chrome basictypes/port/build_config via O3D",
-      "path": "dxtn/base; dxtn/build",
+      "path": "third_party/graphics/dxtn/base; third_party/graphics/dxtn/build",
       "revision": null,
       "revision_kind": "unpinned_svn_source",
       "upstream_url": "http://o3d.googlecode.com/svn/trunk/googleclient/third_party/chrome/files",
       "evidence": [
-        "dxtn/getsrc.btm:2-4"
+        "third_party/graphics/dxtn/getsrc.btm:2-4"
       ],
       "confidence": "medium",
       "notes": "未固定 SVN revision；basictypes.h、port.h、build_config.h 是明确独立嵌入来源。",
@@ -783,13 +783,13 @@
     },
     {
       "name": "OpenGL extension headers",
-      "path": "gl/glext.h; gl/glxext.h",
+      "path": "include/gl/glext.h; include/gl/glxext.h",
       "revision": "GL_GLEXT_VERSION 20250129",
       "revision_kind": "declared_header_version",
       "upstream_url": "https://github.com/KhronosGroup/OpenGL-Registry",
       "evidence": [
-        "gl/glext.h:9-15,35",
-        "gl/glxext.h"
+        "include/gl/glext.h:9-15,35",
+        "include/gl/glxext.h"
       ],
       "confidence": "high",
       "notes": "日期宏只标识生成头版本，不代表精确导入 tag/commit。",
@@ -808,13 +808,13 @@
     },
     {
       "name": "Legacy Mesa GLX/DRI headers",
-      "path": "gl/glx.h; gl/internal/dri_interface.h",
+      "path": "include/gl/glx.h; include/gl/internal/dri_interface.h",
       "revision": null,
       "revision_kind": "unknown",
       "upstream_url": "https://gitlab.freedesktop.org/mesa/mesa",
       "evidence": [
-        "gl/glx.h:1-4",
-        "gl/internal/dri_interface.h"
+        "include/gl/glx.h:1-4",
+        "include/gl/internal/dri_interface.h"
       ],
       "confidence": "medium",
       "notes": "Mesa 版权及项目来源可辨；无法证明这些旁置拷贝与当前 mesalib 同步点相同。",
@@ -833,14 +833,14 @@
     },
     {
       "name": "GLX protocol headers",
-      "path": "gl/include/GL",
+      "path": "include/gl/include/GL",
       "revision": null,
       "revision_kind": "unknown",
       "upstream_url": "https://gitlab.freedesktop.org/xorg/proto/xorgproto",
       "evidence": [
-        "gl/include/GL/glxproto.h",
-        "gl/include/GL/glxmd.h",
-        "gl/include/GL/internal/glcore.h"
+        "include/gl/include/GL/glxproto.h",
+        "include/gl/include/GL/glxmd.h",
+        "include/gl/include/GL/internal/glcore.h"
       ],
       "confidence": "medium",
       "notes": "历史 GL 协议/内部头混合拷贝；精确导入提交未知，不能整体套用 xorgproto 同步 SHA。",
@@ -857,16 +857,16 @@
     },
     {
       "name": "X11 installed header collection",
-      "path": "X11 (except xtrans)",
+      "path": "include/X11 (except xtrans)",
       "revision": null,
       "revision_kind": "mixed_copies",
       "upstream_url": "https://gitlab.freedesktop.org/xorg",
       "evidence": [
-        "X11/Xlib.h",
-        "X11/Intrinsic.h",
-        "X11/extensions",
-        "X11/Xaw",
-        "X11/Xmu",
+        "include/X11/Xlib.h",
+        "include/X11/Intrinsic.h",
+        "include/X11/extensions",
+        "include/X11/Xaw",
+        "include/X11/Xmu",
         "docs/history/upstream-releases/releasenote_21.1.16.1.txt",
         "scripts/legacy/upstream/filesthatshouldbethesame.py"
       ],
@@ -1031,13 +1031,13 @@
     },
     {
       "name": "FreeType embedded zlib",
-      "path": "freetype/src/gzip",
+      "path": "third_party/fonts/freetype/src/gzip",
       "revision": "1.3",
       "revision_kind": "recorded_embedded_version",
       "upstream_url": "https://zlib.net/",
       "evidence": [
-        "freetype/src/gzip/README.freetype:1-4",
-        "freetype/src/gzip/zlib.h:40"
+        "third_party/fonts/freetype/src/gzip/README.freetype:1-4",
+        "third_party/fonts/freetype/src/gzip/zlib.h:40"
       ],
       "confidence": "high",
       "notes": "README 描述本地 patches；不是根目录 zlib 的重复声明。",
@@ -1054,13 +1054,13 @@
     },
     {
       "name": "Perl Text::Template",
-      "path": "openssl/external/perl/Text-Template-1.56",
+      "path": "third_party/openssl/external/perl/Text-Template-1.56",
       "revision": "1.56",
       "revision_kind": "declared_version",
       "upstream_url": "https://github.com/mschout/perl-text-template",
       "evidence": [
-        "openssl/external/perl/Text-Template-1.56/META.json:79",
-        "openssl/external/perl/Text-Template-1.56/lib/Text/Template.pm:13"
+        "third_party/openssl/external/perl/Text-Template-1.56/META.json:79",
+        "third_party/openssl/external/perl/Text-Template-1.56/lib/Text/Template.pm:13"
       ],
       "confidence": "high",
       "notes": "OpenSSL 构建工具内嵌 Perl 包；精确下载校验未记录。README 仍写旧的 v1.46，以 META.json 和模块 VERSION 1.56 为准。",
@@ -1077,14 +1077,14 @@
     },
     {
       "name": "OpenBSD SHA1",
-      "path": "mesalib/src/util/sha1",
+      "path": "third_party/graphics/mesalib/src/util/sha1",
       "revision": "sha1.c CVS 1.26; sha1.h CVS 1.24",
       "revision_kind": "cvs_file_revisions",
       "upstream_url": "https://cvsweb.openbsd.org/src/lib/libc/hash/sha1.c",
       "evidence": [
-        "mesalib/src/util/sha1/README",
-        "mesalib/src/util/sha1/sha1.c:1",
-        "mesalib/src/util/sha1/sha1.h:1"
+        "third_party/graphics/mesalib/src/util/sha1/README",
+        "third_party/graphics/mesalib/src/util/sha1/sha1.c:1",
+        "third_party/graphics/mesalib/src/util/sha1/sha1.h:1"
       ],
       "confidence": "high",
       "notes": "README 原始 checkout 说明 1.25/1.24；实际 sha1.c 标记 1.26，README 说明撤销 1.26 DEF_WEAK 等本地变更。ade3108bb5b0 是 Mesa 动机提交，绝非 SHA1 导入 SHA。",
@@ -1101,12 +1101,12 @@
     },
     {
       "name": "BLAKE3",
-      "path": "mesalib/src/util/blake3",
+      "path": "third_party/graphics/mesalib/src/util/blake3",
       "revision": "1.5.1",
       "revision_kind": "recorded_embedded_tag",
       "upstream_url": "https://github.com/BLAKE3-team/BLAKE3",
       "evidence": [
-        "mesalib/src/util/blake3/README:1-4"
+        "third_party/graphics/mesalib/src/util/blake3/README:1-4"
       ],
       "confidence": "high",
       "notes": "README 明确 tag 1.5.1 并记录本地修改。",
@@ -1123,12 +1123,12 @@
     },
     {
       "name": "Dear ImGui",
-      "path": "mesalib/src/imgui",
+      "path": "third_party/graphics/mesalib/src/imgui",
       "revision": "f977871854af941289f2a9090dcc90f7aa3449a8",
       "revision_kind": "recorded_embedded_commit",
       "upstream_url": "https://github.com/ocornut/imgui",
       "evidence": [
-        "mesalib/src/imgui/README"
+        "third_party/graphics/mesalib/src/imgui/README"
       ],
       "confidence": "high",
       "notes": "README 明确拷贝提交；含本地 include 修改。",
@@ -1145,12 +1145,12 @@
     },
     {
       "name": "ImGui memory editor",
-      "path": "mesalib/src/imgui/imgui_memory_editor.h",
+      "path": "third_party/graphics/mesalib/src/imgui/imgui_memory_editor.h",
       "revision": "e680ad8d6b9278367d0f71a698beb96b70762ed4",
       "revision_kind": "recorded_embedded_commit",
       "upstream_url": "https://github.com/ocornut/imgui_club",
       "evidence": [
-        "mesalib/src/imgui/README"
+        "third_party/graphics/mesalib/src/imgui/README"
       ],
       "confidence": "high",
       "notes": "README 明确拷贝提交；含本地 include 修改。",
@@ -1167,12 +1167,12 @@
     },
     {
       "name": "Parson",
-      "path": "mesalib/src/util/parson.c; mesalib/src/util/parson.h",
+      "path": "third_party/graphics/mesalib/src/util/parson.c; third_party/graphics/mesalib/src/util/parson.h",
       "revision": "1.5.3",
       "revision_kind": "declared_embedded_version",
       "upstream_url": "https://github.com/kgabis/parson",
       "evidence": [
-        "mesalib/src/util/parson.h:4,37-41"
+        "third_party/graphics/mesalib/src/util/parson.h:4,37-41"
       ],
       "confidence": "high",
       "notes": "明确版本/来源；未证实精确导入 commit。",
@@ -1191,12 +1191,12 @@
     },
     {
       "name": "xxHash",
-      "path": "mesalib/src/util/xxhash.h",
+      "path": "third_party/graphics/mesalib/src/util/xxhash.h",
       "revision": "0.7.2",
       "revision_kind": "declared_embedded_version",
       "upstream_url": "https://github.com/Cyan4973/xxHash",
       "evidence": [
-        "mesalib/src/util/xxhash.h:171-173"
+        "third_party/graphics/mesalib/src/util/xxhash.h:171-173"
       ],
       "confidence": "high",
       "notes": "明确版本/来源；未证实精确导入 commit。",
@@ -1213,12 +1213,12 @@
     },
     {
       "name": "Berkeley SoftFloat",
-      "path": "mesalib/src/util/softfloat.c",
+      "path": "third_party/graphics/mesalib/src/util/softfloat.c",
       "revision": "Release 3e",
       "revision_kind": "declared_embedded_version",
       "upstream_url": "https://www.jhauser.us/arithmetic/SoftFloat.html",
       "evidence": [
-        "mesalib/src/util/softfloat.c:1-43"
+        "third_party/graphics/mesalib/src/util/softfloat.c:1-43"
       ],
       "confidence": "high",
       "notes": "明确版本/来源；未证实精确导入 commit。",
@@ -1235,12 +1235,12 @@
     },
     {
       "name": "TensorFlow Lite headers",
-      "path": "mesalib/include/tensorflow",
+      "path": "third_party/graphics/mesalib/include/tensorflow",
       "revision": "2.13.0",
       "revision_kind": "declared_embedded_version",
       "upstream_url": "https://github.com/tensorflow/tensorflow",
       "evidence": [
-        "mesalib/include/tensorflow/README.md:1"
+        "third_party/graphics/mesalib/include/tensorflow/README.md:1"
       ],
       "confidence": "high",
       "notes": "明确版本/来源；未证实精确导入 commit。",
@@ -1257,12 +1257,12 @@
     },
     {
       "name": "Linux DRM UAPI headers",
-      "path": "mesalib/include/drm-uapi",
+      "path": "third_party/graphics/mesalib/include/drm-uapi",
       "revision": null,
       "revision_kind": "unknown",
       "upstream_url": "https://gitlab.freedesktop.org/drm/kernel",
       "evidence": [
-        "mesalib/include/drm-uapi/README"
+        "third_party/graphics/mesalib/include/drm-uapi/README"
       ],
       "confidence": "medium",
       "notes": "README 中 a78313bb206e0c456a989f380c4cbd8af8af7c76 是更新提交格式示例（output similar to this），不能视作实际导入点。",
@@ -1279,12 +1279,12 @@
     },
     {
       "name": "RenderDoc application header",
-      "path": "mesalib/include/renderdoc_app.h",
+      "path": "third_party/graphics/mesalib/include/renderdoc_app.h",
       "revision": "v1.1",
       "revision_kind": "pinned_update_script_tag",
       "upstream_url": "https://github.com/baldurk/renderdoc",
       "evidence": [
-        "mesalib/bin/renderdoc-update.py:19"
+        "third_party/graphics/mesalib/bin/renderdoc-update.py:19"
       ],
       "confidence": "high",
       "notes": "脚本固定 v1.1 获取 URL；未核对当前头与 tag 逐字节一致。",
@@ -1301,12 +1301,12 @@
     },
     {
       "name": "Fuchsia radix sort",
-      "path": "mesalib/src/vulkan/runtime/radix_sort",
+      "path": "third_party/graphics/mesalib/src/vulkan/runtime/radix_sort",
       "revision": null,
       "revision_kind": "unknown",
       "upstream_url": "https://fuchsia.googlesource.com/fuchsia/",
       "evidence": [
-        "mesalib/src/vulkan/runtime/radix_sort/LICENSE:1"
+        "third_party/graphics/mesalib/src/vulkan/runtime/radix_sort/LICENSE:1"
       ],
       "confidence": "medium",
       "notes": "Fuchsia 作者版权可辨，独立导入 revision 未记录。",
@@ -1323,13 +1323,13 @@
     },
     {
       "name": "C11 threads compatibility",
-      "path": "mesalib/src/c11",
+      "path": "third_party/graphics/mesalib/src/c11",
       "revision": null,
       "revision_kind": "unknown",
       "upstream_url": null,
       "evidence": [
-        "mesalib/src/c11/threads.h",
-        "mesalib/src/c11/impl/threads_win32.c:1-3"
+        "third_party/graphics/mesalib/src/c11/threads.h",
+        "third_party/graphics/mesalib/src/c11/impl/threads_win32.c:1-3"
       ],
       "confidence": "low",
       "notes": "yohhoy 2012 等署名及 Boost license；具体第三方原始包/commit 未证实。",
@@ -1346,13 +1346,13 @@
     },
     {
       "name": "gfxstream / aemu imported code",
-      "path": "mesalib/src/gfxstream",
+      "path": "third_party/graphics/mesalib/src/gfxstream",
       "revision": null,
       "revision_kind": "unknown",
       "upstream_url": "https://android.googlesource.com/platform/hardware/google/gfxstream/",
       "evidence": [
-        "mesalib/src/gfxstream/meson.build",
-        "mesalib/src/gfxstream/aemu/meson.build"
+        "third_party/graphics/mesalib/src/gfxstream/meson.build",
+        "third_party/graphics/mesalib/src/gfxstream/aemu/meson.build"
       ],
       "confidence": "medium",
       "notes": "Google gfxstream/aemu 代码；未发现独立固定导入记录，现有继承快照由 Mesa 记录同步点定位。",
@@ -1369,12 +1369,12 @@
     },
     {
       "name": "Windows DDK required headers",
-      "path": "mesalib/include/winddk",
+      "path": "third_party/graphics/mesalib/include/winddk",
       "revision": null,
       "revision_kind": "external_not_vendored",
       "upstream_url": "https://learn.microsoft.com/windows-hardware/drivers/download-the-wdk",
       "evidence": [
-        "mesalib/include/winddk/README.txt"
+        "third_party/graphics/mesalib/include/winddk/README.txt"
       ],
       "confidence": "high",
       "notes": "README 只要求放入 DDK 头文件；没有 SDK 版本/源码导入记录。 实际 tracked 只有 README/.gitignore 与 VMware winddk_compat.h 适配头，没有所列 Microsoft DDK 头。",
@@ -1389,12 +1389,12 @@
     },
     {
       "name": "stb_rect_pack (ImGui copy)",
-      "path": "mesalib/src/imgui/imstb_rectpack.h",
+      "path": "third_party/graphics/mesalib/src/imgui/imstb_rectpack.h",
       "revision": "0.99",
       "revision_kind": "declared_embedded_version",
       "upstream_url": "https://github.com/nothings/stb",
       "evidence": [
-        "mesalib/src/imgui/imstb_rectpack.h:1-6"
+        "third_party/graphics/mesalib/src/imgui/imstb_rectpack.h:1-6"
       ],
       "confidence": "high",
       "notes": "ImGui 明确标注稍作修改的 stb 拷贝；精确原始 commit 未记录。",
@@ -1411,12 +1411,12 @@
     },
     {
       "name": "stb_textedit (ImGui copy)",
-      "path": "mesalib/src/imgui/imstb_textedit.h",
+      "path": "third_party/graphics/mesalib/src/imgui/imstb_textedit.h",
       "revision": "1.13",
       "revision_kind": "declared_embedded_version",
       "upstream_url": "https://github.com/nothings/stb",
       "evidence": [
-        "mesalib/src/imgui/imstb_textedit.h:1-6"
+        "third_party/graphics/mesalib/src/imgui/imstb_textedit.h:1-6"
       ],
       "confidence": "high",
       "notes": "ImGui 明确标注稍作修改的 stb 拷贝；精确原始 commit 未记录。",
@@ -1433,12 +1433,12 @@
     },
     {
       "name": "stb_truetype (ImGui copy)",
-      "path": "mesalib/src/imgui/imstb_truetype.h",
+      "path": "third_party/graphics/mesalib/src/imgui/imstb_truetype.h",
       "revision": "1.20",
       "revision_kind": "declared_embedded_version",
       "upstream_url": "https://github.com/nothings/stb",
       "evidence": [
-        "mesalib/src/imgui/imstb_truetype.h:1-6"
+        "third_party/graphics/mesalib/src/imgui/imstb_truetype.h:1-6"
       ],
       "confidence": "high",
       "notes": "ImGui 明确标注稍作修改的 stb 拷贝；精确原始 commit 未记录。",
@@ -1455,12 +1455,12 @@
     },
     {
       "name": "SipHash implementation",
-      "path": "expat/lib/siphash.h",
+      "path": "third_party/expat/lib/siphash.h",
       "revision": null,
       "revision_kind": "unknown",
       "upstream_url": "https://www.131002.net/siphash/",
       "evidence": [
-        "expat/lib/siphash.h:1-45"
+        "third_party/expat/lib/siphash.h:1-45"
       ],
       "confidence": "medium",
       "notes": "文件列出 SipHash 参考实现来源及本地修改；精确导入 revision 未记录，来源 URL 为原文件记录。",
@@ -1477,12 +1477,12 @@
     },
     {
       "name": "DirectX-Headers (Meson fallback)",
-      "path": "mesalib/subprojects/DirectX-Headers.wrap",
+      "path": "third_party/graphics/mesalib/subprojects/DirectX-Headers.wrap",
       "revision": "v1.614.1",
       "revision_kind": "wrap_git_revision",
       "upstream_url": "https://github.com/microsoft/DirectX-Headers.git",
       "evidence": [
-        "mesalib/subprojects/DirectX-Headers.wrap"
+        "third_party/graphics/mesalib/subprojects/DirectX-Headers.wrap"
       ],
       "confidence": "high",
       "notes": "仅构建回退下载声明，不表示已下载、参与 Windows 构建或与根目录同名库版本一致。",
@@ -1503,12 +1503,12 @@
     },
     {
       "name": "equivalent (Meson fallback)",
-      "path": "mesalib/subprojects/equivalent.wrap",
+      "path": "third_party/graphics/mesalib/subprojects/equivalent.wrap",
       "revision": "equivalent-1.0.1.tar.gz",
       "revision_kind": "wrap_archive",
       "upstream_url": "https://crates.io/api/v1/crates/equivalent/1.0.1/download",
       "evidence": [
-        "mesalib/subprojects/equivalent.wrap"
+        "third_party/graphics/mesalib/subprojects/equivalent.wrap"
       ],
       "confidence": "high",
       "notes": "仅构建回退下载声明，不表示已下载、参与 Windows 构建或与根目录同名库版本一致。",
@@ -1530,12 +1530,12 @@
     },
     {
       "name": "expat (Meson fallback)",
-      "path": "mesalib/subprojects/expat.wrap",
+      "path": "third_party/graphics/mesalib/subprojects/expat.wrap",
       "revision": "expat-2.5.0.tar.bz2",
       "revision_kind": "wrap_archive",
       "upstream_url": "https://github.com/libexpat/libexpat/releases/download/R_2_5_0/expat-2.5.0.tar.xz",
       "evidence": [
-        "mesalib/subprojects/expat.wrap"
+        "third_party/graphics/mesalib/subprojects/expat.wrap"
       ],
       "confidence": "high",
       "notes": "仅构建回退下载声明，不表示已下载、参与 Windows 构建或与根目录同名库版本一致。",
@@ -1562,12 +1562,12 @@
     },
     {
       "name": "hashbrown (Meson fallback)",
-      "path": "mesalib/subprojects/hashbrown.wrap",
+      "path": "third_party/graphics/mesalib/subprojects/hashbrown.wrap",
       "revision": "hashbrown-0.14.1.tar.gz",
       "revision_kind": "wrap_archive",
       "upstream_url": "https://crates.io/api/v1/crates/hashbrown/0.14.1/download",
       "evidence": [
-        "mesalib/subprojects/hashbrown.wrap"
+        "third_party/graphics/mesalib/subprojects/hashbrown.wrap"
       ],
       "confidence": "high",
       "notes": "仅构建回退下载声明，不表示已下载、参与 Windows 构建或与根目录同名库版本一致。",
@@ -1589,12 +1589,12 @@
     },
     {
       "name": "indexmap (Meson fallback)",
-      "path": "mesalib/subprojects/indexmap.wrap",
+      "path": "third_party/graphics/mesalib/subprojects/indexmap.wrap",
       "revision": "indexmap-2.2.6.tar.gz",
       "revision_kind": "wrap_archive",
       "upstream_url": "https://crates.io/api/v1/crates/indexmap/2.2.6/download",
       "evidence": [
-        "mesalib/subprojects/indexmap.wrap"
+        "third_party/graphics/mesalib/subprojects/indexmap.wrap"
       ],
       "confidence": "high",
       "notes": "仅构建回退下载声明，不表示已下载、参与 Windows 构建或与根目录同名库版本一致。",
@@ -1616,12 +1616,12 @@
     },
     {
       "name": "libarchive (Meson fallback)",
-      "path": "mesalib/subprojects/libarchive.wrap",
+      "path": "third_party/graphics/mesalib/subprojects/libarchive.wrap",
       "revision": "libarchive-3.7.2.tar.xz",
       "revision_kind": "wrap_archive",
       "upstream_url": "https://github.com/libarchive/libarchive/releases/download/v3.7.2/libarchive-3.7.2.tar.xz",
       "evidence": [
-        "mesalib/subprojects/libarchive.wrap"
+        "third_party/graphics/mesalib/subprojects/libarchive.wrap"
       ],
       "confidence": "high",
       "notes": "仅构建回退下载声明，不表示已下载、参与 Windows 构建或与根目录同名库版本一致。",
@@ -1648,12 +1648,12 @@
     },
     {
       "name": "libxml2 (Meson fallback)",
-      "path": "mesalib/subprojects/libxml2.wrap",
+      "path": "third_party/graphics/mesalib/subprojects/libxml2.wrap",
       "revision": "libxml2-2.11.6.tar.xz",
       "revision_kind": "wrap_archive",
       "upstream_url": "https://download.gnome.org/sources/libxml2/2.11/libxml2-2.11.6.tar.xz",
       "evidence": [
-        "mesalib/subprojects/libxml2.wrap"
+        "third_party/graphics/mesalib/subprojects/libxml2.wrap"
       ],
       "confidence": "high",
       "notes": "仅构建回退下载声明，不表示已下载、参与 Windows 构建或与根目录同名库版本一致。",
@@ -1679,12 +1679,12 @@
     },
     {
       "name": "lua (Meson fallback)",
-      "path": "mesalib/subprojects/lua.wrap",
+      "path": "third_party/graphics/mesalib/subprojects/lua.wrap",
       "revision": "lua-5.4.6.tar.gz",
       "revision_kind": "wrap_archive",
       "upstream_url": "https://www.lua.org/ftp/lua-5.4.6.tar.gz",
       "evidence": [
-        "mesalib/subprojects/lua.wrap"
+        "third_party/graphics/mesalib/subprojects/lua.wrap"
       ],
       "confidence": "high",
       "notes": "仅构建回退下载声明，不表示已下载、参与 Windows 构建或与根目录同名库版本一致。",
@@ -1711,12 +1711,12 @@
     },
     {
       "name": "once_cell (Meson fallback)",
-      "path": "mesalib/subprojects/once_cell.wrap",
+      "path": "third_party/graphics/mesalib/subprojects/once_cell.wrap",
       "revision": "once_cell-1.8.0.tar.gz",
       "revision_kind": "wrap_archive",
       "upstream_url": "https://crates.io/api/v1/crates/once_cell/1.8.0/download",
       "evidence": [
-        "mesalib/subprojects/once_cell.wrap"
+        "third_party/graphics/mesalib/subprojects/once_cell.wrap"
       ],
       "confidence": "high",
       "notes": "仅构建回退下载声明，不表示已下载、参与 Windows 构建或与根目录同名库版本一致。",
@@ -1738,12 +1738,12 @@
     },
     {
       "name": "paste (Meson fallback)",
-      "path": "mesalib/subprojects/paste.wrap",
+      "path": "third_party/graphics/mesalib/subprojects/paste.wrap",
       "revision": "paste-1.0.14.tar.gz",
       "revision_kind": "wrap_archive",
       "upstream_url": "https://crates.io/api/v1/crates/paste/1.0.14/download",
       "evidence": [
-        "mesalib/subprojects/paste.wrap"
+        "third_party/graphics/mesalib/subprojects/paste.wrap"
       ],
       "confidence": "high",
       "notes": "仅构建回退下载声明，不表示已下载、参与 Windows 构建或与根目录同名库版本一致。",
@@ -1765,12 +1765,12 @@
     },
     {
       "name": "perfetto (Meson fallback)",
-      "path": "mesalib/subprojects/perfetto.wrap",
+      "path": "third_party/graphics/mesalib/subprojects/perfetto.wrap",
       "revision": "v47.0",
       "revision_kind": "wrap_git_revision",
       "upstream_url": "https://android.googlesource.com/platform/external/perfetto",
       "evidence": [
-        "mesalib/subprojects/perfetto.wrap"
+        "third_party/graphics/mesalib/subprojects/perfetto.wrap"
       ],
       "confidence": "high",
       "notes": "仅构建回退下载声明，不表示已下载、参与 Windows 构建或与根目录同名库版本一致。",
@@ -1791,12 +1791,12 @@
     },
     {
       "name": "pest (Meson fallback)",
-      "path": "mesalib/subprojects/pest.wrap",
+      "path": "third_party/graphics/mesalib/subprojects/pest.wrap",
       "revision": "pest-2.7.11.tar.gz",
       "revision_kind": "wrap_archive",
       "upstream_url": "https://crates.io/api/v1/crates/pest/2.7.11/download",
       "evidence": [
-        "mesalib/subprojects/pest.wrap"
+        "third_party/graphics/mesalib/subprojects/pest.wrap"
       ],
       "confidence": "high",
       "notes": "仅构建回退下载声明，不表示已下载、参与 Windows 构建或与根目录同名库版本一致。",
@@ -1818,12 +1818,12 @@
     },
     {
       "name": "pest_derive (Meson fallback)",
-      "path": "mesalib/subprojects/pest_derive.wrap",
+      "path": "third_party/graphics/mesalib/subprojects/pest_derive.wrap",
       "revision": "pest_derive-2.7.11.tar.gz",
       "revision_kind": "wrap_archive",
       "upstream_url": "https://crates.io/api/v1/crates/pest_derive/2.7.11/download",
       "evidence": [
-        "mesalib/subprojects/pest_derive.wrap"
+        "third_party/graphics/mesalib/subprojects/pest_derive.wrap"
       ],
       "confidence": "high",
       "notes": "仅构建回退下载声明，不表示已下载、参与 Windows 构建或与根目录同名库版本一致。",
@@ -1845,12 +1845,12 @@
     },
     {
       "name": "pest_generator (Meson fallback)",
-      "path": "mesalib/subprojects/pest_generator.wrap",
+      "path": "third_party/graphics/mesalib/subprojects/pest_generator.wrap",
       "revision": "pest_generator-2.7.11.tar.gz",
       "revision_kind": "wrap_archive",
       "upstream_url": "https://crates.io/api/v1/crates/pest_generator/2.7.11/download",
       "evidence": [
-        "mesalib/subprojects/pest_generator.wrap"
+        "third_party/graphics/mesalib/subprojects/pest_generator.wrap"
       ],
       "confidence": "high",
       "notes": "仅构建回退下载声明，不表示已下载、参与 Windows 构建或与根目录同名库版本一致。",
@@ -1872,12 +1872,12 @@
     },
     {
       "name": "pest_meta (Meson fallback)",
-      "path": "mesalib/subprojects/pest_meta.wrap",
+      "path": "third_party/graphics/mesalib/subprojects/pest_meta.wrap",
       "revision": "pest_meta-2.7.11.tar.gz",
       "revision_kind": "wrap_archive",
       "upstream_url": "https://crates.io/api/v1/crates/pest_meta/2.7.11/download",
       "evidence": [
-        "mesalib/subprojects/pest_meta.wrap"
+        "third_party/graphics/mesalib/subprojects/pest_meta.wrap"
       ],
       "confidence": "high",
       "notes": "仅构建回退下载声明，不表示已下载、参与 Windows 构建或与根目录同名库版本一致。",
@@ -1899,12 +1899,12 @@
     },
     {
       "name": "proc-macro2 (Meson fallback)",
-      "path": "mesalib/subprojects/proc-macro2.wrap",
+      "path": "third_party/graphics/mesalib/subprojects/proc-macro2.wrap",
       "revision": "proc-macro2-1.0.86.tar.gz",
       "revision_kind": "wrap_archive",
       "upstream_url": "https://crates.io/api/v1/crates/proc-macro2/1.0.86/download",
       "evidence": [
-        "mesalib/subprojects/proc-macro2.wrap"
+        "third_party/graphics/mesalib/subprojects/proc-macro2.wrap"
       ],
       "confidence": "high",
       "notes": "仅构建回退下载声明，不表示已下载、参与 Windows 构建或与根目录同名库版本一致。",
@@ -1926,12 +1926,12 @@
     },
     {
       "name": "quote (Meson fallback)",
-      "path": "mesalib/subprojects/quote.wrap",
+      "path": "third_party/graphics/mesalib/subprojects/quote.wrap",
       "revision": "quote-1.0.33.tar.gz",
       "revision_kind": "wrap_archive",
       "upstream_url": "https://crates.io/api/v1/crates/quote/1.0.33/download",
       "evidence": [
-        "mesalib/subprojects/quote.wrap"
+        "third_party/graphics/mesalib/subprojects/quote.wrap"
       ],
       "confidence": "high",
       "notes": "仅构建回退下载声明，不表示已下载、参与 Windows 构建或与根目录同名库版本一致。",
@@ -1953,12 +1953,12 @@
     },
     {
       "name": "roxmltree (Meson fallback)",
-      "path": "mesalib/subprojects/roxmltree.wrap",
+      "path": "third_party/graphics/mesalib/subprojects/roxmltree.wrap",
       "revision": "roxmltree-0.20.0.tar.gz",
       "revision_kind": "wrap_archive",
       "upstream_url": "https://crates.io/api/v1/crates/roxmltree/0.20.0/download",
       "evidence": [
-        "mesalib/subprojects/roxmltree.wrap"
+        "third_party/graphics/mesalib/subprojects/roxmltree.wrap"
       ],
       "confidence": "high",
       "notes": "仅构建回退下载声明，不表示已下载、参与 Windows 构建或与根目录同名库版本一致。",
@@ -1980,12 +1980,12 @@
     },
     {
       "name": "syn (Meson fallback)",
-      "path": "mesalib/subprojects/syn.wrap",
+      "path": "third_party/graphics/mesalib/subprojects/syn.wrap",
       "revision": "syn-2.0.68.tar.gz",
       "revision_kind": "wrap_archive",
       "upstream_url": "https://crates.io/api/v1/crates/syn/2.0.68/download",
       "evidence": [
-        "mesalib/subprojects/syn.wrap"
+        "third_party/graphics/mesalib/subprojects/syn.wrap"
       ],
       "confidence": "high",
       "notes": "仅构建回退下载声明，不表示已下载、参与 Windows 构建或与根目录同名库版本一致。",
@@ -2007,12 +2007,12 @@
     },
     {
       "name": "ucd-trie (Meson fallback)",
-      "path": "mesalib/subprojects/ucd-trie.wrap",
+      "path": "third_party/graphics/mesalib/subprojects/ucd-trie.wrap",
       "revision": "ucd-trie-0.1.6.tar.gz",
       "revision_kind": "wrap_archive",
       "upstream_url": "https://crates.io/api/v1/crates/ucd-trie/0.1.6/download",
       "evidence": [
-        "mesalib/subprojects/ucd-trie.wrap"
+        "third_party/graphics/mesalib/subprojects/ucd-trie.wrap"
       ],
       "confidence": "high",
       "notes": "仅构建回退下载声明，不表示已下载、参与 Windows 构建或与根目录同名库版本一致。",
@@ -2034,12 +2034,12 @@
     },
     {
       "name": "unicode-ident (Meson fallback)",
-      "path": "mesalib/subprojects/unicode-ident.wrap",
+      "path": "third_party/graphics/mesalib/subprojects/unicode-ident.wrap",
       "revision": "unicode-ident-1.0.12.tar.gz",
       "revision_kind": "wrap_archive",
       "upstream_url": "https://crates.io/api/v1/crates/unicode-ident/1.0.12/download",
       "evidence": [
-        "mesalib/subprojects/unicode-ident.wrap"
+        "third_party/graphics/mesalib/subprojects/unicode-ident.wrap"
       ],
       "confidence": "high",
       "notes": "仅构建回退下载声明，不表示已下载、参与 Windows 构建或与根目录同名库版本一致。",
@@ -2061,12 +2061,12 @@
     },
     {
       "name": "wayland-protocols (Meson fallback)",
-      "path": "mesalib/subprojects/wayland-protocols.wrap",
+      "path": "third_party/graphics/mesalib/subprojects/wayland-protocols.wrap",
       "revision": "wayland-protocols-1.41.tar.xz",
       "revision_kind": "wrap_archive",
       "upstream_url": "https://gitlab.freedesktop.org/wayland/wayland-protocols/-/releases/1.41/downloads/wayland-protocols-1.41.tar.xz",
       "evidence": [
-        "mesalib/subprojects/wayland-protocols.wrap"
+        "third_party/graphics/mesalib/subprojects/wayland-protocols.wrap"
       ],
       "confidence": "high",
       "notes": "仅构建回退下载声明，不表示已下载、参与 Windows 构建或与根目录同名库版本一致。",
@@ -2087,12 +2087,12 @@
     },
     {
       "name": "zlib (Meson fallback)",
-      "path": "mesalib/subprojects/zlib.wrap",
+      "path": "third_party/graphics/mesalib/subprojects/zlib.wrap",
       "revision": "zlib-1.3.1.tar.gz",
       "revision_kind": "wrap_archive",
       "upstream_url": "http://zlib.net/fossils/zlib-1.3.1.tar.gz",
       "evidence": [
-        "mesalib/subprojects/zlib.wrap"
+        "third_party/graphics/mesalib/subprojects/zlib.wrap"
       ],
       "confidence": "high",
       "notes": "仅构建回退下载声明，不表示已下载、参与 Windows 构建或与根目录同名库版本一致。",
@@ -2119,12 +2119,12 @@
     },
     {
       "name": "harfbuzz (Meson fallback)",
-      "path": "freetype/subprojects/harfbuzz.wrap",
+      "path": "third_party/fonts/freetype/subprojects/harfbuzz.wrap",
       "revision": "harfbuzz-5.2.0.tar.xz",
       "revision_kind": "wrap_archive",
       "upstream_url": "https://github.com/harfbuzz/harfbuzz/releases/download/5.2.0/harfbuzz-5.2.0.tar.xz",
       "evidence": [
-        "freetype/subprojects/harfbuzz.wrap"
+        "third_party/fonts/freetype/subprojects/harfbuzz.wrap"
       ],
       "confidence": "high",
       "notes": "仅构建回退下载声明，不表示已下载、参与 Windows 构建或与根目录同名库版本一致。",
@@ -2147,12 +2147,12 @@
     },
     {
       "name": "libpng (Meson fallback)",
-      "path": "freetype/subprojects/libpng.wrap",
+      "path": "third_party/fonts/freetype/subprojects/libpng.wrap",
       "revision": "libpng-1.6.43.tar.gz",
       "revision_kind": "wrap_archive",
       "upstream_url": "https://github.com/glennrp/libpng/archive/v1.6.43.tar.gz",
       "evidence": [
-        "freetype/subprojects/libpng.wrap"
+        "third_party/fonts/freetype/subprojects/libpng.wrap"
       ],
       "confidence": "high",
       "notes": "仅构建回退下载声明，不表示已下载、参与 Windows 构建或与根目录同名库版本一致。",
@@ -2179,12 +2179,12 @@
     },
     {
       "name": "zlib (Meson fallback)",
-      "path": "freetype/subprojects/zlib.wrap",
+      "path": "third_party/fonts/freetype/subprojects/zlib.wrap",
       "revision": "zlib-1.3.1.tar.gz",
       "revision_kind": "wrap_archive",
       "upstream_url": "http://zlib.net/fossils/zlib-1.3.1.tar.gz",
       "evidence": [
-        "freetype/subprojects/zlib.wrap"
+        "third_party/fonts/freetype/subprojects/zlib.wrap"
       ],
       "confidence": "high",
       "notes": "仅构建回退下载声明，不表示已下载、参与 Windows 构建或与根目录同名库版本一致。",
@@ -2211,12 +2211,12 @@
     },
     {
       "name": "expat (Meson fallback)",
-      "path": "fontconfig/subprojects/expat.wrap",
+      "path": "third_party/fonts/fontconfig/subprojects/expat.wrap",
       "revision": "expat-2.2.6.tar.bz2",
       "revision_kind": "wrap_archive",
       "upstream_url": "https://github.com/libexpat/libexpat/releases/download/R_2_2_6/expat-2.2.6.tar.bz2",
       "evidence": [
-        "fontconfig/subprojects/expat.wrap"
+        "third_party/fonts/fontconfig/subprojects/expat.wrap"
       ],
       "confidence": "high",
       "notes": "仅构建回退下载声明，不表示已下载、参与 Windows 构建或与根目录同名库版本一致。",
@@ -2240,12 +2240,12 @@
     },
     {
       "name": "freetype2 (Meson fallback)",
-      "path": "fontconfig/subprojects/freetype2.wrap",
+      "path": "third_party/fonts/fontconfig/subprojects/freetype2.wrap",
       "revision": "master",
       "revision_kind": "wrap_git_revision",
       "upstream_url": "https://gitlab.freedesktop.org/freetype/freetype.git",
       "evidence": [
-        "fontconfig/subprojects/freetype2.wrap"
+        "third_party/fonts/fontconfig/subprojects/freetype2.wrap"
       ],
       "confidence": "high",
       "notes": "仅构建回退下载声明，不表示已下载、参与 Windows 构建或与根目录同名库版本一致。",
@@ -2265,12 +2265,12 @@
     },
     {
       "name": "gperf (Meson fallback)",
-      "path": "fontconfig/subprojects/gperf.wrap",
+      "path": "third_party/fonts/fontconfig/subprojects/gperf.wrap",
       "revision": "meson",
       "revision_kind": "wrap_git_revision",
       "upstream_url": "https://gitlab.freedesktop.org/tpm/gperf.git",
       "evidence": [
-        "fontconfig/subprojects/gperf.wrap"
+        "third_party/fonts/fontconfig/subprojects/gperf.wrap"
       ],
       "confidence": "high",
       "notes": "仅构建回退下载声明，不表示已下载、参与 Windows 构建或与根目录同名库版本一致。",
@@ -2291,12 +2291,12 @@
     },
     {
       "name": "libpng (Meson fallback)",
-      "path": "fontconfig/subprojects/libpng.wrap",
+      "path": "third_party/fonts/fontconfig/subprojects/libpng.wrap",
       "revision": "libpng-1.6.37.tar.gz",
       "revision_kind": "wrap_archive",
       "upstream_url": "https://github.com/glennrp/libpng/archive/v1.6.37.tar.gz",
       "evidence": [
-        "fontconfig/subprojects/libpng.wrap"
+        "third_party/fonts/fontconfig/subprojects/libpng.wrap"
       ],
       "confidence": "high",
       "notes": "仅构建回退下载声明，不表示已下载、参与 Windows 构建或与根目录同名库版本一致。",
@@ -2320,12 +2320,12 @@
     },
     {
       "name": "libxml2 (Meson fallback)",
-      "path": "fontconfig/subprojects/libxml2.wrap",
+      "path": "third_party/fonts/fontconfig/subprojects/libxml2.wrap",
       "revision": "libxml2-2.12.6.tar.xz",
       "revision_kind": "wrap_archive",
       "upstream_url": "https://download.gnome.org/sources/libxml2/2.12/libxml2-2.12.6.tar.xz",
       "evidence": [
-        "fontconfig/subprojects/libxml2.wrap"
+        "third_party/fonts/fontconfig/subprojects/libxml2.wrap"
       ],
       "confidence": "high",
       "notes": "仅构建回退下载声明，不表示已下载、参与 Windows 构建或与根目录同名库版本一致。",
@@ -2351,12 +2351,12 @@
     },
     {
       "name": "zlib (Meson fallback)",
-      "path": "fontconfig/subprojects/zlib.wrap",
+      "path": "third_party/fonts/fontconfig/subprojects/zlib.wrap",
       "revision": "zlib-1.2.11.tar.gz",
       "revision_kind": "wrap_archive",
       "upstream_url": "http://zlib.net/fossils/zlib-1.2.11.tar.gz",
       "evidence": [
-        "fontconfig/subprojects/zlib.wrap"
+        "third_party/fonts/fontconfig/subprojects/zlib.wrap"
       ],
       "confidence": "high",
       "notes": "仅构建回退下载声明，不表示已下载、参与 Windows 构建或与根目录同名库版本一致。",
@@ -2380,34 +2380,34 @@
     },
     {
       "name": "KhronosGroup/EGL-Registry registry/header copies",
-      "path": "mesalib/include/KHR/khrplatform.h; mesalib/include/EGL/egl.h; mesalib/include/EGL/eglplatform.h; mesalib/include/EGL/eglext.h",
+      "path": "third_party/graphics/mesalib/include/KHR/khrplatform.h; third_party/graphics/mesalib/include/EGL/egl.h; third_party/graphics/mesalib/include/EGL/eglplatform.h; third_party/graphics/mesalib/include/EGL/eglext.h",
       "revision": null,
       "revision_kind": "update_source_mapping",
       "upstream_url": "https://github.com/KhronosGroup/EGL-Registry",
       "evidence": [
-        "mesalib/bin/khronos-update.py"
+        "third_party/graphics/mesalib/bin/khronos-update.py"
       ],
       "confidence": "medium",
       "notes": "自动更新脚本给出来源；大部分是 main 分支 URL，不能据此推断当前导入 SHA。个别固定 ref 见 source_mappings。",
       "nested": true,
       "source_mappings": [
         {
-          "path": "mesalib/include/KHR/khrplatform.h",
+          "path": "third_party/graphics/mesalib/include/KHR/khrplatform.h",
           "update_url": "https://github.com/KhronosGroup/EGL-Registry/raw/main/api/KHR/khrplatform.h",
           "script_ref": "main"
         },
         {
-          "path": "mesalib/include/EGL/egl.h",
+          "path": "third_party/graphics/mesalib/include/EGL/egl.h",
           "update_url": "https://github.com/KhronosGroup/EGL-Registry/raw/main/api/EGL/egl.h",
           "script_ref": "main"
         },
         {
-          "path": "mesalib/include/EGL/eglplatform.h",
+          "path": "third_party/graphics/mesalib/include/EGL/eglplatform.h",
           "update_url": "https://github.com/KhronosGroup/EGL-Registry/raw/main/api/EGL/eglplatform.h",
           "script_ref": "main"
         },
         {
-          "path": "mesalib/include/EGL/eglext.h",
+          "path": "third_party/graphics/mesalib/include/EGL/eglext.h",
           "update_url": "https://github.com/KhronosGroup/EGL-Registry/raw/main/api/EGL/eglext.h",
           "script_ref": "main"
         }
@@ -2430,19 +2430,19 @@
     },
     {
       "name": "ANGLE registry/header copies",
-      "path": "mesalib/include/EGL/eglext_angle.h",
+      "path": "third_party/graphics/mesalib/include/EGL/eglext_angle.h",
       "revision": null,
       "revision_kind": "update_source_mapping",
       "upstream_url": "https://chromium.googlesource.com/angle/angle/",
       "evidence": [
-        "mesalib/bin/khronos-update.py"
+        "third_party/graphics/mesalib/bin/khronos-update.py"
       ],
       "confidence": "medium",
       "notes": "自动更新脚本给出来源；大部分是 main 分支 URL，不能据此推断当前导入 SHA。个别固定 ref 见 source_mappings。",
       "nested": true,
       "source_mappings": [
         {
-          "path": "mesalib/include/EGL/eglext_angle.h",
+          "path": "third_party/graphics/mesalib/include/EGL/eglext_angle.h",
           "update_url": "https://chromium.googlesource.com/angle/angle/+/refs/heads/main/include/EGL/eglext_angle.h?format=TEXT",
           "script_ref": "refs/heads/main"
         }
@@ -2459,94 +2459,94 @@
     },
     {
       "name": "KhronosGroup/OpenGL-Registry registry/header copies",
-      "path": "mesalib/src/mapi/glapi/registry/gl.xml; mesalib/include/GL/glcorearb.h; mesalib/include/GL/glext.h; mesalib/include/GL/glxext.h; mesalib/include/GL/wglext.h; mesalib/include/GLES/gl.h; mesalib/include/GLES/glplatform.h; mesalib/include/GLES/glext.h; mesalib/include/GLES/egl.h; mesalib/include/GLES2/gl2.h; mesalib/include/GLES2/gl2platform.h; mesalib/include/GLES2/gl2ext.h; mesalib/include/GLES3/gl3.h; mesalib/include/GLES3/gl31.h; mesalib/include/GLES3/gl32.h; mesalib/include/GLES3/gl3platform.h",
+      "path": "third_party/graphics/mesalib/src/mapi/glapi/registry/gl.xml; third_party/graphics/mesalib/include/GL/glcorearb.h; third_party/graphics/mesalib/include/GL/glext.h; third_party/graphics/mesalib/include/GL/glxext.h; third_party/graphics/mesalib/include/GL/wglext.h; third_party/graphics/mesalib/include/GLES/gl.h; third_party/graphics/mesalib/include/GLES/glplatform.h; third_party/graphics/mesalib/include/GLES/glext.h; third_party/graphics/mesalib/include/GLES/egl.h; third_party/graphics/mesalib/include/GLES2/gl2.h; third_party/graphics/mesalib/include/GLES2/gl2platform.h; third_party/graphics/mesalib/include/GLES2/gl2ext.h; third_party/graphics/mesalib/include/GLES3/gl3.h; third_party/graphics/mesalib/include/GLES3/gl31.h; third_party/graphics/mesalib/include/GLES3/gl32.h; third_party/graphics/mesalib/include/GLES3/gl3platform.h",
       "revision": null,
       "revision_kind": "update_source_mapping",
       "upstream_url": "https://github.com/KhronosGroup/OpenGL-Registry",
       "evidence": [
-        "mesalib/bin/khronos-update.py"
+        "third_party/graphics/mesalib/bin/khronos-update.py"
       ],
       "confidence": "medium",
       "notes": "自动更新脚本给出来源；大部分是 main 分支 URL，不能据此推断当前导入 SHA。个别固定 ref 见 source_mappings。",
       "nested": true,
       "source_mappings": [
         {
-          "path": "mesalib/src/mapi/glapi/registry/gl.xml",
+          "path": "third_party/graphics/mesalib/src/mapi/glapi/registry/gl.xml",
           "update_url": "https://github.com/KhronosGroup/OpenGL-Registry/raw/main/xml/gl.xml",
           "script_ref": "main"
         },
         {
-          "path": "mesalib/include/GL/glcorearb.h",
+          "path": "third_party/graphics/mesalib/include/GL/glcorearb.h",
           "update_url": "https://github.com/KhronosGroup/OpenGL-Registry/raw/main/api/GL/glcorearb.h",
           "script_ref": "main"
         },
         {
-          "path": "mesalib/include/GL/glext.h",
+          "path": "third_party/graphics/mesalib/include/GL/glext.h",
           "update_url": "https://github.com/KhronosGroup/OpenGL-Registry/raw/main/api/GL/glext.h",
           "script_ref": "main"
         },
         {
-          "path": "mesalib/include/GL/glxext.h",
+          "path": "third_party/graphics/mesalib/include/GL/glxext.h",
           "update_url": "https://github.com/KhronosGroup/OpenGL-Registry/raw/main/api/GL/glxext.h",
           "script_ref": "main"
         },
         {
-          "path": "mesalib/include/GL/wglext.h",
+          "path": "third_party/graphics/mesalib/include/GL/wglext.h",
           "update_url": "https://github.com/KhronosGroup/OpenGL-Registry/raw/main/api/GL/wglext.h",
           "script_ref": "main"
         },
         {
-          "path": "mesalib/include/GLES/gl.h",
+          "path": "third_party/graphics/mesalib/include/GLES/gl.h",
           "update_url": "https://github.com/KhronosGroup/OpenGL-Registry/raw/main/api/GLES/gl.h",
           "script_ref": "main"
         },
         {
-          "path": "mesalib/include/GLES/glplatform.h",
+          "path": "third_party/graphics/mesalib/include/GLES/glplatform.h",
           "update_url": "https://github.com/KhronosGroup/OpenGL-Registry/raw/main/api/GLES/glplatform.h",
           "script_ref": "main"
         },
         {
-          "path": "mesalib/include/GLES/glext.h",
+          "path": "third_party/graphics/mesalib/include/GLES/glext.h",
           "update_url": "https://github.com/KhronosGroup/OpenGL-Registry/raw/main/api/GLES/glext.h",
           "script_ref": "main"
         },
         {
-          "path": "mesalib/include/GLES/egl.h",
+          "path": "third_party/graphics/mesalib/include/GLES/egl.h",
           "update_url": "https://github.com/KhronosGroup/OpenGL-Registry/raw/main/api/GLES/egl.h",
           "script_ref": "main"
         },
         {
-          "path": "mesalib/include/GLES2/gl2.h",
+          "path": "third_party/graphics/mesalib/include/GLES2/gl2.h",
           "update_url": "https://github.com/KhronosGroup/OpenGL-Registry/raw/main/api/GLES2/gl2.h",
           "script_ref": "main"
         },
         {
-          "path": "mesalib/include/GLES2/gl2platform.h",
+          "path": "third_party/graphics/mesalib/include/GLES2/gl2platform.h",
           "update_url": "https://github.com/KhronosGroup/OpenGL-Registry/raw/main/api/GLES2/gl2platform.h",
           "script_ref": "main"
         },
         {
-          "path": "mesalib/include/GLES2/gl2ext.h",
+          "path": "third_party/graphics/mesalib/include/GLES2/gl2ext.h",
           "update_url": "https://github.com/KhronosGroup/OpenGL-Registry/raw/main/api/GLES2/gl2ext.h",
           "script_ref": "main"
         },
         {
-          "path": "mesalib/include/GLES3/gl3.h",
+          "path": "third_party/graphics/mesalib/include/GLES3/gl3.h",
           "update_url": "https://github.com/KhronosGroup/OpenGL-Registry/raw/main/api/GLES3/gl3.h",
           "script_ref": "main"
         },
         {
-          "path": "mesalib/include/GLES3/gl31.h",
+          "path": "third_party/graphics/mesalib/include/GLES3/gl31.h",
           "update_url": "https://github.com/KhronosGroup/OpenGL-Registry/raw/main/api/GLES3/gl31.h",
           "script_ref": "main"
         },
         {
-          "path": "mesalib/include/GLES3/gl32.h",
+          "path": "third_party/graphics/mesalib/include/GLES3/gl32.h",
           "update_url": "https://github.com/KhronosGroup/OpenGL-Registry/raw/main/api/GLES3/gl32.h",
           "script_ref": "main"
         },
         {
-          "path": "mesalib/include/GLES3/gl3platform.h",
+          "path": "third_party/graphics/mesalib/include/GLES3/gl3platform.h",
           "update_url": "https://github.com/KhronosGroup/OpenGL-Registry/raw/main/api/GLES3/gl3platform.h",
           "script_ref": "main"
         }
@@ -2593,39 +2593,39 @@
     },
     {
       "name": "KhronosGroup/SPIRV-Headers registry/header copies",
-      "path": "mesalib/src/compiler/spirv/NonSemanticShaderDebugInfo100.h; mesalib/src/compiler/spirv/spirv.h; mesalib/src/compiler/spirv/spirv.core.grammar.json; mesalib/src/compiler/spirv/OpenCL.std.h; mesalib/src/compiler/spirv/GLSL.std.450.h",
+      "path": "third_party/graphics/mesalib/src/compiler/spirv/NonSemanticShaderDebugInfo100.h; third_party/graphics/mesalib/src/compiler/spirv/spirv.h; third_party/graphics/mesalib/src/compiler/spirv/spirv.core.grammar.json; third_party/graphics/mesalib/src/compiler/spirv/OpenCL.std.h; third_party/graphics/mesalib/src/compiler/spirv/GLSL.std.450.h",
       "revision": null,
       "revision_kind": "update_source_mapping",
       "upstream_url": "https://github.com/KhronosGroup/SPIRV-Headers",
       "evidence": [
-        "mesalib/bin/khronos-update.py"
+        "third_party/graphics/mesalib/bin/khronos-update.py"
       ],
       "confidence": "medium",
       "notes": "自动更新脚本给出来源；大部分是 main 分支 URL，不能据此推断当前导入 SHA。个别固定 ref 见 source_mappings。",
       "nested": true,
       "source_mappings": [
         {
-          "path": "mesalib/src/compiler/spirv/NonSemanticShaderDebugInfo100.h",
+          "path": "third_party/graphics/mesalib/src/compiler/spirv/NonSemanticShaderDebugInfo100.h",
           "update_url": "https://github.com/KhronosGroup/SPIRV-Headers/raw/main/include/spirv/unified1/NonSemanticShaderDebugInfo100.h",
           "script_ref": "main"
         },
         {
-          "path": "mesalib/src/compiler/spirv/spirv.h",
+          "path": "third_party/graphics/mesalib/src/compiler/spirv/spirv.h",
           "update_url": "https://github.com/KhronosGroup/SPIRV-Headers/raw/main/include/spirv/unified1/spirv.h",
           "script_ref": "main"
         },
         {
-          "path": "mesalib/src/compiler/spirv/spirv.core.grammar.json",
+          "path": "third_party/graphics/mesalib/src/compiler/spirv/spirv.core.grammar.json",
           "update_url": "https://github.com/KhronosGroup/SPIRV-Headers/raw/main/include/spirv/unified1/spirv.core.grammar.json",
           "script_ref": "main"
         },
         {
-          "path": "mesalib/src/compiler/spirv/OpenCL.std.h",
+          "path": "third_party/graphics/mesalib/src/compiler/spirv/OpenCL.std.h",
           "update_url": "https://github.com/KhronosGroup/SPIRV-Headers/raw/main/include/spirv/unified1/OpenCL.std.h",
           "script_ref": "main"
         },
         {
-          "path": "mesalib/src/compiler/spirv/GLSL.std.450.h",
+          "path": "third_party/graphics/mesalib/src/compiler/spirv/GLSL.std.450.h",
           "update_url": "https://github.com/KhronosGroup/SPIRV-Headers/raw/main/include/spirv/unified1/GLSL.std.450.h",
           "script_ref": "main"
         }
@@ -2650,19 +2650,19 @@
     },
     {
       "name": "KhronosGroup/glslang registry/header copies",
-      "path": "mesalib/src/compiler/spirv/GLSL.ext.AMD.h",
+      "path": "third_party/graphics/mesalib/src/compiler/spirv/GLSL.ext.AMD.h",
       "revision": null,
       "revision_kind": "update_source_mapping",
       "upstream_url": "https://github.com/KhronosGroup/glslang",
       "evidence": [
-        "mesalib/bin/khronos-update.py"
+        "third_party/graphics/mesalib/bin/khronos-update.py"
       ],
       "confidence": "medium",
       "notes": "自动更新脚本给出来源；大部分是 main 分支 URL，不能据此推断当前导入 SHA。个别固定 ref 见 source_mappings。",
       "nested": true,
       "source_mappings": [
         {
-          "path": "mesalib/src/compiler/spirv/GLSL.ext.AMD.h",
+          "path": "third_party/graphics/mesalib/src/compiler/spirv/GLSL.ext.AMD.h",
           "update_url": "https://github.com/KhronosGroup/glslang/raw/main/SPIRV/GLSL.ext.AMD.h",
           "script_ref": "main"
         }
@@ -2679,164 +2679,164 @@
     },
     {
       "name": "KhronosGroup/Vulkan-Headers registry/header copies",
-      "path": "mesalib/src/vulkan/registry/vk.xml; mesalib/include/vulkan/vulkan.h; mesalib/include/vulkan/vulkan_core.h; mesalib/include/vulkan/vulkan_beta.h; mesalib/include/vulkan/vk_icd.h; mesalib/include/vulkan/vk_layer.h; mesalib/include/vulkan/vk_platform.h; mesalib/include/vulkan/vulkan_android.h; mesalib/include/vulkan/vulkan_directfb.h; mesalib/include/vulkan/vulkan_fuchsia.h; mesalib/include/vulkan/vulkan_ggp.h; mesalib/include/vulkan/vulkan_ios.h; mesalib/include/vulkan/vulkan_macos.h; mesalib/include/vulkan/vulkan_metal.h; mesalib/include/vulkan/vulkan_screen.h; mesalib/include/vulkan/vulkan_vi.h; mesalib/include/vulkan/vulkan_wayland.h; mesalib/include/vulkan/vulkan_win32.h; mesalib/include/vulkan/vulkan_xcb.h; mesalib/include/vulkan/vulkan_xlib.h; mesalib/include/vulkan/vulkan_xlib_xrandr.h; mesalib/include/vk_video/vulkan_video_codec_av1std.h; mesalib/include/vk_video/vulkan_video_codec_av1std_decode.h; mesalib/include/vk_video/vulkan_video_codec_h264std.h; mesalib/include/vk_video/vulkan_video_codec_h264std_decode.h; mesalib/include/vk_video/vulkan_video_codec_h264std_encode.h; mesalib/include/vk_video/vulkan_video_codec_h265std.h; mesalib/include/vk_video/vulkan_video_codec_h265std_decode.h; mesalib/include/vk_video/vulkan_video_codec_h265std_encode.h; mesalib/include/vk_video/vulkan_video_codecs_common.h",
+      "path": "third_party/graphics/mesalib/src/vulkan/registry/vk.xml; third_party/graphics/mesalib/include/vulkan/vulkan.h; third_party/graphics/mesalib/include/vulkan/vulkan_core.h; third_party/graphics/mesalib/include/vulkan/vulkan_beta.h; third_party/graphics/mesalib/include/vulkan/vk_icd.h; third_party/graphics/mesalib/include/vulkan/vk_layer.h; third_party/graphics/mesalib/include/vulkan/vk_platform.h; third_party/graphics/mesalib/include/vulkan/vulkan_android.h; third_party/graphics/mesalib/include/vulkan/vulkan_directfb.h; third_party/graphics/mesalib/include/vulkan/vulkan_fuchsia.h; third_party/graphics/mesalib/include/vulkan/vulkan_ggp.h; third_party/graphics/mesalib/include/vulkan/vulkan_ios.h; third_party/graphics/mesalib/include/vulkan/vulkan_macos.h; third_party/graphics/mesalib/include/vulkan/vulkan_metal.h; third_party/graphics/mesalib/include/vulkan/vulkan_screen.h; third_party/graphics/mesalib/include/vulkan/vulkan_vi.h; third_party/graphics/mesalib/include/vulkan/vulkan_wayland.h; third_party/graphics/mesalib/include/vulkan/vulkan_win32.h; third_party/graphics/mesalib/include/vulkan/vulkan_xcb.h; third_party/graphics/mesalib/include/vulkan/vulkan_xlib.h; third_party/graphics/mesalib/include/vulkan/vulkan_xlib_xrandr.h; third_party/graphics/mesalib/include/vk_video/vulkan_video_codec_av1std.h; third_party/graphics/mesalib/include/vk_video/vulkan_video_codec_av1std_decode.h; third_party/graphics/mesalib/include/vk_video/vulkan_video_codec_h264std.h; third_party/graphics/mesalib/include/vk_video/vulkan_video_codec_h264std_decode.h; third_party/graphics/mesalib/include/vk_video/vulkan_video_codec_h264std_encode.h; third_party/graphics/mesalib/include/vk_video/vulkan_video_codec_h265std.h; third_party/graphics/mesalib/include/vk_video/vulkan_video_codec_h265std_decode.h; third_party/graphics/mesalib/include/vk_video/vulkan_video_codec_h265std_encode.h; third_party/graphics/mesalib/include/vk_video/vulkan_video_codecs_common.h",
       "revision": null,
       "revision_kind": "update_source_mapping",
       "upstream_url": "https://github.com/KhronosGroup/Vulkan-Headers",
       "evidence": [
-        "mesalib/bin/khronos-update.py"
+        "third_party/graphics/mesalib/bin/khronos-update.py"
       ],
       "confidence": "medium",
       "notes": "自动更新脚本给出来源；大部分是 main 分支 URL，不能据此推断当前导入 SHA。个别固定 ref 见 source_mappings。",
       "nested": true,
       "source_mappings": [
         {
-          "path": "mesalib/src/vulkan/registry/vk.xml",
+          "path": "third_party/graphics/mesalib/src/vulkan/registry/vk.xml",
           "update_url": "https://github.com/KhronosGroup/Vulkan-Headers/raw/main/registry/vk.xml",
           "script_ref": "main"
         },
         {
-          "path": "mesalib/include/vulkan/vulkan.h",
+          "path": "third_party/graphics/mesalib/include/vulkan/vulkan.h",
           "update_url": "https://github.com/KhronosGroup/Vulkan-Headers/raw/main/include/vulkan/vulkan.h",
           "script_ref": "main"
         },
         {
-          "path": "mesalib/include/vulkan/vulkan_core.h",
+          "path": "third_party/graphics/mesalib/include/vulkan/vulkan_core.h",
           "update_url": "https://github.com/KhronosGroup/Vulkan-Headers/raw/main/include/vulkan/vulkan_core.h",
           "script_ref": "main"
         },
         {
-          "path": "mesalib/include/vulkan/vulkan_beta.h",
+          "path": "third_party/graphics/mesalib/include/vulkan/vulkan_beta.h",
           "update_url": "https://github.com/KhronosGroup/Vulkan-Headers/raw/main/include/vulkan/vulkan_beta.h",
           "script_ref": "main"
         },
         {
-          "path": "mesalib/include/vulkan/vk_icd.h",
+          "path": "third_party/graphics/mesalib/include/vulkan/vk_icd.h",
           "update_url": "https://github.com/KhronosGroup/Vulkan-Headers/raw/main/include/vulkan/vk_icd.h",
           "script_ref": "main"
         },
         {
-          "path": "mesalib/include/vulkan/vk_layer.h",
+          "path": "third_party/graphics/mesalib/include/vulkan/vk_layer.h",
           "update_url": "https://github.com/KhronosGroup/Vulkan-Headers/raw/main/include/vulkan/vk_layer.h",
           "script_ref": "main"
         },
         {
-          "path": "mesalib/include/vulkan/vk_platform.h",
+          "path": "third_party/graphics/mesalib/include/vulkan/vk_platform.h",
           "update_url": "https://github.com/KhronosGroup/Vulkan-Headers/raw/main/include/vulkan/vk_platform.h",
           "script_ref": "main"
         },
         {
-          "path": "mesalib/include/vulkan/vulkan_android.h",
+          "path": "third_party/graphics/mesalib/include/vulkan/vulkan_android.h",
           "update_url": "https://github.com/KhronosGroup/Vulkan-Headers/raw/main/include/vulkan/vulkan_android.h",
           "script_ref": "main"
         },
         {
-          "path": "mesalib/include/vulkan/vulkan_directfb.h",
+          "path": "third_party/graphics/mesalib/include/vulkan/vulkan_directfb.h",
           "update_url": "https://github.com/KhronosGroup/Vulkan-Headers/raw/main/include/vulkan/vulkan_directfb.h",
           "script_ref": "main"
         },
         {
-          "path": "mesalib/include/vulkan/vulkan_fuchsia.h",
+          "path": "third_party/graphics/mesalib/include/vulkan/vulkan_fuchsia.h",
           "update_url": "https://github.com/KhronosGroup/Vulkan-Headers/raw/main/include/vulkan/vulkan_fuchsia.h",
           "script_ref": "main"
         },
         {
-          "path": "mesalib/include/vulkan/vulkan_ggp.h",
+          "path": "third_party/graphics/mesalib/include/vulkan/vulkan_ggp.h",
           "update_url": "https://github.com/KhronosGroup/Vulkan-Headers/raw/main/include/vulkan/vulkan_ggp.h",
           "script_ref": "main"
         },
         {
-          "path": "mesalib/include/vulkan/vulkan_ios.h",
+          "path": "third_party/graphics/mesalib/include/vulkan/vulkan_ios.h",
           "update_url": "https://github.com/KhronosGroup/Vulkan-Headers/raw/main/include/vulkan/vulkan_ios.h",
           "script_ref": "main"
         },
         {
-          "path": "mesalib/include/vulkan/vulkan_macos.h",
+          "path": "third_party/graphics/mesalib/include/vulkan/vulkan_macos.h",
           "update_url": "https://github.com/KhronosGroup/Vulkan-Headers/raw/main/include/vulkan/vulkan_macos.h",
           "script_ref": "main"
         },
         {
-          "path": "mesalib/include/vulkan/vulkan_metal.h",
+          "path": "third_party/graphics/mesalib/include/vulkan/vulkan_metal.h",
           "update_url": "https://github.com/KhronosGroup/Vulkan-Headers/raw/main/include/vulkan/vulkan_metal.h",
           "script_ref": "main"
         },
         {
-          "path": "mesalib/include/vulkan/vulkan_screen.h",
+          "path": "third_party/graphics/mesalib/include/vulkan/vulkan_screen.h",
           "update_url": "https://github.com/KhronosGroup/Vulkan-Headers/raw/main/include/vulkan/vulkan_screen.h",
           "script_ref": "main"
         },
         {
-          "path": "mesalib/include/vulkan/vulkan_vi.h",
+          "path": "third_party/graphics/mesalib/include/vulkan/vulkan_vi.h",
           "update_url": "https://github.com/KhronosGroup/Vulkan-Headers/raw/main/include/vulkan/vulkan_vi.h",
           "script_ref": "main"
         },
         {
-          "path": "mesalib/include/vulkan/vulkan_wayland.h",
+          "path": "third_party/graphics/mesalib/include/vulkan/vulkan_wayland.h",
           "update_url": "https://github.com/KhronosGroup/Vulkan-Headers/raw/main/include/vulkan/vulkan_wayland.h",
           "script_ref": "main"
         },
         {
-          "path": "mesalib/include/vulkan/vulkan_win32.h",
+          "path": "third_party/graphics/mesalib/include/vulkan/vulkan_win32.h",
           "update_url": "https://github.com/KhronosGroup/Vulkan-Headers/raw/main/include/vulkan/vulkan_win32.h",
           "script_ref": "main"
         },
         {
-          "path": "mesalib/include/vulkan/vulkan_xcb.h",
+          "path": "third_party/graphics/mesalib/include/vulkan/vulkan_xcb.h",
           "update_url": "https://github.com/KhronosGroup/Vulkan-Headers/raw/main/include/vulkan/vulkan_xcb.h",
           "script_ref": "main"
         },
         {
-          "path": "mesalib/include/vulkan/vulkan_xlib.h",
+          "path": "third_party/graphics/mesalib/include/vulkan/vulkan_xlib.h",
           "update_url": "https://github.com/KhronosGroup/Vulkan-Headers/raw/main/include/vulkan/vulkan_xlib.h",
           "script_ref": "main"
         },
         {
-          "path": "mesalib/include/vulkan/vulkan_xlib_xrandr.h",
+          "path": "third_party/graphics/mesalib/include/vulkan/vulkan_xlib_xrandr.h",
           "update_url": "https://github.com/KhronosGroup/Vulkan-Headers/raw/main/include/vulkan/vulkan_xlib_xrandr.h",
           "script_ref": "main"
         },
         {
-          "path": "mesalib/include/vk_video/vulkan_video_codec_av1std.h",
+          "path": "third_party/graphics/mesalib/include/vk_video/vulkan_video_codec_av1std.h",
           "update_url": "https://github.com/KhronosGroup/Vulkan-Headers/raw/main/include/vk_video/vulkan_video_codec_av1std.h",
           "script_ref": "main"
         },
         {
-          "path": "mesalib/include/vk_video/vulkan_video_codec_av1std_decode.h",
+          "path": "third_party/graphics/mesalib/include/vk_video/vulkan_video_codec_av1std_decode.h",
           "update_url": "https://github.com/KhronosGroup/Vulkan-Headers/raw/main/include/vk_video/vulkan_video_codec_av1std_decode.h",
           "script_ref": "main"
         },
         {
-          "path": "mesalib/include/vk_video/vulkan_video_codec_h264std.h",
+          "path": "third_party/graphics/mesalib/include/vk_video/vulkan_video_codec_h264std.h",
           "update_url": "https://github.com/KhronosGroup/Vulkan-Headers/raw/main/include/vk_video/vulkan_video_codec_h264std.h",
           "script_ref": "main"
         },
         {
-          "path": "mesalib/include/vk_video/vulkan_video_codec_h264std_decode.h",
+          "path": "third_party/graphics/mesalib/include/vk_video/vulkan_video_codec_h264std_decode.h",
           "update_url": "https://github.com/KhronosGroup/Vulkan-Headers/raw/main/include/vk_video/vulkan_video_codec_h264std_decode.h",
           "script_ref": "main"
         },
         {
-          "path": "mesalib/include/vk_video/vulkan_video_codec_h264std_encode.h",
+          "path": "third_party/graphics/mesalib/include/vk_video/vulkan_video_codec_h264std_encode.h",
           "update_url": "https://github.com/KhronosGroup/Vulkan-Headers/raw/main/include/vk_video/vulkan_video_codec_h264std_encode.h",
           "script_ref": "main"
         },
         {
-          "path": "mesalib/include/vk_video/vulkan_video_codec_h265std.h",
+          "path": "third_party/graphics/mesalib/include/vk_video/vulkan_video_codec_h265std.h",
           "update_url": "https://github.com/KhronosGroup/Vulkan-Headers/raw/main/include/vk_video/vulkan_video_codec_h265std.h",
           "script_ref": "main"
         },
         {
-          "path": "mesalib/include/vk_video/vulkan_video_codec_h265std_decode.h",
+          "path": "third_party/graphics/mesalib/include/vk_video/vulkan_video_codec_h265std_decode.h",
           "update_url": "https://github.com/KhronosGroup/Vulkan-Headers/raw/main/include/vk_video/vulkan_video_codec_h265std_decode.h",
           "script_ref": "main"
         },
         {
-          "path": "mesalib/include/vk_video/vulkan_video_codec_h265std_encode.h",
+          "path": "third_party/graphics/mesalib/include/vk_video/vulkan_video_codec_h265std_encode.h",
           "update_url": "https://github.com/KhronosGroup/Vulkan-Headers/raw/main/include/vk_video/vulkan_video_codec_h265std_encode.h",
           "script_ref": "main"
         },
         {
-          "path": "mesalib/include/vk_video/vulkan_video_codecs_common.h",
+          "path": "third_party/graphics/mesalib/include/vk_video/vulkan_video_codecs_common.h",
           "update_url": "https://github.com/KhronosGroup/Vulkan-Headers/raw/main/include/vk_video/vulkan_video_codecs_common.h",
           "script_ref": "main"
         }
@@ -2911,13 +2911,13 @@
     },
     {
       "name": "zlib",
-      "path": "zlib",
+      "path": "third_party/zlib",
       "revision": "1.3",
       "revision_kind": "declared_version",
       "upstream_url": "https://zlib.net/",
       "evidence": [
-        "zlib/zlib.h:40-41: ZLIB_VERSION 1.3, ZLIB_VERNUM 0x1300",
-        "zlib/README:3: zlib 1.3",
+        "third_party/zlib/zlib.h:40-41: ZLIB_VERSION 1.3, ZLIB_VERNUM 0x1300",
+        "third_party/zlib/README:3: zlib 1.3",
         "docs/dependencies/packages.txt:81: zlib-1.3",
         "docs/history/upstream-releases/releasenote_21.1.16.1.txt:162: Changes in 21.1.10 lists zlib-1.3"
       ],
@@ -2936,15 +2936,15 @@
     },
     {
       "name": "xorgproto (recorded source; scattered protocol headers)",
-      "path": "X11 and gl/include/GL (protocol-header subset only; mixed directories)",
+      "path": "include/X11 and include/gl/include/GL (protocol-header subset only; mixed directories)",
       "revision": "9d5e1d1dc150e0eb3a562020f2069fad7ec9b3a9",
       "revision_kind": "recorded_sync_commit",
       "upstream_url": "https://gitlab.freedesktop.org/xorg/proto/xorgproto",
       "evidence": [
         "docs/history/upstream-releases/releasenote_21.1.16.1.txt:22: xorgproto commit 9d5e1d1dc150e0eb3a562020f2069fad7ec9b3a9",
         "docs/dependencies/packages.txt:76: xorgproto git version",
-        "scripts/legacy/upstream/sync.bat:12-14: historical xextproto/randrproto => X11/extensions and glproto => gl mapping",
-        "scripts/legacy/upstream/filesthatshouldbethesame.py:50-67,205-212: X11/extensions also contains library API-header copies"
+        "scripts/legacy/upstream/sync.bat:12-14: historical xextproto/randrproto => extensions under the former X11 root and glproto => former gl root mapping",
+        "scripts/legacy/upstream/filesthatshouldbethesame.py:50-67,205-212: include/X11/extensions also contains library API-header copies"
       ],
       "confidence": "high",
       "notes": "独立记录原作者 xorgproto 同步 SHA；仓库没有独立 xorgproto 目录，协议头散置在 X11/gl 中。X11、X11/extensions、gl 包含多个来源，SHA 不代表任一整个目录，也没有逐文件核对到该 commit。scripts/legacy/upstream/sync.bat 是历史拆分协议包映射线索，不能声称它证明本次完整 xorgproto 文件映射。",
@@ -2964,13 +2964,13 @@
     },
     {
       "name": "xauth",
-      "path": "apps/xauth",
+      "path": "third_party/xorg/apps/xauth",
       "revision": "1.1.2",
       "revision_kind": "reported_release_version",
       "upstream_url": "https://www.x.org/releases/individual/app/xauth-1.1.2.tar.gz",
       "evidence": [
         "docs/dependencies/packages.txt: xauth-1.1.2",
-        "apps/xauth/configure.ac"
+        "third_party/xorg/apps/xauth/configure.ac"
       ],
       "confidence": "high-version,not-byte-verified",
       "notes": "清单与源码版本一致；定位官方发行源码，不声称当前目录逐字节相同，不推断tag。",
@@ -2986,13 +2986,13 @@
     },
     {
       "name": "xcalc",
-      "path": "apps/xcalc",
+      "path": "third_party/xorg/apps/xcalc",
       "revision": "1.1.2",
       "revision_kind": "reported_release_version",
       "upstream_url": "https://www.x.org/releases/individual/app/xcalc-1.1.2.tar.gz",
       "evidence": [
         "docs/dependencies/packages.txt: xcalc-1.1.2",
-        "apps/xcalc/configure.ac"
+        "third_party/xorg/apps/xcalc/configure.ac"
       ],
       "confidence": "high-version,not-byte-verified",
       "notes": "清单与源码版本一致；定位官方发行源码，不声称当前目录逐字节相同，不推断tag。",
@@ -3008,13 +3008,13 @@
     },
     {
       "name": "xclock",
-      "path": "apps/xclock",
+      "path": "third_party/xorg/apps/xclock",
       "revision": "1.1.1",
       "revision_kind": "reported_release_version",
       "upstream_url": "https://www.x.org/releases/individual/app/xclock-1.1.1.tar.gz",
       "evidence": [
         "docs/dependencies/packages.txt: xclock-1.1.1",
-        "apps/xclock/configure.ac"
+        "third_party/xorg/apps/xclock/configure.ac"
       ],
       "confidence": "high-version,not-byte-verified",
       "notes": "清单与源码版本一致；定位官方发行源码，不声称当前目录逐字节相同，不推断tag。",
@@ -3030,13 +3030,13 @@
     },
     {
       "name": "xhost",
-      "path": "apps/xhost",
+      "path": "third_party/xorg/apps/xhost",
       "revision": "1.0.9",
       "revision_kind": "reported_release_version",
       "upstream_url": "https://www.x.org/releases/individual/app/xhost-1.0.9.tar.gz",
       "evidence": [
         "docs/dependencies/packages.txt: xhost-1.0.9",
-        "apps/xhost/configure.ac"
+        "third_party/xorg/apps/xhost/configure.ac"
       ],
       "confidence": "high-version,not-byte-verified",
       "notes": "清单与源码版本一致；定位官方发行源码，不声称当前目录逐字节相同，不推断tag。",
@@ -3052,7 +3052,7 @@
     },
     {
       "name": "xwininfo",
-      "path": "apps/xwininfo",
+      "path": "third_party/xorg/apps/xwininfo",
       "revision": "ab427b9bfd495a7e9a5dc690f5abe5a2859b8de3",
       "revision_kind": "reported_upstream_commit",
       "upstream_url": "https://gitlab.freedesktop.org/xorg/app/xwininfo/-/commit/ab427b9bfd495a7e9a5dc690f5abe5a2859b8de3",
@@ -3073,7 +3073,7 @@
     },
     {
       "name": "mkfontscale",
-      "path": "mkfontscale",
+      "path": "third_party/xorg/mkfontscale",
       "revision": "bcfa27aeef3a9eb720e6b48e3fb8a4c2813fef52",
       "revision_kind": "reported_upstream_commit",
       "upstream_url": "https://gitlab.freedesktop.org/xorg/app/mkfontscale/-/commit/bcfa27aeef3a9eb720e6b48e3fb8a4c2813fef52",
@@ -3094,7 +3094,7 @@
     },
     {
       "name": "xkbcomp",
-      "path": "xkbcomp",
+      "path": "third_party/xorg/xkbcomp",
       "revision": "9cb80be3bd01bab4eba6a8aea7767c36b2284845",
       "revision_kind": "reported_upstream_commit",
       "upstream_url": "https://gitlab.freedesktop.org/xorg/app/xkbcomp/-/commit/9cb80be3bd01bab4eba6a8aea7767c36b2284845",
@@ -3115,7 +3115,7 @@
     },
     {
       "name": "xserver",
-      "path": "xorg-server",
+      "path": "src/xorg-server",
       "revision": "af86c5cbc2475b410a2edeb0482ac58309296adb",
       "revision_kind": "reported_upstream_commit",
       "upstream_url": "https://gitlab.freedesktop.org/xorg/xserver/-/commit/af86c5cbc2475b410a2edeb0482ac58309296adb",
@@ -3136,7 +3136,7 @@
     },
     {
       "name": "xkeyboard-config",
-      "path": "xorg-server/xkeyboard-config",
+      "path": "src/xorg-server/xkeyboard-config",
       "revision": "595342a90876efb2f60a488b702ef03f90c62e35",
       "revision_kind": "reported_upstream_commit",
       "upstream_url": "https://gitlab.freedesktop.org/xkeyboard-config/xkeyboard-config/-/commit/595342a90876efb2f60a488b702ef03f90c62e35",
@@ -3181,13 +3181,13 @@
     },
     {
       "name": "bdftopcf",
-      "path": "bdftopcf",
+      "path": "third_party/xorg/bdftopcf",
       "revision": "1.1",
       "revision_kind": "reported_release_version",
       "upstream_url": "https://www.x.org/releases/individual/app/bdftopcf-1.1.tar.gz",
       "evidence": [
         "docs/dependencies/packages.txt:1",
-        "bdftopcf/configure.ac:25",
+        "third_party/xorg/bdftopcf/configure.ac:25",
         "docs/history/upstream-releases/releasenote_21.1.16.1.txt:495"
       ],
       "confidence": "high-version,not-byte-verified",
@@ -3204,13 +3204,13 @@
     },
     {
       "name": "xrdb",
-      "path": "apps/xrdb",
+      "path": "third_party/xorg/apps/xrdb",
       "revision": "1.0.9; git update through 2013-06-21",
       "revision_kind": "version_and_reported_date_only",
       "upstream_url": "https://gitlab.freedesktop.org/xorg/app/xrdb",
       "evidence": [
-        "apps/xrdb/configure.ac:25",
-        "apps/xrdb/README:14",
+        "third_party/xorg/apps/xrdb/configure.ac:25",
+        "third_party/xorg/apps/xrdb/README:14",
         "docs/history/upstream-releases/releasenote_21.1.16.1.txt:945-964",
         "docs/dependencies/packages.txt: xrdb git version"
       ],
@@ -3228,13 +3228,13 @@
     },
     {
       "name": "VcXsrv app compatibility helpers",
-      "path": "apps/common",
+      "path": "third_party/xorg/apps/common",
       "revision": "d0a1eaf7ee15fcdf4f683388a88fec49078e6408",
       "revision_kind": "inherited_snapshot",
       "upstream_url": "https://github.com/marchaesen/vcxsrv/tree/d0a1eaf7ee15fcdf4f683388a88fec49078e6408/apps/common",
       "evidence": [
-        "apps/common/inet.c",
-        "git ls-files apps/common"
+        "third_party/xorg/apps/common/inet.c",
+        "git ls-files third_party/xorg/apps/common"
       ],
       "confidence": "high-snapshot",
       "notes": "项目适配代码，未找到独立第三方包版本。",
@@ -3250,13 +3250,13 @@
     },
     {
       "name": "encodings",
-      "path": "xorg-server/fonts.src/encodings",
+      "path": "src/xorg-server/fonts.src/encodings",
       "revision": "1.0.7",
       "revision_kind": "reported_release_version",
       "upstream_url": "https://www.x.org/releases/individual/font/encodings-1.0.7.tar.gz",
       "evidence": [
         "docs/dependencies/packages.txt: encodings-1.0.7",
-        "xorg-server/fonts.src/encodings/configure.ac"
+        "src/xorg-server/fonts.src/encodings/configure.ac"
       ],
       "confidence": "conflicting-metadata",
       "notes": "版本仅适用本行包，不能泛化到合并目录内其他包。未推断tag、未与原发行包逐字节比对。 残留configure.ac是1.0.4，与清单1.0.7冲突；精确来源未证明。",
@@ -3272,7 +3272,7 @@
     },
     {
       "name": "font-adobe-100dpi",
-      "path": "xorg-server/fonts.src/100dpi",
+      "path": "src/xorg-server/fonts.src/100dpi",
       "revision": "1.0.4",
       "revision_kind": "reported_release_version",
       "upstream_url": "https://www.x.org/releases/individual/font/font-adobe-100dpi-1.0.4.tar.gz",
@@ -3293,7 +3293,7 @@
     },
     {
       "name": "font-adobe-75dpi",
-      "path": "xorg-server/fonts.src/75dpi",
+      "path": "src/xorg-server/fonts.src/75dpi",
       "revision": "1.0.4",
       "revision_kind": "reported_release_version",
       "upstream_url": "https://www.x.org/releases/individual/font/font-adobe-75dpi-1.0.4.tar.gz",
@@ -3314,7 +3314,7 @@
     },
     {
       "name": "font-adobe-utopia-100dpi",
-      "path": "xorg-server/fonts.src/100dpi",
+      "path": "src/xorg-server/fonts.src/100dpi",
       "revision": "1.0.5",
       "revision_kind": "reported_release_version",
       "upstream_url": "https://www.x.org/releases/individual/font/font-adobe-utopia-100dpi-1.0.5.tar.gz",
@@ -3335,7 +3335,7 @@
     },
     {
       "name": "font-adobe-utopia-75dpi",
-      "path": "xorg-server/fonts.src/75dpi",
+      "path": "src/xorg-server/fonts.src/75dpi",
       "revision": "1.0.5",
       "revision_kind": "reported_release_version",
       "upstream_url": "https://www.x.org/releases/individual/font/font-adobe-utopia-75dpi-1.0.5.tar.gz",
@@ -3356,7 +3356,7 @@
     },
     {
       "name": "font-adobe-utopia-type1",
-      "path": "xorg-server/fonts.src/Type1",
+      "path": "src/xorg-server/fonts.src/Type1",
       "revision": "1.0.5",
       "revision_kind": "reported_release_version",
       "upstream_url": "https://www.x.org/releases/individual/font/font-adobe-utopia-type1-1.0.5.tar.gz",
@@ -3377,7 +3377,7 @@
     },
     {
       "name": "font-alias",
-      "path": "xorg-server/fonts.src",
+      "path": "src/xorg-server/fonts.src",
       "revision": "1.0.5",
       "revision_kind": "reported_release_version",
       "upstream_url": "https://www.x.org/releases/individual/font/font-alias-1.0.5.tar.gz",
@@ -3398,7 +3398,7 @@
     },
     {
       "name": "font-arabic-misc",
-      "path": "xorg-server/fonts.src/misc",
+      "path": "src/xorg-server/fonts.src/misc",
       "revision": "1.0.4",
       "revision_kind": "reported_release_version",
       "upstream_url": "https://www.x.org/releases/individual/font/font-arabic-misc-1.0.4.tar.gz",
@@ -3419,7 +3419,7 @@
     },
     {
       "name": "font-bh-100dpi",
-      "path": "xorg-server/fonts.src/100dpi",
+      "path": "src/xorg-server/fonts.src/100dpi",
       "revision": "1.0.4",
       "revision_kind": "reported_release_version",
       "upstream_url": "https://www.x.org/releases/individual/font/font-bh-100dpi-1.0.4.tar.gz",
@@ -3440,7 +3440,7 @@
     },
     {
       "name": "font-bh-75dpi",
-      "path": "xorg-server/fonts.src/75dpi",
+      "path": "src/xorg-server/fonts.src/75dpi",
       "revision": "1.0.4",
       "revision_kind": "reported_release_version",
       "upstream_url": "https://www.x.org/releases/individual/font/font-bh-75dpi-1.0.4.tar.gz",
@@ -3461,7 +3461,7 @@
     },
     {
       "name": "font-bh-lucidatypewriter-100dpi",
-      "path": "xorg-server/fonts.src/100dpi",
+      "path": "src/xorg-server/fonts.src/100dpi",
       "revision": "1.0.4",
       "revision_kind": "reported_release_version",
       "upstream_url": "https://www.x.org/releases/individual/font/font-bh-lucidatypewriter-100dpi-1.0.4.tar.gz",
@@ -3482,7 +3482,7 @@
     },
     {
       "name": "font-bh-lucidatypewriter-75dpi",
-      "path": "xorg-server/fonts.src/75dpi",
+      "path": "src/xorg-server/fonts.src/75dpi",
       "revision": "1.0.4",
       "revision_kind": "reported_release_version",
       "upstream_url": "https://www.x.org/releases/individual/font/font-bh-lucidatypewriter-75dpi-1.0.4.tar.gz",
@@ -3503,13 +3503,13 @@
     },
     {
       "name": "font-bh-ttf",
-      "path": "xorg-server/fonts.src/TTF",
+      "path": "src/xorg-server/fonts.src/TTF",
       "revision": "1.0.4",
       "revision_kind": "reported_release_version",
       "upstream_url": "https://www.x.org/releases/individual/font/font-bh-ttf-1.0.4.tar.gz",
       "evidence": [
         "docs/dependencies/packages.txt: font-bh-ttf-1.0.4",
-        "xorg-server/fonts.src/TTF/configure.ac"
+        "src/xorg-server/fonts.src/TTF/configure.ac"
       ],
       "confidence": "conflicting-metadata",
       "notes": "版本仅适用本行包，不能泛化到合并目录内其他包。未推断tag、未与原发行包逐字节比对。 残留configure.ac是1.0.3，与清单1.0.4冲突；精确来源未证明。",
@@ -3525,13 +3525,13 @@
     },
     {
       "name": "font-bh-type1",
-      "path": "xorg-server/fonts.src/Type1",
+      "path": "src/xorg-server/fonts.src/Type1",
       "revision": "1.0.4",
       "revision_kind": "reported_release_version",
       "upstream_url": "https://www.x.org/releases/individual/font/font-bh-type1-1.0.4.tar.gz",
       "evidence": [
         "docs/dependencies/packages.txt: font-bh-type1-1.0.4",
-        "xorg-server/fonts.src/Type1/configure.ac"
+        "src/xorg-server/fonts.src/Type1/configure.ac"
       ],
       "confidence": "conflicting-metadata",
       "notes": "版本仅适用本行包，不能泛化到合并目录内其他包。未推断tag、未与原发行包逐字节比对。 残留configure.ac是1.0.1，与清单1.0.4冲突；精确来源未证明。",
@@ -3547,7 +3547,7 @@
     },
     {
       "name": "font-bitstream-100dpi",
-      "path": "xorg-server/fonts.src/100dpi",
+      "path": "src/xorg-server/fonts.src/100dpi",
       "revision": "1.0.4",
       "revision_kind": "reported_release_version",
       "upstream_url": "https://www.x.org/releases/individual/font/font-bitstream-100dpi-1.0.4.tar.gz",
@@ -3568,7 +3568,7 @@
     },
     {
       "name": "font-bitstream-75dpi",
-      "path": "xorg-server/fonts.src/75dpi",
+      "path": "src/xorg-server/fonts.src/75dpi",
       "revision": "1.0.4",
       "revision_kind": "reported_release_version",
       "upstream_url": "https://www.x.org/releases/individual/font/font-bitstream-75dpi-1.0.4.tar.gz",
@@ -3589,13 +3589,13 @@
     },
     {
       "name": "font-bitstream-speedo",
-      "path": "xorg-server/fonts.src/Speedo",
+      "path": "src/xorg-server/fonts.src/Speedo",
       "revision": "1.0.2",
       "revision_kind": "reported_release_version",
       "upstream_url": "https://www.x.org/releases/individual/font/font-bitstream-speedo-1.0.2.tar.gz",
       "evidence": [
         "docs/dependencies/packages.txt: font-bitstream-speedo-1.0.2",
-        "xorg-server/fonts.src/Speedo/configure.ac"
+        "src/xorg-server/fonts.src/Speedo/configure.ac"
       ],
       "confidence": "conflicting-metadata",
       "notes": "版本仅适用本行包，不能泛化到合并目录内其他包。未推断tag、未与原发行包逐字节比对。 残留configure.ac是1.0.1，与清单1.0.2冲突；精确来源未证明。",
@@ -3611,7 +3611,7 @@
     },
     {
       "name": "font-bitstream-type1",
-      "path": "xorg-server/fonts.src/Type1",
+      "path": "src/xorg-server/fonts.src/Type1",
       "revision": "1.0.4",
       "revision_kind": "reported_release_version",
       "upstream_url": "https://www.x.org/releases/individual/font/font-bitstream-type1-1.0.4.tar.gz",
@@ -3632,7 +3632,7 @@
     },
     {
       "name": "font-cronyx-cyrillic",
-      "path": "xorg-server/fonts.src/cyrillic",
+      "path": "src/xorg-server/fonts.src/cyrillic",
       "revision": "1.0.4",
       "revision_kind": "reported_release_version",
       "upstream_url": "https://www.x.org/releases/individual/font/font-cronyx-cyrillic-1.0.4.tar.gz",
@@ -3653,7 +3653,7 @@
     },
     {
       "name": "font-cursor-misc",
-      "path": "xorg-server/fonts.src/misc",
+      "path": "src/xorg-server/fonts.src/misc",
       "revision": "1.0.4",
       "revision_kind": "reported_release_version",
       "upstream_url": "https://www.x.org/releases/individual/font/font-cursor-misc-1.0.4.tar.gz",
@@ -3674,7 +3674,7 @@
     },
     {
       "name": "font-daewoo-misc",
-      "path": "xorg-server/fonts.src/misc",
+      "path": "src/xorg-server/fonts.src/misc",
       "revision": "1.0.4",
       "revision_kind": "reported_release_version",
       "upstream_url": "https://www.x.org/releases/individual/font/font-daewoo-misc-1.0.4.tar.gz",
@@ -3695,7 +3695,7 @@
     },
     {
       "name": "font-dec-misc",
-      "path": "xorg-server/fonts.src/misc",
+      "path": "src/xorg-server/fonts.src/misc",
       "revision": "1.0.4",
       "revision_kind": "reported_release_version",
       "upstream_url": "https://www.x.org/releases/individual/font/font-dec-misc-1.0.4.tar.gz",
@@ -3716,7 +3716,7 @@
     },
     {
       "name": "font-ibm-type1",
-      "path": "xorg-server/fonts.src/Type1",
+      "path": "src/xorg-server/fonts.src/Type1",
       "revision": "1.0.4",
       "revision_kind": "reported_release_version",
       "upstream_url": "https://www.x.org/releases/individual/font/font-ibm-type1-1.0.4.tar.gz",
@@ -3737,7 +3737,7 @@
     },
     {
       "name": "font-isas-misc",
-      "path": "xorg-server/fonts.src/misc",
+      "path": "src/xorg-server/fonts.src/misc",
       "revision": "1.0.4",
       "revision_kind": "reported_release_version",
       "upstream_url": "https://www.x.org/releases/individual/font/font-isas-misc-1.0.4.tar.gz",
@@ -3758,7 +3758,7 @@
     },
     {
       "name": "font-jis-misc",
-      "path": "xorg-server/fonts.src/misc",
+      "path": "src/xorg-server/fonts.src/misc",
       "revision": "1.0.4",
       "revision_kind": "reported_release_version",
       "upstream_url": "https://www.x.org/releases/individual/font/font-jis-misc-1.0.4.tar.gz",
@@ -3779,7 +3779,7 @@
     },
     {
       "name": "font-micro-misc",
-      "path": "xorg-server/fonts.src/misc",
+      "path": "src/xorg-server/fonts.src/misc",
       "revision": "1.0.4",
       "revision_kind": "reported_release_version",
       "upstream_url": "https://www.x.org/releases/individual/font/font-micro-misc-1.0.4.tar.gz",
@@ -3800,13 +3800,13 @@
     },
     {
       "name": "font-misc-cyrillic",
-      "path": "xorg-server/fonts.src/cyrillic",
+      "path": "src/xorg-server/fonts.src/cyrillic",
       "revision": "1.0.4",
       "revision_kind": "reported_release_version",
       "upstream_url": "https://www.x.org/releases/individual/font/font-misc-cyrillic-1.0.4.tar.gz",
       "evidence": [
         "docs/dependencies/packages.txt: font-misc-cyrillic-1.0.4",
-        "xorg-server/fonts.src/cyrillic/configure.ac"
+        "src/xorg-server/fonts.src/cyrillic/configure.ac"
       ],
       "confidence": "conflicting-metadata",
       "notes": "版本仅适用本行包，不能泛化到合并目录内其他包。未推断tag、未与原发行包逐字节比对。 残留configure.ac是1.0.1，与清单1.0.4冲突；精确来源未证明。",
@@ -3822,7 +3822,7 @@
     },
     {
       "name": "font-misc-ethiopic",
-      "path": "xorg-server/fonts.src/OTF; xorg-server/fonts.src/TTF",
+      "path": "src/xorg-server/fonts.src/OTF; src/xorg-server/fonts.src/TTF",
       "revision": "1.0.5",
       "revision_kind": "reported_release_version",
       "upstream_url": "https://www.x.org/releases/individual/font/font-misc-ethiopic-1.0.5.tar.gz",
@@ -3845,13 +3845,13 @@
     },
     {
       "name": "font-misc-meltho",
-      "path": "xorg-server/fonts.src/OTF",
+      "path": "src/xorg-server/fonts.src/OTF",
       "revision": "1.0.4",
       "revision_kind": "reported_release_version",
       "upstream_url": "https://www.x.org/releases/individual/font/font-misc-meltho-1.0.4.tar.gz",
       "evidence": [
         "docs/dependencies/packages.txt: font-misc-meltho-1.0.4",
-        "xorg-server/fonts.src/OTF/configure.ac"
+        "src/xorg-server/fonts.src/OTF/configure.ac"
       ],
       "confidence": "conflicting-metadata",
       "notes": "版本仅适用本行包，不能泛化到合并目录内其他包。未推断tag、未与原发行包逐字节比对。 残留configure.ac是1.0.0，与清单1.0.4冲突；精确来源未证明。",
@@ -3867,13 +3867,13 @@
     },
     {
       "name": "font-misc-misc",
-      "path": "xorg-server/fonts.src/misc",
+      "path": "src/xorg-server/fonts.src/misc",
       "revision": "1.1.3",
       "revision_kind": "reported_release_version",
       "upstream_url": "https://www.x.org/releases/individual/font/font-misc-misc-1.1.3.tar.gz",
       "evidence": [
         "docs/dependencies/packages.txt: font-misc-misc-1.1.3",
-        "xorg-server/fonts.src/misc/configure.ac"
+        "src/xorg-server/fonts.src/misc/configure.ac"
       ],
       "confidence": "conflicting-metadata",
       "notes": "版本仅适用本行包，不能泛化到合并目录内其他包。未推断tag、未与原发行包逐字节比对。 残留configure.ac是1.1.0，与清单1.1.3冲突；精确来源未证明。",
@@ -3889,7 +3889,7 @@
     },
     {
       "name": "font-mutt-misc",
-      "path": "xorg-server/fonts.src/misc",
+      "path": "src/xorg-server/fonts.src/misc",
       "revision": "1.0.4",
       "revision_kind": "reported_release_version",
       "upstream_url": "https://www.x.org/releases/individual/font/font-mutt-misc-1.0.4.tar.gz",
@@ -3910,7 +3910,7 @@
     },
     {
       "name": "font-schumacher-misc",
-      "path": "xorg-server/fonts.src/misc",
+      "path": "src/xorg-server/fonts.src/misc",
       "revision": "1.1.3",
       "revision_kind": "reported_release_version",
       "upstream_url": "https://www.x.org/releases/individual/font/font-schumacher-misc-1.1.3.tar.gz",
@@ -3931,7 +3931,7 @@
     },
     {
       "name": "font-screen-cyrillic",
-      "path": "xorg-server/fonts.src/cyrillic",
+      "path": "src/xorg-server/fonts.src/cyrillic",
       "revision": "1.0.5",
       "revision_kind": "reported_release_version",
       "upstream_url": "https://www.x.org/releases/individual/font/font-screen-cyrillic-1.0.5.tar.gz",
@@ -3952,7 +3952,7 @@
     },
     {
       "name": "font-sony-misc",
-      "path": "xorg-server/fonts.src/misc",
+      "path": "src/xorg-server/fonts.src/misc",
       "revision": "1.0.4",
       "revision_kind": "reported_release_version",
       "upstream_url": "https://www.x.org/releases/individual/font/font-sony-misc-1.0.4.tar.gz",
@@ -3973,7 +3973,7 @@
     },
     {
       "name": "font-sun-misc",
-      "path": "xorg-server/fonts.src/misc",
+      "path": "src/xorg-server/fonts.src/misc",
       "revision": "1.0.4",
       "revision_kind": "reported_release_version",
       "upstream_url": "https://www.x.org/releases/individual/font/font-sun-misc-1.0.4.tar.gz",
@@ -3994,7 +3994,7 @@
     },
     {
       "name": "font-util",
-      "path": "xorg-server/fonts.src/font-util",
+      "path": "src/xorg-server/fonts.src/font-util",
       "revision": "1.4.1",
       "revision_kind": "reported_release_version",
       "upstream_url": "https://www.x.org/releases/individual/font/font-util-1.4.1.tar.gz",
@@ -4015,7 +4015,7 @@
     },
     {
       "name": "font-winitzki-cyrillic",
-      "path": "xorg-server/fonts.src/cyrillic",
+      "path": "src/xorg-server/fonts.src/cyrillic",
       "revision": "1.0.4",
       "revision_kind": "reported_release_version",
       "upstream_url": "https://www.x.org/releases/individual/font/font-winitzki-cyrillic-1.0.4.tar.gz",
@@ -4036,7 +4036,7 @@
     },
     {
       "name": "font-xfree86-type1",
-      "path": "xorg-server/fonts.src/Type1",
+      "path": "src/xorg-server/fonts.src/Type1",
       "revision": "1.0.5",
       "revision_kind": "reported_release_version",
       "upstream_url": "https://www.x.org/releases/individual/font/font-xfree86-type1-1.0.5.tar.gz",
@@ -4057,13 +4057,13 @@
     },
     {
       "name": "terminus-font",
-      "path": "xorg-server/fonts.src/terminus-font",
+      "path": "src/xorg-server/fonts.src/terminus-font",
       "revision": "4.49.1",
       "revision_kind": "reported_release_version",
       "upstream_url": "https://sourceforge.net/projects/terminus-font/files/terminus-font-4.49/terminus-font-4.49.1.tar.gz/download",
       "evidence": [
         "docs/dependencies/packages.txt: terminus-font-4.49.1",
-        "xorg-server/fonts.src/terminus-font/README:45"
+        "src/xorg-server/fonts.src/terminus-font/README:45"
       ],
       "confidence": "high-version,not-byte-verified",
       "notes": "版本仅适用本行包，不能泛化到合并目录内其他包。未推断tag、未与原发行包逐字节比对。",
@@ -4079,13 +4079,13 @@
     },
     {
       "name": "ttf-bitstream-vera",
-      "path": "xorg-server/fonts.src/TTF",
+      "path": "src/xorg-server/fonts.src/TTF",
       "revision": "1.10",
       "revision_kind": "reported_release_version",
       "upstream_url": "https://download.gnome.org/sources/ttf-bitstream-vera/1.10/ttf-bitstream-vera-1.10.tar.gz",
       "evidence": [
         "docs/dependencies/packages.txt: ttf-bitstream-vera-1.10",
-        "xorg-server/fonts.src/TTF/RELEASENOTES.TXT:4"
+        "src/xorg-server/fonts.src/TTF/RELEASENOTES.TXT:4"
       ],
       "confidence": "high-version,not-byte-verified",
       "notes": "版本仅适用本行包，不能泛化到合并目录内其他包。未推断tag、未与原发行包逐字节比对。",
@@ -4101,13 +4101,13 @@
     },
     {
       "name": "xbitmaps",
-      "path": "xorg-server/bitmaps",
+      "path": "src/xorg-server/bitmaps",
       "revision": "1.1.1",
       "revision_kind": "reported_release_version",
       "upstream_url": "https://www.x.org/releases/individual/data/xbitmaps-1.1.1.tar.gz",
       "evidence": [
         "docs/dependencies/packages.txt: xbitmaps-1.1.1",
-        "xorg-server/bitmaps/configure.ac:5"
+        "src/xorg-server/bitmaps/configure.ac:5"
       ],
       "confidence": "high-version,not-byte-verified",
       "notes": "位图数据包；不在fonts.src中。",
@@ -4931,5 +4931,5 @@
       "report": "../validation/2026-09-09-xfixes-request-length.md"
     }
   ],
-  "layout_note": "2026-09-10 文档与入口迁移：path/evidence 表示当前仓库位置，actual_import_urls、inherited_material_urls 和 declaration_url 保留原固定提交的路径。"
+  "layout_note": "2026-09-10 源码分层后，path/evidence 表示当前仓库位置；完整旧路径映射见 docs/history/2026-09-10-source-path-mapping.json。actual_import_urls、inherited_material_urls 和 declaration_url 保留原固定提交的路径。"
 }

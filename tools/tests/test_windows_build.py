@@ -36,7 +36,7 @@ class WindowsBuildTests(unittest.TestCase):
             self.skipTest("set VCXSRV_TEST_LOCAL_TOOLS=1 for local toolchain preflight")
         watched = [ROOT / "tools/mhmake/Release64/mhmake.exe",
                    ROOT / "tools/mhmake/Release64/mhmakelexer.cpp",
-                   ROOT / "openssl/release64/configdata.pm"]
+                   ROOT / "third_party/openssl/release64/configdata.pm"]
         before = [(p.exists(), p.stat().st_mtime_ns if p.exists() else None) for p in watched]
         with tempfile.TemporaryDirectory(prefix="vcxsrv report ") as directory:
             report = Path(directory) / "environment.json"

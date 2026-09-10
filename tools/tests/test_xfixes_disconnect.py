@@ -25,10 +25,13 @@ class XfixesDisconnectTests(unittest.TestCase):
         cls.addClassCleanup(cls.directory.cleanup)
         work = Path(cls.directory.name)
         cls.exe = work / "xfixes_disconnect.exe"
-        includes = [".", "include", "pthreads", "pixman/pixman", "mesalib/include",
-                    "gl/include", "xorg-server", "xorg-server/include", "xorg-server/glx",
-                    "xorg-server/mi", "xorg-server/render", "xorg-server/Xext",
-                    "xorg-server/miext/damage", "xorg-server/present", "xorg-server/Xi", "xorg-server/xfixes"]
+        includes = [".", "include", "third_party/pthreads",
+                    "third_party/graphics/pixman/pixman",
+                    "third_party/graphics/mesalib/include", "include/gl/include",
+                    "src/xorg-server", "src/xorg-server/include", "src/xorg-server/glx",
+                    "src/xorg-server/mi", "src/xorg-server/render", "src/xorg-server/Xext",
+                    "src/xorg-server/miext/damage", "src/xorg-server/present",
+                    "src/xorg-server/Xi", "src/xorg-server/xfixes"]
         defines = ["WIN32", "_WINDOWS", "WINDOWS", "_MBCS", "__i386__", "__MINGW32__",
                    "_POSIX_", "X_NOT_POSIX", "_TIMEVAL_DEFINED", "mode_t=int", "__STDC__",
                    "FAKEIT", "HAVE_CONFIG_H", "_BSD_SOURCE", "_WIN32_WINNT=0x0601",
