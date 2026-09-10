@@ -16,8 +16,11 @@
 | --- | --- | --- | --- |
 | GLX context tag | [2779affbdb4354e894f490e56f962527d6125043](https://gitlab.freedesktop.org/xorg/xserver/-/commit/2779affbdb4354e894f490e56f962527d6125043) | [同 SHA 镜像](https://github.com/XQuartz/xorg-server/commit/2779affbdb4354e894f490e56f962527d6125043) | `7338738b24bde529ddd62131b4a57ab02d570a26` / [记录](../validation/2026-09-09-glx-context-tags.md) |
 | XFIXES request length | [ab02fb96b1c701c3bb47617d965522c34befa6af](https://gitlab.freedesktop.org/xorg/xserver/-/commit/ab02fb96b1c701c3bb47617d965522c34befa6af) | [同 SHA 镜像](https://github.com/LizardByte-infrastructure/xserver/commit/ab02fb96b1c701c3bb47617d965522c34befa6af) | `1e4a1cf5149df2b5da48d2571b08f2bc597a538b` / [记录](../validation/2026-09-09-xfixes-request-length.md) |
+| BigRequest length guard (CVE-2025-49176) | [03731b326a80b582e48d939fe62cb1e2b10400d9](https://gitlab.freedesktop.org/xorg/xserver/-/commit/03731b326a80b582e48d939fe62cb1e2b10400d9) | [同 SHA 镜像 API](https://api.github.com/repos/LizardByte-infrastructure/xserver/commits/03731b326a80b582e48d939fe62cb1e2b10400d9) | `e356623330a568afd254aa8804d6fafdfef29d95` / [整合记录](../validation/2026-09-10-xserver-input-integration.md) |
+| BigRequest newly read header guard (CVE-2025-49176 follow-up) | [4fc4d76b2c7aaed61ed2653f997783a3714c4fe1](https://gitlab.freedesktop.org/xorg/xserver/-/commit/4fc4d76b2c7aaed61ed2653f997783a3714c4fe1) | [同 SHA 镜像 API](https://api.github.com/repos/LizardByte-infrastructure/xserver/commits/4fc4d76b2c7aaed61ed2653f997783a3714c4fe1) | `e356623330a568afd254aa8804d6fafdfef29d95` / [整合记录](../validation/2026-09-10-xserver-input-integration.md) |
+| Input buffer sharing (CVE-2025-49178) | [d55c54cecb5e83eaa2d56bed5cc4461f9ba318c2](https://gitlab.freedesktop.org/xorg/xserver/-/commit/d55c54cecb5e83eaa2d56bed5cc4461f9ba318c2) | [同 SHA 镜像 API](https://api.github.com/repos/LizardByte-infrastructure/xserver/commits/d55c54cecb5e83eaa2d56bed5cc4461f9ba318c2) | `e356623330a568afd254aa8804d6fafdfef29d95` / [整合记录](../validation/2026-09-10-xserver-input-integration.md) |
 
-输入处理候选未合入，不计入当前依赖修订；其来源及状态见[候选报告](../validation/2026-09-09-xserver-input.md)。原生构建和 Windows 适配等本地改动保存在 master 的开发提交中。
+输入处理修复从已实测的历史候选 `c06e0db1669afaee649bdaf407c7c76c9fa3ae56` 恢复至 `src/xorg-server/os/io.c`。2026-09-09 实际取得的补丁 URL、日期、SHA-256、作者和正式包交叉核对信息保存在 JSON；2026-09-10 复用归档材料，没有重新下载或创建上游源码分支。前两条上游补丁的错误返回已作本地适配：不可表示的长度终止对应客户端并返回 `-1`，`dispatch.c` 保持原有处理；不声称逐字采用原始上游的 BadLength 返回方案。普通请求行为和 Windows 适配保留。验证及未覆盖范围见[整合报告](../validation/2026-09-10-xserver-input-integration.md)。
 
 ## 核心库与头文件
 

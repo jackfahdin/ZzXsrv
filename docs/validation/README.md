@@ -6,7 +6,7 @@
 
 当前只保留线性 master，origin 为 `git@github.com:jackfahdin/ZzXsrv.git`；不再保留 upstream、旧工作分支或旧 tags。[依赖快照与开发主线](2026-09-09-component-baseline.md)只记录当时的历史方案。旧报告中的提交号、标签名、分支名和 worktree 命令属于历史语境，不代表当前引用或目录仍可按原方式使用。
 
-[X Server 适用性盘点](2026-09-09-xserver-applicability.md)保留此前逐项核对结果；[输入处理候选](2026-09-09-xserver-input.md)的历史源码 `c06e0db16` 已完成本地适配、静态审查、完整构建和 71 项测试，仍未取得实际使用确认、未合入 master。其普通源码/运行目录、`.local-validation/reorganize-20260910/pending-input-source.patch` 和同目录 `current-development.bundle` 已保留。本轮不继续该候选，恢复时先查仓库整理报告，不能再把旧目录当作 worktree。
+[X Server 适用性盘点](2026-09-09-xserver-applicability.md)保留此前逐项核对结果；[输入处理候选](2026-09-09-xserver-input.md)已取得本版本实际使用反馈，修复按当前目录恢复并合入主线。本次完整构建、73 项测试与运行检查见[输入整合报告](2026-09-10-xserver-input-integration.md)。历史候选的源码、运行目录和归档继续保留，不能再当作 worktree 或未完成任务重复导入。GUI-001 暂缓排查，剪贴板/OpenGL 等未验证范围继续保留。
 
 已完成的首轮基线：[2026-09-09 Windows x64 Release](2026-09-09-baseline.md)。报告记录历史被测源码提交、当时标签、实际结果和未验证范围；标签已归档后删除，验证结论仍限于原源码和运行目录。
 

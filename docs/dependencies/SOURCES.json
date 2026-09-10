@@ -4929,6 +4929,96 @@
       "actual_source_url": "https://github.com/LizardByte-infrastructure/xserver/commit/ab02fb96b1c701c3bb47617d965522c34befa6af",
       "local_commit": "1e4a1cf5149df2b5da48d2571b08f2bc597a538b",
       "report": "../validation/2026-09-09-xfixes-request-length.md"
+    },
+    {
+      "component": "xserver",
+      "name": "BigRequest length guard (CVE-2025-49176)",
+      "upstream_commit": "03731b326a80b582e48d939fe62cb1e2b10400d9",
+      "upstream_stable_commit": "f7dcf2d0d46d31735208c3270dc3457ea3093635",
+      "upstream_url": "https://gitlab.freedesktop.org/xorg/xserver/-/commit/03731b326a80b582e48d939fe62cb1e2b10400d9",
+      "actual_source_url": "https://api.github.com/repos/LizardByte-infrastructure/xserver/commits/03731b326a80b582e48d939fe62cb1e2b10400d9",
+      "source_download_date": "2026-09-09",
+      "patch_sha256": "0bfe7067dbc3c17bdc8a942314572b44c6c592b732306df69e6f23efb9dd73a2",
+      "patch_hash_scope": "historical extracted per-file patch before local adaptation",
+      "upstream_author": {
+        "name": "Olivier Fourdan",
+        "email": "ofourdan@redhat.com",
+        "date": "2025-04-07T14:13:34Z"
+      },
+      "local_commit": "e356623330a568afd254aa8804d6fafdfef29d95",
+      "historical_candidate_commit": "c06e0db1669afaee649bdaf407c7c76c9fa3ae56",
+      "restored_from": ".local-validation/reorganize-20260910/pending-input-source.patch",
+      "restoration_date": "2026-09-10",
+      "local_paths": [
+        "src/xorg-server/os/io.c"
+      ],
+      "local_adaptation": "Preserve the tested Windows parser contract: YieldControlDeath() and return -1 for unrepresentable lengths; dispatch.c stays unchanged instead of the original upstream BadLength dispatch change.",
+      "cross_check_archive": {
+        "url": "https://xorg.freedesktop.org/archive/individual/xserver/xorg-server-21.1.24.tar.xz",
+        "sha256": "1a4eb36ca65cc3b1b936566d677a9786e13c11cd5806e951ac55f3f5ce3984af",
+        "evidence": "../validation/2026-09-09-xserver-applicability.md"
+      },
+      "report": "../validation/2026-09-10-xserver-input-integration.md"
+    },
+    {
+      "component": "xserver",
+      "name": "BigRequest newly read header guard (CVE-2025-49176 follow-up)",
+      "upstream_commit": "4fc4d76b2c7aaed61ed2653f997783a3714c4fe1",
+      "upstream_stable_commit": "a659519ffa3eae4c94218b03e704a2b6d26adf6f",
+      "upstream_url": "https://gitlab.freedesktop.org/xorg/xserver/-/commit/4fc4d76b2c7aaed61ed2653f997783a3714c4fe1",
+      "actual_source_url": "https://api.github.com/repos/LizardByte-infrastructure/xserver/commits/4fc4d76b2c7aaed61ed2653f997783a3714c4fe1",
+      "source_download_date": "2026-09-09",
+      "patch_sha256": "9ffd0fe1f6d2297af7f979d28361bc9342cd11e3948cd946c5d40317f91608ac",
+      "patch_hash_scope": "historical extracted per-file patch before local adaptation",
+      "upstream_author": {
+        "name": "Olivier Fourdan",
+        "email": "ofourdan@redhat.com",
+        "date": "2025-06-18T06:39:02Z"
+      },
+      "local_commit": "e356623330a568afd254aa8804d6fafdfef29d95",
+      "historical_candidate_commit": "c06e0db1669afaee649bdaf407c7c76c9fa3ae56",
+      "restored_from": ".local-validation/reorganize-20260910/pending-input-source.patch",
+      "restoration_date": "2026-09-10",
+      "local_paths": [
+        "src/xorg-server/os/io.c"
+      ],
+      "local_adaptation": "Preserve the tested Windows parser contract: YieldControlDeath() and return -1 for unrepresentable lengths; dispatch.c stays unchanged instead of the original upstream BadLength dispatch change.",
+      "cross_check_archive": {
+        "url": "https://xorg.freedesktop.org/archive/individual/xserver/xorg-server-21.1.24.tar.xz",
+        "sha256": "1a4eb36ca65cc3b1b936566d677a9786e13c11cd5806e951ac55f3f5ce3984af",
+        "evidence": "../validation/2026-09-09-xserver-applicability.md"
+      },
+      "report": "../validation/2026-09-10-xserver-input-integration.md"
+    },
+    {
+      "component": "xserver",
+      "name": "Input buffer sharing (CVE-2025-49178)",
+      "upstream_commit": "d55c54cecb5e83eaa2d56bed5cc4461f9ba318c2",
+      "upstream_stable_commit": "7996ac60d81d665a87f4f736bcfe17e22a375b5c",
+      "upstream_url": "https://gitlab.freedesktop.org/xorg/xserver/-/commit/d55c54cecb5e83eaa2d56bed5cc4461f9ba318c2",
+      "actual_source_url": "https://api.github.com/repos/LizardByte-infrastructure/xserver/commits/d55c54cecb5e83eaa2d56bed5cc4461f9ba318c2",
+      "source_download_date": "2026-09-09",
+      "patch_sha256": "4b51bafe17a36b0790fd952dfad0e3d3744764be370a021984f914f1f5017466",
+      "patch_hash_scope": "historical extracted per-file patch before local adaptation",
+      "upstream_author": {
+        "name": "Olivier Fourdan",
+        "email": "ofourdan@redhat.com",
+        "date": "2025-04-28T08:46:03Z"
+      },
+      "local_commit": "e356623330a568afd254aa8804d6fafdfef29d95",
+      "historical_candidate_commit": "c06e0db1669afaee649bdaf407c7c76c9fa3ae56",
+      "restored_from": ".local-validation/reorganize-20260910/pending-input-source.patch",
+      "restoration_date": "2026-09-10",
+      "local_paths": [
+        "src/xorg-server/os/io.c"
+      ],
+      "local_adaptation": "Retain input-buffer ownership while ignoreBytes is nonzero; behavior matches the tested candidate.",
+      "cross_check_archive": {
+        "url": "https://xorg.freedesktop.org/archive/individual/xserver/xorg-server-21.1.24.tar.xz",
+        "sha256": "1a4eb36ca65cc3b1b936566d677a9786e13c11cd5806e951ac55f3f5ce3984af",
+        "evidence": "../validation/2026-09-09-xserver-applicability.md"
+      },
+      "report": "../validation/2026-09-10-xserver-input-integration.md"
     }
   ],
   "layout_note": "2026-09-10 源码分层后，path/evidence 表示当前仓库位置；完整旧路径映射见 docs/history/2026-09-10-source-path-mapping.json。actual_import_urls、inherited_material_urls 和 declaration_url 保留原固定提交的路径。"
