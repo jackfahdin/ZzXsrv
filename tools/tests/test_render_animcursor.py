@@ -84,3 +84,5 @@ class RenderAnimCursorTests(unittest.TestCase):
         self.run_case("bad-length")
 
 
+if __name__ == "__main__":
+    unittest.main()

@@ -93,3 +93,5 @@ class RecordRegisterTests(unittest.TestCase):
         self.run_case("swapped-valid")
 
 
+if __name__ == "__main__":
+    unittest.main()
