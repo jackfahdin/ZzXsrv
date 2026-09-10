@@ -1,0 +1,30 @@
+WINAPP = xclock
+
+DEFINES += XT_NO_SM XRENDER
+
+INCLUDELIBFILES = \
+ $(COMPONENT_LIBXCB_DIR)\src\$(OBJDIR)\libxcb.lib \
+ $(COMPONENT_LIBXKBFILE_DIR)\src\$(OBJDIR)\libxkbfile.lib \
+ $(COMPONENT_LIBXPM_DIR)\src\$(OBJDIR)\libXpm.lib \
+ $(COMPONENT_LIBXAU_DIR)\$(OBJDIR)\libXau.lib \
+ $(COMPONENT_LIBXAW_DIR)\src\$(OBJDIR)\libXaw.lib \
+ $(COMPONENT_LIBXT_DIR)\src\$(OBJDIR)\libXt.lib \
+ $(COMPONENT_LIBXEXT_DIR)\src\$(OBJDIR)\libXext.lib \
+ $(COMPONENT_LIBXMU_DIR)\src\$(OBJDIR)\libXmu.lib \
+ $(COMPONENT_LIBX11_DIR)\$(OBJDIR)\libX11.lib \
+ $(COMPONENT_LIBXFT_DIR)\src\$(OBJDIR)\libXft.lib \
+ $(COMPONENT_LIBXRENDER_DIR)\src\$(OBJDIR)\libXrender.lib \
+ $(COMPONENT_FONTCONFIG_DIR)\src\$(OBJDIR)\libfontconfig.lib \
+ $(COMPONENT_LIBXFONT2_DIR)\$(OBJDIR)\libXfont2.lib
+
+INCLUDES += $(COMPONENT_LIBXFT_DIR)\include $(COMPONENT_FREETYPE_DIR)\include\freetype $(COMPONENT_FREETYPE_DIR)\include $(COMPONENT_FONTCONFIG_DIR)
+
+LIBDIRS=$(dir $(INCLUDELIBFILES))
+
+load_makefile $(LIBDIRS:%$(OBJDIR)\=%makefile MAKESERVER=0 DEBUG=$(DEBUG);)
+
+LINKLIBS += $(PTHREADLIB) $(FREETYPELIB) $(LIBXMLLIB)
+
+CSRCS =	\
+        Clock.c \
+        xclock.c

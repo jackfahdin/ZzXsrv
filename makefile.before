@@ -1,3 +1,5 @@
+include $(MHMAKECONF)/scripts/build/paths.mak
+
 ifndef DEBUG
 DEBUG=0
 endif
@@ -93,38 +95,38 @@ endif
 DEFINES += WIN32 _WIN32 _WINDOWS WINDOWS _MBCS __i386__ __MINGW32__ _POSIX_ X_NOT_POSIX _TIMEVAL_DEFINED mode_t=int __STDC__
 DEFINES += FAKEIT HAVE_CONFIG_H _BSD_SOURCE _WIN32_WINNT=_WIN32_WINNT_WINXP
 
-TOPSRCDIR=$(MHMAKECONF)\xorg-server
+TOPSRCDIR=$(COMPONENT_XORG_SERVER_DIR)
 
-INCLUDES += . $(MHMAKECONF)\openssl\include $(MHMAKECONF)\openssl\$(OPENSSLOBJDIR)\include $(MHMAKECONF) $(MHMAKECONF)\pixman-1 $(MHMAKECONF)\pthreads
+INCLUDES += . $(COMPONENT_OPENSSL_DIR)\include $(COMPONENT_OPENSSL_DIR)\$(OPENSSLOBJDIR)\include $(MHMAKECONF)/include $(MHMAKECONF)\pixman-1 $(COMPONENT_PTHREADS_DIR)
 INCLUDES += $(TOPSRCDIR)\include $(TOPSRCDIR)\mi $(TOPSRCDIR)\mfb $(TOPSRCDIR)\hw\xfree86\common $(TOPSRCDIR)\render $(TOPSRCDIR)\miext\damage
 INCLUDES += $(TOPSRCDIR)\damageext $(TOPSRCDIR)\randr $(TOPSRCDIR)\xfixes $(TOPSRCDIR)\Xi $(TOPSRCDIR)\fb $(TOPSRCDIR)\miext\cw
-INCLUDES += $(TOPSRCDIR)\miext\shadow $(TOPSRCDIR)\miext\sync $(MHMAKECONF)\zlib
-INCLUDES += $(MHMAKECONF)\include $(TOPSRCDIR)\Xext $(MHMAKECONF)\pixman\pixman $(TOPSRCDIR)\present
+INCLUDES += $(TOPSRCDIR)\miext\shadow $(TOPSRCDIR)\miext\sync $(COMPONENT_ZLIB_DIR)
+INCLUDES += $(MHMAKECONF)\include $(TOPSRCDIR)\Xext $(COMPONENT_PIXMAN_DIR)\pixman $(TOPSRCDIR)\present
 
 SYSTEMLIBS ?= odbc32.lib odbccp32.lib kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib shlwapi.lib \
               oleaut32.lib uuid.lib odbc32.lib odbccp32.lib setupapi.lib winmm.lib ws2_32.lib wmcodecdspuuid.lib comctl32.lib opengl32.lib \
 							synchronization.lib
 
-BDFTOPCF=$(MHMAKECONF)\bdftopcf\$(OBJDIR)\bdftopcf.exe
-MKFONTSCALE=$(MHMAKECONF)\mkfontscale\$(OBJDIR)\mkfontscale.exe
+BDFTOPCF=$(COMPONENT_BDFTOPCF_DIR)\$(OBJDIR)\bdftopcf.exe
+MKFONTSCALE=$(COMPONENT_MKFONTSCALE_DIR)\$(OBJDIR)\mkfontscale.exe
 
 all: $(OBJDIR)
 
 ifeq ($(DEBUG),1)
-PTHREADLIB:=$(MHMAKECONF)\pthreads\libpthreadVC3d$(OBJDIREXTRA).lib
+PTHREADLIB:=$(COMPONENT_PTHREADS_DIR)\libpthreadVC3d$(OBJDIREXTRA).lib
 ifeq ($(IS64),1)
-FREETYPELIB:=$(MHMAKECONF)\freetype\objs\x$(OBJDIREXTRA)\Debug\freetype.lib
+FREETYPELIB:=$(COMPONENT_FREETYPE_DIR)\objs\x$(OBJDIREXTRA)\Debug\freetype.lib
 else
-FREETYPELIB:=$(MHMAKECONF)\freetype\objs\Win32\Debug\freetype.lib
+FREETYPELIB:=$(COMPONENT_FREETYPE_DIR)\objs\Win32\Debug\freetype.lib
 endif
-OPENSSLLIB:=$(MHMAKECONF)\openssl\debug$(SSLSUFFIX)\libssl.lib $(MHMAKECONF)\openssl\debug$(SSLSUFFIX)\libcrypto.lib
+OPENSSLLIB:=$(COMPONENT_OPENSSL_DIR)\debug$(SSLSUFFIX)\libssl.lib $(COMPONENT_OPENSSL_DIR)\debug$(SSLSUFFIX)\libcrypto.lib
 else
-PTHREADLIB:=$(MHMAKECONF)\pthreads\libpthreadVC3$(OBJDIREXTRA).lib
+PTHREADLIB:=$(COMPONENT_PTHREADS_DIR)\libpthreadVC3$(OBJDIREXTRA).lib
 ifeq ($(IS64),1)
-FREETYPELIB:=$(MHMAKECONF)\freetype\objs\x$(OBJDIREXTRA)\Release\freetype.lib
+FREETYPELIB:=$(COMPONENT_FREETYPE_DIR)\objs\x$(OBJDIREXTRA)\Release\freetype.lib
 else
-FREETYPELIB:=$(MHMAKECONF)\freetype\objs\Win32\Release\freetype.lib
+FREETYPELIB:=$(COMPONENT_FREETYPE_DIR)\objs\Win32\Release\freetype.lib
 endif
-OPENSSLLIB:=$(MHMAKECONF)\openssl\release$(SSLSUFFIX)\libssl.lib $(MHMAKECONF)\openssl\release$(SSLSUFFIX)\libcrypto.lib
+OPENSSLLIB:=$(COMPONENT_OPENSSL_DIR)\release$(SSLSUFFIX)\libssl.lib $(COMPONENT_OPENSSL_DIR)\release$(SSLSUFFIX)\libcrypto.lib
 endif
-LIBXMLLIB:=$(MHMAKECONF)\libxml2\lib$(OBJDIREXTRA)\libxml2-2.lib
+LIBXMLLIB:=$(COMPONENT_LIBXML2_DIR)\lib$(OBJDIREXTRA)\libxml2-2.lib

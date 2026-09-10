@@ -1,0 +1,12 @@
+TTYAPP = xrdb
+
+INCLUDELIBFILES = \
+ $(COMPONENT_LIBXMU_DIR)\src\$(OBJDIR)\libXmu.lib \
+ $(COMPONENT_LIBX11_DIR)\$(OBJDIR)\libX11.lib
+
+LIBDIRS=$(dir $(INCLUDELIBFILES))
+
+load_makefile $(LIBDIRS:%$(OBJDIR)\=%makefile MAKESERVER=0 DEBUG=$(DEBUG);)
+
+CSRCS =	xrdb.c
+

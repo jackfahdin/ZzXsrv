@@ -1,0 +1,61 @@
+$(OBJDIR)\fcobjshash.gperf: fcobjshash.gperf.h fcobjs.h
+	copy $< $<.c
+	$(CPP) -EP -I.. $<.c | \
+	$(PYTHON) cleangperf.py | \
+	$(BUILD_NATIVE) cut-out > $@.tmp
+	copy $@.tmp $@
+	del $@.tmp
+	del $<.c
+
+$(OBJDIR)\fcobjshash.h: $(OBJDIR)\fcobjshash.gperf
+	$(GPERF_COMMAND) -m 100 < $< > $@
+	$(PYTHON) converttype.py $@
+
+DEFINES+=FC_TEMPLATEDIR=\"./conf.avail\"
+
+load_makefile NORELDBG=1 ..\fc-case\makefile
+load_makefile NORELDBG=1 ..\fc-lang\makefile
+
+CSRCS = \
+	fcatomic.c \
+	fccache.c \
+	fccfg.c \
+	fccharset.c \
+	fccompat.c \
+	fcdbg.c \
+	fcdefault.c \
+	fcdir.c \
+	fcformat.c \
+	fcfreetype.c \
+	fcfs.c \
+	fcptrlist.c \
+	fchash.c \
+	fcinit.c \
+	fclang.c \
+	fclist.c \
+	fcmatch.c \
+	fcmatrix.c \
+	fcname.c \
+	fcobjs.c \
+	fcpat.c \
+	fcrange.c \
+	fcserialize.c \
+	fcstat.c \
+	fcstr.c \
+	fcweight.c \
+	fcxml.c \
+	ftglue.c \
+	gen_uuid.c \
+	copy.c \
+	parse.c \
+	pack.c \
+	unpack.c \
+	unparse.c
+
+LIBRARY = libfontconfig
+
+INCLUDES := .. uuid $(OBJDIR) $(INCLUDES) $(COMPONENT_FREETYPE_DIR)\include\freetype $(COMPONENT_FREETYPE_DIR)\include $(COMPONENT_LIBXML2_DIR)\include $(MHMAKECONF)\iconv\include \
+	..\fc-lang\$(OBJDIR)\..	..\fc-case\$(OBJDIR)\..
+
+load_makefile IS64=0 NORELDBG=1 makefile.srcs
+

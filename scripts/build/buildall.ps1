@@ -32,6 +32,11 @@ $ErrorActionPreference = 'Stop'
 # External tools use their exit code; stderr alone is not a failure (PowerShell 7).
 $PSNativeCommandUseErrorActionPreference = $false
 $repoRoot = [IO.Path]::GetFullPath((Join-Path $PSScriptRoot '..\..'))
+$xorgServerDirectory = Join-Path $repoRoot 'src\xorg-server'
+$freetypeSolution = Join-Path $repoRoot 'third_party\fonts\freetype\MSBuild.sln'
+$opensslRoot = Join-Path $repoRoot 'third_party\openssl'
+$pthreadsDirectory = Join-Path $repoRoot 'third_party\pthreads'
+$installerDirectory = Join-Path $xorgServerDirectory 'installer'
 if ($repoRoot -match '\s') {
     throw 'The existing mhmake rules require a source checkout path without spaces.'
 }
@@ -302,8 +307,8 @@ try {
     $mhmake = Join-Path $repoRoot "tools\mhmake\$mhmakeDirectory\mhmake.exe"
     In-BuildDirectory $repoRoot {
         if ($Stage -in @('All', 'Dependencies')) {
-            Invoke-BuildCommand $msbuild @('freetype\MSBuild.sln', '-t:Build', "-p:Configuration=$Configuration", "-p:Platform=$Architecture", "-m:$Jobs", '-nologo', '-v:minimal')
-            $opensslDirectory = Join-Path $repoRoot ("openssl\" + $Configuration.ToLowerInvariant() + $suffix)
+            Invoke-BuildCommand $msbuild @($freetypeSolution, '-t:Build', "-p:Configuration=$Configuration", "-p:Platform=$Architecture", "-m:$Jobs", '-nologo', '-v:minimal')
+            $opensslDirectory = Join-Path $opensslRoot ($Configuration.ToLowerInvariant() + $suffix)
             $null = New-Item -ItemType Directory -Path $opensslDirectory -Force
             In-BuildDirectory $opensslDirectory {
                 $opensslTarget = if ($Architecture -eq 'x64') { 'VC-WIN64A' } else { 'VC-WIN32' }
@@ -313,7 +318,7 @@ try {
                 if ($jom) { Invoke-BuildCommand $jom @('/J1') }
                 else { Invoke-BuildCommand 'nmake.exe' @('/nologo') }
             }
-            In-BuildDirectory (Join-Path $repoRoot 'pthreads') {
+            In-BuildDirectory $pthreadsDirectory {
                 $pthreadTarget = if ($Configuration -eq 'Debug') { 'VC-static-debug' } else { 'VC-static' }
                 Invoke-BuildCommand 'nmake.exe' @('/nologo', $pthreadTarget)
             }
@@ -324,7 +329,7 @@ try {
         }
         if ($Stage -in @('All', 'Server')) {
             if (-not (Test-Path -LiteralPath $mhmake)) { throw "Build mhmake/dependencies first: $mhmake" }
-            $buildArguments = @("-P$Jobs", '-C', 'xorg-server', 'MAKESERVER=1')
+            $buildArguments = @("-P$Jobs", '-C', $xorgServerDirectory, 'MAKESERVER=1')
             $buildArguments += if ($Configuration -eq 'Debug') { 'DEBUG=1' } else { 'DEBUG=0' }
             Invoke-BuildCommand $mhmake $buildArguments
         }
@@ -337,7 +342,8 @@ try {
             } else { "$crtArchitecture\Microsoft.VC143.CRT" }
             $crtDirectory = Join-Path $env:VCToolsRedistDir $crtRelative
             $portableDirectory = Join-Path $repoRoot "dist\$Architecture\$Configuration"
-            Invoke-BuildCommand $python @('-B', 'tools\package_portable.py', '--manifest', "xorg-server\installer\vcxsrv$manifestSuffix.nsi", '--crt-directory', $crtDirectory, '--output', $portableDirectory)
+            $manifest = Join-Path $installerDirectory "vcxsrv$manifestSuffix.nsi"
+            Invoke-BuildCommand $python @('-B', 'tools\package_portable.py', '--manifest', $manifest, '--crt-directory', $crtDirectory, '--output', $portableDirectory)
         }
     }
     Write-Host "Completed stage: $Stage. Installer packaging is a separate step."
