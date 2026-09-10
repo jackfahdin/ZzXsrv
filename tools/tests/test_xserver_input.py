@@ -1,0 +1,93 @@
+"""Run real X Server input parser code under MSVC AddressSanitizer.
+
+Set VCXSRV_TEST_LOCAL_TOOLS=1 in an x64 Visual Studio developer environment.
+No network connections or dependency installation are performed.
+"""
+import os
+from pathlib import Path
+import shutil
+import subprocess
+import tempfile
+import unittest
+
+ROOT = Path(__file__).resolve().parents[2]
+
+
+@unittest.skipUnless(os.name == "nt" and os.environ.get("VCXSRV_TEST_LOCAL_TOOLS"),
+                     "enable local tools in an x64 MSVC developer environment")
+class XserverInputTests(unittest.TestCase):
+    @classmethod
+    def setUpClass(cls):
+        compiler = shutil.which("cl.exe")
+        if not compiler:
+            raise RuntimeError("cl.exe missing: run from an x64 MSVC developer environment")
+        cls.directory = tempfile.TemporaryDirectory(prefix="vcxsrv_input_")
+        cls.addClassCleanup(cls.directory.cleanup)
+        work = Path(cls.directory.name)
+        cls.exe = work / "xserver_input.exe"
+        includes = [".", "include", "third_party/pthreads",
+                    "third_party/graphics/pixman/pixman",
+                    "third_party/graphics/mesalib/include", "include/gl/include",
+                    "src/xorg-server", "src/xorg-server/include", "src/xorg-server/glx",
+                    "src/xorg-server/mi", "src/xorg-server/render", "src/xorg-server/Xext",
+                    "src/xorg-server/dix", "src/xorg-server/miext/damage",
+                    "src/xorg-server/present", "src/xorg-server/Xi", "src/xorg-server/xfixes"]
+        defines = ["WIN32", "_WINDOWS", "WINDOWS", "_MBCS", "__i386__", "__MINGW32__",
+                   "_POSIX_", "X_NOT_POSIX", "_TIMEVAL_DEFINED", "mode_t=int", "__STDC__",
+                   "FAKEIT", "HAVE_CONFIG_H", "_BSD_SOURCE", "_WIN32_WINNT=0x0601",
+                   "XKB_IN_SERVER", "XFree86Server", "HAVE_DIX_CONFIG_H", "PIXMAN_API="]
+        command = [compiler, "/nologo", "/std:c11", "/Od", "/Gy", "/MD", "/Zi",
+                   "/fsanitize=address", *["/I" + str(ROOT / p) for p in includes],
+                   *["/D" + d for d in defines],
+                   str(ROOT / "tools/tests/native/xserver_input.c"),
+                   "/Fe:" + str(cls.exe), "/link", "/OPT:REF", "/INCREMENTAL:NO"]
+        result = subprocess.run(command, cwd=work, capture_output=True, text=True,
+                                errors="replace", timeout=120)
+        if result.returncode:
+            raise RuntimeError(result.stdout + result.stderr)
+
+    def run_case(self, name):
+        result = subprocess.run([str(self.exe), name], capture_output=True, text=True,
+                                errors="replace", timeout=30)
+        self.assertEqual(result.returncode, 0, result.stdout + result.stderr)
+        self.assertIn("PASS " + name, result.stdout)
+
+    def test_normal(self):
+        self.run_case("normal")
+
+    def test_normal_swapped(self):
+        self.run_case("normal-swapped")
+
+    def test_big(self):
+        self.run_case("big")
+
+    def test_big_swapped(self):
+        self.run_case("big-swapped")
+
+    def test_oversize_buffered(self):
+        self.run_case("oversize-buffered")
+
+    def test_oversize_buffered_swapped(self):
+        self.run_case("oversize-buffered-swapped")
+
+    def test_oversize_read(self):
+        self.run_case("oversize-read")
+
+    def test_oversize_read_swapped(self):
+        self.run_case("oversize-read-swapped")
+
+    def test_ignore_pending(self):
+        self.run_case("ignore-pending")
+
+    def test_ignore_complete(self):
+        self.run_case("ignore-complete")
+
+    def test_representable_limit(self):
+        self.run_case("limit")
+
+    def test_representable_limit_swapped(self):
+        self.run_case("limit-swapped")
+
+
+if __name__ == "__main__":
+    unittest.main()
