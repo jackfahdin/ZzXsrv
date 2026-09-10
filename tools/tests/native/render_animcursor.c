@@ -25,6 +25,9 @@ static unsigned allocations, lookups, registrations, timers;
 static int allocation_failure, lookup_error, security_error;
 static int timer_token;
 CursorPtr RefCursor(CursorPtr cursor) { cursor->refcnt++; return cursor; }
+/* The swapped empty-request case has no body words. Fail if a different
+ * case starts relying on this fixture for actual payload conversion. */
+void SwapLongs(CARD32 *list, unsigned long count) { CHECK(count == 0); }
 
 int dixPrivatesSize(DevPrivateType type) { CHECK(type == PRIVATE_CURSOR); return 0; }
 void _dixInitPrivates(PrivatePtr *p, void *addr, DevPrivateType type)
@@ -86,6 +89,17 @@ int main(int argc, char **argv)
         allocation_failure = 1;
         CHECK(protocol(0) == BadValue);
         CHECK(allocations == 0 && lookups == 0 && registrations == 0);
+    } else if (!strcmp(argv[1], "swapped-empty-protocol")) {
+        xRenderCreateAnimCursorReq req = {0};
+        req.renderReqType = X_RenderCreateAnimCursor;
+        req.cid = 123;
+        swapl(&req.cid);
+        test_client.requestBuffer = &req;
+        test_client.req_len = bytes_to_int32(sizeof(req));
+        test_client.swapped = TRUE;
+        allocation_failure = 1;
+        CHECK(SProcRenderCreateAnimCursor(&test_client) == BadValue);
+        CHECK(req.cid == 123 && allocations == 0 && lookups == 0 && registrations == 0);
     } else if (!strcmp(argv[1], "zero-public") || !strcmp(argv[1], "negative-public")) {
         CursorPtr cursors[1] = {&source_cursor}, result = NULL;
         CARD32 delays[1] = {10};
@@ -176,7 +190,6 @@ __declspec(noreturn) void render_unexpected_service(void) { abort(); }
 #pragma comment(linker, "/alternatename:SetPictureTransform=render_unexpected_service")
 #pragma comment(linker, "/alternatename:SetResourceTypeErrorValue=render_unexpected_service")
 #pragma comment(linker, "/alternatename:StandardMinorOpcode=render_unexpected_service")
-#pragma comment(linker, "/alternatename:SwapLongs=render_unexpected_service")
 #pragma comment(linker, "/alternatename:SwapShorts=render_unexpected_service")
 #pragma comment(linker, "/alternatename:TimerCancel=render_unexpected_service")
 #pragma comment(linker, "/alternatename:WriteToClient=render_unexpected_service")

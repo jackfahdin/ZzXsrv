@@ -56,6 +56,9 @@ class RenderAnimCursorTests(unittest.TestCase):
     def test_empty_protocol(self):
         self.run_case("empty-protocol")
 
+    def test_swapped_empty_protocol(self):
+        self.run_case("swapped-empty-protocol")
+
     def test_zero_public(self):
         self.run_case("zero-public")
 
