@@ -35,9 +35,9 @@
 
 2026-09-10，维护者针对本组候选反馈“没问题”，记录为实际使用正常，修复已快进合入 master，合入后 97 项测试通过。运行目录为 `D:/File/Program/GitHub/zzxsrv-render-record-20260910/dist/x64/Release`，现为普通保留目录，见[验证与整合报告](../validation/2026-09-10-render-record.md)。应用版本、连接方式与逐项场景尚未提供，不补造细节，不扩展为剪贴板/OpenGL 等全部通过；GUI-001 继续暂缓。
 
-## XKB 候选的实际使用反馈
+## XKB 的实际使用反馈
 
-本组候选路径为 `D:/File/Program/GitHub/zzxsrv-xkb-20260910/dist/x64/Release`。自动验证和来源见 [XKB 报告](../validation/2026-09-10-xkb.md)；尚未取得实际使用反馈，不能用输入或 RENDER/RECORD 的反馈替代。GUI-001 仍暂缓排查。
+2026-09-11，维护者针对本组候选反馈“没问题，继续”，记录为本组实际使用正常。修复已快进合入 master，合入后 158 项测试通过、0 跳过，见 [XKB 整合报告](../validation/2026-09-10-xkb.md)。运行目录为 `D:/File/Program/GitHub/zzxsrv-xkb-20260910/dist/x64/Release`，现为普通保留目录。应用版本、连接方式及逐项测试明细未提供，不扩展为所有输入或图形场景已验证。GUI-001 仍暂缓排查。
 
 ## 输入处理候选的实际使用反馈
 
