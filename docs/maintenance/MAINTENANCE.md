@@ -4,13 +4,13 @@
 
 ## 维护目标和边界
 
-先维护一个自己能够长期使用、能够解释构建过程和定位故障的 Windows 版本。`origin` 已配置为 `git@github.com:jackfahdin/ZzXsrv.git`；本轮仓库整理包含向该仓库普通首次推送，不包含产品发布、CI 配置或功能开发。推送结果以本轮整理报告为准。
+先维护一个自己能够长期使用、能够解释构建过程和定位故障的 Windows 版本。`origin` 为 `git@github.com:jackfahdin/ZzXsrv.git`，首次源码推送已完成。当前中文 README 和目录迁移的验证见[目录迁移报告](../validation/2026-09-10-readme-layout.md)，不包含产品发布、CI 配置或功能开发。
 
-仓库仅保留线性 `master`，不再保留 `upstream`、旧工作分支或旧标签。23 个首父步骤已按 tree 无损重建，重建终点 `b8be16d` 的文件树与整理前 `a296b1553` 相同；后续提交记录本轮文档变更。11 个旧 worktree 已解除登记，源码和运行文件仍在原路径，后续应按普通目录使用。来源见 [FORK.md](../FORK.md) 和 [依赖来源清单](DEPENDENCY_SOURCES.md)，维护方法见 [上游更新规则](UPSTREAM.md)，映射与归档见 [仓库整理报告](validation/2026-09-10-repository-reorganization.md)。旧报告中的提交号和标签名作为历史证据保留，不能当作当前 Git 引用使用。
+仓库仅保留线性 `master`，不再保留 `upstream`、旧工作分支或旧标签。23 个首父步骤已按 tree 无损重建，重建终点 `b8be16d` 的文件树与整理前 `a296b1553` 相同；后续提交记录本轮文档变更。11 个旧 worktree 已解除登记，源码和运行文件仍在原路径，后续应按普通目录使用。来源见 [docs/PROVENANCE.md](../PROVENANCE.md) 和 [依赖来源清单](../dependencies/SOURCES.md)，维护方法见 [上游更新规则](UPSTREAM.md)，映射与归档见 [仓库整理报告](../validation/2026-09-10-repository-reorganization.md)。旧报告中的提交号和标签名作为历史证据保留，不能当作当前 Git 引用使用。
 
 首个支持目标是 Windows x64 Release。构建使用 PowerShell、VS2022/MSVC 和原生 Windows 辅助工具，不依赖 WSL/Cygwin，不自动下载或安装工具。Python 下限为 3.11。源码路径保持无空格；已有工具路径含空格的测试继续保留。
 
-最初已验证基线的历史源码提交为 `a4adc3dc3f2158c2308133cecee19a71cf62bcc8`，当时标签名为 `local-baseline-20260909-a4adc3dc`。当时完成了独立检出的完整构建、43 项测试（无跳过）、35 个 PE 的依赖检查与经认证的本地 TCP X 根窗口查询。详情见 [实际验证报告](validation/2026-09-09-baseline.md)。目前主线包含后续 GLX 和 XFIXES 修复，具体来源和运行目录见计划状态；旧标签已归档后删除。本次整理没有重建程序，也没有新增多机或应用兼容性结论。
+最初已验证基线的历史源码提交为 `a4adc3dc3f2158c2308133cecee19a71cf62bcc8`，当时标签名为 `local-baseline-20260909-a4adc3dc`。当时完成了独立检出的完整构建、43 项测试（无跳过）、35 个 PE 的依赖检查与经认证的本地 TCP X 根窗口查询。详情见 [实际验证报告](../validation/2026-09-09-baseline.md)。目前主线包含后续 GLX 和 XFIXES 修复，具体来源和运行目录见计划状态；旧标签已归档后删除。目录迁移后的构建验证单独记录，不增加多机或应用兼容性结论。
 
 ## 阶段安排
 
@@ -21,9 +21,9 @@
 | 3：使用体验 | 启动配置、日志入口、错误提示、中文说明的独立改动 | 每项改动解决已记录的问题，有相应验证 | 按第二阶段问题的影响排序 |
 | 4：工程演进 | 第三方组件清单、更新流程、分组件 CMake 试验 | 能说明变更范围，旧流程可作对照，运行结果无已知回归 | 来源目录盘点与单主线维护规则已整理，未知来源明确标注；GLX 与 XFIXES 均已整合；依赖升级与 CMake 试验未执行 |
 
-第一阶段的执行入口见 [执行计划](superpowers/plans/2026-09-09-maintenance-baseline.md)，验收依据见 [验收规格](superpowers/specs/2026-09-09-maintenance-baseline-design.md)。原生构建的历史记录见 [原生构建计划](superpowers/plans/2026-09-08-native-windows-build.md)。
+第一阶段的执行入口见 [执行计划](../plans/2026-09-09-maintenance-baseline.md)，验收依据见 [验收规格](../designs/2026-09-09-maintenance-baseline-design.md)。原生构建的历史记录见 [原生构建计划](../plans/2026-09-08-native-windows-build.md)。
 
-首轮 [组件更新评估](validation/2026-09-09-component-update-assessment.md) 已记录实际消费者、候选版本、证据边界和验证门槛。首项 GLX 修复及构建中发现的问题见 [GLX 修复记录](validation/2026-09-09-glx-context-tags.md)；2026-09-09 维护者对新版本反馈“能用”后，已本地快进整合到 master，合入后 51 项测试通过。具体应用与场景覆盖仍待补充，新旧运行目录和验证证据均保留。[XFIXES 实施计划](superpowers/plans/2026-09-09-xfixes-request-length.md) 也已完成：维护者确认使用正常，合入后 59 项测试通过。输入候选仍待实际使用确认；其余 X Server 与字体、XML、OpenSSL 维护保留为后续待办，本轮不执行。
+首轮 [组件更新评估](../validation/2026-09-09-component-update-assessment.md) 已记录实际消费者、候选版本、证据边界和验证门槛。首项 GLX 修复及构建中发现的问题见 [GLX 修复记录](../validation/2026-09-09-glx-context-tags.md)；2026-09-09 维护者对新版本反馈“能用”后，已本地快进整合到 master，合入后 51 项测试通过。具体应用与场景覆盖仍待补充，新旧运行目录和验证证据均保留。[XFIXES 实施计划](../plans/2026-09-09-xfixes-request-length.md) 也已完成：维护者确认使用正常，合入后 59 项测试通过。输入候选仍待实际使用确认；其余 X Server 与字体、XML、OpenSSL 维护保留为后续待办，本轮不执行。
 
 ## 验证层次
 
@@ -63,7 +63,7 @@
 
 ## 第二阶段场景入口
 
-2026-09-09 维护者反馈“我刚刚验证了，没问题”，记录为实际测试功能通过，未报告故障。同日只读核对原作者 master，与已导入提交完全相同，当时没有新的原作者提交需要同步。这是当时的历史来源检查，不再作为当前同步任务。详情见 [用户验证与上游检查](validation/2026-09-09-user-validation-and-upstream-check.md)。
+2026-09-09 维护者反馈“我刚刚验证了，没问题”，记录为实际测试功能通过，未报告故障。同日只读核对原作者 master，与已导入提交完全相同，当时没有新的原作者提交需要同步。这是当时的历史来源检查，不再作为当前同步任务。详情见 [用户验证与上游检查](../validation/2026-09-09-user-validation-and-upstream-check.md)。
 
 逐项记录入口为 [兼容性记录](COMPATIBILITY.md)。先记录 Linux 发行版/版本、应用/版本、连接方式、认证方式、Windows 版本、显卡与驱动、显示器及缩放。Linux 可以在远程机器或虚拟机中运行；这不改变 Windows 构建不依赖 WSL 的要求。
 

@@ -8,7 +8,7 @@
 | --- | --- | --- |
 | 初始基线，源码 a4adc3dc3 | 维护者反馈“我刚刚验证了，没问题” | 应用和操作明细未记录 |
 | GLX 版本，源码 5f6c9a930 | 维护者反馈“能用” | 应用和操作明细未记录 |
-| XFIXES 版本，源码 1e4a1cf51 | 维护者明确反馈“已测试，使用正常” | 确认的是所列候选目录；应用和操作明细未记录，自动验证见 [报告](validation/2026-09-09-xfixes-request-length.md) |
+| XFIXES 版本，源码 1e4a1cf51 | 维护者明确反馈“已测试，使用正常” | 确认的是所列候选目录；应用和操作明细未记录，自动验证见 [报告](../validation/2026-09-09-xfixes-request-length.md) |
 
 ## 已确认 XFIXES 版本的逐项场景
 
@@ -34,4 +34,4 @@
 
 运行目录：`D:/File/Program/GitHub/vcxsrv-input-20260909-2110/dist/x64/Release`，历史源码 `c06e0db1669afaee649bdaf407c7c76c9fa3ae56`。已完成新适配静态审查、干净构建、71 项测试和认证启动/根窗口检查。维护者实际使用结果尚未收到，候选未合入 master；旧 GLX/XFIXES 反馈仍只对应旧目录。
 
-该目录现为普通保留目录，不能再按 Git worktree 操作。候选源码另有 `.local-validation/reorganize-20260910/pending-input-source.patch` 和同目录 `current-development.bundle` 归档，恢复入口见 [仓库整理报告](validation/2026-09-10-repository-reorganization.md)。本轮不继续候选验收；后续实际使用需记录启动、基本操作、关闭和重连结果，再决定主线整合。验证详情见[输入候选报告](validation/2026-09-09-xserver-input.md)。
+该目录现为普通保留目录，不能再按 Git worktree 操作。候选源码另有 `.local-validation/reorganize-20260910/pending-input-source.patch` 和同目录 `current-development.bundle` 归档，恢复入口见 [仓库整理报告](../validation/2026-09-10-repository-reorganization.md)。本轮不继续候选验收；后续实际使用需记录启动、基本操作、关闭和重连结果，再决定主线整合。验证详情见[输入候选报告](../validation/2026-09-09-xserver-input.md)。

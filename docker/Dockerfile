@@ -90,5 +90,5 @@ ENTRYPOINT ""%ProgramFiles%\\Microsoft Visual Studio\\2022\\Community\\VC\\Auxil
 #   git clone src vcx
 #   cygwin
 #   cd /cygdrive/c/vcx
-#   ./buildall.sh 1 9 R
+#   ./scripts/legacy/wsl/buildall.sh 1 9 R
 #   ./copyRelease.sh

@@ -1,8 +1,8 @@
 # 项目计划与功能状态盘点
 
-更新日期：2026-09-10。仓库现仅保留线性 `master`，23 个首父步骤按 tree 无损重建；重建终点 `b8be16d` 与整理前 `a296b1553` 的文件树完全相同，随后提交本轮文档整理。GLX、XFIXES 仍已合入，既有程序和验证结果没有因历史重建而重新生成。
+更新日期：2026-09-10。仓库保持线性 `master`；此前历史整理及首次 GitHub 推送已完成，见[仓库整理报告](../validation/2026-09-10-repository-reorganization.md)。GLX、XFIXES 已合入，输入处理候选仍待验收。
 
-本文件为当前任务状态入口。本轮只整理仓库、来源文档和远程首次推送，不推进功能或候选验收。`origin` 为 `git@github.com:jackfahdin/ZzXsrv.git`，本轮普通首次推送的结果见 [仓库整理报告](validation/2026-09-10-repository-reorganization.md)。各项历史验证仍以对应报告中的源码、时间和范围为准。
+本文件为当前任务状态入口。当前整理中文 README、文档目录和脚本入口，验证记录见[目录迁移报告](../validation/2026-09-10-readme-layout.md)。构建入口为 `scripts/build/buildall.ps1`；不推进组件升级或候选验收。`origin` 为 `git@github.com:jackfahdin/ZzXsrv.git`，各项历史验证仍以对应报告中的源码、时间和范围为准。
 
 ## 当前结论
 
@@ -14,12 +14,12 @@
 
 | 计划 | 实际状态 | 还剩什么 |
 | --- | --- | --- |
-| [原生 Windows 构建](superpowers/plans/2026-09-08-native-windows-build.md) | 已完成，相关实现已进入主线 | 该计划内无待办。Debug/Win32、安装包和 CMake 原本就不属于此次交付 |
-| [本地维护基线](superpowers/plans/2026-09-09-maintenance-baseline.md) | 已完成，环境报告、运行验证、干净构建及当时标签均有历史记录 | B1–B6 无剩余。旧标签已归档后删除；日常 GUI 全场景属于后续阶段 |
-| [第一次历史重组](superpowers/plans/2026-09-09-history-restructure.md) | 历史实施已完成，分支方案已被 2026-09-10 单主线规则替代 | 归档与原验收记录保留，不重做旧分支方案 |
-| [依赖基线整理](superpowers/plans/2026-09-09-component-baseline.md) | 历史实施已完成，来源改由文档清单维护 | 组件实际升级是另一项工作，不恢复 upstream 分支 |
-| [XFIXES 请求长度校验](superpowers/plans/2026-09-09-xfixes-request-length.md) | 已完成，代码与证据均已合入 master | 本实施计划无剩余；应用场景明细纳入持续兼容性记录 |
-| [X Server 输入处理](superpowers/plans/2026-09-09-xserver-input.md) | 候选待验收，未合入 master；源码和补丁已归档 | 本地适配、审查、构建和 71 项自动验证已完成；实际使用确认及主线整合仍待后续授权任务 |
+| [原生 Windows 构建](../plans/2026-09-08-native-windows-build.md) | 已完成，相关实现已进入主线 | 该计划内无待办。Debug/Win32、安装包和 CMake 原本就不属于此次交付 |
+| [本地维护基线](../plans/2026-09-09-maintenance-baseline.md) | 已完成，环境报告、运行验证、干净构建及当时标签均有历史记录 | B1–B6 无剩余。旧标签已归档后删除；日常 GUI 全场景属于后续阶段 |
+| [第一次历史重组](../plans/2026-09-09-history-restructure.md) | 历史实施已完成，分支方案已被 2026-09-10 单主线规则替代 | 归档与原验收记录保留，不重做旧分支方案 |
+| [依赖基线整理](../plans/2026-09-09-component-baseline.md) | 历史实施已完成，来源改由文档清单维护 | 组件实际升级是另一项工作，不恢复 upstream 分支 |
+| [XFIXES 请求长度校验](../plans/2026-09-09-xfixes-request-length.md) | 已完成，代码与证据均已合入 master | 本实施计划无剩余；应用场景明细纳入持续兼容性记录 |
+| [X Server 输入处理](../plans/2026-09-09-xserver-input.md) | 候选待验收，未合入 master；源码和补丁已归档 | 本地适配、审查、构建和 71 项自动验证已完成；实际使用确认及主线整合仍待后续授权任务 |
 
 11 个旧 worktree 已解除登记，原目录中的计划只是保留副本，不额外计为新任务。旧提交、标签和分支名只用于关联归档证据；当前已不保留这些引用。
 
@@ -44,13 +44,13 @@
 | 编号 | 工作 | 当前状态 | 具体完成条件 |
 | --- | --- | --- | --- |
 | R2 | 日常兼容性清单 | 有笼统可用反馈，逐项证据不足 | 固定程序目录、Linux/应用版本与连接方式，记录启动/关闭/重启、GUI、双向文本剪贴板、中文显示与输入、窗口、多显示器/缩放、OpenGL 的结果；无条件执行的项目写明未验证 |
-| R3 | 其余 X Server 修复核对与分组实施 | [本轮适用性表](validation/2026-09-09-xserver-applicability.md)已完成；21 项 CVE 缺关键源码修复，含输入候选的 2 项 | 先完成[输入候选](validation/2026-09-09-xserver-input.md)实际使用确认与整合，再分组处理 RENDER/RECORD、XKB、XSYNC/PRESENT/屏保、GLX 属性、字体消费方和 RANDR；每组单独验证和验收 |
+| R3 | 其余 X Server 修复核对与分组实施 | [本轮适用性表](../validation/2026-09-09-xserver-applicability.md)已完成；21 项 CVE 缺关键源码修复，含输入候选的 2 项 | 先完成[输入候选](../validation/2026-09-09-xserver-input.md)实际使用确认与整合，再分组处理 RENDER/RECORD、XKB、XSYNC/PRESENT/屏保、GLX 属性、字体消费方和 RANDR；每组单独验证和验收 |
 | R4 | 字体链路 | 已评估消费者，尚未升级 | 对 libXfont2、FreeType 的相关改动逐项核对，选定版本或补丁后验证字体解析、中文显示及缓存；构建生成器修正不替代本项 |
 | R5 | libxml2 来源与重建 | 来源未闭合，仍使用预编译库 | 确认源码、版本、补丁和构建方式，再评估替换；联动 XLaunch 配置与 Fontconfig 等消费者验证 |
 | R6 | Expat | 已评估，尚未升级 | 核对实际使用配置并更新、重建其 Mesa 消费者；不要求同时整体升级 Mesa |
 | R7 | OpenSSL 版本维护 | 已评估 LTS 迁移，尚未升级 | 复核目标版本及实际 API 兼容性，独立导入和验证；当前源码仍为 3.4.1 |
 | R8 | xkbcomp、libXpm、zlib | 已列候选，尚未逐项实施 | 分组件决定是否需要更新或回补，并验证对应键盘、图标、压缩及字体链路 |
-| R9 | 其余依赖与来源清单 | [来源目录盘点](DEPENDENCY_SOURCES.md)已完成；部分精确来源仍未知，未执行升级 | 沿清单继续补证 libX11、libxcb、Pixman、Fontconfig、PuTTY 等的固定来源和适用改动；libxml2、libregex、libwinmain 等按各自证据澄清归属，不假定都能对应纯净组件仓库 |
+| R9 | 其余依赖与来源清单 | [来源目录盘点](../dependencies/SOURCES.md)已完成；部分精确来源仍未知，未执行升级 | 沿清单继续补证 libX11、libxcb、Pixman、Fontconfig、PuTTY 等的固定来源和适用改动；libxml2、libregex、libwinmain 等按各自证据澄清归属，不假定都能对应纯净组件仓库 |
 
 R3 已有逐项源码缺口证据，但整项修复尚未完成；R4–R9 仍是维护待评估项，不表示所有列出的组件都已经确定需要升级。具体版本和补丁须在执行时确认，不能照抄早期评估表直接替换。
 
@@ -71,7 +71,7 @@ R3 已有逐项源码缺口证据，但整项修复尚未完成；R4–R9 仍是
 | 对象 | 当前状态 | 使用边界 |
 | --- | --- | --- |
 | master | 唯一保留的本地工作分支；包含 GLX、XFIXES、构建修正与维护文档 | 历史重建的等树校验不代表重新构建程序 |
-| 旧引用和提交 | 已归档；upstream、旧工作分支及旧 tags 已删除 | 通过[整理报告](validation/2026-09-10-repository-reorganization.md)查映射和归档，不再按旧名称操作 |
+| 旧引用和提交 | 已归档；upstream、旧工作分支及旧 tags 已删除 | 通过[整理报告](../validation/2026-09-10-repository-reorganization.md)查映射和归档，不再按旧名称操作 |
 | 输入候选，历史源码 c06e0db16 | 71 项自动验证通过，实际使用未确认，未合入 master | 源码和运行文件保留在普通目录；补丁见下文，不能把旧目录当作 worktree |
 | 11 个旧工作目录 | 已解除 Git worktree 登记，源码和运行文件在原路径保留 | 不对这些目录运行 git -C 并假定访问的是原检出 |
 

@@ -1,6 +1,8 @@
 # XFIXES 请求长度校验实施计划
 
-> 2026-09-10 历史说明：本文保留当时的方案、提交号与验证结果。旧分支、标签和工作区登记已清理，源码及运行目录保留为普通目录；旧命令不应直接照搬执行。现行规则见[维护规则](../../UPSTREAM.md)，对应关系与恢复材料见[整理记录](../../validation/2026-09-10-repository-reorganization.md)。旧依赖快照清单见[历史 JSON](../../history/2026-09-09-dependency-snapshot.json)；当前不再维护上游源码分支。
+> 目录迁移说明（2026-09-10）：文档链接已更新，正文中的旧命令与文件路径仍表示当时状态；当前入口见[文档导航](../README.md)。
+
+> 2026-09-10 历史说明：本文保留当时的方案、提交号与验证结果。旧分支、标签和工作区登记已清理，源码及运行目录保留为普通目录；旧命令不应直接照搬执行。现行规则见[维护规则](../maintenance/UPSTREAM.md)，对应关系与恢复材料见[整理记录](../validation/2026-09-10-repository-reorganization.md)。旧依赖快照清单见[历史 JSON](../history/2026-09-09-dependency-snapshot.json)；当前不再维护上游源码分支。
 
 状态：已完成并合入 master，整合源码 `a770cb3ff34efa043face0d56c31928b73683d3a`；实际程序构建来源仍为 `1e4a1cf5149df2b5da48d2571b08f2bc597a538b`。维护者已确认使用正常，合入后 59 项测试通过且无跳过。
 
@@ -12,7 +14,7 @@
 
 **技术栈：** C11、MSVC AddressSanitizer、Python unittest、现有 PowerShell 原生构建。
 
-**规格：** [组件更新评估](../../validation/2026-09-09-component-update-assessment.md)、[上游规则](../../UPSTREAM.md)。
+**规格：** [组件更新评估](../validation/2026-09-09-component-update-assessment.md)、[上游规则](../maintenance/UPSTREAM.md)。
 
 ## 全局约束
 

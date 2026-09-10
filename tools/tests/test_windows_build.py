@@ -11,6 +11,7 @@ import unittest
 
 
 ROOT = Path(__file__).resolve().parents[2]
+BUILD_SCRIPT = ROOT / "scripts/build/buildall.ps1"
 POWERSHELL = shutil.which("powershell.exe")
 
 
@@ -19,7 +20,7 @@ class WindowsBuildTests(unittest.TestCase):
     def run_check(self, *args):
         return subprocess.run(
             [POWERSHELL, "-NoProfile", "-ExecutionPolicy", "Bypass", "-File",
-             str(ROOT / "buildall.ps1"), "-CheckOnly", *args],
+             str(BUILD_SCRIPT), "-CheckOnly", *args],
             cwd=ROOT.parent, capture_output=True, text=True,
         )
 
@@ -94,7 +95,7 @@ class WindowsBuildTests(unittest.TestCase):
     def test_relative_report_path_uses_powershell_location(self):
         if not os.environ.get("VCXSRV_TEST_LOCAL_TOOLS"):
             self.skipTest("requires local toolchain")
-        script = str(ROOT / "buildall.ps1").replace("'", "''")
+        script = str(BUILD_SCRIPT).replace("'", "''")
         with tempfile.TemporaryDirectory(prefix="vcxsrv report parent ") as directory:
             caller = Path(directory) / "caller with spaces"
             caller.mkdir()
@@ -126,7 +127,7 @@ if ($LASTEXITCODE -ne 0) {{ exit $LASTEXITCODE }}
     def test_environment_and_location_restored_after_success_and_failure(self):
         if not os.environ.get("VCXSRV_TEST_LOCAL_TOOLS"):
             self.skipTest("requires local toolchain")
-        script = str(ROOT / "buildall.ps1").replace("'", "''")
+        script = str(BUILD_SCRIPT).replace("'", "''")
         for failure in (False, True):
             with self.subTest(failure=failure):
                 with tempfile.TemporaryDirectory(prefix="vcxsrv report ") as directory:

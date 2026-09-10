@@ -2,13 +2,13 @@
 .SYNOPSIS
 Build VcXsrv with native Windows tools. Does not download or install anything.
 .EXAMPLE
-.\buildall.ps1 -CheckOnly
+.\scripts\build\buildall.ps1 -CheckOnly
 .EXAMPLE
-.\buildall.ps1 -Configuration Release -Architecture x64 -Jobs 8
+.\scripts\build\buildall.ps1 -Configuration Release -Architecture x64 -Jobs 8
 .EXAMPLE
-.\buildall.ps1 -WinFlexBisonPath D:\Tools\win_flex_bison -PythonPath D:\Python\python.exe
+.\scripts\build\buildall.ps1 -WinFlexBisonPath D:\Tools\win_flex_bison -PythonPath D:\Python\python.exe
 .EXAMPLE
-.\buildall.ps1 -CheckOnly -EnvironmentReport .local-validation\environment.json
+.\scripts\build\buildall.ps1 -CheckOnly -EnvironmentReport .local-validation\environment.json
 #>
 [CmdletBinding()]
 param(
@@ -31,7 +31,7 @@ Set-StrictMode -Version Latest
 $ErrorActionPreference = 'Stop'
 # External tools use their exit code; stderr alone is not a failure (PowerShell 7).
 $PSNativeCommandUseErrorActionPreference = $false
-$repoRoot = $PSScriptRoot
+$repoRoot = [IO.Path]::GetFullPath((Join-Path $PSScriptRoot '..\..'))
 if ($repoRoot -match '\s') {
     throw 'The existing mhmake rules require a source checkout path without spaces.'
 }

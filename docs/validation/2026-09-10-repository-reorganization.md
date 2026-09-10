@@ -1,5 +1,7 @@
 # ZzXsrv 仓库整理记录
 
+> 目录迁移说明（2026-09-10）：文档链接已更新，正文中的旧命令与文件路径仍表示当时状态；当前入口见[文档导航](../README.md)。
+
 日期：2026-09-10。本次范围是迁移到维护者提供的 GitHub 空仓库、整理线性主线和依赖来源文档。组件版本、程序源码及候选验收范围保持原状。
 
 ## 仓库与历史
@@ -8,7 +10,7 @@
 - 整理前 master：`a296b1553668878b21857f19fa3a0c2c8615d4a7`；线性化后的对应提交：`b8be16d052c1665a0f5fe7c497d5b1a5e783c3ca`。两者文件树均为 `35dfec0f3c75b2112e11b957b252fdc705087972`。
 - 保留原 master 第一父链的 23 个步骤，每一步新旧 Git tree 完全一致；前 18 个提交无需重建，最后 5 个因父关系变化重新编号。合并侧支的最终文件内容包含于相应步骤中，不承诺保留每个侧支提交的独立身份。随后增加本次文档提交。
 - master 只有一个根，零 merge commit。清理 109 个旧本地分支、旧远程跟踪和标签引用；只留下 master。Codex 管理的树对象引用不是开发分支，保留这些应用内部引用。首次推送会新增 origin/master 跟踪引用，它指向同一条主线。
-- 不再维护 upstream、released 或原作者整合源码快照分支。已设置本机 `pull.ff=only`、`merge.ff=only`、`fetch.prune=true`；后续维护以[规则](../UPSTREAM.md)为准。
+- 不再维护 upstream、released 或原作者整合源码快照分支。已设置本机 `pull.ff=only`、`merge.ff=only`、`fetch.prune=true`；后续维护以[规则](../maintenance/UPSTREAM.md)为准。
 
 完整 23 步映射见[线性提交映射 JSON](../history/2026-09-10-linear-commit-mapping.json)。发生重编号的提交如下：
 
@@ -40,7 +42,7 @@
 
 ## 来源与文档
 
-[依赖来源文档](../DEPENDENCY_SOURCES.md)与 schema 2 [JSON 清单](../DEPENDENCIES.json)按组件记录原始上游、commit/tag/版本证据及实际继承链接。首次继承来自原作者固定提交 `d0a1eaf7ee15fcdf4f683388a88fec49078e6408`；后续 GLX 与 XFIXES 补丁分别记录原提交和实际取得差异的镜像。
+[依赖来源文档](../dependencies/SOURCES.md)与 schema 2 [JSON 清单](../dependencies/SOURCES.json)按组件记录原始上游、commit/tag/版本证据及实际继承链接。首次继承来自原作者固定提交 `d0a1eaf7ee15fcdf4f683388a88fec49078e6408`；后续 GLX 与 XFIXES 补丁分别记录原提交和实际取得差异的镜像。
 
 共 196 条来源或构建声明，含 40 个字体包；外部工具和可选 wrap 下载声明单独列出。缺失精确提交、版本冲突、混合头文件以及 libxml2 预编译库来源不明等情况保留明确说明。schema 1 的旧快照清单仅存为[历史材料](../history/2026-09-09-dependency-snapshot.json)，不再用于定义当前依赖分支。
 

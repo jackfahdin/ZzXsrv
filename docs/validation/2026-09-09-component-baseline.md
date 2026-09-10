@@ -1,6 +1,8 @@
 # 依赖快照与开发主线整理
 
-> 2026-09-10 历史说明：本文保留当时的方案、提交号与验证结果。旧分支、标签和工作区登记已清理，源码及运行目录保留为普通目录；旧命令不应直接照搬执行。现行规则见[维护规则](../UPSTREAM.md)，对应关系与恢复材料见[整理记录](../validation/2026-09-10-repository-reorganization.md)。旧依赖快照清单见[历史 JSON](../history/2026-09-09-dependency-snapshot.json)；当前不再维护上游源码分支。
+> 目录迁移说明（2026-09-10）：文档链接已更新，正文中的旧命令与文件路径仍表示当时状态；当前入口见[文档导航](../README.md)。
+
+> 2026-09-10 历史说明：本文保留当时的方案、提交号与验证结果。旧分支、标签和工作区登记已清理，源码及运行目录保留为普通目录；旧命令不应直接照搬执行。现行规则见[维护规则](../maintenance/UPSTREAM.md)，对应关系与恢复材料见[整理记录](2026-09-10-repository-reorganization.md)。旧依赖快照清单见[历史 JSON](../history/2026-09-09-dependency-snapshot.json)；当前不再维护上游源码分支。
 
 日期：2026-09-09。维护者确认 upstream 保存依赖原始来源集合，master 保存整合开发；不再专门维护原作者 VcXsrv 的整合快照。
 
@@ -23,7 +25,7 @@
 
 本基线是依赖源码的历史导入集合，包含原有布局、裁剪、辅助文件与许可证。未独立验证每个目录与组件官方仓库的逐文件一致性；libxml2、libregex、libwinmain 等缺失于集合的目录继续留在 master，不能声明已经建立了其纯净源码基线。
 
-初始集合和根目录对象见 [DEPENDENCIES.json](../DEPENDENCIES.json)。旧 GLX 修改保留在 master，XFIXES 候选保留在原工作分支；本次不升级组件、不合入候选、不重新构建。
+初始集合和根目录对象见 [DEPENDENCIES.json](../dependencies/SOURCES.json)。旧 GLX 修改保留在 master，XFIXES 候选保留在原工作分支；本次不升级组件、不合入候选、不重新构建。
 
 ## 核验
 

@@ -1,7 +1,9 @@
 #!/bin/bash
 
-DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
+SCRIPT_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
+DIR="$( cd "$SCRIPT_DIR/../../.." && pwd )"
 
+pushd "$SCRIPT_DIR" > /dev/null || return 1
 rm -f commands.sh
 python setenv.py $1 > commands.sh
 chmod +x commands.sh
@@ -12,6 +14,7 @@ else
 export PATH=/usr/local/bin:/usr/local/sbin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/local/games:/usr/lib/wsl/lib:$DIR/tools/mhmake/Release:/mnt/c/nasm:$PATH:/mnt/c/gnuwin32/bin:/mnt/c/perl/perl/bin
 fi
 rm -f commands.sh
+popd > /dev/null || return 1
 export MHMAKECONF=$DIR
 export PYTHON3=/mnt/c/Python39/python.exe
 export IS64=$1

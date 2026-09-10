@@ -34,3 +34,7 @@ xorg-server/xkbdata/
 /.worktrees/
 /.local-validation/
 /.superpowers/
+
+# Historical release scripts are source files, not Release build outputs.
+!/scripts/legacy/release/
+!/scripts/legacy/release/**

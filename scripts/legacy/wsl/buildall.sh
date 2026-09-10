@@ -1,9 +1,13 @@
 #!/bin/bash
 
+SCRIPT_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
+REPO_ROOT="$( cd "$SCRIPT_DIR/../../.." && pwd )"
+cd "$REPO_ROOT" || exit 1
+
 if [[ "$1" == "1" ]] ; then
-source ./setenv.sh 1
+source "$SCRIPT_DIR/setenv.sh" 1
 elif [[ "$1" == "0" ]] ; then
-source ./setenv.sh 0
+source "$SCRIPT_DIR/setenv.sh" 0
 else
   echo "Please pass 1 (64-bit compilation) or 0 (32-bit compilation) as first argument"
   exit

@@ -1,6 +1,8 @@
 # 本地维护基线实现计划
 
-> 2026-09-10 历史说明：本文保留当时的方案、提交号与验证结果。旧分支、标签和工作区登记已清理，源码及运行目录保留为普通目录；旧命令不应直接照搬执行。现行规则见[维护规则](../../UPSTREAM.md)，对应关系与恢复材料见[整理记录](../../validation/2026-09-10-repository-reorganization.md)。旧依赖快照清单见[历史 JSON](../../history/2026-09-09-dependency-snapshot.json)；当前不再维护上游源码分支。
+> 目录迁移说明（2026-09-10）：文档链接已更新，正文中的旧命令与文件路径仍表示当时状态；当前入口见[文档导航](../README.md)。
+
+> 2026-09-10 历史说明：本文保留当时的方案、提交号与验证结果。旧分支、标签和工作区登记已清理，源码及运行目录保留为普通目录；旧命令不应直接照搬执行。现行规则见[维护规则](../maintenance/UPSTREAM.md)，对应关系与恢复材料见[整理记录](../validation/2026-09-10-repository-reorganization.md)。旧依赖快照清单见[历史 JSON](../history/2026-09-09-dependency-snapshot.json)；当前不再维护上游源码分支。
 
 > **面向 AI 代理的工作者：** 必需子技能：使用 executing-plans 推进任务；独立子任务使用 subagent-driven-development。步骤使用复选框跟踪。2026-09-09 开始执行，未勾选项尚未验收完成。
 
@@ -10,7 +12,7 @@
 
 **技术栈：** PowerShell 5.1/7、VS2022/MSVC v143、Python 3.11+、unittest、Git 本地 worktree。
 
-**规格：** [第一阶段验收规格](../specs/2026-09-09-maintenance-baseline-design.md)。执行者同时阅读 [维护路线](../../MAINTENANCE.md)。
+**规格：** [第一阶段验收规格](../designs/2026-09-09-maintenance-baseline-design.md)。执行者同时阅读 [维护路线](../maintenance/MAINTENANCE.md)。
 
 ## 全局约束
 
@@ -170,7 +172,7 @@ try {
 
 此段在单独 PowerShell 进程中执行，避免测试开关残留在维护者终端。检查 tests.log 中跳过项目的原因；BuildTool 已成功构建后，mhmake 集成用例必须实际运行。
 
-实际执行结果见 [2026-09-09 基线报告](../../validation/2026-09-09-baseline.md)：43 项测试全部执行，无跳过。外层日志执行器使用 PowerShell 7，完整构建由 Windows PowerShell 5.1 执行。
+实际执行结果见 [2026-09-09 基线报告](../validation/2026-09-09-baseline.md)：43 项测试全部执行，无跳过。外层日志执行器使用 PowerShell 7，完整构建由 Windows PowerShell 5.1 执行。
 
 - [x] 保存 EXE/DLL 相对路径、大小和 SHA-256 清单用于识别本次产物；不要求与前一次编译逐字节相同。检查新 worktree 的受跟踪源码没有意外变化，保留日志、运行目录和 worktree 供复查。
 
