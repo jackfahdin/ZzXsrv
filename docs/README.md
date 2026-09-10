@@ -9,6 +9,7 @@
 | [Windows 原生构建](build/WINDOWS.md) | 工具要求、PowerShell 参数、便携目录和运行验证 |
 | [应用兼容性](maintenance/COMPATIBILITY.md) | 实际使用环境、场景与验证缺口 |
 | [验证记录索引](validation/README.md) | 固定源码、工具环境、构建与运行证据 |
+| [本次目录迁移验证](validation/2026-09-10-readme-layout.md) | 中文首页与目录迁移后的构建、测试和文件核对 |
 
 ## 来源与维护
 
