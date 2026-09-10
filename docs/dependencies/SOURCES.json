@@ -5078,6 +5078,500 @@
         "evidence": "../validation/2026-09-09-xserver-applicability.md"
       },
       "report": "../validation/2026-09-10-render-record.md"
+    },
+    {
+      "component": "xserver",
+      "name": "xkb: Make the RT_XKBCLIENT resource private",
+      "upstream_commit": "99790a2c9205a52fbbec01f21a92c9b7f4ed1d8f",
+      "upstream_stable_commit": "865089ca70840c0f13a61df135f7b44a9782a175",
+      "upstream_url": "https://gitlab.freedesktop.org/xorg/xserver/-/commit/99790a2c9205a52fbbec01f21a92c9b7f4ed1d8f",
+      "actual_source_url": "https://api.github.com/repos/LizardByte-infrastructure/xserver/commits/99790a2c9205a52fbbec01f21a92c9b7f4ed1d8f",
+      "source_download_date": "2026-09-10",
+      "source_downloaded_at": "2026-09-10T15:35:33.967112+00:00",
+      "source_response_sha256": "9826b077065fc58d86604ffa0e9857971fb3b837a22273a3b57d28dc082058ee",
+      "patch_sha256": "3dd4e05f55c9d684f0445c8967fc8482e4364977de36ef0b572b380e6cd51e2f",
+      "patch_hash_scope": "extracted per-file GitHub API patch with diff --git headers before local path adaptation",
+      "upstream_author": {
+        "name": "Olivier Fourdan",
+        "email": "ofourdan@redhat.com",
+        "date": "2025-09-10T13:55:06Z"
+      },
+      "local_commit": "b9081dd495558c1f0f8ef911179015ae109b4256",
+      "local_paths": [
+        "src/xorg-server/xkb/xkb.c",
+        "src/xorg-server/xkb/xkbsrv_priv.h"
+      ],
+      "local_adaptation": "Only prefix source paths with src/xorg-server/. Exact sequential patch replay matches the final production files. Keep the upstream master private-header declaration; stable release uses include/xkbsrv.h instead.",
+      "cross_check_archive": {
+        "url": "https://xorg.freedesktop.org/archive/individual/xserver/xorg-server-21.1.24.tar.xz",
+        "sha256": "1a4eb36ca65cc3b1b936566d677a9786e13c11cd5806e951ac55f3f5ce3984af",
+        "evidence": "../validation/2026-09-09-xserver-xkb-audit.md"
+      },
+      "report": "../validation/2026-09-10-xkb.md"
+    },
+    {
+      "component": "xserver",
+      "name": "xkb: Free the XKB resource when freeing XkbInterest",
+      "upstream_commit": "10c94238bdad17c11707e0bdaaa3a9cd54c504be",
+      "upstream_stable_commit": "87fe2553937a99fd914ad0cde999376a3adc3839",
+      "upstream_url": "https://gitlab.freedesktop.org/xorg/xserver/-/commit/10c94238bdad17c11707e0bdaaa3a9cd54c504be",
+      "actual_source_url": "https://api.github.com/repos/LizardByte-infrastructure/xserver/commits/10c94238bdad17c11707e0bdaaa3a9cd54c504be",
+      "source_download_date": "2026-09-10",
+      "source_downloaded_at": "2026-09-10T15:35:33.493049+00:00",
+      "source_response_sha256": "8b227b944d889d725fe5b61d24b16efd102e26676026975d8976fc60b019bcf9",
+      "patch_sha256": "35ba57286ff448445f795ce52bd7ceb52addee0a6fd3035773bc98ad22dd4288",
+      "patch_hash_scope": "extracted per-file GitHub API patch with diff --git headers before local path adaptation",
+      "upstream_author": {
+        "name": "Olivier Fourdan",
+        "email": "ofourdan@redhat.com",
+        "date": "2025-09-10T13:58:57Z"
+      },
+      "local_commit": "b9081dd495558c1f0f8ef911179015ae109b4256",
+      "local_paths": [
+        "src/xorg-server/xkb/xkbEvents.c"
+      ],
+      "local_adaptation": "Only prefix source paths with src/xorg-server/. Exact sequential patch replay matches the final production files. Keep the upstream master private-header declaration; stable release uses include/xkbsrv.h instead.",
+      "cross_check_archive": {
+        "url": "https://xorg.freedesktop.org/archive/individual/xserver/xorg-server-21.1.24.tar.xz",
+        "sha256": "1a4eb36ca65cc3b1b936566d677a9786e13c11cd5806e951ac55f3f5ce3984af",
+        "evidence": "../validation/2026-09-09-xserver-xkb-audit.md"
+      },
+      "report": "../validation/2026-09-10-xkb.md"
+    },
+    {
+      "component": "xserver",
+      "name": "xkb: Prevent overflow in XkbSetCompatMap()",
+      "upstream_commit": "475d9f49acd0e55bc0b089ed77f732ad18585470",
+      "upstream_stable_commit": "3baad99f9c15028ed8c3e3d8408e5ec35db155aa",
+      "upstream_url": "https://gitlab.freedesktop.org/xorg/xserver/-/commit/475d9f49acd0e55bc0b089ed77f732ad18585470",
+      "actual_source_url": "https://api.github.com/repos/LizardByte-infrastructure/xserver/commits/475d9f49acd0e55bc0b089ed77f732ad18585470",
+      "source_download_date": "2026-09-10",
+      "source_downloaded_at": "2026-09-10T15:35:33.175224+00:00",
+      "source_response_sha256": "97e97aff177ebdc93751439858e6548ce28316870418ba0313f89d1c5020a1f7",
+      "patch_sha256": "2a9ce28ed50d822f7ee52599e888ec195a2127d9f261ff81606603d6325ed9d9",
+      "patch_hash_scope": "extracted per-file GitHub API patch with diff --git headers before local path adaptation",
+      "upstream_author": {
+        "name": "Olivier Fourdan",
+        "email": "ofourdan@redhat.com",
+        "date": "2025-09-10T14:30:29Z"
+      },
+      "local_commit": "b9081dd495558c1f0f8ef911179015ae109b4256",
+      "local_paths": [
+        "src/xorg-server/xkb/xkb.c"
+      ],
+      "local_adaptation": "Only prefix source paths with src/xorg-server/. Exact sequential patch replay matches the final production files. Keep the upstream master private-header declaration; stable release uses include/xkbsrv.h instead.",
+      "cross_check_archive": {
+        "url": "https://xorg.freedesktop.org/archive/individual/xserver/xorg-server-21.1.24.tar.xz",
+        "sha256": "1a4eb36ca65cc3b1b936566d677a9786e13c11cd5806e951ac55f3f5ce3984af",
+        "evidence": "../validation/2026-09-09-xserver-xkb-audit.md"
+      },
+      "report": "../validation/2026-09-10-xkb.md"
+    },
+    {
+      "component": "xserver",
+      "name": "xkb: fix buffer re-use in _XkbSetCompatMap",
+      "upstream_commit": "b024ae1749ee58c6fbf863b9a1f5dc440fee2e1b",
+      "upstream_stable_commit": "432cb931cf1f40cbc992916fcff716db864da1af",
+      "upstream_url": "https://gitlab.freedesktop.org/xorg/xserver/-/commit/b024ae1749ee58c6fbf863b9a1f5dc440fee2e1b",
+      "actual_source_url": "https://api.github.com/repos/LizardByte-infrastructure/xserver/commits/b024ae1749ee58c6fbf863b9a1f5dc440fee2e1b",
+      "source_download_date": "2026-09-10",
+      "source_downloaded_at": "2026-09-10T15:35:34.291620+00:00",
+      "source_response_sha256": "91579ec1c0adb764d2111606e72a0cb434a06deb20ad025fc5bfec4055fb2843",
+      "patch_sha256": "2277d92ca1724cebdda81a449dbef1218f4832b2ce27759d468007f93f5a2774",
+      "patch_hash_scope": "extracted per-file GitHub API patch with diff --git headers before local path adaptation",
+      "upstream_author": {
+        "name": "Peter Harris",
+        "email": "pharris2@rocketsoftware.com",
+        "date": "2026-01-15T20:54:09Z"
+      },
+      "local_commit": "b9081dd495558c1f0f8ef911179015ae109b4256",
+      "local_paths": [
+        "src/xorg-server/xkb/xkb.c"
+      ],
+      "local_adaptation": "Only prefix source paths with src/xorg-server/. Exact sequential patch replay matches the final production files. Keep the upstream master private-header declaration; stable release uses include/xkbsrv.h instead.",
+      "cross_check_archive": {
+        "url": "https://xorg.freedesktop.org/archive/individual/xserver/xorg-server-21.1.24.tar.xz",
+        "sha256": "1a4eb36ca65cc3b1b936566d677a9786e13c11cd5806e951ac55f3f5ce3984af",
+        "evidence": "../validation/2026-09-09-xserver-xkb-audit.md"
+      },
+      "report": "../validation/2026-09-10-xkb.md"
+    },
+    {
+      "component": "xserver",
+      "name": "xkb: Add additional bound checking in CheckKeyTypes()",
+      "upstream_commit": "b85b00dd7b9eee05e3c12e7ad1fce4fc6671507b",
+      "upstream_stable_commit": "905194d1fa3009c5c7f94ec0392424cd44e6a6d9",
+      "upstream_url": "https://gitlab.freedesktop.org/xorg/xserver/-/commit/b85b00dd7b9eee05e3c12e7ad1fce4fc6671507b",
+      "actual_source_url": "https://api.github.com/repos/LizardByte-infrastructure/xserver/commits/b85b00dd7b9eee05e3c12e7ad1fce4fc6671507b",
+      "source_download_date": "2026-09-10",
+      "source_downloaded_at": "2026-09-10T15:35:35.562521+00:00",
+      "source_response_sha256": "f249e1a8262cd365939cecbe7df65475ebe95687634c92361913f874f89eff5f",
+      "patch_sha256": "5d8fab96f5bd7b1e4a452435480bbe83b93f7deab738300d903349f8176131e0",
+      "patch_hash_scope": "extracted per-file GitHub API patch with diff --git headers before local path adaptation",
+      "upstream_author": {
+        "name": "Olivier Fourdan",
+        "email": "ofourdan@redhat.com",
+        "date": "2026-02-23T14:52:49Z"
+      },
+      "local_commit": "b9081dd495558c1f0f8ef911179015ae109b4256",
+      "local_paths": [
+        "src/xorg-server/xkb/xkb.c"
+      ],
+      "local_adaptation": "Only prefix source paths with src/xorg-server/. Exact sequential patch replay matches the final production files. Keep the upstream master private-header declaration; stable release uses include/xkbsrv.h instead.",
+      "cross_check_archive": {
+        "url": "https://xorg.freedesktop.org/archive/individual/xserver/xorg-server-21.1.24.tar.xz",
+        "sha256": "1a4eb36ca65cc3b1b936566d677a9786e13c11cd5806e951ac55f3f5ce3984af",
+        "evidence": "../validation/2026-09-09-xserver-xkb-audit.md"
+      },
+      "report": "../validation/2026-09-10-xkb.md"
+    },
+    {
+      "component": "xserver",
+      "name": "xkb: Fix out-of-bounds read in CheckModifierMap()",
+      "upstream_commit": "f056ce1cc96ed9261052c31524162c78e458f98c",
+      "upstream_stable_commit": "5328a544ba6c32ecdd1758283ee69058dec100f8",
+      "upstream_url": "https://gitlab.freedesktop.org/xorg/xserver/-/commit/f056ce1cc96ed9261052c31524162c78e458f98c",
+      "actual_source_url": "https://api.github.com/repos/LizardByte-infrastructure/xserver/commits/f056ce1cc96ed9261052c31524162c78e458f98c",
+      "source_download_date": "2026-09-10",
+      "source_downloaded_at": "2026-09-10T15:35:35.474948+00:00",
+      "source_response_sha256": "e958dedc89b7ed5f0c0b4e8897aa0920fce70ed21db8fab57c1f7ff672afb058",
+      "patch_sha256": "f91ae7a1a3d9d2cb26e1102fc49d6b6928f1d3d1e352b10db6fe37276a3aaa94",
+      "patch_hash_scope": "extracted per-file GitHub API patch with diff --git headers before local path adaptation",
+      "upstream_author": {
+        "name": "Olivier Fourdan",
+        "email": "ofourdan@redhat.com",
+        "date": "2026-02-18T16:02:09Z"
+      },
+      "local_commit": "b9081dd495558c1f0f8ef911179015ae109b4256",
+      "local_paths": [
+        "src/xorg-server/xkb/xkb.c"
+      ],
+      "local_adaptation": "Only prefix source paths with src/xorg-server/. Exact sequential patch replay matches the final production files. Keep the upstream master private-header declaration; stable release uses include/xkbsrv.h instead.",
+      "cross_check_archive": {
+        "url": "https://xorg.freedesktop.org/archive/individual/xserver/xorg-server-21.1.24.tar.xz",
+        "sha256": "1a4eb36ca65cc3b1b936566d677a9786e13c11cd5806e951ac55f3f5ce3984af",
+        "evidence": "../validation/2026-09-09-xserver-xkb-audit.md"
+      },
+      "report": "../validation/2026-09-10-xkb.md"
+    },
+    {
+      "component": "xserver",
+      "name": "xkb: Add more _XkbCheckRequestBounds()",
+      "upstream_commit": "d38c563fab5c4a554e0939da39e4d1dadef7cbae",
+      "upstream_stable_commit": "e8674488a678387699629a0b558256cc04049ea8",
+      "upstream_url": "https://gitlab.freedesktop.org/xorg/xserver/-/commit/d38c563fab5c4a554e0939da39e4d1dadef7cbae",
+      "actual_source_url": "https://api.github.com/repos/LizardByte-infrastructure/xserver/commits/d38c563fab5c4a554e0939da39e4d1dadef7cbae",
+      "source_download_date": "2026-09-10",
+      "source_downloaded_at": "2026-09-10T15:35:36.502403+00:00",
+      "source_response_sha256": "577320fb6b2f9d0b845ff18e19f8e7146bb165d50ca6065f634c1a381fbe05c1",
+      "patch_sha256": "5c88c11dce267c8ac13bf40da8be82c635794a36355bda8319e7c9f313e0609a",
+      "patch_hash_scope": "extracted per-file GitHub API patch with diff --git headers before local path adaptation",
+      "upstream_author": {
+        "name": "Olivier Fourdan",
+        "email": "ofourdan@redhat.com",
+        "date": "2026-03-02T13:09:57Z"
+      },
+      "local_commit": "b9081dd495558c1f0f8ef911179015ae109b4256",
+      "local_paths": [
+        "src/xorg-server/xkb/xkb.c"
+      ],
+      "local_adaptation": "Only prefix source paths with src/xorg-server/. Exact sequential patch replay matches the final production files. Keep the upstream master private-header declaration; stable release uses include/xkbsrv.h instead.",
+      "cross_check_archive": {
+        "url": "https://xorg.freedesktop.org/archive/individual/xserver/xorg-server-21.1.24.tar.xz",
+        "sha256": "1a4eb36ca65cc3b1b936566d677a9786e13c11cd5806e951ac55f3f5ce3984af",
+        "evidence": "../validation/2026-09-09-xserver-xkb-audit.md"
+      },
+      "report": "../validation/2026-09-10-xkb.md"
+    },
+    {
+      "component": "xserver",
+      "name": "xkb: Add bounds check for action data in CheckKeyActions()",
+      "upstream_commit": "a439a7340ad976983ef34eca4f537831b38e191f",
+      "upstream_stable_commit": "852bf24683d8d9fc482632582744c0e4b6791cb3",
+      "upstream_url": "https://gitlab.freedesktop.org/xorg/xserver/-/commit/a439a7340ad976983ef34eca4f537831b38e191f",
+      "actual_source_url": "https://api.github.com/repos/LizardByte-infrastructure/xserver/commits/a439a7340ad976983ef34eca4f537831b38e191f",
+      "source_download_date": "2026-09-10",
+      "source_downloaded_at": "2026-09-10T15:35:37.509783+00:00",
+      "source_response_sha256": "574ef53863e0a43b4bca724dae13636e17552a1d861d1dedbf84a58ca8395d69",
+      "patch_sha256": "ef0d690e6e3ee449f8ddd31959a472b91c95e146ad22b7090c25f4facc730e75",
+      "patch_hash_scope": "extracted per-file GitHub API patch with diff --git headers before local path adaptation",
+      "upstream_author": {
+        "name": "Peter Hutterer",
+        "email": "peter.hutterer@who-t.net",
+        "date": "2026-04-17T21:38:14Z"
+      },
+      "local_commit": "b9081dd495558c1f0f8ef911179015ae109b4256",
+      "local_paths": [
+        "src/xorg-server/xkb/xkb.c"
+      ],
+      "local_adaptation": "Only prefix source paths with src/xorg-server/. Exact sequential patch replay matches the final production files. Keep the upstream master private-header declaration; stable release uses include/xkbsrv.h instead.",
+      "cross_check_archive": {
+        "url": "https://xorg.freedesktop.org/archive/individual/xserver/xorg-server-21.1.24.tar.xz",
+        "sha256": "1a4eb36ca65cc3b1b936566d677a9786e13c11cd5806e951ac55f3f5ce3984af",
+        "evidence": "../validation/2026-09-09-xserver-xkb-audit.md"
+      },
+      "report": "../validation/2026-09-10-xkb.md"
+    },
+    {
+      "component": "xserver",
+      "name": "xkb: reject key types with num_levels exceeding XkbMaxShiftLevel",
+      "upstream_commit": "543e108516428fc8c3bea91d6563ad266f9a801e",
+      "upstream_stable_commit": "eced7e74cad4a46c3a3c17b2df13b70b8bedfc25",
+      "upstream_url": "https://gitlab.freedesktop.org/xorg/xserver/-/commit/543e108516428fc8c3bea91d6563ad266f9a801e",
+      "actual_source_url": "https://api.github.com/repos/LizardByte-infrastructure/xserver/commits/543e108516428fc8c3bea91d6563ad266f9a801e",
+      "source_download_date": "2026-09-10",
+      "source_downloaded_at": "2026-09-10T15:35:35.808156+00:00",
+      "source_response_sha256": "26ebbeae350e2548eb94178067a73201917af387e261f6e660f644a52a074506",
+      "patch_sha256": "aa65a837155f57315c15e005802ed44d77efb1442cb68c4df4317f47103c8b05",
+      "patch_hash_scope": "extracted per-file GitHub API patch with diff --git headers before local path adaptation",
+      "upstream_author": {
+        "name": "Peter Hutterer",
+        "email": "peter.hutterer@who-t.net",
+        "date": "2026-04-20T01:17:41Z"
+      },
+      "local_commit": "b9081dd495558c1f0f8ef911179015ae109b4256",
+      "local_paths": [
+        "src/xorg-server/xkb/xkb.c"
+      ],
+      "local_adaptation": "Only prefix source paths with src/xorg-server/. Exact sequential patch replay matches the final production files. Keep the upstream master private-header declaration; stable release uses include/xkbsrv.h instead.",
+      "cross_check_archive": {
+        "url": "https://xorg.freedesktop.org/archive/individual/xserver/xorg-server-21.1.24.tar.xz",
+        "sha256": "1a4eb36ca65cc3b1b936566d677a9786e13c11cd5806e951ac55f3f5ce3984af",
+        "evidence": "../validation/2026-09-09-xserver-xkb-audit.md"
+      },
+      "report": "../validation/2026-09-10-xkb.md"
+    },
+    {
+      "component": "xserver",
+      "name": "xkb: clamp nMaps to mapWidths buffer size in CheckKeyTypes",
+      "upstream_commit": "867b59b33bee669cb412f1314e47c52eacf6e00b",
+      "upstream_stable_commit": "54c3d9fad0f2f97835da9d275b53255f4963029f",
+      "upstream_url": "https://gitlab.freedesktop.org/xorg/xserver/-/commit/867b59b33bee669cb412f1314e47c52eacf6e00b",
+      "actual_source_url": "https://api.github.com/repos/LizardByte-infrastructure/xserver/commits/867b59b33bee669cb412f1314e47c52eacf6e00b",
+      "source_download_date": "2026-09-10",
+      "source_downloaded_at": "2026-09-10T15:35:37.016407+00:00",
+      "source_response_sha256": "a96ec758b3223e238abbd6b37d6daaaafb6890504f331c71d9d617acbc28630b",
+      "patch_sha256": "51073a268165a73b5d73ef70643156841f6effb4e2a187ad65c8151c67dff335",
+      "patch_hash_scope": "extracted per-file GitHub API patch with diff --git headers before local path adaptation",
+      "upstream_author": {
+        "name": "Peter Hutterer",
+        "email": "peter.hutterer@who-t.net",
+        "date": "2026-04-20T01:18:13Z"
+      },
+      "local_commit": "b9081dd495558c1f0f8ef911179015ae109b4256",
+      "local_paths": [
+        "src/xorg-server/xkb/xkb.c"
+      ],
+      "local_adaptation": "Only prefix source paths with src/xorg-server/. Exact sequential patch replay matches the final production files. Keep the upstream master private-header declaration; stable release uses include/xkbsrv.h instead.",
+      "cross_check_archive": {
+        "url": "https://xorg.freedesktop.org/archive/individual/xserver/xorg-server-21.1.24.tar.xz",
+        "sha256": "1a4eb36ca65cc3b1b936566d677a9786e13c11cd5806e951ac55f3f5ce3984af",
+        "evidence": "../validation/2026-09-09-xserver-xkb-audit.md"
+      },
+      "report": "../validation/2026-09-10-xkb.md"
+    },
+    {
+      "component": "xserver",
+      "name": "xkb: Fix bounds check in _CheckSetGeom()",
+      "upstream_commit": "81b6a34f90b28c32ad499a78a4f391b7c06daea2",
+      "upstream_stable_commit": "a48d67f38753de551cd177e471b545bd8b9b1b64",
+      "upstream_url": "https://gitlab.freedesktop.org/xorg/xserver/-/commit/81b6a34f90b28c32ad499a78a4f391b7c06daea2",
+      "actual_source_url": "https://api.github.com/repos/LizardByte-infrastructure/xserver/commits/81b6a34f90b28c32ad499a78a4f391b7c06daea2",
+      "source_download_date": "2026-09-10",
+      "source_downloaded_at": "2026-09-10T15:35:34.652850+00:00",
+      "source_response_sha256": "50bb40ce70c64e8e508790ae0726c5a3e9ad2bf4e8a0aa48ae804be5f4e41a07",
+      "patch_sha256": "5bdaa524a9fba26321043e6468369c5a3662cc6a617da236f8427033fd6b27d7",
+      "patch_hash_scope": "extracted per-file GitHub API patch with diff --git headers before local path adaptation",
+      "upstream_author": {
+        "name": "Olivier Fourdan",
+        "email": "ofourdan@redhat.com",
+        "date": "2026-02-18T15:03:11Z"
+      },
+      "local_commit": "b9081dd495558c1f0f8ef911179015ae109b4256",
+      "local_paths": [
+        "src/xorg-server/xkb/xkb.c"
+      ],
+      "local_adaptation": "Only prefix source paths with src/xorg-server/. Exact sequential patch replay matches the final production files. Keep the upstream master private-header declaration; stable release uses include/xkbsrv.h instead.",
+      "cross_check_archive": {
+        "url": "https://xorg.freedesktop.org/archive/individual/xserver/xorg-server-21.1.24.tar.xz",
+        "sha256": "1a4eb36ca65cc3b1b936566d677a9786e13c11cd5806e951ac55f3f5ce3984af",
+        "evidence": "../validation/2026-09-09-xserver-xkb-audit.md"
+      },
+      "report": "../validation/2026-09-10-xkb.md"
+    },
+    {
+      "component": "xserver",
+      "name": "xkb: Fix off-by-one and NULL dereferences in _CheckSetOverlay()",
+      "upstream_commit": "ed19312c4bda0a8f66b236348ffc553e5d8d2a09",
+      "upstream_stable_commit": "5f2ac0de4798f2290620ff89ba86af171c45013c",
+      "upstream_url": "https://gitlab.freedesktop.org/xorg/xserver/-/commit/ed19312c4bda0a8f66b236348ffc553e5d8d2a09",
+      "actual_source_url": "https://api.github.com/repos/LizardByte-infrastructure/xserver/commits/ed19312c4bda0a8f66b236348ffc553e5d8d2a09",
+      "source_download_date": "2026-09-10",
+      "source_downloaded_at": "2026-09-10T15:35:38.152255+00:00",
+      "source_response_sha256": "b8b873396d8c91bf750f1962905e87ea152759ad474cd2c268a2e8cd57e270a5",
+      "patch_sha256": "990885c2fe915641e854659f50774df5870b255ea796ba14e6df2dc0506f4d67",
+      "patch_hash_scope": "extracted per-file GitHub API patch with diff --git headers before local path adaptation",
+      "upstream_author": {
+        "name": "Peter Hutterer",
+        "email": "peter.hutterer@who-t.net",
+        "date": "2026-04-17T21:35:53Z"
+      },
+      "local_commit": "b9081dd495558c1f0f8ef911179015ae109b4256",
+      "local_paths": [
+        "src/xorg-server/xkb/xkb.c"
+      ],
+      "local_adaptation": "Only prefix source paths with src/xorg-server/. Exact sequential patch replay matches the final production files. Keep the upstream master private-header declaration; stable release uses include/xkbsrv.h instead.",
+      "cross_check_archive": {
+        "url": "https://xorg.freedesktop.org/archive/individual/xserver/xorg-server-21.1.24.tar.xz",
+        "sha256": "1a4eb36ca65cc3b1b936566d677a9786e13c11cd5806e951ac55f3f5ce3984af",
+        "evidence": "../validation/2026-09-09-xserver-xkb-audit.md"
+      },
+      "report": "../validation/2026-09-10-xkb.md"
+    },
+    {
+      "component": "xserver",
+      "name": "xkb: Fix off-by-one in color index validation in _CheckSetGeom()",
+      "upstream_commit": "6b6e8020b902e48e3330f9a54cd439a51988bc50",
+      "upstream_stable_commit": "7ee87732a90cd557b6dd0f69b05af30e7f489b4b",
+      "upstream_url": "https://gitlab.freedesktop.org/xorg/xserver/-/commit/6b6e8020b902e48e3330f9a54cd439a51988bc50",
+      "actual_source_url": "https://api.github.com/repos/LizardByte-infrastructure/xserver/commits/6b6e8020b902e48e3330f9a54cd439a51988bc50",
+      "source_download_date": "2026-09-10",
+      "source_downloaded_at": "2026-09-10T15:35:38.673554+00:00",
+      "source_response_sha256": "cefca55b7efc5d6b9cadf99f31a452e56ee43fc0d954ee23b24c472b571ba1ab",
+      "patch_sha256": "f98ba34d513e04c49bcb72e52adb235438492ba91b0776862e4f5103b174e7b7",
+      "patch_hash_scope": "extracted per-file GitHub API patch with diff --git headers before local path adaptation",
+      "upstream_author": {
+        "name": "Peter Hutterer",
+        "email": "peter.hutterer@who-t.net",
+        "date": "2026-04-17T21:35:15Z"
+      },
+      "local_commit": "b9081dd495558c1f0f8ef911179015ae109b4256",
+      "local_paths": [
+        "src/xorg-server/xkb/xkb.c"
+      ],
+      "local_adaptation": "Only prefix source paths with src/xorg-server/. Exact sequential patch replay matches the final production files. Keep the upstream master private-header declaration; stable release uses include/xkbsrv.h instead.",
+      "cross_check_archive": {
+        "url": "https://xorg.freedesktop.org/archive/individual/xserver/xorg-server-21.1.24.tar.xz",
+        "sha256": "1a4eb36ca65cc3b1b936566d677a9786e13c11cd5806e951ac55f3f5ce3984af",
+        "evidence": "../validation/2026-09-09-xserver-xkb-audit.md"
+      },
+      "report": "../validation/2026-09-10-xkb.md"
+    },
+    {
+      "component": "xserver",
+      "name": "xkb: Fix out-of-bounds array access in _CheckSetShapes()",
+      "upstream_commit": "86a321ad98213957bbb56f295417b0939326718b",
+      "upstream_stable_commit": "39befa04f92a5acd2f97ef414a799a4a38e979d1",
+      "upstream_url": "https://gitlab.freedesktop.org/xorg/xserver/-/commit/86a321ad98213957bbb56f295417b0939326718b",
+      "actual_source_url": "https://api.github.com/repos/LizardByte-infrastructure/xserver/commits/86a321ad98213957bbb56f295417b0939326718b",
+      "source_download_date": "2026-09-10",
+      "source_downloaded_at": "2026-09-10T15:35:38.667469+00:00",
+      "source_response_sha256": "4342c2cbe2188d4e64d76ea4b6bfbea2baccc0838365937b20970c2959049cfe",
+      "patch_sha256": "b727c67a9303885f63fb37aa48fe365ca6d0ad9352247ce8452d78305a1f42de",
+      "patch_hash_scope": "extracted per-file GitHub API patch with diff --git headers before local path adaptation",
+      "upstream_author": {
+        "name": "Peter Hutterer",
+        "email": "peter.hutterer@who-t.net",
+        "date": "2026-04-17T21:34:51Z"
+      },
+      "local_commit": "b9081dd495558c1f0f8ef911179015ae109b4256",
+      "local_paths": [
+        "src/xorg-server/xkb/xkb.c"
+      ],
+      "local_adaptation": "Only prefix source paths with src/xorg-server/. Exact sequential patch replay matches the final production files. Keep the upstream master private-header declaration; stable release uses include/xkbsrv.h instead.",
+      "cross_check_archive": {
+        "url": "https://xorg.freedesktop.org/archive/individual/xserver/xorg-server-21.1.24.tar.xz",
+        "sha256": "1a4eb36ca65cc3b1b936566d677a9786e13c11cd5806e951ac55f3f5ce3984af",
+        "evidence": "../validation/2026-09-09-xserver-xkb-audit.md"
+      },
+      "report": "../validation/2026-09-10-xkb.md"
+    },
+    {
+      "component": "xserver",
+      "name": "xkb: fix incorrect size check when growing doodads in a section",
+      "upstream_commit": "dd8b8cf49d326802c53b01835618a7e3765d91cb",
+      "upstream_stable_commit": "c251243f282acaf590201d8bd2508aebeb6d8fb5",
+      "upstream_url": "https://gitlab.freedesktop.org/xorg/xserver/-/commit/dd8b8cf49d326802c53b01835618a7e3765d91cb",
+      "actual_source_url": "https://api.github.com/repos/LizardByte-infrastructure/xserver/commits/dd8b8cf49d326802c53b01835618a7e3765d91cb",
+      "source_download_date": "2026-09-10",
+      "source_downloaded_at": "2026-09-10T15:35:39.246041+00:00",
+      "source_response_sha256": "abd733be51bff55e0b56d85c91ec08cc85536d79a4765f0889343f8adc9ea926",
+      "patch_sha256": "027a5e54c7e77e2d64a9bfb7d9d302f6ffa653a91e1b1d658900926d17f79cc2",
+      "patch_hash_scope": "extracted per-file GitHub API patch with diff --git headers before local path adaptation",
+      "upstream_author": {
+        "name": "Mikhail Dmitrichenko",
+        "email": "m.dmitrichenko222@gmail.com",
+        "date": "2026-04-14T09:06:51Z"
+      },
+      "local_commit": "b9081dd495558c1f0f8ef911179015ae109b4256",
+      "local_paths": [
+        "src/xorg-server/xkb/XKBGAlloc.c"
+      ],
+      "local_adaptation": "Only prefix source paths with src/xorg-server/. Exact sequential patch replay matches the final production files. Keep the upstream master private-header declaration; stable release uses include/xkbsrv.h instead.",
+      "cross_check_archive": {
+        "url": "https://xorg.freedesktop.org/archive/individual/xserver/xorg-server-21.1.24.tar.xz",
+        "sha256": "1a4eb36ca65cc3b1b936566d677a9786e13c11cd5806e951ac55f3f5ce3984af",
+        "evidence": "../validation/2026-09-09-xserver-xkb-audit.md"
+      },
+      "report": "../validation/2026-09-10-xkb.md"
+    },
+    {
+      "component": "xserver",
+      "name": "xkb: fix potential buff overflow in XkbVModIndexText for XkbCFile format",
+      "upstream_commit": "5dfb435c1d864bf154369cb86d085d4159730378",
+      "upstream_stable_commit": "cc2bd590f368cb6aaa5d1b54e3ac4689f37f54ed",
+      "upstream_url": "https://gitlab.freedesktop.org/xorg/xserver/-/commit/5dfb435c1d864bf154369cb86d085d4159730378",
+      "actual_source_url": "https://api.github.com/repos/LizardByte-infrastructure/xserver/commits/5dfb435c1d864bf154369cb86d085d4159730378",
+      "source_download_date": "2026-09-10",
+      "source_downloaded_at": "2026-09-10T15:35:39.633315+00:00",
+      "source_response_sha256": "1d1b9b7763d723657c5873b8cc82a0e98cd55117a1f200469583b909a6f11746",
+      "patch_sha256": "b6729d836da599f6bbe71ad1a6d02590f93d90085ec5cfc0f8234702c325725a",
+      "patch_hash_scope": "extracted per-file GitHub API patch with diff --git headers before local path adaptation",
+      "upstream_author": {
+        "name": "Mikhail Dmitrichenko",
+        "email": "m.dmitrichenko222@gmail.com",
+        "date": "2026-04-14T10:22:35Z"
+      },
+      "local_commit": "b9081dd495558c1f0f8ef911179015ae109b4256",
+      "local_paths": [
+        "src/xorg-server/xkb/xkbtext.c"
+      ],
+      "local_adaptation": "Only prefix source paths with src/xorg-server/. Exact sequential patch replay matches the final production files. Keep the upstream master private-header declaration; stable release uses include/xkbsrv.h instead.",
+      "cross_check_archive": {
+        "url": "https://xorg.freedesktop.org/archive/individual/xserver/xorg-server-21.1.24.tar.xz",
+        "sha256": "1a4eb36ca65cc3b1b936566d677a9786e13c11cd5806e951ac55f3f5ce3984af",
+        "evidence": "../validation/2026-09-09-xserver-xkb-audit.md"
+      },
+      "report": "../validation/2026-09-10-xkb.md"
+    },
+    {
+      "component": "xserver",
+      "name": "xkb: preserve buffer on realloc failure",
+      "upstream_commit": "d6c462f59927b3702a54e0e8ea2a5de7639294e6",
+      "upstream_stable_commit": "a29a7c1ec5b488b4069ef976e8096cb997074e49",
+      "upstream_url": "https://gitlab.freedesktop.org/xorg/xserver/-/commit/d6c462f59927b3702a54e0e8ea2a5de7639294e6",
+      "actual_source_url": "https://api.github.com/repos/LizardByte-infrastructure/xserver/commits/d6c462f59927b3702a54e0e8ea2a5de7639294e6",
+      "source_download_date": "2026-09-10",
+      "source_downloaded_at": "2026-09-10T15:35:39.942332+00:00",
+      "source_response_sha256": "ac8e4891cf702ed2a7a7cbfaef37b190b22f763b5d7aa50799539f1c199bbb17",
+      "patch_sha256": "474d86b58606e3a045a5dd334fa4ce625c5b092a8e50b69a146d59a6fc52fe46",
+      "patch_hash_scope": "extracted per-file GitHub API patch with diff --git headers before local path adaptation",
+      "upstream_author": {
+        "name": "Mikhail Dmitrichenko",
+        "email": "m.dmitrichenko222@gmail.com",
+        "date": "2026-05-25T09:46:28Z"
+      },
+      "local_commit": "b9081dd495558c1f0f8ef911179015ae109b4256",
+      "local_paths": [
+        "src/xorg-server/xkb/maprules.c"
+      ],
+      "local_adaptation": "Only prefix source paths with src/xorg-server/. Exact sequential patch replay matches the final production files. Keep the upstream master private-header declaration; stable release uses include/xkbsrv.h instead.",
+      "cross_check_archive": {
+        "url": "https://xorg.freedesktop.org/archive/individual/xserver/xorg-server-21.1.24.tar.xz",
+        "sha256": "1a4eb36ca65cc3b1b936566d677a9786e13c11cd5806e951ac55f3f5ce3984af",
+        "evidence": "../validation/2026-09-09-xserver-xkb-audit.md"
+      },
+      "report": "../validation/2026-09-10-xkb.md"
     }
   ],
   "layout_note": "2026-09-10 源码分层后，path/evidence 表示当前仓库位置；完整旧路径映射见 docs/history/2026-09-10-source-path-mapping.json。actual_import_urls、inherited_material_urls 和 declaration_url 保留原固定提交的路径。"

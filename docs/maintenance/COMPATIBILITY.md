@@ -35,6 +35,10 @@
 
 2026-09-10，维护者针对本组候选反馈“没问题”，记录为实际使用正常，修复已快进合入 master，合入后 97 项测试通过。运行目录为 `D:/File/Program/GitHub/zzxsrv-render-record-20260910/dist/x64/Release`，现为普通保留目录，见[验证与整合报告](../validation/2026-09-10-render-record.md)。应用版本、连接方式与逐项场景尚未提供，不补造细节，不扩展为剪贴板/OpenGL 等全部通过；GUI-001 继续暂缓。
 
+## XKB 候选的实际使用反馈
+
+本组候选路径为 `D:/File/Program/GitHub/zzxsrv-xkb-20260910/dist/x64/Release`。自动验证和来源见 [XKB 报告](../validation/2026-09-10-xkb.md)；尚未取得实际使用反馈，不能用输入或 RENDER/RECORD 的反馈替代。GUI-001 仍暂缓排查。
+
 ## 输入处理候选的实际使用反馈
 
 运行目录：`D:/File/Program/GitHub/vcxsrv-input-20260909-2110/dist/x64/Release`，历史源码 `c06e0db1669afaee649bdaf407c7c76c9fa3ae56`。2026-09-10 维护者明确确认本次使用的是该候选，而非主目录重新编译的版本。历史新适配静态审查、干净构建、71 项测试和认证启动/根窗口检查已通过；本段记录的是旧候选的人工反馈。随后修复已按当前目录恢复并合入 master，新构建和 73 项测试见[整合报告](../validation/2026-09-10-xserver-input-integration.md)；不把旧候选反馈改写成新构建的全场景人工验收。
