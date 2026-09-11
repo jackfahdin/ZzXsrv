@@ -23,7 +23,7 @@
 
 ## 验证边界
 
-当前主线已包含 GLX、XFIXES、输入处理、RENDER/RECORD、XKB 修复与原生构建能力。XKB 已取得本组使用确认并完成快进整合，合入后 158 项测试通过，见 [XKB 报告](../validation/2026-09-10-xkb.md)。RENDER/RECORD 已取得本组实际使用确认并完成快进整合，合入后 97 项测试通过，见[本组报告](../validation/2026-09-10-render-record.md)。输入候选已取得维护者实际使用反馈，并按当前目录恢复、完整构建及重新验证后整合；见[整合报告](../validation/2026-09-10-xserver-input-integration.md)。剪贴板/OpenGL 未验证，GUI-001 暂缓排查，不能将有限实际反馈描述为全场景通过。
+当前主线已包含 GLX、XFIXES、输入处理、RENDER/RECORD、XKB 修复与原生构建能力。XKB 已取得本组使用确认并完成快进整合，合入后 158 项测试通过，见 [XKB 报告](../validation/2026-09-10-xkb.md)。RENDER/RECORD 已取得本组实际使用确认并完成快进整合，合入后 97 项测试通过，见[本组报告](../validation/2026-09-10-render-record.md)。输入候选已取得维护者实际使用反馈，并按当前目录恢复、完整构建及重新验证后整合；见[整合报告](../validation/2026-09-10-xserver-input-integration.md)。剪贴板/OpenGL 未验证，GUI-001 已按维护者决定关闭，不再跟进，不能将有限实际反馈描述为全场景通过。
 
 有程序行为变化时，启用相关本机工具及运行测试，不以跳过代替通过；X Server 等图形相关变动需实际应用场景。All 阶段仍使用继承的 libxml2 预编译文件，其完整来源与重建是独立待办。
 
