@@ -50,9 +50,13 @@
 | fix potential buff overflow in XkbVModIndexText for XkbCFile format | [5dfb435c1d864bf154369cb86d085d4159730378](https://gitlab.freedesktop.org/xorg/xserver/-/commit/5dfb435c1d864bf154369cb86d085d4159730378) | [实际下载的固定 SHA API](https://api.github.com/repos/LizardByte-infrastructure/xserver/commits/5dfb435c1d864bf154369cb86d085d4159730378) | `b9081dd495558c1f0f8ef911179015ae109b4256` / [XKB 整合报告](../validation/2026-09-10-xkb.md) |
 | preserve buffer on realloc failure | [d6c462f59927b3702a54e0e8ea2a5de7639294e6](https://gitlab.freedesktop.org/xorg/xserver/-/commit/d6c462f59927b3702a54e0e8ea2a5de7639294e6) | [实际下载的固定 SHA API](https://api.github.com/repos/LizardByte-infrastructure/xserver/commits/d6c462f59927b3702a54e0e8ea2a5de7639294e6) | `b9081dd495558c1f0f8ef911179015ae109b4256` / [XKB 整合报告](../validation/2026-09-10-xkb.md) |
 
+### Windows 认证文件的本地兼容性修正
+
+本地提交 `281ee081e56ca22fe1a7fa55c7c1d3ff16f13c20` 修正服务器和 xauth 对二进制认证文件的文本模式读写。改动从本地继承源码及 Windows 实测推导，未下载或回补新的上游补丁；因此不增加 30 条 `applied_upstream_patches` 的数量。JSON 的 `local_compatibility_patches` 单独记录路径、基线与本地提交。[认证修复报告](../validation/2026-09-11-auth-binary.md)记录原因、测试及独立候选。本补充候选尚待实际使用确认，未合入 master。
+
 ### XSYNC/PRESENT/屏保候选补丁
 
-本组已在临时候选中应用，尚未取得本组实际使用确认，**未合入 master**。覆盖原审计的 6 项问题，共 6 个上游提交：销毁补丁共同覆盖两个问题，PRESENT 输出指针为配套修复，不额外计为 CVE。完整稳定分支 SHA、下载时间、作者及响应/补丁 SHA-256 见 JSON，[验证报告](../validation/2026-09-11-sync-present.md)记录本地适配和验收边界。
+维护者已确认本组使用正常；合入前自动检查发现既有认证文件问题，整合暂缓，**未合入 master**。认证补充候选见上节。覆盖原审计的 6 项问题，共 6 个上游提交：销毁补丁共同覆盖两个问题，PRESENT 输出指针为配套修复，不额外计为 CVE。完整稳定分支 SHA、下载时间、作者及响应/补丁 SHA-256 见 JSON，[验证报告](../validation/2026-09-11-sync-present.md)记录本地适配和验收边界。
 
 | 改动 | 上游 commit | 实际下载 | 本地源码提交 |
 | --- | --- | --- | --- |

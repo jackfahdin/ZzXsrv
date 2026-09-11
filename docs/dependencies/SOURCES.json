@@ -5749,5 +5749,18 @@
       "report": "../validation/2026-09-11-sync-present.md"
     }
   ],
-  "layout_note": "2026-09-10 源码分层后，path/evidence 表示当前仓库位置；完整旧路径映射见 docs/history/2026-09-10-source-path-mapping.json。actual_import_urls、inherited_material_urls 和 declaration_url 保留原固定提交的路径。"
+  "layout_note": "2026-09-10 源码分层后，path/evidence 表示当前仓库位置；完整旧路径映射见 docs/history/2026-09-10-source-path-mapping.json。actual_import_urls、inherited_material_urls 和 declaration_url 保留原固定提交的路径。",
+  "local_compatibility_patches": [
+    {
+      "name": "Read and write Windows authority files in binary mode",
+      "local_commit": "281ee081e56ca22fe1a7fa55c7c1d3ff16f13c20",
+      "baseline_commit": "5543d327f5c964a12596ee92665e8e3a243e7bdc",
+      "local_paths": [
+        "src/xorg-server/os/auth.c",
+        "third_party/xorg/apps/xauth/process.c"
+      ],
+      "origin": "Local correction derived from the inherited source and reproduced Windows text-mode I/O behavior; no upstream patch imported.",
+      "report": "../validation/2026-09-11-auth-binary.md"
+    }
+  ]
 }
