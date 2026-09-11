@@ -827,7 +827,13 @@ write_auth_file(char *tmp_nam)
 {
     FILE *fp = NULL;
     int fd;
+    int flags = O_WRONLY | O_CREAT | O_EXCL;
     AuthList *list;
+
+#ifdef WIN32
+    /* fdopen does not change the descriptor's text/binary mode on Windows. */
+    flags |= O_BINARY;
+#endif
 
     /*
      * xdm and auth spec assumes auth file is 12 or fewer characters
@@ -836,7 +842,7 @@ write_auth_file(char *tmp_nam)
     strcat (tmp_nam, "-n");		/* for new */
     (void) unlink (tmp_nam);
     /* CPhipps 2000/02/12 - fix file unlink/fopen race */
-    fd = open(tmp_nam, O_WRONLY | O_CREAT | O_EXCL, 0600);
+    fd = open(tmp_nam, flags, 0600);
     if (fd != -1) fp = _fdopen (fd, "wb");
     if (!fp) {
         if (fd != -1) close(fd);

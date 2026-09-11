@@ -1,0 +1,64 @@
+/* Actual server loader and xauth writer; private writer inserted verbatim. */
+#include <stdlib.h>
+#include <stdio.h>
+#include <string.h>
+#include <fcntl.h>
+#include <io.h>
+#include "src/xorg-server/os/auth.c"
+#include "third_party/xorg/libXau/AuRead.c"
+#include "third_party/xorg/libXau/AuDispose.c"
+#include "third_party/xorg/libXau/AuWrite.c"
+#define CHECK(c) do { if (!(c)) { fprintf(stderr,"FAIL %d: %s\n",__LINE__,#c); exit(1); } } while (0)
+@AUTH_LIST@
+static AuthList *xauth_head;
+static const char *xauth_filename = "authority";
+const char *ProgramName = "auth-io-test";
+@WRITE_AUTH_FILE@
+static unsigned char expected[256];
+static unsigned short expected_length;
+static int added;
+XID FakeClientID(int client) { CHECK(client==0); return 42; }
+int MitAddCookie(unsigned short length,const char *data,XID id) {
+    CHECK(id==42 && length==expected_length);
+    CHECK(memcmp(data,expected,length)==0); added++; return 1;
+}
+int main(int argc,char **argv) {
+    CHECK(argc==3);
+    memset(expected,'A',sizeof(expected)); expected_length=16;
+    if(!strcmp(argv[2],"lf")) expected[3]='\n';
+    else if(!strcmp(argv[2],"crlf")) { expected[3]='\r'; expected[4]='\n'; }
+    else if(!strcmp(argv[2],"ctrlz")) expected[3]=0x1a;
+    else if(!strcmp(argv[2],"all")) { expected_length=256; for(int i=0;i<256;i++) expected[i]=(unsigned char)i; }
+    else CHECK(!strcmp(argv[2],"control"));
+    Xauth auth={0}; auth.family=0; auth.address_length=4; auth.address="\177\0\0\1";
+    auth.number_length=2; auth.number="97"; auth.name_length=18; auth.name="MIT-MAGIC-COOKIE-1";
+    auth.data_length=expected_length; auth.data=(char*)expected;
+    if(!strcmp(argv[1],"write")) {
+        AuthList item={NULL,&auth}; xauth_head=&item; char filename[128];
+        CHECK(write_auth_file(filename)==0);
+        FILE *f=fopen(filename,"rb"); CHECK(f);
+        Xauth *read=XauReadAuth(f); CHECK(read);
+        CHECK(read->data_length==expected_length && !memcmp(read->data,expected,expected_length));
+        CHECK(fgetc(f)==EOF); XauDisposeAuth(read); fclose(f);
+    } else {
+        CHECK(!strcmp(argv[1],"read"));
+        FILE *f=fopen("authority","wb"); CHECK(f); CHECK(XauWriteAuth(f,&auth)); CHECK(!fclose(f));
+        InitAuthorization("authority"); CHECK(LoadAuthorization()==1); CHECK(added==1);
+    }
+    printf("PASS %s %s\n",argv[1],argv[2]); return 0;
+}
+__declspec(noreturn) void auth_unexpected_service(void) { abort(); }
+#pragma comment(linker, "/alternatename:XdmCheckCookie=auth_unexpected_service")
+#pragma comment(linker, "/alternatename:XdmAddCookie=auth_unexpected_service")
+#pragma comment(linker, "/alternatename:XdmFromID=auth_unexpected_service")
+#pragma comment(linker, "/alternatename:XdmRemoveCookie=auth_unexpected_service")
+#pragma comment(linker, "/alternatename:XdmResetCookie=auth_unexpected_service")
+#pragma comment(linker, "/alternatename:MitCheckCookie=auth_unexpected_service")
+#pragma comment(linker, "/alternatename:MitGenerateCookie=auth_unexpected_service")
+#pragma comment(linker, "/alternatename:MitFromID=auth_unexpected_service")
+#pragma comment(linker, "/alternatename:MitRemoveCookie=auth_unexpected_service")
+#pragma comment(linker, "/alternatename:MitResetCookie=auth_unexpected_service")
+#pragma comment(linker, "/alternatename:LogMessageVerb=auth_unexpected_service")
+#pragma comment(linker, "/alternatename:EnableLocalAccess=auth_unexpected_service")
+#pragma comment(linker, "/alternatename:DisableLocalAccess=auth_unexpected_service")
+#pragma comment(linker, "/alternatename:XdmcpRegisterAuthorization=auth_unexpected_service")
