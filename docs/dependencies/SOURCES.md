@@ -1,6 +1,6 @@
 # 依赖原始来源与导入记录
 
-更新日期：2026-09-10。项目：[ZzXsrv](https://github.com/jackfahdin/ZzXsrv)。维护方法见 [UPSTREAM.md](../maintenance/UPSTREAM.md)，机器可读完整字段见 [来源清单 JSON](SOURCES.json)。表中的本地位置和证据路径采用当前 `src/`、`third_party/`、`include/` 分层；“继承源码”URL 保留最初固定提交中的原路径。完整旧路径对应见[源码路径映射](../history/2026-09-10-source-path-mapping.json)。
+更新日期：2026-09-11。项目：[ZzXsrv](https://github.com/jackfahdin/ZzXsrv)。维护方法见 [UPSTREAM.md](../maintenance/UPSTREAM.md)，机器可读完整字段见 [来源清单 JSON](SOURCES.json)。表中的本地位置和证据路径采用当前 `src/`、`third_party/`、`include/` 分层；“继承源码”URL 保留最初固定提交中的原路径。完整旧路径对应见[源码路径映射](../history/2026-09-10-source-path-mapping.json)。
 
 ## 实际导入起点
 
@@ -49,6 +49,19 @@
 | fix incorrect size check when growing doodads in a section | [dd8b8cf49d326802c53b01835618a7e3765d91cb](https://gitlab.freedesktop.org/xorg/xserver/-/commit/dd8b8cf49d326802c53b01835618a7e3765d91cb) | [实际下载的固定 SHA API](https://api.github.com/repos/LizardByte-infrastructure/xserver/commits/dd8b8cf49d326802c53b01835618a7e3765d91cb) | `b9081dd495558c1f0f8ef911179015ae109b4256` / [XKB 整合报告](../validation/2026-09-10-xkb.md) |
 | fix potential buff overflow in XkbVModIndexText for XkbCFile format | [5dfb435c1d864bf154369cb86d085d4159730378](https://gitlab.freedesktop.org/xorg/xserver/-/commit/5dfb435c1d864bf154369cb86d085d4159730378) | [实际下载的固定 SHA API](https://api.github.com/repos/LizardByte-infrastructure/xserver/commits/5dfb435c1d864bf154369cb86d085d4159730378) | `b9081dd495558c1f0f8ef911179015ae109b4256` / [XKB 整合报告](../validation/2026-09-10-xkb.md) |
 | preserve buffer on realloc failure | [d6c462f59927b3702a54e0e8ea2a5de7639294e6](https://gitlab.freedesktop.org/xorg/xserver/-/commit/d6c462f59927b3702a54e0e8ea2a5de7639294e6) | [实际下载的固定 SHA API](https://api.github.com/repos/LizardByte-infrastructure/xserver/commits/d6c462f59927b3702a54e0e8ea2a5de7639294e6) | `b9081dd495558c1f0f8ef911179015ae109b4256` / [XKB 整合报告](../validation/2026-09-10-xkb.md) |
+
+### XSYNC/PRESENT/屏保候选补丁
+
+本组已在临时候选中应用，尚未取得本组实际使用确认，**未合入 master**。覆盖原审计的 6 项问题，共 6 个上游提交：销毁补丁共同覆盖两个问题，PRESENT 输出指针为配套修复，不额外计为 CVE。完整稳定分支 SHA、下载时间、作者及响应/补丁 SHA-256 见 JSON，[验证报告](../validation/2026-09-11-sync-present.md)记录本地适配和验收边界。
+
+| 改动 | 上游 commit | 实际下载 | 本地源码提交 |
+| --- | --- | --- | --- |
+| present: Fix use-after-free in present_create_notifies() | [5a4286b13f631b66c20f5bc8db7b68211dcbd1d0](https://gitlab.freedesktop.org/xorg/xserver/-/commit/5a4286b13f631b66c20f5bc8db7b68211dcbd1d0) | [固定 SHA API](https://api.github.com/repos/LizardByte-infrastructure/xserver/commits/5a4286b13f631b66c20f5bc8db7b68211dcbd1d0) | `fda4509c76185a42a87fccf6ed837dfef29f41c4` |
+| present: actually return the created notifies | [f70cc16c6831c9faa14c1f2a8588c6efb6ede263](https://gitlab.freedesktop.org/xorg/xserver/-/commit/f70cc16c6831c9faa14c1f2a8588c6efb6ede263) | [固定 SHA API](https://api.github.com/repos/LizardByte-infrastructure/xserver/commits/f70cc16c6831c9faa14c1f2a8588c6efb6ede263) | `fda4509c76185a42a87fccf6ed837dfef29f41c4` |
+| miext/sync: Fix use-after-free in miSyncTriggerFence() | [f19ab94ba9c891d801231654267556dc7f32b5e0](https://gitlab.freedesktop.org/xorg/xserver/-/commit/f19ab94ba9c891d801231654267556dc7f32b5e0) | [固定 SHA API](https://api.github.com/repos/LizardByte-infrastructure/xserver/commits/f19ab94ba9c891d801231654267556dc7f32b5e0) | `fda4509c76185a42a87fccf6ed837dfef29f41c4` |
+| sync: fix deletion of counters and fences | [f5abfb61994471023d8c6470428c8e30c411cc0b](https://gitlab.freedesktop.org/xorg/xserver/-/commit/f5abfb61994471023d8c6470428c8e30c411cc0b) | [固定 SHA API](https://api.github.com/repos/LizardByte-infrastructure/xserver/commits/f5abfb61994471023d8c6470428c8e30c411cc0b) | `fda4509c76185a42a87fccf6ed837dfef29f41c4` |
+| sync: restart trigger list iteration in SyncChangeCounter after TriggerFired | [bdd7bf57af208b1ddf57d4683d67104443b44812](https://gitlab.freedesktop.org/xorg/xserver/-/commit/bdd7bf57af208b1ddf57d4683d67104443b44812) | [固定 SHA API](https://api.github.com/repos/LizardByte-infrastructure/xserver/commits/bdd7bf57af208b1ddf57d4683d67104443b44812) | `fda4509c76185a42a87fccf6ed837dfef29f41c4` |
+| saver: re-fetch screen private after CheckScreenPrivate in CreateSaverWindow | [ecc634f1b2f7aa473d3a267eada98c4918bf9e05](https://gitlab.freedesktop.org/xorg/xserver/-/commit/ecc634f1b2f7aa473d3a267eada98c4918bf9e05) | [固定 SHA API](https://api.github.com/repos/LizardByte-infrastructure/xserver/commits/ecc634f1b2f7aa473d3a267eada98c4918bf9e05) | `fda4509c76185a42a87fccf6ed837dfef29f41c4` |
 
 ## 核心库与头文件
 

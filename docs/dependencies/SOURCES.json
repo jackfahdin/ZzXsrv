@@ -1,6 +1,6 @@
 {
   "schema_version": 2,
-  "updated": "2026-09-10",
+  "updated": "2026-09-11",
   "project": "https://github.com/jackfahdin/ZzXsrv",
   "description": "组件来源目录；记录证据类型，不依赖上游源码分支，不将声明版本视为逐字节来源证明。",
   "initial_collection": {
@@ -5572,6 +5572,181 @@
         "evidence": "../validation/2026-09-09-xserver-xkb-audit.md"
       },
       "report": "../validation/2026-09-10-xkb.md"
+    },
+    {
+      "component": "xserver",
+      "name": "present: Fix use-after-free in present_create_notifies()",
+      "upstream_commit": "5a4286b13f631b66c20f5bc8db7b68211dcbd1d0",
+      "upstream_stable_commit": "554dfabfbc23c3e74997e09c13f5424a60daf9ee",
+      "upstream_url": "https://gitlab.freedesktop.org/xorg/xserver/-/commit/5a4286b13f631b66c20f5bc8db7b68211dcbd1d0",
+      "actual_source_url": "https://api.github.com/repos/LizardByte-infrastructure/xserver/commits/5a4286b13f631b66c20f5bc8db7b68211dcbd1d0",
+      "source_download_date": "2026-09-11",
+      "source_downloaded_at": "2026-09-11T02:26:40.352387+00:00",
+      "source_response_sha256": "52a8060c238b3d42ef0dbda1184fee367bdc5c27bfb0266e6fede51ed18cbefa",
+      "patch_sha256": "4884c6c4aaf3ccbc477e5368e8abca188615d20fd0bdbf32a94779f41e5a60b0",
+      "patch_hash_scope": "extracted per-file GitHub API patch with diff --git headers before local path adaptation",
+      "upstream_author": {
+        "name": "Olivier Fourdan",
+        "email": "ofourdan@redhat.com",
+        "date": "2025-07-02T07:46:22Z"
+      },
+      "local_commit": "fda4509c76185a42a87fccf6ed837dfef29f41c4",
+      "local_paths": [
+        "src/xorg-server/present/present_notify.c"
+      ],
+      "local_adaptation": "Prefix paths with src/xorg-server/. For f5abfb61 only, adjust unchanged hunk context to preserve the existing IsSystemCounter guard. Exact adapted sequential patch replay matches all final production files; preserve local int64_t and X11_RESTYPE_NONE APIs.",
+      "cross_check_archive": {
+        "url": "https://xorg.freedesktop.org/archive/individual/xserver/xorg-server-21.1.24.tar.xz",
+        "sha256": "1a4eb36ca65cc3b1b936566d677a9786e13c11cd5806e951ac55f3f5ce3984af",
+        "evidence": "../validation/2026-09-09-xserver-sync-present-audit.md"
+      },
+      "report": "../validation/2026-09-11-sync-present.md"
+    },
+    {
+      "component": "xserver",
+      "name": "present: actually return the created notifies",
+      "upstream_commit": "f70cc16c6831c9faa14c1f2a8588c6efb6ede263",
+      "upstream_stable_commit": "2be25deaa6a73aa9e680932065095e025019da32",
+      "upstream_url": "https://gitlab.freedesktop.org/xorg/xserver/-/commit/f70cc16c6831c9faa14c1f2a8588c6efb6ede263",
+      "actual_source_url": "https://api.github.com/repos/LizardByte-infrastructure/xserver/commits/f70cc16c6831c9faa14c1f2a8588c6efb6ede263",
+      "source_download_date": "2026-09-11",
+      "source_downloaded_at": "2026-09-11T02:26:40.126560+00:00",
+      "source_response_sha256": "e19baf9b32cd15868187f2bf373e769cfd3d639288e3e7751975408bfcf36994",
+      "patch_sha256": "9be466c9accb3f5e2d0063071cd454f915c5e69b6fdd785b0e273b2fe64a33a3",
+      "patch_hash_scope": "extracted per-file GitHub API patch with diff --git headers before local path adaptation",
+      "upstream_author": {
+        "name": "Peter Hutterer",
+        "email": "peter.hutterer@who-t.net",
+        "date": "2026-05-06T01:45:15Z"
+      },
+      "local_commit": "fda4509c76185a42a87fccf6ed837dfef29f41c4",
+      "local_paths": [
+        "src/xorg-server/present/present_notify.c"
+      ],
+      "local_adaptation": "Prefix paths with src/xorg-server/. For f5abfb61 only, adjust unchanged hunk context to preserve the existing IsSystemCounter guard. Exact adapted sequential patch replay matches all final production files; preserve local int64_t and X11_RESTYPE_NONE APIs.",
+      "cross_check_archive": {
+        "url": "https://xorg.freedesktop.org/archive/individual/xserver/xorg-server-21.1.24.tar.xz",
+        "sha256": "1a4eb36ca65cc3b1b936566d677a9786e13c11cd5806e951ac55f3f5ce3984af",
+        "evidence": "../validation/2026-09-09-xserver-sync-present-audit.md"
+      },
+      "report": "../validation/2026-09-11-sync-present.md"
+    },
+    {
+      "component": "xserver",
+      "name": "miext/sync: Fix use-after-free in miSyncTriggerFence()",
+      "upstream_commit": "f19ab94ba9c891d801231654267556dc7f32b5e0",
+      "upstream_stable_commit": "70aad8867abdb03d8fd4fcc7405a7ee7c4666539",
+      "upstream_url": "https://gitlab.freedesktop.org/xorg/xserver/-/commit/f19ab94ba9c891d801231654267556dc7f32b5e0",
+      "actual_source_url": "https://api.github.com/repos/LizardByte-infrastructure/xserver/commits/f19ab94ba9c891d801231654267556dc7f32b5e0",
+      "source_download_date": "2026-09-11",
+      "source_downloaded_at": "2026-09-11T02:26:39.953917+00:00",
+      "source_response_sha256": "f3d91b1583a15c465735634c0b2a5fcdb74d10e95c205c84f46b682331613b9a",
+      "patch_sha256": "7db95c292f47c94ea9f1082be0b650255e9765c837266dc720c3679c8aba76e7",
+      "patch_hash_scope": "extracted per-file GitHub API patch with diff --git headers before local path adaptation",
+      "upstream_author": {
+        "name": "Olivier Fourdan",
+        "email": "ofourdan@redhat.com",
+        "date": "2026-02-18T15:23:23Z"
+      },
+      "local_commit": "fda4509c76185a42a87fccf6ed837dfef29f41c4",
+      "local_paths": [
+        "src/xorg-server/miext/sync/misync.c"
+      ],
+      "local_adaptation": "Prefix paths with src/xorg-server/. For f5abfb61 only, adjust unchanged hunk context to preserve the existing IsSystemCounter guard. Exact adapted sequential patch replay matches all final production files; preserve local int64_t and X11_RESTYPE_NONE APIs.",
+      "cross_check_archive": {
+        "url": "https://xorg.freedesktop.org/archive/individual/xserver/xorg-server-21.1.24.tar.xz",
+        "sha256": "1a4eb36ca65cc3b1b936566d677a9786e13c11cd5806e951ac55f3f5ce3984af",
+        "evidence": "../validation/2026-09-09-xserver-sync-present-audit.md"
+      },
+      "report": "../validation/2026-09-11-sync-present.md"
+    },
+    {
+      "component": "xserver",
+      "name": "sync: fix deletion of counters and fences",
+      "upstream_commit": "f5abfb61994471023d8c6470428c8e30c411cc0b",
+      "upstream_stable_commit": "f304b57444be3991fd9d3389f309c6eeb056a6c4",
+      "upstream_url": "https://gitlab.freedesktop.org/xorg/xserver/-/commit/f5abfb61994471023d8c6470428c8e30c411cc0b",
+      "actual_source_url": "https://api.github.com/repos/LizardByte-infrastructure/xserver/commits/f5abfb61994471023d8c6470428c8e30c411cc0b",
+      "source_download_date": "2026-09-11",
+      "source_downloaded_at": "2026-09-11T02:26:40.907833+00:00",
+      "source_response_sha256": "004a1c74e76d3979b07e34d473116d9849e40c94429ddacf85f25e8135a7baf2",
+      "patch_sha256": "052946a3ac3d6b63516c33576ca85fad1b25495d441f97af6a0a66a70db8f783",
+      "patch_hash_scope": "extracted per-file GitHub API patch with diff --git headers before local path adaptation",
+      "upstream_author": {
+        "name": "Peter Hutterer",
+        "email": "peter.hutterer@who-t.net",
+        "date": "2026-04-20T01:16:13Z"
+      },
+      "local_commit": "fda4509c76185a42a87fccf6ed837dfef29f41c4",
+      "local_paths": [
+        "src/xorg-server/Xext/sync.c",
+        "src/xorg-server/miext/sync/misync.c"
+      ],
+      "local_adaptation": "Prefix paths with src/xorg-server/. For f5abfb61 only, adjust unchanged hunk context to preserve the existing IsSystemCounter guard. Exact adapted sequential patch replay matches all final production files; preserve local int64_t and X11_RESTYPE_NONE APIs.",
+      "cross_check_archive": {
+        "url": "https://xorg.freedesktop.org/archive/individual/xserver/xorg-server-21.1.24.tar.xz",
+        "sha256": "1a4eb36ca65cc3b1b936566d677a9786e13c11cd5806e951ac55f3f5ce3984af",
+        "evidence": "../validation/2026-09-09-xserver-sync-present-audit.md"
+      },
+      "report": "../validation/2026-09-11-sync-present.md"
+    },
+    {
+      "component": "xserver",
+      "name": "sync: restart trigger list iteration in SyncChangeCounter after TriggerFired",
+      "upstream_commit": "bdd7bf57af208b1ddf57d4683d67104443b44812",
+      "upstream_stable_commit": "92a167ab3fda0bee41cf97f6a40a4c01c67d85d4",
+      "upstream_url": "https://gitlab.freedesktop.org/xorg/xserver/-/commit/bdd7bf57af208b1ddf57d4683d67104443b44812",
+      "actual_source_url": "https://api.github.com/repos/LizardByte-infrastructure/xserver/commits/bdd7bf57af208b1ddf57d4683d67104443b44812",
+      "source_download_date": "2026-09-11",
+      "source_downloaded_at": "2026-09-11T02:26:41.108668+00:00",
+      "source_response_sha256": "dcd8daac71608ea4aca8609ffe1ef5445e0024ca5de1089b70e686597d0b3be9",
+      "patch_sha256": "2d360a066a23e8c67f7fe920c2582f4a4be410a1daf011c67b276b6d2c67d0bf",
+      "patch_hash_scope": "extracted per-file GitHub API patch with diff --git headers before local path adaptation",
+      "upstream_author": {
+        "name": "Peter Hutterer",
+        "email": "peter.hutterer@who-t.net",
+        "date": "2026-04-20T01:17:08Z"
+      },
+      "local_commit": "fda4509c76185a42a87fccf6ed837dfef29f41c4",
+      "local_paths": [
+        "src/xorg-server/Xext/sync.c"
+      ],
+      "local_adaptation": "Prefix paths with src/xorg-server/. For f5abfb61 only, adjust unchanged hunk context to preserve the existing IsSystemCounter guard. Exact adapted sequential patch replay matches all final production files; preserve local int64_t and X11_RESTYPE_NONE APIs.",
+      "cross_check_archive": {
+        "url": "https://xorg.freedesktop.org/archive/individual/xserver/xorg-server-21.1.24.tar.xz",
+        "sha256": "1a4eb36ca65cc3b1b936566d677a9786e13c11cd5806e951ac55f3f5ce3984af",
+        "evidence": "../validation/2026-09-09-xserver-sync-present-audit.md"
+      },
+      "report": "../validation/2026-09-11-sync-present.md"
+    },
+    {
+      "component": "xserver",
+      "name": "saver: re-fetch screen private after CheckScreenPrivate in CreateSaverWindow",
+      "upstream_commit": "ecc634f1b2f7aa473d3a267eada98c4918bf9e05",
+      "upstream_stable_commit": "182c23f780402062ab31963776a19d5b87e25ac8",
+      "upstream_url": "https://gitlab.freedesktop.org/xorg/xserver/-/commit/ecc634f1b2f7aa473d3a267eada98c4918bf9e05",
+      "actual_source_url": "https://api.github.com/repos/LizardByte-infrastructure/xserver/commits/ecc634f1b2f7aa473d3a267eada98c4918bf9e05",
+      "source_download_date": "2026-09-11",
+      "source_downloaded_at": "2026-09-11T02:26:41.311247+00:00",
+      "source_response_sha256": "a518a86bb02dd1c2569b6885caa111b544e5e3c6c1bd8b7d2c863a71c47f9989",
+      "patch_sha256": "117872106e1d64925c2823be7b8ba62b9993ed93b67ec85b584b36dd51064165",
+      "patch_hash_scope": "extracted per-file GitHub API patch with diff --git headers before local path adaptation",
+      "upstream_author": {
+        "name": "Peter Hutterer",
+        "email": "peter.hutterer@who-t.net",
+        "date": "2026-04-20T01:19:20Z"
+      },
+      "local_commit": "fda4509c76185a42a87fccf6ed837dfef29f41c4",
+      "local_paths": [
+        "src/xorg-server/Xext/saver.c"
+      ],
+      "local_adaptation": "Prefix paths with src/xorg-server/. For f5abfb61 only, adjust unchanged hunk context to preserve the existing IsSystemCounter guard. Exact adapted sequential patch replay matches all final production files; preserve local int64_t and X11_RESTYPE_NONE APIs.",
+      "cross_check_archive": {
+        "url": "https://xorg.freedesktop.org/archive/individual/xserver/xorg-server-21.1.24.tar.xz",
+        "sha256": "1a4eb36ca65cc3b1b936566d677a9786e13c11cd5806e951ac55f3f5ce3984af",
+        "evidence": "../validation/2026-09-09-xserver-sync-present-audit.md"
+      },
+      "report": "../validation/2026-09-11-sync-present.md"
     }
   ],
   "layout_note": "2026-09-10 源码分层后，path/evidence 表示当前仓库位置；完整旧路径映射见 docs/history/2026-09-10-source-path-mapping.json。actual_import_urls、inherited_material_urls 和 declaration_url 保留原固定提交的路径。"
