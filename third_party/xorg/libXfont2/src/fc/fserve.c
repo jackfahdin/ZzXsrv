@@ -77,10 +77,6 @@ in this Software without prior written authorization from The Open Group.
 #include	<time.h>
 #define Time_t time_t
 
-#ifdef NCD
-#include	<ncd/nvram.h>
-#endif
-
 #include <stddef.h>
 
 #ifndef MIN
@@ -335,10 +331,6 @@ fs_init_fpe(FontPathElementPtr fpe)
 
     if (err == Successful)
     {
-#ifdef NCD
-	if (configData.ExtendedFontDiags)
-	    printf("Connected to font server \"%s\"\n", name);
-#endif
 #ifdef DEBUG
 	fprintf (stderr, "connected to FS \"%s\"\n", name);
 #endif
@@ -347,10 +339,6 @@ fs_init_fpe(FontPathElementPtr fpe)
     {
 #ifdef DEBUG
 	fprintf(stderr, "failed to connect to FS \"%s\" %d\n", name, err);
-#endif
-#ifdef NCD
-	if (configData.ExtendedFontDiags)
-	    printf("Failed to connect to font server \"%s\"\n", name);
 #endif
 	;
     }
@@ -388,10 +376,6 @@ fs_free_fpe(FontPathElementPtr fpe)
     _fs_free_conn (conn);
     fpe->private = (pointer) 0;
 
-#ifdef NCD
-    if (configData.ExtendedFontDiags)
-	printf("Disconnected from font server \"%s\"\n", fpe->name);
-#endif
 #ifdef DEBUG
     fprintf (stderr, "disconnect from FS \"%s\"\n", fpe->name);
 #endif
@@ -1097,6 +1081,7 @@ fs_read_extent_info(FontPathElementPtr fpe, FSBlockDataPtr blockrec)
 	return AllocError;
     }
     fsfont->encoding = pCI;
+    fsfont->num_encoding = numExtents;
     if (haveInk)
 	fsfont->inkMetrics = pCI + numExtents;
     else
@@ -1484,6 +1469,8 @@ fs_wakeup(FontPathElementPtr fpe)
 {
     FSFpePtr	    conn = (FSFpePtr) fpe->private;
 
+    if ((conn->blockState & FS_RECONNECTING))
+	_fs_check_reconnect (conn);
     if (conn->blockState & (FS_PENDING_REPLY|FS_BROKEN_CONNECTION|FS_BROKEN_WRITE))
 	_fs_do_blocked (conn);
     if (conn->blockState & FS_COMPLETE_REPLY)
@@ -1760,15 +1747,6 @@ fs_send_open_font(pointer client, FontPathElementPtr fpe, Mask flags,
 	_fs_write(conn, (char *) &extreq, SIZEOF(fsQueryXExtents16Req));
     }
 
-#ifdef NCD
-    if (configData.ExtendedFontDiags)
-    {
-	memcpy(buf, name, MIN(256, namelen));
-	buf[MIN(256, namelen)] = '\0';
-	printf("Requesting font \"%s\" from font server \"%s\"\n",
-	       buf, font->fpe->name);
-    }
-#endif
     _fs_prepare_for_reply (conn);
 
     err = blockrec->errcode;
@@ -1922,10 +1900,7 @@ fs_read_glyphs(FontPathElementPtr fpe, FSBlockDataPtr blockrec)
     fsOffset32		    local_off;
     char		    *off_adr;
     pointer		    pbitmaps;
-    char		    *bits, *allbits;
-#ifdef DEBUG
-    char		    *origallbits;
-#endif
+    char		    *bits, *allbits, *origallbits;
     int			    i,
 			    err;
     int			    nranges = 0;
@@ -2003,6 +1978,17 @@ fs_read_glyphs(FontPathElementPtr fpe, FSBlockDataPtr blockrec)
     {
 	minchar = 0;
 	maxchar = rep->num_chars;
+
+	/* Reject replies where num_chars exceeds the encoding array
+	   size allocated in fs_read_extent_info() to prevent
+	   out-of-bounds access on encoding[]. */
+	if (rep->num_chars > (CARD32)fsdata->num_encoding)
+	{
+	    ErrorF("fserve: num_chars (%u) > num_encoding (%d)\n",
+		   (unsigned) rep->num_chars, fsdata->num_encoding);
+	    err = AllocError;
+	    goto bail;
+	}
     }
 
     off_adr = (char *)ppbits;
@@ -2015,8 +2001,8 @@ fs_read_glyphs(FontPathElementPtr fpe, FSBlockDataPtr blockrec)
 	goto bail;
     }
 
-#ifdef DEBUG
     origallbits = allbits;
+#ifdef DEBUG
     fprintf (stderr, "Reading %d glyphs in %d bytes for %s\n",
 	     (int) rep->num_chars, (int) rep->nbytes, fsd->name);
 #endif
@@ -2024,6 +2010,16 @@ fs_read_glyphs(FontPathElementPtr fpe, FSBlockDataPtr blockrec)
     for (i = 0; i < rep->num_chars; i++)
     {
 	memcpy(&local_off, off_adr, SIZEOF(fsOffset32));	/* align it */
+	/* Bounds-check minchar against the encoding array size to
+	   prevent out-of-bounds access from a malicious font server
+	   reply with more num_chars than num_extents. */
+	if (minchar >= (unsigned long)fsdata->num_encoding)
+	{
+	    ErrorF("fserve: glyph index %lu >= num_encoding (%d)\n",
+		   minchar, fsdata->num_encoding);
+	    err = AllocError;
+	    goto bail;
+	}
 	if (blockrec->type == FS_OPEN_FONT ||
 	    fsdata->encoding[minchar].bits == &_fs_glyph_requested)
 	{
@@ -2037,6 +2033,18 @@ fs_read_glyphs(FontPathElementPtr fpe, FSBlockDataPtr blockrec)
 		    (local_off.position < rep->nbytes) &&
 		    (local_off.length <= (rep->nbytes - local_off.position)))
 		{
+		    /* Check that the destination buffer has enough room
+		       for this glyph to prevent a heap overflow from
+		       overlapping source offsets. */
+		    if (local_off.length >
+			rep->nbytes - (allbits - origallbits))
+		    {
+			ErrorF("fserve: glyph data overflow: "
+			       "cumulative write exceeds nbytes (%u)\n",
+			       (unsigned) rep->nbytes);
+			err = AllocError;
+			goto bail;
+		    }
 		    bits = allbits;
 		    allbits += local_off.length;
 		    memcpy(bits, (char *)pbitmaps + local_off.position,
@@ -2064,10 +2072,6 @@ fs_read_glyphs(FontPathElementPtr fpe, FSBlockDataPtr blockrec)
 	}
 	off_adr += SIZEOF(fsOffset32);
     }
-#ifdef DEBUG
-    fprintf (stderr, "Used %d bytes instead of %d\n",
-	     (int) (allbits - origallbits), (int) rep->nbytes);
-#endif
 
     if (blockrec->type == FS_OPEN_FONT)
     {
@@ -2448,17 +2452,6 @@ fs_send_list_fonts(pointer client, FontPathElementPtr fpe, const char *pattern,
 
     blockrec->sequenceNumber = conn->current_seq;
 
-#ifdef NCD
-    if (configData.ExtendedFontDiags) {
-	char        buf[256];
-
-	memcpy(buf, pattern, MIN(256, patlen));
-	buf[MIN(256, patlen)] = '\0';
-	printf("Listing fonts on pattern \"%s\" from font server \"%s\"\n",
-	       buf, fpe->name);
-    }
-#endif
-
     _fs_prepare_for_reply (conn);
     return Suspended;
 }
@@ -2675,17 +2668,6 @@ fs_start_list_with_info(pointer client, FontPathElementPtr fpe,
     (void) _fs_write_pad(conn, pattern, len);
 
     blockrec->sequenceNumber = conn->current_seq;
-
-#ifdef NCD
-    if (configData.ExtendedFontDiags) {
-	char        buf[256];
-
-	memcpy(buf, pattern, MIN(256, len));
-	buf[MIN(256, len)] = '\0';
-	printf("Listing fonts with info on pattern \"%s\" from font server \"%s\"\n",
-	       buf, fpe->name);
-    }
-#endif
 
     _fs_prepare_for_reply (conn);
     return Successful;

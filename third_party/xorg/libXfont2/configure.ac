@@ -20,22 +20,23 @@
 #
 
 # Initialize Autoconf
-AC_PREREQ([2.60])
-AC_INIT([libXfont2], [2.0.6],
+AC_PREREQ([2.70])
+AC_INIT([libXfont2], [2.0.9],
 	[https://gitlab.freedesktop.org/xorg/lib/libxfont/-/issues], [libXfont2])
 AC_CONFIG_SRCDIR([Makefile.am])
 AC_CONFIG_HEADERS([config.h])
+AC_CONFIG_MACRO_DIRS([m4])
 
 # Initialize Automake
 AM_INIT_AUTOMAKE([foreign dist-xz subdir-objects])
 
 # Set common system defines for POSIX extensions, such as _GNU_SOURCE
 # Must be called before any macros that run the compiler (like
-# AC_PROG_LIBTOOL) to avoid autoconf errors.
+# LT_INIT) to avoid autoconf errors.
 AC_USE_SYSTEM_EXTENSIONS
 
 # Initialize libtool
-AC_PROG_LIBTOOL
+LT_INIT
 
 # Require xorg-macros minimum of 1.10 for DocBook XML documentation
 m4_ifndef([XORG_MACROS_VERSION],
@@ -47,24 +48,34 @@ XORG_WITH_XMLTO(0.0.22)
 XORG_WITH_FOP
 XORG_CHECK_SGML_DOCTOOLS(1.7)
 
+# Check for Python 3 (needed to generate test font data)
+AM_PATH_PYTHON([3.0],, [:])
+AM_CONDITIONAL([HAVE_PYTHON], [test "$PYTHON" != :])
+
 # Checks for header files.
 AC_CHECK_HEADERS([endian.h poll.h sys/poll.h])
 
+# Checks for non-standard functions and fallback to libbsd if we can
+AC_LINK_IFELSE([AC_LANG_CALL([], [reallocarray])],
+               [TRY_LIBBSD="no"], [TRY_LIBBSD="yes"])
+AC_LINK_IFELSE([AC_LANG_CALL([], [strlcat])],
+               [TRY_LIBBSD="no"], [TRY_LIBBSD="yes"])
+AS_IF([test "x$TRY_LIBBSD" = "xyes"],
+      [PKG_CHECK_MODULES([LIBBSD], [libbsd-overlay], [
+	CFLAGS="$CFLAGS $LIBBSD_CFLAGS"
+	LIBS="$LIBS $LIBBSD_LIBS"
+], [:])])
+
 # Checks for library functions.
-AC_CHECK_FUNCS([poll readlink])
-AC_SEARCH_LIBS([strlcat], [bsd])
-if test "$ac_cv_search_strlcat" = "-lbsd"; then
-  AC_DEFINE(HAVE_LIBBSD,1,[Has libbsd])
-fi
+AC_CHECK_FUNCS([poll readlink strlcat])
 AC_CONFIG_LIBOBJ_DIR([src/util])
 AC_REPLACE_FUNCS([reallocarray realpath strlcat strlcpy])
 
-# Check for BSDish err.h
-AC_CHECK_HEADERS([err.h])
+# Checks for header files.
+AC_CHECK_HEADERS([err.h float.h])
 
-# If the first PKG_CHECK_MODULES appears inside a conditional, pkg-config
-# must first be located explicitly.
-PKG_PROG_PKG_CONFIG
+# Checks for typedefs, structures, and compiler characteristics.
+AC_SYS_LARGEFILE
 
 #
 # select libraries to include
@@ -206,9 +217,9 @@ fi
 #
 
 AC_ARG_ENABLE(fc,
-	AS_HELP_STRING([--disable-fc],
-		[Support connections to xfs servers (default: enabled)]),
-	[XFONT_FC=$enableval],[XFONT_FC=yes])
+	AS_HELP_STRING([--enable-fc],
+		[Support connections to xfs servers (default: disabled)]),
+	[XFONT_FC=$enableval],[XFONT_FC=no])
 AM_CONDITIONAL(XFONT_FC, [test "x$XFONT_FC" = xyes])
 if test "x$XFONT_FC" = xyes; then
 	AC_DEFINE(XFONT_FC,1,[Support the X Font Services Protocol])

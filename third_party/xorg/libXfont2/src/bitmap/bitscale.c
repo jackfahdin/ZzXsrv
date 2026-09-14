@@ -41,10 +41,6 @@ from The Open Group.
 #include <X11/fonts/fontutil.h>
 #include <math.h>
 
-#ifndef MAX
-#define   MAX(a,b)    (((a)>(b)) ? a : b)
-#endif
-
 static void bitmapUnloadScalable (FontPtr pFont);
 static void ScaleBitmap ( FontPtr pFont, CharInfoPtr opci,
 			  CharInfoPtr pci, double *inv_xform,
@@ -281,24 +277,24 @@ ComputeScaleFactors(FontScalablePtr from, FontScalablePtr to,
 /* favor enlargement over reduction because of aliasing resulting
    from reduction */
 #define SCORE(m,s) \
-if (m >= 1.0) { \
-    if (m == 1.0) \
-        score += (16 * s); \
-    else if (m == 2.0) \
-        score += (4 * s); \
+if ((m) >= 1.0) { \
+    if ((m) == 1.0) \
+        score += (16 * (s)); \
+    else if ((m) == 2.0) \
+        score += (4 * (s)); \
     else \
-        score += (int)(((double)(3 * s)) / m); \
+        score += (int)(((double)(3 * (s))) / (m)); \
 } else { \
-        score += (int)(((double)(2 * s)) * m); \
+        score += (int)(((double)(2 * (s))) * (m)); \
 }
 
 /* don't need to favor enlargement when looking for bitmap that can
    be used unscalable */
 #define SCORE2(m,s) \
-if (m >= 1.0) \
-    score += (int)(((double)(8 * s)) / m); \
+if ((m) >= 1.0) \
+    score += (int)(((double)(8 * (s))) / (m));	\
 else \
-    score += (int)(((double)(8 * s)) * m);
+    score += (int)(((double)(8 * (s))) * (m));
 
 static FontEntryPtr
 FindBestToScale(FontPathElementPtr fpe, FontEntryPtr entry,
@@ -511,7 +507,8 @@ static int
 computeProps(FontPropPtr pf, char *wasStringProp,
 	     FontPropPtr npf, char *isStringProp,
 	     unsigned int nprops, double xfactor, double yfactor,
-	     double sXfactor, double sYfactor)
+	     double sXfactor, double sYfactor,
+	     int maxprops)
 {
     int         n;
     int         count;
@@ -526,25 +523,13 @@ computeProps(FontPropPtr pf, char *wasStringProp,
 
 	switch (t->type) {
 	case scaledX:
-	    npf->value = doround(xfactor * (double)pf->value);
-	    rawfactor = sXfactor;
-	    break;
 	case scaledY:
-	    npf->value = doround(yfactor * (double)pf->value);
-	    rawfactor = sYfactor;
-	    break;
-	case unscaled:
-	    npf->value = pf->value;
-	    npf->name = pf->name;
-	    npf++;
-	    count++;
-	    *isStringProp++ = *wasStringProp;
-	    break;
-	default:
-	    break;
-	}
-	if (t->type != unscaled)
-	{
+	    if (count + 2 > maxprops)
+		continue;
+	    npf->value = (t->type == scaledX)
+		? doround(xfactor * (double)pf->value)
+		: doround(yfactor * (double)pf->value);
+	    rawfactor = (t->type == scaledX) ? sXfactor : sYfactor;
 	    npf->name = pf->name;
 	    npf++;
 	    count++;
@@ -554,6 +539,18 @@ computeProps(FontPropPtr pf, char *wasStringProp,
 	    count++;
 	    *isStringProp++ = *wasStringProp;
 	    *isStringProp++ = *wasStringProp;
+	    break;
+	case unscaled:
+	    if (count + 1 > maxprops)
+		continue;
+	    npf->value = pf->value;
+	    npf->name = pf->name;
+	    npf++;
+	    count++;
+	    *isStringProp++ = *wasStringProp;
+	    break;
+	default:
+	    break;
 	}
     }
     return count;
@@ -671,7 +668,7 @@ ComputeScaledProperties(FontInfoPtr sourceFontInfo, /* the font to be scaled */
     n = NPROPS;
     n += computeProps(sourceFontInfo->props, sourceFontInfo->isStringProp,
 		      fp, isStringProp, sourceFontInfo->nprops, dx, dy,
-		      sdx, sdy);
+		      sdx, sdy, nProps - NPROPS);
     return n;
 }
 
@@ -1460,7 +1457,7 @@ BitmapScaleBitmaps(FontPtr pf,          /* scaled font */
 		opci;
     FontInfoPtr pfi;
     int         glyph;
-    unsigned    bytestoalloc = 0;
+    size_t      bytestoalloc = 0;
     int		firstCol, lastCol, firstRow, lastRow;
 
     double	xform[4], inv_xform[4];
@@ -1487,8 +1484,25 @@ BitmapScaleBitmaps(FontPtr pf,          /* scaled font */
     glyph = pf->glyph;
     for (i = 0; i < nchars; i++)
     {
-	if ((pci = ACCESSENCODING(bitmapFont->encoding, i)))
-	    bytestoalloc += BYTES_FOR_GLYPH(pci, glyph);
+	if ((pci = ACCESSENCODING(bitmapFont->encoding, i))) {
+	    size_t glyphsize = BYTES_FOR_GLYPH(pci, glyph);
+	    if (bytestoalloc > SIZE_MAX - glyphsize) {
+		fprintf(stderr,
+			"Error: bitmap allocation overflow for scaled font\n");
+		goto bail;
+	    }
+	    bytestoalloc += glyphsize;
+	}
+    }
+
+    /* Reject unreasonably large bitmap allocations that could result
+     * from malicious fonts with extreme scale factors.  256 MiB is
+     * far beyond any legitimate scaled bitmap font. */
+#define BITMAP_SCALE_MAX_ALLOC	(256 * 1024 * 1024)
+    if (bytestoalloc > BITMAP_SCALE_MAX_ALLOC) {
+	fprintf(stderr,
+		"Error: scaled bitmap size %zu exceeds limit\n", bytestoalloc);
+	goto bail;
     }
 
     /* Do we add the font malloc stuff for VALUE ADDED ? */

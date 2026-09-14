@@ -22,7 +22,6 @@ libXfont2_la_SOURCES +=			\
 	src/fontfile/fileio.c		\
 	src/fontfile/filewr.c		\
 	src/fontfile/fontdir.c		\
-	src/fontfile/fontencc.c		\
 	src/fontfile/fontfile.c		\
 	src/fontfile/fontscale.c	\
 	src/fontfile/gunzip.c		\

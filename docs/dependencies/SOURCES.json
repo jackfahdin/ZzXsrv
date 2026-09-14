@@ -164,26 +164,36 @@
     {
       "name": "libXfont2",
       "path": "third_party/xorg/libXfont2",
-      "revision": "2.0.6",
-      "revision_kind": "declared_version",
+      "revision": "2.0.9",
+      "revision_kind": "release_archive_with_local_adaptations",
       "upstream_url": "https://gitlab.freedesktop.org/xorg/lib/libxfont",
       "evidence": [
-        "third_party/xorg/libXfont2/configure.ac: AC_INIT declares 2.0.6",
-        "docs/history/upstream-releases/releasenote_21.1.16.1.txt: Changes in 21.1.10 lists libXfont2-2.0.6",
-        "docs/dependencies/packages.txt"
+        "third_party/xorg/libXfont2/configure.ac",
+        "docs/dependencies/packages.txt",
+        "docs/validation/2026-09-14-font-dependencies.md"
       ],
       "confidence": "high",
-      "notes": "版本记录一致；没有精确导入提交或下载归档校验值，不能把猜测的 release tag 当成导入点。",
+      "notes": "2026-09-14 从正式 2.0.9 包更新既有导入范围并加入新文件；保留 config.h、mhmake makefile、fsio.c EWOULDBLOCK 与 bufio.c intptr_t Windows 适配；移除上游删除的 fontencc 文件/编译项。fontserver 保持启用，未采用上游默认关闭。原始继承链接仅为历史。",
       "nested": false,
       "id": "dep-007",
       "category": "core_libraries_headers",
       "inherited_material_urls": [
         "https://github.com/marchaesen/vcxsrv/tree/d0a1eaf7ee15fcdf4f683388a88fec49078e6408/libXfont2"
       ],
-      "import_method": "inherited_vcxsrv_source_collection",
+      "import_method": "official_release_archive_preserving_local_adaptations",
       "actual_import_urls": [
-        "https://github.com/marchaesen/vcxsrv/tree/d0a1eaf7ee15fcdf4f683388a88fec49078e6408/libXfont2"
-      ]
+        "https://xorg.freedesktop.org/archive/individual/lib/libXfont2-2.0.9.tar.xz"
+      ],
+      "previous_revision": "2.0.6",
+      "release_archive": {
+        "name": "libXfont2-2.0.9",
+        "requested_url": "https://xorg.freedesktop.org/archive/individual/lib/libXfont2-2.0.9.tar.xz",
+        "actual_url": "https://xorg.freedesktop.org/archive/individual/lib/libXfont2-2.0.9.tar.xz",
+        "downloaded_at": "2026-09-14T08:29:50.164994+00:00",
+        "sha256": "f042a370666815e7b941e9b7019024755bd1c6c2954afbfa515af378251799e2",
+        "bytes": 478844,
+        "published_sha256_verified": false
+      }
     },
     {
       "name": "libXft",
