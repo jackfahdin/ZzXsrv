@@ -271,6 +271,7 @@ struct DIR {
     HANDLE          handle;
     WIN32_FIND_DATA fdata;
     FcBool          valid;
+    FcBool          first;
 };
 
 FcPrivate DIR *
@@ -297,19 +298,21 @@ FcCompatOpendirWin32 (const char *dirname)
 
     dir->handle = FindFirstFileEx (name, FindExInfoBasic, &dir->fdata, FindExSearchNameMatch, NULL, 0);
 
-    free (name);
-
-    if (!dir->handle) {
+    if (dir->handle == INVALID_HANDLE_VALUE) {
+	DWORD error = GetLastError ();
+	free (name);
 	free (dir);
-	dir = NULL;
 
-	if (GetLastError() == ERROR_FILE_NOT_FOUND)
+	if (error == ERROR_FILE_NOT_FOUND || error == ERROR_PATH_NOT_FOUND)
 	    errno = ENOENT;
 	else
 	    errno = EACCES;
+	return NULL;
     }
 
+    free (name);
     dir->valid = FcTrue;
+    dir->first = FcTrue;
     return dir;
 }
 
@@ -319,6 +322,14 @@ FcCompatReaddirWin32 (DIR *dir)
     if (dir->valid != FcTrue)
 	return NULL;
 
+    /* Keep the returned name and attributes intact until the next readdir. */
+    if (dir->first)
+	dir->first = FcFalse;
+    else if (!FindNextFile (dir->handle, &dir->fdata)) {
+	dir->valid = FcFalse;
+	return NULL;
+    }
+
     dir->d_ent.d_name = dir->fdata.cFileName;
 
     if ((dir->fdata.dwFileAttributes & FILE_ATTRIBUTE_DIRECTORY) != 0)
@@ -327,9 +338,6 @@ FcCompatReaddirWin32 (DIR *dir)
 	dir->d_ent.d_type = DT_REG;
     else
 	dir->d_ent.d_type = DT_UNKNOWN;
-
-    if (!FindNextFile (dir->handle, &dir->fdata))
-	dir->valid = FcFalse;
 
     return &dir->d_ent;
 }

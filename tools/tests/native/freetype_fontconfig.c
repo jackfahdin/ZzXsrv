@@ -37,18 +37,16 @@ int main(int argc, char **argv)
     REQUIRE(cache != NULL, "directory cache exists");
     cache_count = FcCacheNumFont(cache);
     printf("CACHE patterns=%d\n", cache_count);
-    REQUIRE(cache_count >= 2, "cache contains fixture fonts");
+    REQUIRE(cache_count == 2, "cache contains each fixture font exactly once");
     FcDirCacheUnload(cache);
     REQUIRE(FcConfigBuildFonts(config), "FcConfigBuildFonts");
     pattern = FcPatternCreate();
     objects = FcObjectSetBuild(FC_FILE, FC_FAMILY, FC_CHARSET, NULL);
     REQUIRE(pattern && objects, "list pattern and objects");
     fonts = FcFontList(config, pattern, objects);
-    REQUIRE(fonts && fonts->nfont >= 2, "FcFontList returns fixture fonts");
+    REQUIRE(fonts && fonts->nfont == 2, "FcFontList returns exactly two fixture fonts");
     listed = fonts->nfont;
-    /* FcCompatReaddirWin32 currently aliases fdata.cFileName before advancing
-     * FindNextFile, duplicating the last entry. Validate every returned pattern
-     * and the exact set of files rather than requiring unique cache patterns. */
+    /* Each fixture must appear exactly once in both cache and font listing. */
     for (i = 0; i < fonts->nfont; ++i) {
         REQUIRE(FcPatternGetString(fonts->fonts[i], FC_FILE, 0, &file) == FcResultMatch,
                 "font path");
@@ -63,7 +61,7 @@ int main(int argc, char **argv)
             REQUIRE(0, "list contains an unexpected font file");
         printf("LIST %s\n", file);
     }
-    REQUIRE(ttf >= 1 && otf >= 1, "TTF and CFF OTF discovered");
+    REQUIRE(ttf == 1 && otf == 1, "TTF and CFF OTF discovered exactly once");
     FcFontSetDestroy(fonts);
     FcObjectSetDestroy(objects);
     FcPatternDestroy(pattern);
