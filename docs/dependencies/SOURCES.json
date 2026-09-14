@@ -703,10 +703,18 @@
       "evidence": [
         "third_party/libxml2/include/libxml/xmlversion.h:32",
         "third_party/libxml2/createimplib.txt",
-        "git ls-files third_party/libxml2"
+        "git ls-files third_party/libxml2",
+        "docs/validation/2026-09-15-libxml2-assessment.md: x64 runtime version probe"
       ],
       "confidence": "medium",
-      "notes": "目录是头文件、32/64 位 DLL、导入库与导出表；完整源码未内嵌。DLL/导入库原始下载提供方、构建参数、精确源码提交未知；2.9.1 仅来自头文件。",
+      "notes": "目录是头文件、32/64 位 DLL、导入库与导出表；完整源码未内嵌。DLL/导入库原始下载提供方、构建参数、精确源码提交未知。头文件声明 2.9.1，2026-09-15 x64 DLL 的 __xmlParserVersion 实测为 20901；32 位 DLL 未执行。2.15.4 仅做忽略目录内重建评估，未替换生产依赖。",
+      "runtime_verification": {
+        "date": "2026-09-15",
+        "architecture": "x64",
+        "version_string": "20901",
+        "dll_sha256": "3c68a190dc6d550334ff9d0a506e9526105b008364dad0915562413ceec092cb",
+        "report": "../validation/2026-09-15-libxml2-assessment.md"
+      },
       "nested": false,
       "id": "dep-028",
       "category": "core_libraries_headers",
