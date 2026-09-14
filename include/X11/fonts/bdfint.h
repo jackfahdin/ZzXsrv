@@ -1,5 +1,3 @@
-/* $Xorg: bdfint.h,v 1.4 2001/02/09 02:04:01 xorgcvs Exp $ */
-
 /*
 
 Copyright 1990, 1998  The Open Group
@@ -27,7 +25,6 @@ other dealings in this Software without prior written authorization
 from The Open Group.
 
 */
-/* $XFree86: xc/lib/font/bitmap/bdfint.h,v 1.4 2001/01/17 19:43:26 dawes Exp $ */
 
 #ifndef BDFINT_H
 #define BDFINT_H
@@ -35,7 +32,9 @@ from The Open Group.
 #define bdfIsPrefix(buf,str)	(!strncmp((char *)buf,str,strlen(str)))
 #define	bdfStrEqual(s1,s2)	(!strcmp(s1,s2))
 
-#define	BDF_GENPROPS	6
+/* Max generated properties in bdfReadProperties: POINT_SIZE, FONT,
+ * WEIGHT, RESOLUTION, RESOLUTION_X, RESOLUTION_Y, X_HEIGHT, QUAD_WIDTH */
+#define	BDF_GENPROPS	8
 #define NullProperty	((FontPropPtr)0)
 
 /*
@@ -68,23 +67,23 @@ typedef struct BDFSTAT {
     BOOL        haveDefaultCh;
 }           bdfFileState;
 
-extern void bdfError ( const char * message, ... );
-extern void bdfWarning ( const char *message, ... );
-extern unsigned char * bdfGetLine ( FontFilePtr file, unsigned char *buf, 
+extern void bdfError ( const char * message, ... ) _X_ATTRIBUTE_PRINTF(1, 2);
+extern void bdfWarning ( const char *message, ... ) _X_ATTRIBUTE_PRINTF(1, 2);
+extern unsigned char * bdfGetLine ( FontFilePtr file, unsigned char *buf,
 				    int len );
 extern Atom bdfForceMakeAtom ( const char *str, int *size );
 extern Atom bdfGetPropertyValue ( char *s );
 extern int bdfIsInteger ( char *str );
 extern unsigned char bdfHexByte ( unsigned char *s );
-extern Bool bdfSpecialProperty ( FontPtr pFont, FontPropPtr prop, 
+extern Bool bdfSpecialProperty ( FontPtr pFont, FontPropPtr prop,
 				 char isString, bdfFileState *bdfState );
-extern int bdfReadFont( FontPtr pFont, FontFilePtr file, 
+extern int bdfReadFont( FontPtr pFont, FontFilePtr file,
 			int bit, int byte, int glyph, int scan );
 extern int bdfReadFontInfo( FontInfoPtr pFontInfo, FontFilePtr file );
 
-extern void FontCharInkMetrics ( FontPtr pFont, CharInfoPtr pCI, 
+extern void FontCharInkMetrics ( FontPtr pFont, CharInfoPtr pCI,
 				 xCharInfo *pInk );
-extern void FontCharReshape ( FontPtr pFont, CharInfoPtr pSrc, 
+extern void FontCharReshape ( FontPtr pFont, CharInfoPtr pSrc,
 			      CharInfoPtr pDst );
 
 #endif				/* BDFINT_H */
