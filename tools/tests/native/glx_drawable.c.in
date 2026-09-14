@@ -1,0 +1,115 @@
+/* The generated functions below come verbatim from the production GLX sources.
+ * Resource lookup and vendor operations are controlled boundary fixtures. */
+#include <dix-config.h>
+#include "glheader.h"
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+#include "glxserver.h"
+#include "glxutil.h"
+#include <GL/glxtokens.h>
+#include <unpack.h>
+#include "glxext.h"
+
+#define CHECK(c) do { if (!(c)) { fprintf(stderr,"FAIL line %d: %s\n",__LINE__,#c); exit(1); } } while (0)
+static __GLXdrawable drawable;
+static int operations;
+static unsigned seen_id;
+static int seen_type;
+int validGlxDrawable(ClientPtr client, XID id, int type, int access,
+                     __GLXdrawable **out, int *err)
+{
+    CHECK(type == GLX_DRAWABLE_ANY && access == DixSetAttrAccess);
+    if (id != 42) { *err = BadDrawable; return FALSE; }
+    *out = &drawable;
+    return TRUE;
+}
+static int DoGetFBConfigs(__GLXclientState *cl, unsigned screen)
+{ operations++; seen_id = screen; return Success; }
+static int DoDestroyDrawable(__GLXclientState *cl, XID id, int type)
+{ operations++; seen_id = id; seen_type = type; return Success; }
+static int DoGetDrawableAttributes(__GLXclientState *cl, XID id)
+{ operations++; seen_id = id; return Success; }
+/* This legacy callee is unrelated to the new request-length guard. */
+int __glXDisp_DestroyGLXPixmap(__GLXclientState *cl, GLbyte *pc)
+{ return DoDestroyDrawable(cl, ((xGLXDestroyGLXPixmapReq *)pc)->glxpixmap, GLX_DRAWABLE_PIXMAP); }
+
+@FUNCTIONS@
+
+static CARD32 wire(CARD32 n, int swap) { return swap ? _byteswap_ulong(n) : n; }
+
+int main(int argc, char **argv)
+{
+    ClientRec client = {0};
+    __GLXclientState cl = {0};
+    const char *name;
+    int swapped, result, expected = Success;
+    size_t size = sizeof(xGLXChangeDrawableAttributesReq);
+    CARD32 count = 0;
+    xGLXChangeDrawableAttributesReq *req;
+    CARD32 *attrs;
+    CHECK(argc == 3);
+    name = argv[1]; swapped = atoi(argv[2]);
+    cl.client = &client; client.swapped = swapped;
+    drawable.eventMask = 0x12345678;
+    if (!strncmp(name, "fixed-", 6)) {
+        int i;
+        int (*normal[])(__GLXclientState *, GLbyte *) = {
+            __glXDisp_GetFBConfigsSGIX, __glXDisp_DestroyPixmap,
+            __glXDisp_DestroyWindow, __glXDisp_GetDrawableAttributes};
+        int (*swap[])(__GLXclientState *, GLbyte *) = {
+            __glXDispSwap_GetFBConfigsSGIX, __glXDispSwap_DestroyPixmap,
+            __glXDispSwap_DestroyWindow, __glXDispSwap_GetDrawableAttributes};
+        const size_t sizes[] = {sizeof(xGLXGetFBConfigsSGIXReq),
+            sizeof(xGLXDestroyPixmapReq), sizeof(xGLXDestroyWindowReq),
+            sizeof(xGLXGetDrawableAttributesReq)};
+        const size_t offsets[] = {offsetof(xGLXGetFBConfigsSGIXReq, screen),
+            offsetof(xGLXDestroyPixmapReq, glxpixmap), offsetof(xGLXDestroyWindowReq, glxwindow),
+            offsetof(xGLXGetDrawableAttributesReq, drawable)};
+        for (i = 0; i < 4; i++) {
+            unsigned char *data = calloc(1, sizes[i] + 4);
+            int delta = !strcmp(name,"fixed-short") ? -4 : !strcmp(name,"fixed-extra") ? 4 : 0;
+            *(CARD32 *)(data + offsets[i]) = wire(42, swapped);
+            client.req_len = (unsigned)(sizes[i] + delta) / 4;
+            operations = 0; seen_id = 0; seen_type = 0;
+            result = (swapped ? swap[i] : normal[i])(&cl, (GLbyte *)data);
+            CHECK(result == (delta ? BadLength : Success));
+            CHECK(operations == (delta ? 0 : 1));
+            if (!delta) {
+                CHECK(seen_id == 42);
+                if (i == 1) CHECK(seen_type == GLX_DRAWABLE_PIXMAP);
+                if (i == 2) CHECK(seen_type == GLX_DRAWABLE_WINDOW);
+            }
+            free(data);
+        }
+        puts("PASS fixed requests"); return 0;
+    }
+    if (!strcmp(name,"valid") || !strcmp(name,"unknown") || !strcmp(name,"invalid-drawable")) { count=1; size+=8; }
+    if (!strcmp(name,"missing-pair")) { count=1; expected=BadLength; }
+    if (!strcmp(name,"half-pair")) { count=1; size+=4; expected=BadLength; }
+    if (!strcmp(name,"short-header")) { expected=BadLength; }
+    if (!strcmp(name,"extra-data")) { size+=4; expected=BadLength; }
+    if (!strcmp(name,"count-overflow")) { count=0x20000000; expected=BadValue; }
+    if (!strcmp(name,"largest-count")) { count=0x1fffffff; expected=BadLength; }
+    if (!strcmp(name,"invalid-drawable")) expected=BadDrawable;
+    req = calloc(1,size); CHECK(req);
+    client.req_len = (unsigned)size / 4;
+    if (!strcmp(name,"short-header")) client.req_len--;
+    req->numAttribs = wire(count,swapped);
+    req->drawable = wire(expected == BadDrawable ? 99 : 42,swapped);
+    attrs = (CARD32 *)(req+1);
+    if (size >= sizeof(*req)+4) attrs[0] = wire(GLX_EVENT_MASK,swapped);
+    if (size >= sizeof(*req)+8) {
+        attrs[0] = wire(!strcmp(name,"unknown") ? 0xffffffff : GLX_EVENT_MASK,swapped);
+        attrs[1] = wire(0x01234567,swapped);
+    }
+    result = swapped ? __glXDispSwap_ChangeDrawableAttributes(&cl,(GLbyte *)req)
+                     : __glXDisp_ChangeDrawableAttributes(&cl,(GLbyte *)req);
+    CHECK(result == expected);
+    CHECK(drawable.eventMask == (!strcmp(name,"valid") ? 0x01234567 : 0x12345678));
+    if (expected == BadValue) CHECK(client.errorValue == 0x20000000);
+    /* Rejected payload is untouched, especially before the swapped array loop. */
+    if (!strcmp(name,"half-pair") || !strcmp(name,"extra-data")) CHECK(attrs[0] == wire(GLX_EVENT_MASK,swapped));
+    free(req);
+    puts("PASS drawable request"); return 0;
+}
