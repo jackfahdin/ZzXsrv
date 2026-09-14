@@ -52,6 +52,8 @@ Fontconfig 使用上一已验收工作区的真实 `libfontconfig.lib` 和 FreeT
 
 ## 迁移结论与后续条件
 
+后续[编码依赖与文件读取调查](2026-09-15-libxml2-compatibility.md)已完成原生 iconv 1.19 联动构建、正常编码及 gzip/HTTP 行为对照，并给出正式实施方案。以下内容保留本次无 iconv 评估的历史边界。
+
 推荐继续采用官方固定源码加 MSVC/CMake 的重建路线，但不采用本次无 iconv 的精简配置：实测会失去 GBK/GB18030 支持。正式实施必须先确定可追溯的字符编码库来源和构建方式，再与 libxml2 联动导入；保留旧未知来源 iconv DLL 只能算过渡，不能宣称依赖来源全部闭合。
 
 还需处理新版明确的行为变化：[2.15 官方发行说明](https://discourse.gnome.org/t/libxml2-2-15-0-released/31397)记录内置 HTTP 客户端移除，以及读取压缩 XML 需要 XML_PARSE_UNZIP。XLaunch 目前调用 `xmlReadFile(filename, NULL, 0)`；单纯开启 ZLIB 并不足以宣称旧的自动解压行为得到保留。HTTP/压缩配置在用户实际使用中是否需要仍无证据，应在迁移方案中明确本地配置范围及兼容处理，不默默缩减能力。
