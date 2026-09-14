@@ -57,7 +57,7 @@
 
 ## 真正剩余的工作
 
-R9 新增已定位问题：Fontconfig 现有 Windows `FcCompatReaddirWin32` 在返回前推进搜索并覆盖名称缓冲，正常两字体缓存预检出现重复 pattern；本次依赖升级未改动它。复现和验证边界见 [R4 报告](../validation/2026-09-14-font-dependencies.md)，后续单独修正与验证目录枚举。
+R9 Fontconfig 目录枚举修复已在独立分支 `codex/fontconfig-20260914` 提交 `cd444aa641d50355c0d7b47f4a7167b78e313e45`：同组目录测试旧代码失败 5/7、新代码通过 7/7，独立审查未发现阻塞问题。构建中断后按阶段恢复成功，缓存创建及重载均为 2 条记录；370 项测试和独立运行检查通过。候选待人工反馈，未合入 master；过程与边界见 [候选报告](../validation/2026-09-14-fontconfig-directory.md)。
 
 原 R1（XFIXES 收尾）和 R10（状态文档收敛）已完成；保留其余编号便于追踪。
 
@@ -70,7 +70,7 @@ R9 新增已定位问题：Fontconfig 现有 Windows `FcCompatReaddirWin32` 在�
 | R6 | Expat | 已评估，尚未升级 | 核对实际使用配置并更新、重建其 Mesa 消费者；不要求同时整体升级 Mesa |
 | R7 | OpenSSL 版本维护 | 已评估 LTS 迁移，尚未升级 | 复核目标版本及实际 API 兼容性，独立导入和验证；当前源码仍为 3.4.1 |
 | R8 | xkbcomp、libXpm、zlib | 已列候选，尚未逐项实施 | 分组件决定是否需要更新或回补，并验证对应键盘、图标、压缩及字体链路 |
-| R9 | 其余依赖与来源清单 | [来源目录盘点](../dependencies/SOURCES.md)已完成；部分精确来源仍未知，未执行升级 | 沿清单继续补证 libX11、libxcb、Pixman、Fontconfig、PuTTY 等的固定来源和适用改动；libxml2、libregex、libwinmain 等按各自证据澄清归属，不假定都能对应纯净组件仓库 |
+| R9 | 其余依赖与来源清单 | [来源目录盘点](../dependencies/SOURCES.md)已完成；Fontconfig 目录枚举本地修复候选已通过自动验证，待人工反馈；部分精确来源仍未知 | 完成候选验收后整合；沿清单继续补证 libX11、libxcb、Pixman、Fontconfig、PuTTY 等的固定来源和适用改动；libxml2、libregex、libwinmain 等按各自证据澄清归属，不假定都能对应纯净组件仓库 |
 
 R3 原清单的代码修复和主线整合已完成；临时登记清理的限制见整合报告。R4 升级已整合，遗留验证缺口继续跟踪；R5–R9 仍为独立维护项，不表示所有列出的组件都已经确定需要升级。具体版本和补丁须在执行时确认，不能照抄早期评估表直接替换。
 
@@ -91,7 +91,8 @@ R3 原清单的代码修复和主线整合已完成；临时登记清理的限�
 
 | 对象 | 当前状态 | 使用边界 |
 | --- | --- | --- |
-| master | 唯一长期本地工作分支；R3 原清单 21 项及认证补充修复均已整合 | 最新已验收构建源码 `3d373e6c55ddded2984b3bca1fe2c8b27b10681e`；后续文档提交不改变已验证的生产代码 |
+| master | 唯一长期本地工作分支；R3 原清单 21 项、认证补充及 R4 字体依赖均已整合；当前 `1bb897d4a` | 最新取得有限人工反馈的构建源码 `b0acf97cab01ff80ac70e96152252e58925aa858`；后续文档提交不改变已验证的生产代码 |
+| codex/fontconfig-20260914 | 独立修复候选，未合入 | 源码 `cd444aa641d50355c0d7b47f4a7167b78e313e45`；人工验收待补 |
 | codex/r3-final-20260914 | 已合入的临时分支，因自动审批阻止清理而保留 | 工作区及运行目录仍在原路径，未解除 Git 登记 |
 | 旧引用和提交 | 已归档；upstream、旧工作分支及旧 tags 已删除 | 通过[整理报告](../validation/2026-09-10-repository-reorganization.md)查映射和归档，不再按旧名称操作 |
 | 原输入候选，历史源码 c06e0db16 | 已实测，修复已按当前目录恢复并合入主线 | 旧运行目录继续保留；常用操作正常，剪贴板/OpenGL 等未验证，GUI-001 已关闭，不再跟进 |
@@ -115,10 +116,12 @@ R3 原清单的代码修复和主线整合已完成；临时登记清理的限�
 
 前组认证运行目录 `D:/File/Program/GitHub/zzxsrv-auth-20260911/dist/x64/Release` 继续保留，构建来源 `281ee081e56ca22fe1a7fa55c7c1d3ff16f13c20`；原 SYNC 候选也保留为普通目录。
 
-最新已确认并整合的运行目录为 `D:/File/Program/GitHub/zzxsrv-r3-final-20260914/dist/x64/Release`，构建来源 `3d373e6c55ddded2984b3bca1fe2c8b27b10681e`。启动、gitk、中文显示和重启正常，传统字体、OpenGL 和双向复制未测试；该目录仍有 worktree 登记。
+R3 已确认并整合的运行目录为 `D:/File/Program/GitHub/zzxsrv-r3-final-20260914/dist/x64/Release`，构建来源 `3d373e6c55ddded2984b3bca1fe2c8b27b10681e`，仍有 worktree 登记。
+
+最新已整合的 R4 运行目录为 `D:/File/Program/GitHub/zzxsrv-fonts-20260914/dist/x64/Release`，构建来源 `b0acf97cab01ff80ac70e96152252e58925aa858`。启动、gitk、中文显示和重启正常，字体／字号切换未确认，传统字体、OpenGL 和双向复制未测试。Fontconfig 新候选位于 `D:/File/Program/GitHub/zzxsrv-fontconfig-20260914/dist/x64/Release`，不覆盖这些旧运行目录。
 
 ## 建议的收敛顺序
 
-R3 原清单全部修复已完成整合，接下来处理 R9 已定位的 Fontconfig 目录枚举问题，并保留 R2/R4 验证补录及 R5–R9 独立维护；临时登记清理因审批限制保留待办。不恢复 upstream 源码分支。GUI-001 按维护者要求关闭，不再跟进，未验证场景继续保留在[兼容性记录](COMPATIBILITY.md)。体验改善、CMake、Mesa 整体升级和产品发布保留为独立方向。
+R3 原清单全部修复已完成整合，当前等待 Fontconfig 目录枚举候选的实际使用反馈，再按约定整合；保留 R2/R4 验证补录及 R5–R9 独立维护。临时登记清理因审批限制保留待办。不恢复 upstream 源码分支。GUI-001 按维护者要求关闭，不再跟进，未验证场景继续保留在[兼容性记录](COMPATIBILITY.md)。体验改善、CMake、Mesa 整体升级和产品发布保留为独立方向。
 
 今后的状态表统一使用“已合入”“开发草稿”“候选待验收”“待评估”“未立项”“暂缓”“历史已替代”，每项同时记录来源提交、验证报告和剩余动作。这样“代码写完”“构建通过”“用户可用”“合入主线”就不会再合成一个含糊的“完成”。

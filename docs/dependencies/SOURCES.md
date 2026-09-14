@@ -50,6 +50,10 @@
 | fix potential buff overflow in XkbVModIndexText for XkbCFile format | [5dfb435c1d864bf154369cb86d085d4159730378](https://gitlab.freedesktop.org/xorg/xserver/-/commit/5dfb435c1d864bf154369cb86d085d4159730378) | [实际下载的固定 SHA API](https://api.github.com/repos/LizardByte-infrastructure/xserver/commits/5dfb435c1d864bf154369cb86d085d4159730378) | `b9081dd495558c1f0f8ef911179015ae109b4256` / [XKB 整合报告](../validation/2026-09-10-xkb.md) |
 | preserve buffer on realloc failure | [d6c462f59927b3702a54e0e8ea2a5de7639294e6](https://gitlab.freedesktop.org/xorg/xserver/-/commit/d6c462f59927b3702a54e0e8ea2a5de7639294e6) | [实际下载的固定 SHA API](https://api.github.com/repos/LizardByte-infrastructure/xserver/commits/d6c462f59927b3702a54e0e8ea2a5de7639294e6) | `b9081dd495558c1f0f8ef911179015ae109b4256` / [XKB 整合报告](../validation/2026-09-10-xkb.md) |
 
+### Fontconfig Windows 目录枚举的本地修正
+
+本地提交 `cd444aa641d50355c0d7b47f4a7167b78e313e45` 修正 `third_party/fonts/fontconfig/src/fccompat.c` 的条目缓冲覆盖及无效句柄判断。依据本地正常目录和字体缓存复现编写，未导入上游 patch；Fontconfig 仍为 2.16.0，原记录同步 SHA 和继承来源不变。JSON 的 `local_compatibility_patches` 记录基线与路径，不增加上游补丁计数。验证与候选状态见 [Fontconfig 报告](../validation/2026-09-14-fontconfig-directory.md)。
+
 ### Windows 认证文件的本地兼容性修正
 
 本地提交 `281ee081e56ca22fe1a7fa55c7c1d3ff16f13c20` 修正服务器和 xauth 对二进制认证文件的文本模式读写。改动从本地继承源码及 Windows 实测推导，未下载或回补新的上游补丁；因此不增加 `applied_upstream_patches` 的数量。JSON 的 `local_compatibility_patches` 单独记录路径、基线与本地提交。[认证修复报告](../validation/2026-09-11-auth-binary.md)记录原因、测试及独立候选。维护者已确认本补充版本使用正常、双向复制未测试；修复已快进合入 master。

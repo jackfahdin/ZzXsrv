@@ -2,6 +2,10 @@
 
 更新日期：2026-09-14。任务状态见 [PLAN_STATUS.md](PLAN_STATUS.md)。本表记录实际操作结果，不把自动启动成功或笼统的“能用”换算成全部场景通过。最新反馈对应 R4 字体依赖版本；下列源码号为对应构建来源。
 
+## Fontconfig 目录枚举修复候选
+
+候选源码 `cd444aa641d50355c0d7b47f4a7167b78e313e45`，运行目录 `D:/File/Program/GitHub/zzxsrv-fontconfig-20260914/dist/x64/Release`；验证进度见 [报告](../validation/2026-09-14-fontconfig-directory.md)。本候选尚未取得人工反馈，R4 的正常结果不自动沿用为本版本通过。
+
 ## R4 字体依赖版本的实际反馈
 
 2026-09-14，维护者针对 `D:/File/Program/GitHub/zzxsrv-fonts-20260914/dist/x64/Release` 反馈：启动正常、gitk 正常、中文正常、重启正常。构建源码 `b0acf97cab01ff80ac70e96152252e58925aa858`。本组已快进合入 master，合入前后各 363 项测试通过、0 跳过，见 [整合报告](../validation/2026-09-14-font-dependencies.md)。

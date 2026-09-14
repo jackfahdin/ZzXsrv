@@ -6073,6 +6073,16 @@
       ],
       "origin": "Local cleanup for the rejection path introduced by upstream 3c3a4b7; preserves the pre-existing property and provider list.",
       "report": "../validation/2026-09-14-r3-final.md"
+    },
+    {
+      "name": "Keep Windows Fontconfig directory entries stable until the next read",
+      "local_commit": "cd444aa641d50355c0d7b47f4a7167b78e313e45",
+      "baseline_commit": "1bb897d4a368521e5aaab9e11c686c9c3ccebc20",
+      "local_paths": [
+        "third_party/fonts/fontconfig/src/fccompat.c"
+      ],
+      "origin": "Local correction derived from normal Windows directory and font-cache reproduction and the Microsoft FindFirstFileEx API contract; no upstream patch imported. Fontconfig remains the inherited 2.16.0 source with its recorded sync provenance unchanged.",
+      "report": "../validation/2026-09-14-fontconfig-directory.md"
     }
   ]
 }
