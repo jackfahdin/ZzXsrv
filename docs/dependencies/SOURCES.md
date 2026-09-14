@@ -67,6 +67,24 @@
 | sync: restart trigger list iteration in SyncChangeCounter after TriggerFired | [bdd7bf57af208b1ddf57d4683d67104443b44812](https://gitlab.freedesktop.org/xorg/xserver/-/commit/bdd7bf57af208b1ddf57d4683d67104443b44812) | [固定 SHA API](https://api.github.com/repos/LizardByte-infrastructure/xserver/commits/bdd7bf57af208b1ddf57d4683d67104443b44812) | `fda4509c76185a42a87fccf6ed837dfef29f41c4` |
 | saver: re-fetch screen private after CheckScreenPrivate in CreateSaverWindow | [ecc634f1b2f7aa473d3a267eada98c4918bf9e05](https://gitlab.freedesktop.org/xorg/xserver/-/commit/ecc634f1b2f7aa473d3a267eada98c4918bf9e05) | [固定 SHA API](https://api.github.com/repos/LizardByte-infrastructure/xserver/commits/ecc634f1b2f7aa473d3a267eada98c4918bf9e05) | `fda4509c76185a42a87fccf6ed837dfef29f41c4` |
 
+### GLX 属性、字体消费方及 RANDR 候选补丁
+
+三项分别提交，完整构建、350 项测试及独立运行通过，当前候选待验收，尚未合入 master；完整记录见[本组报告](../validation/2026-09-14-r3-final.md)。9 个上游补丁及 RANDR 本地清理补充不增加历史问题计数。
+
+| 改动 | 上游 master / stable | 本地提交 |
+| --- | --- | --- |
+| glx: fix reversed length check in ChangeDrawableAttributes | [6d459e4d](https://gitlab.freedesktop.org/xorg/xserver/-/commit/6d459e4daf715bea8abdafa8fb130be2f8a1d145) / `94341bd715d62ba8da4c1851f517018996da1af8` | `0d01bba127640ad97fdfea9eb81a6bf88059ea7c` |
+| dix: avoid null ptr deref at doListFontsAndAliases | [0237462d](https://gitlab.freedesktop.org/xorg/xserver/-/commit/0237462d326c78868c83b6eda35a9d35725f3b33) / `9ee6ae7292e7f6e3fd04fdc61dab5ed127cbbce3` | `c1713a0678c4cb597ac9e49a7d1b344d2aa3a47e` |
+| dix: avoid null ptr deref at doListFontsWithInfo | [dd5c2595](https://gitlab.freedesktop.org/xorg/xserver/-/commit/dd5c2595a42d3ff0c4f18d9b53d1f6c3fd934fd4) / `e052acfa3391a4563c084556aca22ecb7459b012` | `c1713a0678c4cb597ac9e49a7d1b344d2aa3a47e` |
+| dix: increase XLFDMAXFONTNAMELEN to match libXfont2's MAXFONTNAMELEN | [bb5158f9](https://gitlab.freedesktop.org/xorg/xserver/-/commit/bb5158f962dc935e58ef8b4b5fcb31be201a6e07) / `a569eb4f36ed96a9e445ececd7e8d98c223461a0` | `c1713a0678c4cb597ac9e49a7d1b344d2aa3a47e` |
+| dix: Silence a compiler warning in doListFontsAndAliases() | [e710e570](https://gitlab.freedesktop.org/xorg/xserver/-/commit/e710e570b1709d100072a8ab7d05c2aefaf41a1b) / `6c6a2dfd295f836a502410ff40b5855b133c7ffd` | `c1713a0678c4cb597ac9e49a7d1b344d2aa3a47e` |
+| dix: Silent static analyzer warning | [f959f1e5](https://gitlab.freedesktop.org/xorg/xserver/-/commit/f959f1e51f369ac26b6ba5953a3b022407e85b11) / `bf25faf5c1b825f14642f81129b28e04a024356d` | `c1713a0678c4cb597ac9e49a7d1b344d2aa3a47e` |
+| dix: Silence a compiler warning in doListFontsWithInfo() | [5d011bf3](https://gitlab.freedesktop.org/xorg/xserver/-/commit/5d011bf3da81595bef25ca89458249c1037a4f51) / `c0839d9cbf85261cea20cda2f7d6c8a732e16eb6` | `c1713a0678c4cb597ac9e49a7d1b344d2aa3a47e` |
+| fb/mi/glamor: reject glyphs with negative dimensions | [e31efd3e](https://gitlab.freedesktop.org/xorg/xserver/-/commit/e31efd3e106e53bfc29d499ff0a34b0d20013f2d) / `0f1f4bcbfb1f23b800dfe386782d3a0f05b6756f` | `c1713a0678c4cb597ac9e49a7d1b344d2aa3a47e` |
+| randr: Check for overflow in RRChangeProviderProperty() | [3c3a4b76](https://gitlab.freedesktop.org/xorg/xserver/-/commit/3c3a4b767b16174d3213055947ea7f4f88e10ec6) / `7c626aa63af274a347b91dd923027e715ed89023` | `3d373e6c55ddded2984b3bca1fe2c8b27b10681e` |
+
+实际来源为相同完整 SHA 的 GitHub 镜像 API；原始响应、补丁哈希与路径裁剪范围见 JSON。官方发布包 ChangeLog 中逐条核对 master/stable 对应。RANDR 新拒绝路径补充释放尚未挂链的新属性，属本地修正；Windows provider 的实际运行可达性仍未证实。
+
 ## 核心库与头文件
 
 `include/X11/` 和 `include/gl/` 含多个项目的副本，不能把整个目录等同于一个 xorgproto 提交。libxml2 仅能确定头文件声明 2.9.1，随附二进制的供应者与重建来源尚未闭合。

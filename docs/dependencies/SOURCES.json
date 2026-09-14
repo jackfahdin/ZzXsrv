@@ -5747,6 +5747,261 @@
         "evidence": "../validation/2026-09-09-xserver-sync-present-audit.md"
       },
       "report": "../validation/2026-09-11-sync-present.md"
+    },
+    {
+      "component": "xserver",
+      "name": "glx: fix reversed length check in ChangeDrawableAttributes",
+      "upstream_commit": "6d459e4daf715bea8abdafa8fb130be2f8a1d145",
+      "upstream_stable_commit": "94341bd715d62ba8da4c1851f517018996da1af8",
+      "upstream_url": "https://gitlab.freedesktop.org/xorg/xserver/-/commit/6d459e4daf715bea8abdafa8fb130be2f8a1d145",
+      "actual_source_url": "https://api.github.com/repos/LizardByte-infrastructure/xserver/commits/6d459e4daf715bea8abdafa8fb130be2f8a1d145",
+      "source_download_date": "2026-09-14",
+      "source_response_sha256": "c1c274ae8e6040d188c08861e6d5cb46024c03f696974a6cdfe5e3d09bf6607d",
+      "patch_sha256": "bddf1d866aaecad4c06fbad7f6f96bc9ecf1516c0e73c8b3a55483a7e58d73f4",
+      "patch_hash_scope": "GitHub API per-file patches with original paths and diff headers",
+      "upstream_author": {
+        "name": "Peter Hutterer",
+        "email": "peter.hutterer@who-t.net",
+        "date": "2026-04-20T01:18:48Z"
+      },
+      "local_commit": "0d01bba127640ad97fdfea9eb81a6bf88059ea7c",
+      "local_paths": [
+        "src/xorg-server/glx/glxcmds.c",
+        "src/xorg-server/glx/glxcmdsswap.c"
+      ],
+      "local_adaptation": "Prefix paths with src/xorg-server; retain existing local interfaces.",
+      "cross_check_archive": {
+        "url": "https://xorg.freedesktop.org/archive/individual/xserver/xorg-server-21.1.24.tar.xz",
+        "sha256": "1a4eb36ca65cc3b1b936566d677a9786e13c11cd5806e951ac55f3f5ce3984af",
+        "evidence": "../validation/2026-09-09-xserver-core-audit.md"
+      },
+      "report": "../validation/2026-09-14-r3-final.md"
+    },
+    {
+      "component": "xserver",
+      "name": "dix: avoid null ptr deref at doListFontsAndAliases",
+      "upstream_commit": "0237462d326c78868c83b6eda35a9d35725f3b33",
+      "upstream_stable_commit": "9ee6ae7292e7f6e3fd04fdc61dab5ed127cbbce3",
+      "upstream_url": "https://gitlab.freedesktop.org/xorg/xserver/-/commit/0237462d326c78868c83b6eda35a9d35725f3b33",
+      "actual_source_url": "https://api.github.com/repos/LizardByte-infrastructure/xserver/commits/0237462d326c78868c83b6eda35a9d35725f3b33",
+      "source_download_date": "2026-09-14",
+      "source_response_sha256": "fb679ecd981912c1b381c731b691fdb1c838f2ecbe40898d865ff8422683081f",
+      "patch_sha256": "92ef76651df7083ffc83c32b8783fb078a1d0dcac142690bb22d70ba25827202",
+      "patch_hash_scope": "Selected GitHub API per-file patches with src/xorg-server path prefix and diff headers; excludes glamor and upstream pyxtest files",
+      "upstream_author": {
+        "name": "Mikhail Dmitrichenko",
+        "email": "m.dmitrichenko222@gmail.com",
+        "date": "2025-12-17T08:15:27Z"
+      },
+      "local_commit": "c1713a0678c4cb597ac9e49a7d1b344d2aa3a47e",
+      "local_paths": [
+        "src/xorg-server/dix/dixfonts.c"
+      ],
+      "local_adaptation": "Apply font alias and adjacent allocation/initialization fixes; apply fb/mi glyph checks only. Exclude disabled glamor code and upstream pyxtest files; use local native regression harnesses.",
+      "cross_check_archive": {
+        "url": "https://xorg.freedesktop.org/archive/individual/xserver/xorg-server-21.1.24.tar.xz",
+        "sha256": "1a4eb36ca65cc3b1b936566d677a9786e13c11cd5806e951ac55f3f5ce3984af",
+        "evidence": "../validation/2026-09-09-xserver-core-audit.md"
+      },
+      "report": "../validation/2026-09-14-r3-final.md"
+    },
+    {
+      "component": "xserver",
+      "name": "dix: avoid null ptr deref at doListFontsWithInfo",
+      "upstream_commit": "dd5c2595a42d3ff0c4f18d9b53d1f6c3fd934fd4",
+      "upstream_stable_commit": "e052acfa3391a4563c084556aca22ecb7459b012",
+      "upstream_url": "https://gitlab.freedesktop.org/xorg/xserver/-/commit/dd5c2595a42d3ff0c4f18d9b53d1f6c3fd934fd4",
+      "actual_source_url": "https://api.github.com/repos/LizardByte-infrastructure/xserver/commits/dd5c2595a42d3ff0c4f18d9b53d1f6c3fd934fd4",
+      "source_download_date": "2026-09-14",
+      "source_response_sha256": "d53d201fcf877bf534d6559ccb39dcc87d53e79bc2949cdaab0a87ff9a7efd88",
+      "patch_sha256": "d1c59961d9923f9cadc9c619346b02cf55f6a267a43443877ededb90cb9f6835",
+      "patch_hash_scope": "Selected GitHub API per-file patches with src/xorg-server path prefix and diff headers; excludes glamor and upstream pyxtest files",
+      "upstream_author": {
+        "name": "Mikhail Dmitrichenko",
+        "email": "mdmitrichenko@astralinux.ru",
+        "date": "2025-09-17T14:25:40Z"
+      },
+      "local_commit": "c1713a0678c4cb597ac9e49a7d1b344d2aa3a47e",
+      "local_paths": [
+        "src/xorg-server/dix/dixfonts.c"
+      ],
+      "local_adaptation": "Apply font alias and adjacent allocation/initialization fixes; apply fb/mi glyph checks only. Exclude disabled glamor code and upstream pyxtest files; use local native regression harnesses.",
+      "cross_check_archive": {
+        "url": "https://xorg.freedesktop.org/archive/individual/xserver/xorg-server-21.1.24.tar.xz",
+        "sha256": "1a4eb36ca65cc3b1b936566d677a9786e13c11cd5806e951ac55f3f5ce3984af",
+        "evidence": "../validation/2026-09-09-xserver-core-audit.md"
+      },
+      "report": "../validation/2026-09-14-r3-final.md"
+    },
+    {
+      "component": "xserver",
+      "name": "dix: increase XLFDMAXFONTNAMELEN to match libXfont2's MAXFONTNAMELEN",
+      "upstream_commit": "bb5158f962dc935e58ef8b4b5fcb31be201a6e07",
+      "upstream_stable_commit": "a569eb4f36ed96a9e445ececd7e8d98c223461a0",
+      "upstream_url": "https://gitlab.freedesktop.org/xorg/xserver/-/commit/bb5158f962dc935e58ef8b4b5fcb31be201a6e07",
+      "actual_source_url": "https://api.github.com/repos/LizardByte-infrastructure/xserver/commits/bb5158f962dc935e58ef8b4b5fcb31be201a6e07",
+      "source_download_date": "2026-09-14",
+      "source_response_sha256": "76664b017c0ce2769838efb2457633eacf3b4ef60df7d05db28b373e7a696918",
+      "patch_sha256": "c3820a7a3ef5d8104f324dfe0a6807a7f1c53a2ca753ad80d00e502c7c4558d3",
+      "patch_hash_scope": "Selected GitHub API per-file patches with src/xorg-server path prefix and diff headers; excludes glamor and upstream pyxtest files",
+      "upstream_author": {
+        "name": "Peter Hutterer",
+        "email": "peter.hutterer@who-t.net",
+        "date": "2026-04-29T05:40:33Z"
+      },
+      "local_commit": "c1713a0678c4cb597ac9e49a7d1b344d2aa3a47e",
+      "local_paths": [
+        "src/xorg-server/dix/closestr.h",
+        "src/xorg-server/dix/dixfonts.c"
+      ],
+      "local_adaptation": "Apply font alias and adjacent allocation/initialization fixes; apply fb/mi glyph checks only. Exclude disabled glamor code and upstream pyxtest files; use local native regression harnesses.",
+      "cross_check_archive": {
+        "url": "https://xorg.freedesktop.org/archive/individual/xserver/xorg-server-21.1.24.tar.xz",
+        "sha256": "1a4eb36ca65cc3b1b936566d677a9786e13c11cd5806e951ac55f3f5ce3984af",
+        "evidence": "../validation/2026-09-09-xserver-core-audit.md"
+      },
+      "report": "../validation/2026-09-14-r3-final.md"
+    },
+    {
+      "component": "xserver",
+      "name": "dix: Silence a compiler warning in doListFontsAndAliases()",
+      "upstream_commit": "e710e570b1709d100072a8ab7d05c2aefaf41a1b",
+      "upstream_stable_commit": "6c6a2dfd295f836a502410ff40b5855b133c7ffd",
+      "upstream_url": "https://gitlab.freedesktop.org/xorg/xserver/-/commit/e710e570b1709d100072a8ab7d05c2aefaf41a1b",
+      "actual_source_url": "https://api.github.com/repos/LizardByte-infrastructure/xserver/commits/e710e570b1709d100072a8ab7d05c2aefaf41a1b",
+      "source_download_date": "2026-09-14",
+      "source_response_sha256": "4fdd40c0caaf1ae58dc0446d9341a59ecd996f539b0a5c3107f3a62457902441",
+      "patch_sha256": "c57044c5d7d8aa6592b03239c95099613d7375e59ffe26f52ceff5ec92c39e6a",
+      "patch_hash_scope": "Selected GitHub API per-file patches with src/xorg-server path prefix and diff headers; excludes glamor and upstream pyxtest files",
+      "upstream_author": {
+        "name": "Olivier Fourdan",
+        "email": "ofourdan@redhat.com",
+        "date": "2026-06-15T12:00:19Z"
+      },
+      "local_commit": "c1713a0678c4cb597ac9e49a7d1b344d2aa3a47e",
+      "local_paths": [
+        "src/xorg-server/dix/dixfonts.c"
+      ],
+      "local_adaptation": "Apply font alias and adjacent allocation/initialization fixes; apply fb/mi glyph checks only. Exclude disabled glamor code and upstream pyxtest files; use local native regression harnesses.",
+      "cross_check_archive": {
+        "url": "https://xorg.freedesktop.org/archive/individual/xserver/xorg-server-21.1.24.tar.xz",
+        "sha256": "1a4eb36ca65cc3b1b936566d677a9786e13c11cd5806e951ac55f3f5ce3984af",
+        "evidence": "../validation/2026-09-09-xserver-core-audit.md"
+      },
+      "report": "../validation/2026-09-14-r3-final.md"
+    },
+    {
+      "component": "xserver",
+      "name": "dix: Silent static analyzer warning",
+      "upstream_commit": "f959f1e51f369ac26b6ba5953a3b022407e85b11",
+      "upstream_stable_commit": "bf25faf5c1b825f14642f81129b28e04a024356d",
+      "upstream_url": "https://gitlab.freedesktop.org/xorg/xserver/-/commit/f959f1e51f369ac26b6ba5953a3b022407e85b11",
+      "actual_source_url": "https://api.github.com/repos/LizardByte-infrastructure/xserver/commits/f959f1e51f369ac26b6ba5953a3b022407e85b11",
+      "source_download_date": "2026-09-14",
+      "source_response_sha256": "9fd7a4e15d67243a1d5159dfe34b036e50e33f79fb7ffb1801d0bbe917873097",
+      "patch_sha256": "1ac995ff4b65b0dc6bc1788ab0bc4612ebdd7b4b039b8fec47f5a0b6a04d9be4",
+      "patch_hash_scope": "Selected GitHub API per-file patches with src/xorg-server path prefix and diff headers; excludes glamor and upstream pyxtest files",
+      "upstream_author": {
+        "name": "Olivier Fourdan",
+        "email": "ofourdan@redhat.com",
+        "date": "2026-04-28T09:06:27Z"
+      },
+      "local_commit": "c1713a0678c4cb597ac9e49a7d1b344d2aa3a47e",
+      "local_paths": [
+        "src/xorg-server/dix/dixfonts.c"
+      ],
+      "local_adaptation": "Apply font alias and adjacent allocation/initialization fixes; apply fb/mi glyph checks only. Exclude disabled glamor code and upstream pyxtest files; use local native regression harnesses.",
+      "cross_check_archive": {
+        "url": "https://xorg.freedesktop.org/archive/individual/xserver/xorg-server-21.1.24.tar.xz",
+        "sha256": "1a4eb36ca65cc3b1b936566d677a9786e13c11cd5806e951ac55f3f5ce3984af",
+        "evidence": "../validation/2026-09-09-xserver-core-audit.md"
+      },
+      "report": "../validation/2026-09-14-r3-final.md"
+    },
+    {
+      "component": "xserver",
+      "name": "dix: Silence a compiler warning in doListFontsWithInfo()",
+      "upstream_commit": "5d011bf3da81595bef25ca89458249c1037a4f51",
+      "upstream_stable_commit": "c0839d9cbf85261cea20cda2f7d6c8a732e16eb6",
+      "upstream_url": "https://gitlab.freedesktop.org/xorg/xserver/-/commit/5d011bf3da81595bef25ca89458249c1037a4f51",
+      "actual_source_url": "https://api.github.com/repos/LizardByte-infrastructure/xserver/commits/5d011bf3da81595bef25ca89458249c1037a4f51",
+      "source_download_date": "2026-09-14",
+      "source_response_sha256": "c20210d67fbf17abb92cfe895b291880cc5ffd21fa7cec8ea0a6af2c2e8d497d",
+      "patch_sha256": "6dabf26a035ae413703d46c1a38e07a7026627a35401f55ff9e223f72e50fa59",
+      "patch_hash_scope": "Selected GitHub API per-file patches with src/xorg-server path prefix and diff headers; excludes glamor and upstream pyxtest files",
+      "upstream_author": {
+        "name": "Olivier Fourdan",
+        "email": "ofourdan@redhat.com",
+        "date": "2026-06-17T14:50:34Z"
+      },
+      "local_commit": "c1713a0678c4cb597ac9e49a7d1b344d2aa3a47e",
+      "local_paths": [
+        "src/xorg-server/dix/dixfonts.c"
+      ],
+      "local_adaptation": "Apply font alias and adjacent allocation/initialization fixes; apply fb/mi glyph checks only. Exclude disabled glamor code and upstream pyxtest files; use local native regression harnesses.",
+      "cross_check_archive": {
+        "url": "https://xorg.freedesktop.org/archive/individual/xserver/xorg-server-21.1.24.tar.xz",
+        "sha256": "1a4eb36ca65cc3b1b936566d677a9786e13c11cd5806e951ac55f3f5ce3984af",
+        "evidence": "../validation/2026-09-09-xserver-core-audit.md"
+      },
+      "report": "../validation/2026-09-14-r3-final.md"
+    },
+    {
+      "component": "xserver",
+      "name": "fb/mi/glamor: reject glyphs with negative dimensions",
+      "upstream_commit": "e31efd3e106e53bfc29d499ff0a34b0d20013f2d",
+      "upstream_stable_commit": "0f1f4bcbfb1f23b800dfe386782d3a0f05b6756f",
+      "upstream_url": "https://gitlab.freedesktop.org/xorg/xserver/-/commit/e31efd3e106e53bfc29d499ff0a34b0d20013f2d",
+      "actual_source_url": "https://api.github.com/repos/LizardByte-infrastructure/xserver/commits/e31efd3e106e53bfc29d499ff0a34b0d20013f2d",
+      "source_download_date": "2026-09-14",
+      "source_response_sha256": "ec19c30ff3fb15476064972cfe98151317585c67523f45701fa6debdf108cc45",
+      "patch_sha256": "fc5b060fb1ef57117544dcf339e75b6838245db799684d4f97953a399f8729af",
+      "patch_hash_scope": "Selected GitHub API per-file patches with src/xorg-server path prefix and diff headers; excludes glamor and upstream pyxtest files",
+      "upstream_author": {
+        "name": "Peter Hutterer",
+        "email": "peter.hutterer@who-t.net",
+        "date": "2026-06-01T10:44:34Z"
+      },
+      "local_commit": "c1713a0678c4cb597ac9e49a7d1b344d2aa3a47e",
+      "local_paths": [
+        "src/xorg-server/fb/fbglyph.c",
+        "src/xorg-server/mi/miglblt.c"
+      ],
+      "local_adaptation": "Apply font alias and adjacent allocation/initialization fixes; apply fb/mi glyph checks only. Exclude disabled glamor code and upstream pyxtest files; use local native regression harnesses.",
+      "cross_check_archive": {
+        "url": "https://xorg.freedesktop.org/archive/individual/xserver/xorg-server-21.1.24.tar.xz",
+        "sha256": "1a4eb36ca65cc3b1b936566d677a9786e13c11cd5806e951ac55f3f5ce3984af",
+        "evidence": "../validation/2026-09-09-xserver-core-audit.md"
+      },
+      "report": "../validation/2026-09-14-r3-final.md"
+    },
+    {
+      "component": "xserver",
+      "name": "randr: Check for overflow in RRChangeProviderProperty()",
+      "upstream_commit": "3c3a4b767b16174d3213055947ea7f4f88e10ec6",
+      "upstream_stable_commit": "7c626aa63af274a347b91dd923027e715ed89023",
+      "upstream_url": "https://gitlab.freedesktop.org/xorg/xserver/-/commit/3c3a4b767b16174d3213055947ea7f4f88e10ec6",
+      "actual_source_url": "https://api.github.com/repos/LizardByte-infrastructure/xserver/commits/3c3a4b767b16174d3213055947ea7f4f88e10ec6",
+      "source_download_date": "2026-09-14",
+      "source_response_sha256": "cf9cac929a8de2404db3defaf226a4fe431d9c7f8ce45f0ad9731470e6fe6c03",
+      "patch_sha256": "95b1cda8193cdedaf7540002cdc87d91157c32dcea393e12ece3924dd2ecfe28",
+      "patch_hash_scope": "GitHub API rrproviderproperty.c patch text without diff headers",
+      "upstream_author": {
+        "name": "Olivier Fourdan",
+        "email": "ofourdan@redhat.com",
+        "date": "2025-05-20T13:18:19Z"
+      },
+      "local_commit": "3d373e6c55ddded2984b3bca1fe2c8b27b10681e",
+      "local_paths": [
+        "src/xorg-server/randr/rrproviderproperty.c"
+      ],
+      "local_adaptation": "Prefix path with src/xorg-server; additionally destroy a newly created unlinked property on the new BadValue path. Local cleanup is separately recorded.",
+      "cross_check_archive": {
+        "url": "https://xorg.freedesktop.org/archive/individual/xserver/xorg-server-21.1.24.tar.xz",
+        "sha256": "1a4eb36ca65cc3b1b936566d677a9786e13c11cd5806e951ac55f3f5ce3984af",
+        "evidence": "../validation/2026-09-09-xserver-core-audit.md"
+      },
+      "report": "../validation/2026-09-14-r3-final.md"
     }
   ],
   "layout_note": "2026-09-10 源码分层后，path/evidence 表示当前仓库位置；完整旧路径映射见 docs/history/2026-09-10-source-path-mapping.json。actual_import_urls、inherited_material_urls 和 declaration_url 保留原固定提交的路径。",
@@ -5761,6 +6016,16 @@
       ],
       "origin": "Local correction derived from the inherited source and reproduced Windows text-mode I/O behavior; no upstream patch imported.",
       "report": "../validation/2026-09-11-auth-binary.md"
+    },
+    {
+      "name": "Release new RANDR provider property on length rejection",
+      "local_commit": "3d373e6c55ddded2984b3bca1fe2c8b27b10681e",
+      "baseline_commit": "80d8fe64154838b172737017189b6848b76a7d50",
+      "local_paths": [
+        "src/xorg-server/randr/rrproviderproperty.c"
+      ],
+      "origin": "Local cleanup for the rejection path introduced by upstream 3c3a4b7; preserves the pre-existing property and provider list.",
+      "report": "../validation/2026-09-14-r3-final.md"
     }
   ]
 }
