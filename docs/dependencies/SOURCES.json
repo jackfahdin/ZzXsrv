@@ -610,26 +610,36 @@
     {
       "name": "freetype",
       "path": "third_party/fonts/freetype",
-      "revision": "2.13.3",
-      "revision_kind": "declared_version",
+      "revision": "2.14.3",
+      "revision_kind": "release_archive_with_local_adaptations",
       "upstream_url": "https://gitlab.freedesktop.org/freetype/freetype",
       "evidence": [
-        "third_party/fonts/freetype/include/freetype/freetype.h:5175-5177",
+        "third_party/fonts/freetype/include/freetype/freetype.h",
         "docs/dependencies/packages.txt",
-        "docs/history/upstream-releases/releasenote_21.1.16.1.txt"
+        "docs/validation/2026-09-14-font-dependencies.md"
       ],
       "confidence": "high",
-      "notes": "本地版本和发布说明一致；精确下载归档、导入 tag/commit 与二进制重现关系未证实。",
+      "notes": "2026-09-14 从正式 2.14.3 包更新既有导入范围并加入新文件；保留本地 .gitignore、ftstring.vcproj、ftview.vcproj。与旧 2.13.3 正式包比较，其余已跟踪文件无本地改动。使用既有 MSBuild 配置；原始继承链接仅为历史。",
       "nested": false,
       "id": "dep-025",
       "category": "core_libraries_headers",
       "inherited_material_urls": [
         "https://github.com/marchaesen/vcxsrv/tree/d0a1eaf7ee15fcdf4f683388a88fec49078e6408/freetype"
       ],
-      "import_method": "inherited_vcxsrv_source_collection",
+      "import_method": "official_release_archive_preserving_local_adaptations",
       "actual_import_urls": [
-        "https://github.com/marchaesen/vcxsrv/tree/d0a1eaf7ee15fcdf4f683388a88fec49078e6408/freetype"
-      ]
+        "https://mirror.rabisu.com/mirrors/savannah/freetype/freetype-2.14.3.tar.xz"
+      ],
+      "previous_revision": "2.13.3",
+      "release_archive": {
+        "name": "freetype-2.14.3",
+        "requested_url": "https://download.savannah.gnu.org/releases/freetype/freetype-2.14.3.tar.xz",
+        "actual_url": "https://mirror.rabisu.com/mirrors/savannah/freetype/freetype-2.14.3.tar.xz",
+        "downloaded_at": "2026-09-14T08:30:26.626662+00:00",
+        "sha256": "36bc4f1cc413335368ee656c42afca65c5a3987e8768cc28cf11ba775e785a5f",
+        "bytes": 2670220,
+        "published_sha256_verified": true
+      }
     },
     {
       "name": "openssl",
@@ -1050,17 +1060,19 @@
         "third_party/fonts/freetype/src/gzip/zlib.h:40"
       ],
       "confidence": "high",
-      "notes": "README 描述本地 patches；不是根目录 zlib 的重复声明。",
+      "notes": "随 FreeType 2.14.3 正式包导入，仍声明 zlib 1.3，FreeType 自带 patches 见 README.freetype 与 patches；不等同于根目录 zlib，未独立取得 zlib 发布包。归档 hash 见 dep-025。",
       "nested": true,
       "id": "dep-043",
       "category": "embedded_dependencies",
       "inherited_material_urls": [
         "https://github.com/marchaesen/vcxsrv/tree/d0a1eaf7ee15fcdf4f683388a88fec49078e6408/freetype/src/gzip"
       ],
-      "import_method": "inherited_vcxsrv_source_collection",
+      "import_method": "embedded_in_official_freetype_release_archive",
       "actual_import_urls": [
-        "https://github.com/marchaesen/vcxsrv/tree/d0a1eaf7ee15fcdf4f683388a88fec49078e6408/freetype/src/gzip"
-      ]
+        "https://mirror.rabisu.com/mirrors/savannah/freetype/freetype-2.14.3.tar.xz"
+      ],
+      "parent_component_id": "dep-025",
+      "parent_revision": "2.14.3"
     },
     {
       "name": "Perl Text::Template",
