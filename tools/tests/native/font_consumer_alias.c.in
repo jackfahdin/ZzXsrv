@@ -1,0 +1,156 @@
+/* Real complete dixfonts consumers are inserted verbatim by the Python runner.
+ * FPE callbacks provide controlled names, suspension and errors without a server. */
+#include <dix-config.h>
+#include <stdlib.h>
+#include <stdio.h>
+#include <string.h>
+#include <setjmp.h>
+#include <X11/fonts/fontstruct.h>
+#include <X11/fonts/libxfont2.h>
+#include "dixstruct.h"
+#include "dixfontstr.h"
+#include "closestr.h"
+#define CHECK(c) do { if (!(c)) { fprintf(stderr, "FAIL %d: %s\n", __LINE__, #c); exit(1); } } while (0)
+static xfont2_fpe_funcs_rec const **fpe_functions;
+ReplySwapPtr ReplySwapVector[256];
+static int released, wakes, sleeps, dies, starts, initial_next, target_next;
+static int added, reply_fonts, final_replies, error_code, fail_alloc, fatal;
+static int target_length, mode_info;
+static const char *test_case;
+static char target[1026];
+static char alias[] = "alias";
+static char real_name[] = "real";
+static FontInfoRec info;
+static FontNamesRec names;
+static char *name_array[1];
+static int length_array[1];
+static jmp_buf fatal_env;
+static void *consumer_malloc(size_t n) {
+    if (fail_alloc && n == (size_t)target_length + 1) return NULL;
+    return malloc(n);
+}
+void *XNFalloc(unsigned long n) {
+    void *p = consumer_malloc(n);
+    if (!p) { fatal++; longjmp(fatal_env, 1); }
+    return p;
+}
+static void FreeFPE(FontPathElementPtr fpe) { CHECK(fpe->refcount == 2); fpe->refcount--; released++; }
+Bool ClientIsAsleep(ClientPtr client) { return sleeps != 0; }
+Bool ClientSleep(ClientPtr client, ClientSleepProcPtr callback, void *closure) { sleeps++; return TRUE; }
+void ClientWakeup(ClientPtr client) { wakes++; }
+void SendErrorToClient(ClientPtr c, unsigned int major, unsigned int minor, XID id, int err) { error_code = err; }
+int WriteToClient(ClientPtr client, int count, const void *buf) {
+    CHECK(count >= 0);
+    if (mode_info && count == sizeof(xListFontsWithInfoReply)) {
+        const xListFontsWithInfoReply *r = buf;
+        if (r->length == bytes_to_int32(sizeof(*r) - sizeof(xGenericReply))) final_replies++;
+        else { CHECK(r->nameLength == (CARD8)target_length); reply_fonts++; }
+    } else if (!mode_info && count == sizeof(xListFontsReply)) {
+        reply_fonts = ((const xListFontsReply *)buf)->nFonts;
+        final_replies++;
+    }
+    return count;
+}
+int xfont2_add_font_names_name(FontNamesPtr out, char *name, int length) {
+    CHECK(length == 5 && !memcmp(name, "alias", 5));
+    added++; out->nnames = 1;
+    name_array[0] = alias; length_array[0] = 5;
+    return Successful;
+}
+void xfont2_free_font_names(FontNamesPtr out) { CHECK(!out || out == &names); }
+#define malloc consumer_malloc
+@FUNCTIONS@
+#undef malloc
+static int start(void *client, FontPathElementPtr fpe, const char *pattern,
+                 int length, int max, void **priv) {
+    starts++;
+    if (!length) return BadFontName;
+    CHECK(starts < 8);
+    if (!strcmp(test_case, "start-error")) return BadFontName;
+    if (!strcmp(test_case, "missing-start-name")) return FontNameAlias;
+    if (!strcmp(test_case, "suspend")) return Suspended;
+    if (length == 1 && pattern[0] == '*') *priv = (void *)1;
+    else { CHECK(length == target_length && !memcmp(pattern, target, length)); *priv = (void *)2; }
+    return Successful;
+}
+static int next_alias(void *client, FontPathElementPtr fpe, char **name, int *length,
+                      char **resolved, int *resolved_length, void *priv) {
+    if (priv == (void *)1) {
+        if (initial_next++) return BadFontName;
+        *name = alias; *length = 5; *resolved = target;
+        if (strcmp(test_case, "missing-length")) *resolved_length = target_length;
+        return FontNameAlias;
+    }
+    CHECK(priv == (void *)2);
+    if (target_next++) return BadFontName;
+    *name = real_name; *length = 4; return Successful;
+}
+static int next_info(void *client, FontPathElementPtr fpe, char **name, int *length,
+                     FontInfoPtr *out, int *number, void *priv) {
+    if (priv == (void *)1) {
+        if (initial_next++) return BadFontName;
+        *number = 1;
+        if (!strcmp(test_case, "missing-name")) { *length = 5; return FontNameAlias; }
+        *name = target;
+        if (strcmp(test_case, "missing-length")) *length = target_length;
+        return FontNameAlias;
+    }
+    CHECK(priv == (void *)2);
+    if (target_next++) return BadFontName;
+    *name = real_name; *length = 4; *out = &info; *number = 0; return Successful;
+}
+static void died(void *client, FontPathElementPtr fpe) { dies++; }
+int main(int argc, char **argv) {
+    ClientRec client = {0};
+    FontPathElementRec fpe = {0};
+    xfont2_fpe_funcs_rec funcs = {0};
+    const xfont2_fpe_funcs_rec *table[1] = {&funcs};
+    LFclosurePtr lc = NULL;
+    LFWIclosurePtr ic = NULL;
+    CHECK(argc == 3); mode_info = !strcmp(argv[1], "info"); test_case = argv[2];
+    target_length = !strcmp(test_case, "edge") ? 1024 : !strcmp(test_case, "overlong") ? 1025 : 17;
+    memset(target, 't', target_length); target[target_length] = 0;
+    if (!strcmp(test_case, "missing-length")) { target_length = 0; target[0] = 0; }
+    funcs.start_list_fonts_and_aliases = start; funcs.start_list_fonts_with_info = start;
+    funcs.list_next_font_or_alias = next_alias; funcs.list_next_font_with_info = next_info;
+    funcs.client_died = died; fpe_functions = table; fpe.refcount = 2;
+    names.names = name_array; names.length = length_array;
+    if (mode_info) {
+        ic = calloc(1, sizeof(*ic)); ic->client = &client; ic->num_fpes = 1;
+        ic->fpe_list = malloc(sizeof(&fpe)); ic->fpe_list[0] = &fpe;
+        ic->current.pattern[0] = '*'; ic->current.patlen = 1; ic->current.max_names = 2;
+    } else {
+        lc = calloc(1, sizeof(*lc)); lc->client = &client; lc->num_fpes = 1; lc->names = &names;
+        lc->fpe_list = malloc(sizeof(&fpe)); lc->fpe_list[0] = &fpe;
+        lc->current.pattern[0] = '*'; lc->current.patlen = 1; lc->current.max_names = 2;
+    }
+    client.clientGone = !strcmp(test_case, "client-gone");
+    fail_alloc = !strcmp(test_case, "oom");
+    if (!setjmp(fatal_env)) {
+        if (mode_info) doListFontsWithInfo(&client, ic);
+        else doListFontsAndAliases(&client, lc);
+    }
+    if (fail_alloc) {
+        CHECK(fatal == 1 && reply_fonts == 0 && target_next == 0);
+        /* XNFalloc terminates the actual server on OOM. This fixture unwinds
+         * only to inspect that the consumer never continues with NULL. */
+        if (ic) { free(ic->fpe_list); free(ic); }
+        if (lc) { free(lc->fpe_list); free(lc); }
+    } else if (!strcmp(test_case, "suspend")) {
+        CHECK(sleeps == 1 && wakes == 0 && released == 0 && reply_fonts == 0);
+        if (ic) { free(ic->fpe_list); free(ic); }
+        if (lc) { free(lc->fpe_list); free(lc); }
+    } else {
+        CHECK(released == 1 && wakes == 1 && error_code == 0);
+        if (client.clientGone) CHECK(dies == 1 && starts == 0 && final_replies == 0);
+        else {
+            int valid = !strcmp(test_case, "normal") || !strcmp(test_case, "edge");
+            CHECK(reply_fonts == valid && final_replies == 1);
+            if (valid) CHECK(target_next >= 1 && starts == 2);
+            else CHECK(target_next == 0);
+        }
+    }
+    printf("PASS %s %s\n", argv[1], argv[2]); return 0;
+}
+
+
