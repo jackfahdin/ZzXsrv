@@ -193,6 +193,17 @@
         "sha256": "f042a370666815e7b941e9b7019024755bd1c6c2954afbfa515af378251799e2",
         "bytes": 478844,
         "published_sha256_verified": false
+      },
+      "shared_header_copies": {
+        "updated": [
+          "include/X11/fonts/bdfint.h",
+          "include/X11/fonts/libxfont2.h"
+        ],
+        "removed": [
+          "include/X11/fonts/fontencc.h"
+        ],
+        "local_commit": "b0acf97cab01ff80ac70e96152252e58925aa858",
+        "reason": "全局 include 优先于组件目录；同步正式包公共副本，防止旧 BDF_GENPROPS 定义遮蔽新头文件。"
       }
     },
     {
@@ -901,6 +912,20 @@
       "import_method": "inherited_vcxsrv_source_collection",
       "actual_import_urls": [
         "https://github.com/marchaesen/vcxsrv/tree/d0a1eaf7ee15fcdf4f683388a88fec49078e6408/X11"
+      ],
+      "subsequent_updates": [
+        {
+          "component_id": "dep-007",
+          "updated": [
+            "include/X11/fonts/bdfint.h",
+            "include/X11/fonts/libxfont2.h"
+          ],
+          "removed": [
+            "include/X11/fonts/fontencc.h"
+          ],
+          "local_commit": "b0acf97cab01ff80ac70e96152252e58925aa858",
+          "reason": "全局 include 优先于组件目录；同步正式包公共副本，防止旧 BDF_GENPROPS 定义遮蔽新头文件。"
+        }
       ]
     },
     {

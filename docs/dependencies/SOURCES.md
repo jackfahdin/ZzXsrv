@@ -87,7 +87,7 @@
 
 ## 核心库与头文件
 
-`include/X11/` 和 `include/gl/` 含多个项目的副本，不能把整个目录等同于一个 xorgproto 提交。libxml2 仅能确定头文件声明 2.9.1，随附二进制的供应者与重建来源尚未闭合。
+`include/X11/` 和 `include/gl/` 含多个项目的副本，不能把整个目录等同于一个 xorgproto 提交。本轮仅同步 libXfont2 2.0.9 的 `bdfint.h`、`libxfont2.h` 公共副本并移除 `fontencc.h`，详见 [R4 报告](../validation/2026-09-14-font-dependencies.md)。libxml2 仅能确定头文件声明 2.9.1，随附二进制的供应者与重建来源尚未闭合。
 
 | 组件 / 本地位置 | 修订与证据性质 | 原始上游 / 实际继承 | 证据与限制 |
 | --- | --- | --- | --- |
