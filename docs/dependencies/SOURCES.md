@@ -52,7 +52,7 @@
 
 ### Windows 认证文件的本地兼容性修正
 
-本地提交 `281ee081e56ca22fe1a7fa55c7c1d3ff16f13c20` 修正服务器和 xauth 对二进制认证文件的文本模式读写。改动从本地继承源码及 Windows 实测推导，未下载或回补新的上游补丁；因此不增加 30 条 `applied_upstream_patches` 的数量。JSON 的 `local_compatibility_patches` 单独记录路径、基线与本地提交。[认证修复报告](../validation/2026-09-11-auth-binary.md)记录原因、测试及独立候选。维护者已确认本补充版本使用正常、双向复制未测试；修复已快进合入 master。
+本地提交 `281ee081e56ca22fe1a7fa55c7c1d3ff16f13c20` 修正服务器和 xauth 对二进制认证文件的文本模式读写。改动从本地继承源码及 Windows 实测推导，未下载或回补新的上游补丁；因此不增加 `applied_upstream_patches` 的数量。JSON 的 `local_compatibility_patches` 单独记录路径、基线与本地提交。[认证修复报告](../validation/2026-09-11-auth-binary.md)记录原因、测试及独立候选。维护者已确认本补充版本使用正常、双向复制未测试；修复已快进合入 master。
 
 ### 已整合的 XSYNC/PRESENT/屏保补丁
 
@@ -67,9 +67,9 @@
 | sync: restart trigger list iteration in SyncChangeCounter after TriggerFired | [bdd7bf57af208b1ddf57d4683d67104443b44812](https://gitlab.freedesktop.org/xorg/xserver/-/commit/bdd7bf57af208b1ddf57d4683d67104443b44812) | [固定 SHA API](https://api.github.com/repos/LizardByte-infrastructure/xserver/commits/bdd7bf57af208b1ddf57d4683d67104443b44812) | `fda4509c76185a42a87fccf6ed837dfef29f41c4` |
 | saver: re-fetch screen private after CheckScreenPrivate in CreateSaverWindow | [ecc634f1b2f7aa473d3a267eada98c4918bf9e05](https://gitlab.freedesktop.org/xorg/xserver/-/commit/ecc634f1b2f7aa473d3a267eada98c4918bf9e05) | [固定 SHA API](https://api.github.com/repos/LizardByte-infrastructure/xserver/commits/ecc634f1b2f7aa473d3a267eada98c4918bf9e05) | `fda4509c76185a42a87fccf6ed837dfef29f41c4` |
 
-### GLX 属性、字体消费方及 RANDR 候选补丁
+### 已整合的 GLX 属性、字体消费方及 RANDR 补丁
 
-三项分别提交，完整构建、350 项测试及独立运行通过，当前候选待验收，尚未合入 master；完整记录见[本组报告](../validation/2026-09-14-r3-final.md)。9 个上游补丁及 RANDR 本地清理补充不增加历史问题计数。
+三项分别提交并取得本版本实际使用确认，已快进合入 master；合入前后各 350 项测试通过、0 跳过，完整记录见[本组报告](../validation/2026-09-14-r3-final.md)。9 个上游补丁及 RANDR 本地清理补充不增加历史问题计数。传统字体、OpenGL 和双向复制未测试；临时分支及工作区登记保留。
 
 | 改动 | 上游 master / stable | 本地提交 |
 | --- | --- | --- |
