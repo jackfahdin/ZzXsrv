@@ -1,6 +1,6 @@
 # 依赖原始来源与导入记录
 
-更新日期：2026-09-11。项目：[ZzXsrv](https://github.com/jackfahdin/ZzXsrv)。维护方法见 [UPSTREAM.md](../maintenance/UPSTREAM.md)，机器可读完整字段见 [来源清单 JSON](SOURCES.json)。表中的本地位置和证据路径采用当前 `src/`、`third_party/`、`include/` 分层；“继承源码”URL 保留最初固定提交中的原路径。完整旧路径对应见[源码路径映射](../history/2026-09-10-source-path-mapping.json)。
+更新日期：2026-09-14。项目：[ZzXsrv](https://github.com/jackfahdin/ZzXsrv)。维护方法见 [UPSTREAM.md](../maintenance/UPSTREAM.md)，机器可读完整字段见 [来源清单 JSON](SOURCES.json)。表中的本地位置和证据路径采用当前 `src/`、`third_party/`、`include/` 分层；“继承源码”URL 保留最初固定提交中的原路径。完整旧路径对应见[源码路径映射](../history/2026-09-10-source-path-mapping.json)。
 
 ## 实际导入起点
 
@@ -52,11 +52,11 @@
 
 ### Windows 认证文件的本地兼容性修正
 
-本地提交 `281ee081e56ca22fe1a7fa55c7c1d3ff16f13c20` 修正服务器和 xauth 对二进制认证文件的文本模式读写。改动从本地继承源码及 Windows 实测推导，未下载或回补新的上游补丁；因此不增加 30 条 `applied_upstream_patches` 的数量。JSON 的 `local_compatibility_patches` 单独记录路径、基线与本地提交。[认证修复报告](../validation/2026-09-11-auth-binary.md)记录原因、测试及独立候选。本补充候选尚待实际使用确认，未合入 master。
+本地提交 `281ee081e56ca22fe1a7fa55c7c1d3ff16f13c20` 修正服务器和 xauth 对二进制认证文件的文本模式读写。改动从本地继承源码及 Windows 实测推导，未下载或回补新的上游补丁；因此不增加 30 条 `applied_upstream_patches` 的数量。JSON 的 `local_compatibility_patches` 单独记录路径、基线与本地提交。[认证修复报告](../validation/2026-09-11-auth-binary.md)记录原因、测试及独立候选。维护者已确认本补充版本使用正常、双向复制未测试；修复已快进合入 master。
 
-### XSYNC/PRESENT/屏保候选补丁
+### 已整合的 XSYNC/PRESENT/屏保补丁
 
-维护者已确认本组使用正常；合入前自动检查发现既有认证文件问题，整合暂缓，**未合入 master**。认证补充候选见上节。覆盖原审计的 6 项问题，共 6 个上游提交：销毁补丁共同覆盖两个问题，PRESENT 输出指针为配套修复，不额外计为 CVE。完整稳定分支 SHA、下载时间、作者及响应/补丁 SHA-256 见 JSON，[验证报告](../validation/2026-09-11-sync-present.md)记录本地适配和验收边界。
+维护者已确认本组及认证补充版本使用正常，**已快进合入 master**；双向复制未测试。认证补充修正见上节。覆盖原审计的 6 项问题，共 6 个上游提交：销毁补丁共同覆盖两个问题，PRESENT 输出指针为配套修复，不额外计为 CVE。完整稳定分支 SHA、下载时间、作者及响应/补丁 SHA-256 见 JSON，[验证报告](../validation/2026-09-11-sync-present.md)记录本地适配和验收边界。
 
 | 改动 | 上游 commit | 实际下载 | 本地源码提交 |
 | --- | --- | --- | --- |

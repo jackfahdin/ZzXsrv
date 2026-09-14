@@ -1,6 +1,6 @@
 {
   "schema_version": 2,
-  "updated": "2026-09-11",
+  "updated": "2026-09-14",
   "project": "https://github.com/jackfahdin/ZzXsrv",
   "description": "组件来源目录；记录证据类型，不依赖上游源码分支，不将声明版本视为逐字节来源证明。",
   "initial_collection": {
