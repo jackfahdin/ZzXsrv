@@ -12,3 +12,12 @@ EXPORTS
     crc32_combine_op
     inflateValidate
     inflateCodesUsed
+
+; size_t interfaces added in zlib 1.3.2
+    deflateBound_z
+    deflateUsed
+    compress_z
+    compress2_z
+    compressBound_z
+    uncompress_z
+    uncompress2_z
