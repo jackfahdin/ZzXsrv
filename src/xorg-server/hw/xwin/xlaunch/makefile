@@ -3,9 +3,9 @@ INCLUDELIBFILES = window\$(OBJDIR)\window.lib \
                   $(COMPONENT_LIBXCB_DIR)\src\$(OBJDIR)\libxcb.lib \
                   $(COMPONENT_LIBXAU_DIR)\$(OBJDIR)\libXau.lib
 
-CSRCS=config.cc main.cc
+CSRCS=config.cc main.cc xml_input.cpp
 
-INCLUDES += $(COMPONENT_LIBXML2_DIR)\include
+INCLUDES += $(LIBXMLINCLUDE) $(COMPONENT_LIBXML2_DIR)\source\include
 
 WINAPP = xlaunch
 
@@ -18,5 +18,5 @@ LIBDIRS=$(dir $(INCLUDELIBFILES))
 
 load_makefile $(LIBDIRS:%$(OBJDIR)\=%makefile MAKESERVER=0 DEBUG=$(DEBUG);)
 
-LINKLIBS += $(LIBXMLLIB) $(PTHREADLIB)
+LINKLIBS += $(LIBXMLLIB) $(PTHREADLIB) winhttp.lib
 

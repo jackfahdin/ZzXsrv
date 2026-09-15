@@ -26,6 +26,7 @@
 #include <libxml/parser.h>
 #include <libxml/tree.h>
 #include "config.h"
+#include "xml_input.h"
 #include "window/util.h"
 #include <stdexcept>
 
@@ -135,7 +136,7 @@ BOOL getAttributeBool(xmlNodePtr elem, const char *name, bool &ret)
 
 void CConfig::Load(const char *filename)
 {
-  xmlDocPtr doc = xmlReadFile(filename, NULL, 0);
+  xmlDocPtr doc = xlaunchReadXml(filename);
 
   xmlNodePtr root;
 

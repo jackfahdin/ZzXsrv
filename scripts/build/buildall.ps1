@@ -24,6 +24,7 @@ param(
     [string]$NasmPath,
     [string]$GperfPath,
     [string]$JomPath,
+    [string]$CMakePath,
     [string]$EnvironmentReport
 )
 
@@ -215,6 +216,11 @@ try {
     $cl = $nativeTools['cl.exe']
     $dumpbin = $nativeTools['dumpbin.exe']
     $msbuild = Find-BuildTool 'MSBuild.exe' -Candidates @((Join-Path $VisualStudioPath 'MSBuild\Current\Bin\MSBuild.exe'))
+    $cmake = if ($Stage -in @('All', 'Dependencies')) {
+        Find-BuildTool 'cmake.exe' $CMakePath @(
+            (Join-Path $VisualStudioPath 'Common7\IDE\CommonExtensions\Microsoft\CMake\CMake\bin\cmake.exe')
+        )
+    } else { $null }
     $searchRoots = @($env:ProgramFiles, ${env:ProgramFiles(x86)}, (Join-Path $env:LOCALAPPDATA 'Programs'))
     foreach ($drive in Get-PSDrive -PSProvider FileSystem) {
         if ($drive.Root -match '^[A-Za-z]:\\$') {
@@ -306,6 +312,10 @@ try {
     $mhmakeDirectory = if ($Architecture -eq 'x64') { 'Release64' } else { 'Release' }
     $mhmake = Join-Path $repoRoot "tools\mhmake\$mhmakeDirectory\mhmake.exe"
     In-BuildDirectory $repoRoot {
+        if ($Stage -in @('All', 'Dependencies', 'BuildTool')) {
+            # mhmake itself always uses Release, including Debug server builds.
+            Invoke-BuildCommand $msbuild @('tools\mhmake\mhmakevc10.sln', '-t:Build', '-p:Configuration=Release', "-p:Platform=$Architecture", "-m:$Jobs", '-nologo', '-v:minimal')
+        }
         if ($Stage -in @('All', 'Dependencies')) {
             Invoke-BuildCommand $msbuild @($freetypeSolution, '-t:Build', "-p:Configuration=$Configuration", "-p:Platform=$Architecture", "-m:$Jobs", '-nologo', '-v:minimal')
             $opensslDirectory = Join-Path $opensslRoot ($Configuration.ToLowerInvariant() + $suffix)
@@ -322,10 +332,14 @@ try {
                 $pthreadTarget = if ($Configuration -eq 'Debug') { 'VC-static-debug' } else { 'VC-static' }
                 Invoke-BuildCommand 'nmake.exe' @('/nologo', $pthreadTarget)
             }
-        }
-        if ($Stage -in @('All', 'Dependencies', 'BuildTool')) {
-            # mhmake itself always uses Release, including Debug server builds.
-            Invoke-BuildCommand $msbuild @('tools\mhmake\mhmakevc10.sln', '-t:Build', '-p:Configuration=Release', "-p:Platform=$Architecture", "-m:$Jobs", '-nologo', '-v:minimal')
+            $dependencyArguments = @("-P$Jobs", '-C', (Join-Path $repoRoot 'third_party\zlib'))
+            $dependencyArguments += if ($Configuration -eq 'Debug') { 'DEBUG=1' } else { 'DEBUG=0' }
+            Invoke-BuildCommand $mhmake $dependencyArguments
+            Invoke-BuildCommand -File 'powershell.exe' -Arguments @(
+                '-NoProfile', '-ExecutionPolicy', 'Bypass', '-File',
+                (Join-Path $repoRoot 'scripts\build\buildxml.ps1'),
+                '-Configuration', $Configuration, '-Architecture', $Architecture,
+                '-Jobs', "$Jobs", '-CMakePath', $cmake)
         }
         if ($Stage -in @('All', 'Server')) {
             if (-not (Test-Path -LiteralPath $mhmake)) { throw "Build mhmake/dependencies first: $mhmake" }

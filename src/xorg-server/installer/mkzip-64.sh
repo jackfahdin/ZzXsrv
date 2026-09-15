@@ -30,10 +30,10 @@ tar -rf $OutFile -C ../../../tools/plink/obj64/release plink.exe
 tar -rf $OutFile -C ../../../third_party/graphics/mesalib/src/obj64/release swrast_dri.dll
 tar -rf $OutFile -C ../hw/xwin/swrastwgl_dri/obj64/release swrastwgl_dri.dll
 tar -rf $OutFile -C ../../../third_party/graphics/dxtn/obj64/release dxtn.dll
-tar -rf $OutFile -C ../../../third_party/libxml2/bin64 libxml2-2.dll
-tar -rf $OutFile -C ../../../third_party/libxml2/bin64 libgcc_s_sjlj-1.dll
-tar -rf $OutFile -C ../../../third_party/libxml2/bin64 libiconv-2.dll
-tar -rf $OutFile -C ../../../third_party/libxml2/bin64 libwinpthread-1.dll
+tar -rf $OutFile -C ../../../third_party/libxml2/build/x64/Release libxml2.dll
+tar -rf $OutFile -C ../../../third_party/libiconv/build/x64/Release libiconv.dll
+tar -rf $OutFile -C ../../../third_party/libxml2 --transform='s|^source/Copyright$|licenses/libxml2/Copyright|;s|^README.vcxsrv.md$|licenses/libxml2/README.vcxsrv.md|' source/Copyright README.vcxsrv.md
+tar -rf $OutFile -C ../../../third_party/libiconv --transform='s|^source/|licenses/libiconv/|;s|^README.vcxsrv.md$|licenses/libiconv/README.vcxsrv.md|' source/COPYING.LIB source/COPYING README.vcxsrv.md
 tar -rf $OutFile -C ../../../third_party/zlib/obj64/release zlib1.dll
 tar -rf $OutFile -C ../../../third_party/xorg/libxcb/src/obj64/release libxcb.dll
 tar -rf $OutFile -C ../../../third_party/xorg/libXau/obj64/release libXau.dll

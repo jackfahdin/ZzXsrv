@@ -7,6 +7,7 @@
 | 工具 | 要求 |
 | --- | --- |
 | Visual Studio 2022 | 安装“使用 C++ 的桌面开发”、v143 x86/x64 工具和 Windows SDK |
+| CMake | 3.21 或更新版本；优先使用 VS2022 随附的 CMake，也可用 `-CMakePath` 指定 |
 | Windows Python | 3.11 或更新版本，在同一个解释器中安装 lxml、Mako、PyYAML |
 | Strawberry Perl | 原生 Windows Perl |
 | NASM、WinFlexBison、gperf | 原生 Windows 可执行文件 |
@@ -40,14 +41,14 @@ powershell -NoProfile -ExecutionPolicy Bypass -File .\scripts\build\buildall.ps1
     -GperfPath D:\SoftWare\Qt\5.15.2\Src\gnuwin32\bin\gperf.exe
 ```
 
-还可使用 `-VisualStudioPath`（VS 安装目录）、`-PerlPath`、`-NasmPath` 和 `-JomPath`（可执行文件路径）。示例中的本机路径需要替换成实际安装位置。
+还可使用 `-VisualStudioPath`（VS 安装目录）、`-PerlPath`、`-NasmPath`、`-JomPath` 和 `-CMakePath`（可执行文件路径）。示例中的本机路径需要替换成实际安装位置。
 
 ## 构建阶段
 
 | 参数 | 执行内容 |
 | --- | --- |
 | `-Stage All` | 完整构建并整理便携运行目录，默认值 |
-| `-Stage Dependencies` | 构建 FreeType、OpenSSL、pthreads 和 mhmake |
+| `-Stage Dependencies` | 构建 mhmake、FreeType、OpenSSL、pthreads、zlib、libiconv 和 libxml2 |
 | `-Stage BuildTool` | 只构建 mhmake，始终使用 Release |
 | `-Stage Server` | 复用依赖和 mhmake，构建服务器并整理运行目录 |
 | `-Stage Portable` | 只根据已有产物整理运行目录，不编译 |
@@ -72,9 +73,11 @@ powershell -NoProfile -ExecutionPolicy Bypass -File .\scripts\build\buildall.ps1
 
 ## 依赖来源与构建边界
 
-当前流程仍使用仓库随附的 **libxml2 预编译库**。x64 构建链接 `third_party/libxml2/lib64/libxml2-2.lib`，运行目录从 `third_party/libxml2/bin64` 取得 `libxml2-2.dll`、`libiconv-2.dll`、`libwinpthread-1.dll` 和 `libgcc_s_sjlj-1.dll`。仓库同时保留 32 位文件，但它们不属于已记录的 x64 运行依赖。
+libxml2 2.15.4 与 GNU libiconv 1.19 从仓库固定源码通过 MSVC/CMake 构建，并链接同配置的 zlib。组件输出分别位于 `third_party/libxml2/build/<Architecture>/<Configuration>/` 和 `third_party/libiconv/build/<Architecture>/<Configuration>/`；XML 生成头文件位于前者的 `include/`。旧 XML 头文件、导入库及 DLL 已成套替换，不能再从历史运行目录混入。
 
-libxml2 头文件声明为 2.9.1，随附二进制的供应者、准确源码和重建来源尚未完全确认。构建通过不表示所有第三方依赖都从源码重建，也不表示重复构建的二进制逐字节相同。来源与未知项见[依赖来源清单](../dependencies/SOURCES.md)，预编译文件清单与产物哈希的历史记录见[本地维护基线](../validation/2026-09-09-baseline.md)。
+构建入口先生成 mhmake 和 zlib，再构建 iconv/XML；CMake 只用于此依赖子构建，不替代服务器的 mhmake 工程。独立子入口 [buildxml.ps1](../../scripts/build/buildxml.ps1) 要求先准备对应配置的 zlib 导入库。便携目录包含新 DLL 及其许可证和来源说明。
+
+XLaunch 保留本地压缩配置和 HTTP 配置读取。HTTP 传输使用 Windows WinHTTP，系统代理设置与历史 libxml2 环境变量代理不完全相同；HTTPS、代理和认证挑战未作本轮实际环境验收。来源、补丁及未知项见[依赖来源清单](../dependencies/SOURCES.md)，原 2.9.1 二进制的未知来源保留在[历史评估](../validation/2026-09-15-libxml2-assessment.md)。原生构建不等于所有第三方来源均已闭合，也不保证重复编译的二进制逐字节相同。
 
 ## 保存工具环境
 

@@ -1,6 +1,6 @@
 # 依赖原始来源与导入记录
 
-更新日期：2026-09-14。项目：[ZzXsrv](https://github.com/jackfahdin/ZzXsrv)。维护方法见 [UPSTREAM.md](../maintenance/UPSTREAM.md)，机器可读完整字段见 [来源清单 JSON](SOURCES.json)。表中的本地位置和证据路径采用当前 `src/`、`third_party/`、`include/` 分层；“继承源码”URL 保留最初固定提交中的原路径。完整旧路径对应见[源码路径映射](../history/2026-09-10-source-path-mapping.json)。
+更新日期：2026-09-15。项目：[ZzXsrv](https://github.com/jackfahdin/ZzXsrv)。维护方法见 [UPSTREAM.md](../maintenance/UPSTREAM.md)，机器可读完整字段见 [来源清单 JSON](SOURCES.json)。表中的本地位置和证据路径采用当前 `src/`、`third_party/`、`include/` 分层；“继承源码”URL 保留最初固定提交中的原路径。完整旧路径对应见[源码路径映射](../history/2026-09-10-source-path-mapping.json)。
 
 ## 实际导入起点
 
@@ -91,7 +91,7 @@
 
 ## 核心库与头文件
 
-`include/X11/` 和 `include/gl/` 含多个项目的副本，不能把整个目录等同于一个 xorgproto 提交。本轮仅同步 libXfont2 2.0.9 的 `bdfint.h`、`libxfont2.h` 公共副本并移除 `fontencc.h`，详见 [R4 报告](../validation/2026-09-14-font-dependencies.md)。libxml2 头文件声明及 x64 DLL 运行版本均已确认 2.9.1，原二进制供应者与精确构建来源尚未闭合；[重建评估](../validation/2026-09-15-libxml2-assessment.md)记录官方 2.15.4 的隔离试验和编码兼容性限制，生产库尚未替换。
+`include/X11/` 和 `include/gl/` 含多个项目的副本，不能把整个目录等同于一个 xorgproto 提交。本轮仅同步 libXfont2 2.0.9 的 `bdfint.h`、`libxfont2.h` 公共副本并移除 `fontencc.h`，详见 [R4 报告](../validation/2026-09-14-font-dependencies.md)。当前候选分支已从固定源码导入 libxml2 2.15.4 与 GNU libiconv 1.19，并同步公共 iconv 头文件；来源与文件摘要见各组件 README 和 JSON。原 2.9.1 二进制来源未知项保留为[历史评估](../validation/2026-09-15-libxml2-assessment.md)，不借新库导入修改历史结论。
 
 | 组件 / 本地位置 | 修订与证据性质 | 原始上游 / 实际继承 | 证据与限制 |
 | --- | --- | --- | --- |
@@ -119,7 +119,8 @@
 | expat<br>`third_party/expat` | 声明/源码记录：`2.6.2`；精确 tag/commit 未证实 | [原始上游](https://github.com/libexpat/libexpat)；[继承源码](https://github.com/marchaesen/vcxsrv/tree/d0a1eaf7ee15fcdf4f683388a88fec49078e6408/expat) | third_party/expat/lib/expat.h:1067-1069; docs/dependencies/packages.txt; docs/history/upstream-releases/releasenote_21.1.16.1.txt。本地版本和发布说明一致；精确下载归档、导入 tag/commit 与二进制重现关系未证实。 |
 | freetype<br>`third_party/fonts/freetype` | 正式源码包：`2.14.3`，保留本地适配 | [原始上游](https://gitlab.freedesktop.org/freetype/freetype)；[实际下载](https://mirror.rabisu.com/mirrors/savannah/freetype/freetype-2.14.3.tar.xz) | SHA-256 `36bc4f1cc413335368ee656c42afca65c5a3987e8768cc28cf11ba775e785a5f`；2026-09-14 从正式 2.14.3 包更新既有导入范围并加入新文件；保留本地 .gitignore、ftstring.vcproj、ftview.vcproj。与旧 2.13.3 正式包比较，其余已跟踪文件无本地改动。使用既有 MSBuild 配置；原始继承链接仅为历史。详见 [R4 报告](../validation/2026-09-14-font-dependencies.md)。 |
 | openssl<br>`third_party/openssl` | 声明/源码记录：`3.4.1`；精确 tag/commit 未证实 | [原始上游](https://github.com/openssl/openssl)；[继承源码](https://github.com/marchaesen/vcxsrv/tree/d0a1eaf7ee15fcdf4f683388a88fec49078e6408/openssl) | third_party/openssl/VERSION.dat; docs/dependencies/packages.txt; docs/history/upstream-releases/releasenote_21.1.16.1.txt。本地版本和发布说明一致；精确下载归档、导入 tag/commit 与二进制重现关系未证实。 |
-| libxml2 headers and binaries<br>`third_party/libxml2` | 头文件及 x64 运行版本：`2.9.1`；精确 tag/commit 未证实 | [原始上游](https://gitlab.gnome.org/GNOME/libxml2)；[继承源码](https://github.com/marchaesen/vcxsrv/tree/d0a1eaf7ee15fcdf4f683388a88fec49078e6408/libxml2) | 目录为头文件、DLL、导入库和导出表，没有完整实现源码。x64 __xmlParserVersion 实测 20901，哈希与边界见 [评估](../validation/2026-09-15-libxml2-assessment.md)；32 位未执行，原始下载提供方、构建参数与精确源码提交仍未知。 |
+| libxml2<br>`third_party/libxml2` | 官方源码包：`2.15.4` | [实际官方源码包](https://download.gnome.org/sources/libxml2/2.15/libxml2-2.15.4.tar.xz)；[导入说明](../../third_party/libxml2/README.vcxsrv.md) | 官方摘要匹配；完整 4426 个源码文件原样导入，逐文件原始 SHA-256 在 source-files.json；原生构建定义独立存放。候选尚待整包验收。 |
+| GNU libiconv<br>`third_party/libiconv` | 官方源码包：`1.19`，加固定 Windows 适配 | [GNU 包](https://ftp.gnu.org/pub/gnu/libiconv/libiconv-1.19.tar.gz)；[Winlibs 固定提交](https://github.com/winlibs/libiconv/tree/accac417318a3eef7402685a268cab8037e62ba1)；[导入说明](../../third_party/libiconv/README.vcxsrv.md) | 1112 个导入文件有原始 SHA-256；官方包摘要仅本地计算，未验证官方摘要/签名。5 个文件修改、3 个新增头文件另存补丁。 |
 | GNU regex / GNU portability snippets<br>`third_party/libregex` | 未知 / 未固定 | [原始上游](https://sourceware.org/git/glibc.git)；[继承源码](https://github.com/marchaesen/vcxsrv/tree/d0a1eaf7ee15fcdf4f683388a88fec49078e6408/libregex) | third_party/libregex/src/regex.c:1-19 identifies GNU C Library; third_party/libregex/src/nl_langinfo.c:1-16; third_party/libregex/src/langinfo.h:1-15。regex 主体为 glibc 派生；nl_langinfo/langinfo 为 GNU 可移植片段，精确 glibc/gnulib 导入版本及来源打包者未知。不能用版权年份推版本。 |
 | WinMain console adapter<br>`src/platform/libwinmain` | 未知 / 未固定 | 独立上游未知；[继承源码](https://github.com/marchaesen/vcxsrv/tree/d0a1eaf7ee15fcdf4f683388a88fec49078e6408/libwinmain) | src/platform/libwinmain/winmain.c; src/platform/libwinmain/makefile。继承 VcXsrv 的 Windows 入口/控制台适配；未发现独立第三方上游声明或版本。可追溯继承源 https://github.com/marchaesen/vcxsrv/tree/d0a1eaf7ee15fcdf4f683388a88fec49078e6408 |
 | libtxc_dxtn (O3D copy)<br>`third_party/graphics/dxtn` | 未知 / 未固定 | [原始上游](http://o3d.googlecode.com/svn/trunk/googleclient/third_party/libtxc_dxtn/files)；[继承源码](https://github.com/marchaesen/vcxsrv/tree/d0a1eaf7ee15fcdf4f683388a88fec49078e6408/dxtn) | third_party/graphics/dxtn/getsrc.btm:1; third_party/graphics/dxtn/Changelog。脚本记录 Google O3D 的 libtxc_dxtn 副本；svn export 未固定 revision。Changelog 最后 20070518 不是已确认导入版本；原 URL 为历史来源。 |
@@ -215,7 +216,7 @@
 | xcb-proto<br>`third_party/xorg/libxcb/xcb-proto` | 记录 commit：`4d2879ad9e394ff832762e8961eca9415cc9934c` | [原始上游](https://gitlab.freedesktop.org/xorg/proto/xcbproto/-/commit/4d2879ad9e394ff832762e8961eca9415cc9934c)；[继承源码](https://github.com/marchaesen/vcxsrv/tree/d0a1eaf7ee15fcdf4f683388a88fec49078e6408/libxcb/xcb-proto) | docs/history/upstream-releases/releasenote_21.1.16.1.txt: Changes in 21.1.16 records nested xcb-proto under libxcb at 4d2879ad9e394ff832762e8961eca9415cc9934c; third_party/xorg/libxcb/xcb-proto/configure.ac: 1.17.0。原作者记录同步 SHA，未逐文件证实等同上游。 |
 | xtrans<br>`include/X11/xtrans` | 记录 commit：`c8c291390f4befb7d813d7fce6caeb6607561903` | [原始上游](https://gitlab.freedesktop.org/xorg/lib/libxtrans/-/commit/c8c291390f4befb7d813d7fce6caeb6607561903)；[继承源码](https://github.com/marchaesen/vcxsrv/tree/d0a1eaf7ee15fcdf4f683388a88fec49078e6408/X11/xtrans) | docs/history/upstream-releases/releasenote_21.1.16.1.txt: Changes in 21.1.16 records libxtrans c8c291390f4befb7d813d7fce6caeb6607561903; include/X11/xtrans/configure.ac: 1.5.2。原作者记录同步 SHA，未逐文件证实等同上游。 |
 | Chrome basictypes/port/build_config via O3D<br>`third_party/graphics/dxtn/base; third_party/graphics/dxtn/build` | 未知 / 未固定 | [原始上游](http://o3d.googlecode.com/svn/trunk/googleclient/third_party/chrome/files)；[继承源码1](https://github.com/marchaesen/vcxsrv/tree/d0a1eaf7ee15fcdf4f683388a88fec49078e6408/dxtn/base)、[继承源码2](https://github.com/marchaesen/vcxsrv/tree/d0a1eaf7ee15fcdf4f683388a88fec49078e6408/dxtn/build) | third_party/graphics/dxtn/getsrc.btm:2-4。未固定 SVN revision；basictypes.h、port.h、build_config.h 是明确独立嵌入来源。 |
-| GNU libiconv header<br>`include/iconv.h` | 声明/源码记录：`1.9 (0x0109)`；精确 tag/commit 未证实 | [原始上游](https://www.gnu.org/software/libiconv/)；[继承源码](https://github.com/marchaesen/vcxsrv/tree/d0a1eaf7ee15fcdf4f683388a88fec49078e6408/include/iconv.h) | include/iconv.h:1-24。仅头文件版本；导入提交未知。 |
+| GNU libiconv header<br>`include/iconv.h` | 版本：`1.19 (0x0113)` | [固定 Windows 适配头文件](https://github.com/winlibs/libiconv/blob/accac417318a3eef7402685a268cab8037e62ba1/source/include/iconv.h) | 与本仓库原生 libiconv 1.19 的头文件同步；旧 1.9 副本由本次更新替代。 |
 | Toni Ronkko dirent<br>`include/dirent.h` | 未知 / 未固定 | [原始上游](https://github.com/tronkko/dirent)；[继承源码](https://github.com/marchaesen/vcxsrv/tree/d0a1eaf7ee15fcdf4f683388a88fec49078e6408/include/dirent.h) | include/dirent.h:1-72。署名与变更历史最新 2010-08-11；日期不是证实的 release 版本。 |
 | Alexander Chemeris MSVC integer headers<br>`include/inttypes.h; include/stdint.h` | 未知 / 未固定 | 独立上游未知；[继承源码1](https://github.com/marchaesen/vcxsrv/tree/d0a1eaf7ee15fcdf4f683388a88fec49078e6408/include/inttypes.h)、[继承源码2](https://github.com/marchaesen/vcxsrv/tree/d0a1eaf7ee15fcdf4f683388a88fec49078e6408/include/stdint.h) | include/inttypes.h:1-14; include/stdint.h。原作者署名保留；具体包版本/下载地址未知。 |
 | XCB installed/generated headers<br>`include/xcb` | 未知 / 未固定 | [原始上游](https://gitlab.freedesktop.org/xorg/lib/libxcb)；[继承源码](https://github.com/marchaesen/vcxsrv/tree/d0a1eaf7ee15fcdf4f683388a88fec49078e6408/include/xcb) | include/xcb/xcb.h; include/xcb/xproto.h; include/xcb/xcb_image.h; include/xcb/xcb_icccm.h; include/xcb/xcb_ewmh.h; include/xcb/xcb_aux.h。包含 third_party/xorg/libxcb/xcb-proto 生成头和 xcb-util、xcb-util-image、xcb-util-wm、xcb-util-errors 的接口副本；除仓库对应源码已单列外，utility 头精确导入版本未知。 |
@@ -303,6 +304,8 @@
 | jom<br>`scripts/build/buildall.ps1 (external native tools)` | 未知 / 未固定 | [原始上游](https://code.qt.io/cgit/qt-labs/jom.git/)；[构建要求](https://github.com/jackfahdin/ZzXsrv/blob/b8be16d052c1665a0f5fe7c497d5b1a5e783c3ca/buildall.ps1) | scripts/build/buildall.ps1; README.md。可选工具，未找到时使用已有构建回退。 |
 | Git for Windows<br>`scripts/build/buildall.ps1 (external native tools)` | 未知 / 未固定 | [原始上游](https://github.com/git-for-windows/git)；[构建要求](https://github.com/jackfahdin/ZzXsrv/blob/b8be16d052c1665a0f5fe7c497d5b1a5e783c3ca/buildall.ps1) | scripts/build/buildall.ps1; README.md。版本管理和环境报告依赖，源码未导入。 |
 
+| CMake<br>`scripts/build/buildxml.ps1 (external native tools)` | 要求：`>=3.21`，VS 2022 生成器 | [工具提供方](https://cmake.org/)；[本地构建指南](../build/WINDOWS.md) | 原生 XML 子构建使用；优先 VS 随附版本，可显式覆盖。工具源码未导入，不在构建时下载；实际版本记入验证证据。 |
+
 ## 继承的 Docker 配方声明（外部）
 
 这是 docker/Dockerfile 的旧配方，包括 Cygwin 与旧 Python；不是当前原生构建要求，也不代表当前开发机安装状态。浮动包无法从配方恢复精确源码 tag/commit。
@@ -345,4 +348,4 @@
 
 每次实际更新组件，同时更新此文档及 JSON：记录官方固定修订、实际下载链接、日期、源码包 SHA-256（适用时）、本地路径、嵌套来源、裁剪与适配、验证报告。仍未知的信息继续保留，不用版本猜测替代。只在 master 记录更新，不创建长期上游源码分支。
 
-本轮共记录 196 条来源或构建声明，其中字体包 40 项。它们不是 196 个独立运行依赖；同一项目可能分别存在于主目录、嵌套副本和可选声明中。
+本轮共记录 198 条来源或构建声明，其中字体包 40 项。它们不是 198 个独立运行依赖；同一项目可能分别存在于主目录、嵌套副本和可选声明中。

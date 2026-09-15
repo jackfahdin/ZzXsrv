@@ -1,6 +1,6 @@
 {
   "schema_version": 2,
-  "updated": "2026-09-14",
+  "updated": "2026-09-15",
   "project": "https://github.com/jackfahdin/ZzXsrv",
   "description": "组件来源目录；记录证据类型，不依赖上游源码分支，不将声明版本视为逐字节来源证明。",
   "initial_collection": {
@@ -695,36 +695,46 @@
       "actual_import_urls": []
     },
     {
-      "name": "libxml2 headers and binaries",
+      "name": "libxml2",
       "path": "third_party/libxml2",
-      "revision": "2.9.1",
-      "revision_kind": "declared_header_version",
+      "revision": "2.15.4",
+      "revision_kind": "official_release_archive",
       "upstream_url": "https://gitlab.gnome.org/GNOME/libxml2",
       "evidence": [
-        "third_party/libxml2/include/libxml/xmlversion.h:32",
-        "third_party/libxml2/createimplib.txt",
-        "git ls-files third_party/libxml2",
-        "docs/validation/2026-09-15-libxml2-assessment.md: x64 runtime version probe"
+        "third_party/libxml2/source/VERSION",
+        "third_party/libxml2/source-files.json",
+        "third_party/libxml2/README.vcxsrv.md",
+        "docs/validation/2026-09-15-libxml2-compatibility.md"
       ],
-      "confidence": "medium",
-      "notes": "目录是头文件、32/64 位 DLL、导入库与导出表；完整源码未内嵌。DLL/导入库原始下载提供方、构建参数、精确源码提交未知。头文件声明 2.9.1，2026-09-15 x64 DLL 的 __xmlParserVersion 实测为 20901；32 位 DLL 未执行。2.15.4 仅做忽略目录内重建评估，未替换生产依赖。",
-      "runtime_verification": {
-        "date": "2026-09-15",
-        "architecture": "x64",
-        "version_string": "20901",
-        "dll_sha256": "3c68a190dc6d550334ff9d0a506e9526105b008364dad0915562413ceec092cb",
-        "report": "../validation/2026-09-15-libxml2-assessment.md"
-      },
+      "confidence": "high",
+      "notes": "候选分支从官方 2.15.4 包导入完整源码，source/ 未改动；使用独立 MSVC/CMake 构建定义。历史 2.9.1 二进制来源未知项保留在旧评估记录，不归属于新源码。",
       "nested": false,
       "id": "dep-028",
       "category": "core_libraries_headers",
       "inherited_material_urls": [
         "https://github.com/marchaesen/vcxsrv/tree/d0a1eaf7ee15fcdf4f683388a88fec49078e6408/libxml2"
       ],
-      "import_method": "inherited_vcxsrv_source_collection",
+      "import_method": "official_release_archive",
       "actual_import_urls": [
-        "https://github.com/marchaesen/vcxsrv/tree/d0a1eaf7ee15fcdf4f683388a88fec49078e6408/libxml2"
-      ]
+        "https://download.gnome.org/sources/libxml2/2.15/libxml2-2.15.4.tar.xz"
+      ],
+      "previous_revision": "2.9.1",
+      "historical_runtime_verification": {
+        "date": "2026-09-15",
+        "architecture": "x64",
+        "version_string": "20901",
+        "dll_sha256": "3c68a190dc6d550334ff9d0a506e9526105b008364dad0915562413ceec092cb",
+        "report": "../validation/2026-09-15-libxml2-assessment.md"
+      },
+      "release_archive": {
+        "version": "2.15.4",
+        "actual_url": "https://download.gnome.org/sources/libxml2/2.15/libxml2-2.15.4.tar.xz",
+        "sha256": "98087fd181d9070724f3fbc65c7377db03038eb92bd882374daff44940138821",
+        "published_sha256_verified": true,
+        "checksum_url": "https://download.gnome.org/sources/libxml2/2.15/libxml2-2.15.4.sha256sum",
+        "imported_files": 4426,
+        "file_manifest": "third_party/libxml2/source-files.json"
+      }
     },
     {
       "name": "GNU regex / GNU portability snippets",
@@ -962,24 +972,27 @@
     {
       "name": "GNU libiconv header",
       "path": "include/iconv.h",
-      "revision": "1.9 (0x0109)",
-      "revision_kind": "declared_header_version",
+      "revision": "1.19 (0x0113)",
+      "revision_kind": "generated_header_from_fixed_windows_port",
       "upstream_url": "https://www.gnu.org/software/libiconv/",
       "evidence": [
-        "include/iconv.h:1-24"
+        "include/iconv.h",
+        "third_party/libiconv/source/include/iconv.h",
+        "third_party/libiconv/README.vcxsrv.md"
       ],
       "confidence": "high",
-      "notes": "仅头文件版本；导入提交未知。",
+      "notes": "与 third_party/libiconv/source/include/iconv.h 同步，替代原 1.9 公共头文件；具体官方源码和 Windows 适配来源见 dep-197。",
       "nested": true,
       "id": "dep-038",
       "category": "embedded_dependencies",
       "inherited_material_urls": [
         "https://github.com/marchaesen/vcxsrv/tree/d0a1eaf7ee15fcdf4f683388a88fec49078e6408/include/iconv.h"
       ],
-      "import_method": "inherited_vcxsrv_source_collection",
+      "import_method": "synchronized_native_libiconv_header",
       "actual_import_urls": [
-        "https://github.com/marchaesen/vcxsrv/tree/d0a1eaf7ee15fcdf4f683388a88fec49078e6408/include/iconv.h"
-      ]
+        "https://github.com/winlibs/libiconv/tree/accac417318a3eef7402685a268cab8037e62ba1/source/include/iconv.h"
+      ],
+      "previous_revision": "1.9 (0x0109)"
     },
     {
       "name": "Toni Ronkko dirent",
@@ -4964,6 +4977,73 @@
       "inherited_material_urls": [],
       "declaration_url": "https://github.com/jackfahdin/ZzXsrv/blob/b8be16d052c1665a0f5fe7c497d5b1a5e783c3ca/buildall.ps1",
       "path_before_layout_reorganization": "buildall.ps1 (external native tools)"
+    },
+    {
+      "id": "dep-197",
+      "name": "GNU libiconv",
+      "path": "third_party/libiconv",
+      "revision": "1.19",
+      "revision_kind": "release_archive_with_recorded_windows_adaptations",
+      "upstream_url": "https://www.gnu.org/software/libiconv/",
+      "category": "core_libraries_headers",
+      "nested": false,
+      "confidence": "high",
+      "import_method": "official_release_archive_with_fixed_windows_port_files",
+      "actual_import_urls": [
+        "https://ftp.gnu.org/pub/gnu/libiconv/libiconv-1.19.tar.gz",
+        "https://github.com/winlibs/libiconv/tree/accac417318a3eef7402685a268cab8037e62ba1"
+      ],
+      "evidence": [
+        "third_party/libiconv/README.vcxsrv.md",
+        "third_party/libiconv/source-files.json",
+        "third_party/libiconv/msvc-compat.patch"
+      ],
+      "notes": "完整官方源码加固定 Winlibs 提交中的 5 个修改文件和 3 个生成/配置头；不导入备份 aliases.h.orig，不执行其项目清理脚本。转换表未修改。源码包摘要为本地计算，未验证发布签名或官方摘要。",
+      "release_archive": {
+        "actual_url": "https://ftp.gnu.org/pub/gnu/libiconv/libiconv-1.19.tar.gz",
+        "sha256": "88dd96a8c0464eca144fc791ae60cd31cd8ee78321e67397e25fc095c4a19aa6",
+        "published_sha256_verified": false,
+        "signature_verified": false,
+        "imported_files": 1112,
+        "file_manifest": "third_party/libiconv/source-files.json"
+      },
+      "windows_adaptation": {
+        "repository": "https://github.com/winlibs/libiconv",
+        "commit": "accac417318a3eef7402685a268cab8037e62ba1",
+        "archive_url": "https://codeload.github.com/winlibs/libiconv/zip/accac417318a3eef7402685a268cab8037e62ba1",
+        "archive_sha256": "f1fed410a2a93570f1f669148664cecebbf816e2856e30e57926009b4286e101",
+        "modified_files": [
+          "lib/aliases.h",
+          "lib/canonical.h",
+          "lib/canonical_dos.h",
+          "lib/canonical_local.h",
+          "lib/iconv.c"
+        ],
+        "added_files": [
+          "config.h",
+          "include/iconv.h",
+          "lib/localcharset.h"
+        ]
+      }
+    },
+    {
+      "id": "dep-198",
+      "name": "CMake",
+      "path": "scripts/build/buildxml.ps1 (external native tools)",
+      "revision": ">=3.21 for Visual Studio 17 2022 generator",
+      "revision_kind": "external_tool_requirement",
+      "upstream_url": "https://cmake.org/",
+      "evidence": [
+        "scripts/build/buildall.ps1",
+        "scripts/build/buildxml.ps1",
+        "docs/build/WINDOWS.md"
+      ],
+      "confidence": "declared-requirement-only",
+      "notes": "原生 XML 依赖子构建使用；优先 VS 随附 CMake，允许显式路径覆盖，不在构建时下载。当前验证使用 3.31.6-msvc6；版本下限不是固定工具源码。",
+      "category": "native_build_tools",
+      "import_method": "declaration_only_not_imported",
+      "actual_import_urls": [],
+      "inherited_material_urls": []
     }
   ],
   "applied_upstream_patches": [

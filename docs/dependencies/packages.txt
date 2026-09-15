@@ -55,6 +55,8 @@ libXpm-3.5.17
 libXrender-0.9.11
 libXt-1.3.0
 libfontenc git version
+libiconv-1.19
+libxml2-2.15.4
 libxcb git version
 libxkbfile-1.1.2
 mesa git version

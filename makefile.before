@@ -129,4 +129,15 @@ FREETYPELIB:=$(COMPONENT_FREETYPE_DIR)\objs\Win32\Release\freetype.lib
 endif
 OPENSSLLIB:=$(COMPONENT_OPENSSL_DIR)\release$(SSLSUFFIX)\libssl.lib $(COMPONENT_OPENSSL_DIR)\release$(SSLSUFFIX)\libcrypto.lib
 endif
-LIBXMLLIB:=$(COMPONENT_LIBXML2_DIR)\lib$(OBJDIREXTRA)\libxml2-2.lib
+ifeq ($(IS64),1)
+XMLARCH=x64
+else
+XMLARCH=Win32
+endif
+ifeq ($(DEBUG),1)
+XMLCONFIG=Debug
+else
+XMLCONFIG=Release
+endif
+LIBXMLLIB:=$(COMPONENT_LIBXML2_DIR)\build\$(XMLARCH)\$(XMLCONFIG)\libxml2.lib
+LIBXMLINCLUDE:=$(COMPONENT_LIBXML2_DIR)\build\$(XMLARCH)\$(XMLCONFIG)\include

@@ -1,0 +1,3 @@
+source/** -text -whitespace
+# Keep the recorded upstream adaptation diff verbatim.
+msvc-compat.patch -text -whitespace

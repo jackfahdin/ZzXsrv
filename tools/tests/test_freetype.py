@@ -119,14 +119,15 @@ class FreeTypeConsumerTests(unittest.TestCase):
         libraries = [
             ROOT / 'third_party/fonts/fontconfig/src/obj64/release/libfontconfig.lib',
             FREETYPE / 'objs/x64/Release/freetype.lib',
-            ROOT / 'third_party/libxml2/lib64/libxml2-2.lib',
+            ROOT / 'third_party/libxml2/build/x64/Release/libxml2.lib',
             ROOT / 'third_party/pthreads/libpthreadVC364.lib',
         ]
         for library in libraries:
             required_file(library)
         shutil.copy2(required_file(FREETYPE / 'objs/x64/Release/freetype.dll'), self.work)
-        for name in ('libxml2-2.dll', 'libiconv-2.dll', 'libwinpthread-1.dll', 'libgcc_s_sjlj-1.dll'):
-            shutil.copy2(required_file(ROOT / 'third_party/libxml2/bin64' / name), self.work)
+        shutil.copy2(required_file(ROOT / 'third_party/libxml2/build/x64/Release/libxml2.dll'), self.work)
+        shutil.copy2(required_file(ROOT / 'third_party/libiconv/build/x64/Release/libiconv.dll'), self.work)
+        shutil.copy2(required_file(ROOT / 'third_party/zlib/obj64/release/zlib1.dll'), self.work)
         exe = self.work / 'freetype_fontconfig.exe'
         run_logged([shutil.which('cl.exe'), '/nologo', '/std:c11', '/W4', '/WX', '/MD',
                     '/I' + str(FREETYPE / 'include'),
