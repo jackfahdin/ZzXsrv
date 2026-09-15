@@ -284,26 +284,41 @@
     {
       "name": "libXpm",
       "path": "third_party/xorg/libXpm",
-      "revision": "3.5.17",
-      "revision_kind": "declared_version",
+      "revision": "3.5.19",
+      "revision_kind": "release_archive_with_local_adaptations",
       "upstream_url": "https://gitlab.freedesktop.org/xorg/lib/libxpm",
       "evidence": [
-        "third_party/xorg/libXpm/configure.ac: AC_INIT declares 3.5.17",
-        "docs/history/upstream-releases/releasenote_21.1.16.1.txt: Changes in 21.1.10 lists libXpm-3.5.17",
-        "docs/dependencies/packages.txt"
+        "third_party/xorg/libXpm/source-files.json",
+        "third_party/xorg/libXpm/patches/windows.patch",
+        "docs/validation/2026-09-15-r8-dependencies.md"
       ],
       "confidence": "high",
-      "notes": "版本记录一致；没有精确导入提交或下载归档校验值，不能把猜测的 release tag 当成导入点。",
+      "notes": "官方发布包逐文件记录；保留或修正 Windows 移植，原始散列、落盘散列和补丁分列。历史继承证据见 previous_record。",
       "nested": false,
       "id": "dep-011",
       "category": "core_libraries_headers",
       "inherited_material_urls": [
         "https://github.com/marchaesen/vcxsrv/tree/d0a1eaf7ee15fcdf4f683388a88fec49078e6408/libXpm"
       ],
-      "import_method": "inherited_vcxsrv_source_collection",
+      "import_method": "official_release_archive_preserving_local_adaptations",
       "actual_import_urls": [
-        "https://github.com/marchaesen/vcxsrv/tree/d0a1eaf7ee15fcdf4f683388a88fec49078e6408/libXpm"
-      ]
+        "https://xorg.freedesktop.org/archive/individual/lib/libXpm-3.5.19.tar.xz"
+      ],
+      "previous_record": {
+        "revision": "3.5.17",
+        "revision_kind": "declared_version",
+        "upstream_url": "https://gitlab.freedesktop.org/xorg/lib/libxpm",
+        "evidence": [
+          "third_party/xorg/libXpm/configure.ac: AC_INIT declares 3.5.17",
+          "docs/history/upstream-releases/releasenote_21.1.16.1.txt: Changes in 21.1.10 lists libXpm-3.5.17",
+          "docs/dependencies/packages.txt"
+        ],
+        "notes": "版本记录一致；没有精确导入提交或下载归档校验值，不能把猜测的 release tag 当成导入点。",
+        "actual_import_urls": [
+          "https://github.com/marchaesen/vcxsrv/tree/d0a1eaf7ee15fcdf4f683388a88fec49078e6408/libXpm"
+        ]
+      },
+      "archive_sha256": "ad3576d689221a39dc728f0e0dc02ca7bb6a0d724c9a77fd1bfa1e9af83be900"
     },
     {
       "name": "libXrender",
@@ -3039,27 +3054,42 @@
     {
       "name": "zlib",
       "path": "third_party/zlib",
-      "revision": "1.3",
-      "revision_kind": "declared_version",
+      "revision": "1.3.2",
+      "revision_kind": "release_archive_with_local_adaptations",
       "upstream_url": "https://zlib.net/",
       "evidence": [
-        "third_party/zlib/zlib.h:40-41: ZLIB_VERSION 1.3, ZLIB_VERNUM 0x1300",
-        "third_party/zlib/README:3: zlib 1.3",
-        "docs/dependencies/packages.txt:81: zlib-1.3",
-        "docs/history/upstream-releases/releasenote_21.1.16.1.txt:162: Changes in 21.1.10 lists zlib-1.3"
+        "third_party/zlib/source-files.json",
+        "third_party/zlib/patches/windows.patch",
+        "docs/validation/2026-09-15-r8-dependencies.md"
       ],
       "confidence": "high",
-      "notes": "根目录完整 zlib 源码；区别于 FreeType 内嵌副本和 Meson wrap。版本证据一致，精确导入 commit/tag 或原始归档校验未知，不能直接认定某个同名 tag 为导入点。",
+      "notes": "官方发布包逐文件记录；保留或修正 Windows 移植，原始散列、落盘散列和补丁分列。历史继承证据见 previous_record。",
       "nested": false,
       "id": "dep-101",
       "category": "core_libraries_headers",
       "inherited_material_urls": [
         "https://github.com/marchaesen/vcxsrv/tree/d0a1eaf7ee15fcdf4f683388a88fec49078e6408/zlib"
       ],
-      "import_method": "inherited_vcxsrv_source_collection",
+      "import_method": "official_release_archive_preserving_local_adaptations",
       "actual_import_urls": [
-        "https://github.com/marchaesen/vcxsrv/tree/d0a1eaf7ee15fcdf4f683388a88fec49078e6408/zlib"
-      ]
+        "https://zlib.net/fossils/zlib-1.3.2.tar.gz"
+      ],
+      "previous_record": {
+        "revision": "1.3",
+        "revision_kind": "declared_version",
+        "upstream_url": "https://zlib.net/",
+        "evidence": [
+          "third_party/zlib/zlib.h:40-41: ZLIB_VERSION 1.3, ZLIB_VERNUM 0x1300",
+          "third_party/zlib/README:3: zlib 1.3",
+          "docs/dependencies/packages.txt:81: zlib-1.3",
+          "docs/history/upstream-releases/releasenote_21.1.16.1.txt:162: Changes in 21.1.10 lists zlib-1.3"
+        ],
+        "notes": "根目录完整 zlib 源码；区别于 FreeType 内嵌副本和 Meson wrap。版本证据一致，精确导入 commit/tag 或原始归档校验未知，不能直接认定某个同名 tag 为导入点。",
+        "actual_import_urls": [
+          "https://github.com/marchaesen/vcxsrv/tree/d0a1eaf7ee15fcdf4f683388a88fec49078e6408/zlib"
+        ]
+      },
+      "archive_sha256": "bb329a0a2cd0274d05519d61c667c062e06990d72e125ee2dfa8de64f0119d16"
     },
     {
       "name": "xorgproto (recorded source; scattered protocol headers)",
@@ -3222,23 +3252,38 @@
     {
       "name": "xkbcomp",
       "path": "third_party/xorg/xkbcomp",
-      "revision": "9cb80be3bd01bab4eba6a8aea7767c36b2284845",
-      "revision_kind": "reported_upstream_commit",
-      "upstream_url": "https://gitlab.freedesktop.org/xorg/app/xkbcomp/-/commit/9cb80be3bd01bab4eba6a8aea7767c36b2284845",
+      "revision": "1.5.0",
+      "revision_kind": "release_archive_with_local_adaptations",
+      "upstream_url": "https://gitlab.freedesktop.org/xorg/app/xkbcomp",
       "evidence": [
-        "docs/history/upstream-releases/releasenote_21.1.16.1.txt:16"
+        "third_party/xorg/xkbcomp/source-files.json",
+        "third_party/xorg/xkbcomp/patches/windows.patch",
+        "docs/validation/2026-09-15-r8-dependencies.md"
       ],
       "confidence": "high-reported,remote-unverified",
-      "notes": "发行说明记录的固定提交，当前包含VcXsrv及fork修改。远端对象未独立验证。",
+      "notes": "官方发布包逐文件记录；保留或修正 Windows 移植，原始散列、落盘散列和补丁分列。历史继承证据见 previous_record。",
       "id": "dep-109",
       "category": "server_apps_tools",
       "inherited_material_urls": [
         "https://github.com/marchaesen/vcxsrv/tree/d0a1eaf7ee15fcdf4f683388a88fec49078e6408/xkbcomp"
       ],
-      "import_method": "inherited_vcxsrv_source_collection",
+      "import_method": "official_release_archive_preserving_local_adaptations",
       "actual_import_urls": [
-        "https://github.com/marchaesen/vcxsrv/tree/d0a1eaf7ee15fcdf4f683388a88fec49078e6408/xkbcomp"
-      ]
+        "https://xorg.freedesktop.org/archive/individual/app/xkbcomp-1.5.0.tar.xz"
+      ],
+      "previous_record": {
+        "revision": "9cb80be3bd01bab4eba6a8aea7767c36b2284845",
+        "revision_kind": "reported_upstream_commit",
+        "upstream_url": "https://gitlab.freedesktop.org/xorg/app/xkbcomp/-/commit/9cb80be3bd01bab4eba6a8aea7767c36b2284845",
+        "evidence": [
+          "docs/history/upstream-releases/releasenote_21.1.16.1.txt:16"
+        ],
+        "notes": "发行说明记录的固定提交，当前包含VcXsrv及fork修改。远端对象未独立验证。",
+        "actual_import_urls": [
+          "https://github.com/marchaesen/vcxsrv/tree/d0a1eaf7ee15fcdf4f683388a88fec49078e6408/xkbcomp"
+        ]
+      },
+      "archive_sha256": "2ac31f26600776db6d9cd79b3fcd272263faebac7eb85fb2f33c7141b8486060"
     },
     {
       "name": "xserver",
