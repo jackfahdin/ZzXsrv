@@ -3,7 +3,7 @@
 日期：2026-09-15。基线：`20901884259bacfe34b9ca435c81021862800a5a`。
 分支：`codex/r8-20260915`，工作区：`D:/File/Program/GitHub/zzxsrv-r8-20260915`。
 
-状态：R8 候选已就绪。源码导入、独立审查、完整构建及提交前后各 420 项实际产物回归通过，0 跳过；独立运行检查 PASS。构建源码为 `4f8ddf84ae9f7e1da90a884577c31fa703f04725`。尚未取得本版本人工反馈，未合入或推送。R7 和更早工作区、运行目录继续保留。
+状态：2026-09-15 取得“R8 正常，合入”的反馈后，已快进合入 master。源码导入、独立审查、完整构建及提交前后各 420 项实际产物回归通过，0 跳过；独立运行检查 PASS。构建源码为 `4f8ddf84ae9f7e1da90a884577c31fa703f04725`。反馈记录为本版本实际使用正常，不补造逐项明细。未推送，R8、R7 和更早工作区、运行目录继续保留。
 
 ## 来源与范围
 
@@ -64,8 +64,18 @@ Git 索引首次复核发现继承 `.gitignore` 的 CRLF 落盘字节与旧索�
 
 最终证据包括 `build-first-outcome.json`、`environment-final.json`、`build-final-outcome.json`、`tests-final.log`、`zlib-exports.json`、`zlib-example/example.log`、`runtime/result.json`、`portable-files.json` 与 `verification.json`。`verify-candidate.py` 复核测试、来源、实际文件集合、产物摘要、R7 保护、主线未变和文档链接。之后只补充本文及状态文档，不改变生产输入。
 
-运行入口：`D:/File/Program/GitHub/zzxsrv-r8-20260915/dist/x64/Release/xlaunch.exe`。请在新目录验证启动、gitk 操作、中文显示、键盘字母/符号/方向键/常用快捷键，以及关闭后重启。可按实际结果回复“R8 正常，合入”，或描述异常；此处是验收建议，不是已取得反馈。
+运行入口：`D:/File/Program/GitHub/zzxsrv-r8-20260915/dist/x64/Release/xlaunch.exe`。已取得“R8 正常，合入”的实际反馈并整合，继续使用这个 R8 目录；主目录旧 dist 未重建。
 
 ## 验证边界
 
-本轮目标为完整 x64 Release；完整 Win32/Debug、NSIS 安装包、上游全部测试集和逐项安全公告复现不在本轮验证范围。人工启动、gitk、中文、重启仍需对本轮新目录反馈；传统字体、OpenGL、双向剪贴板等未确认场景不补记为通过。
+本轮目标为完整 x64 Release；完整 Win32/Debug、NSIS 安装包、上游全部测试集和逐项安全公告复现不在本轮验证范围。本版本已取得使用正常的反馈，未给逐项操作明细；传统字体、OpenGL、双向剪贴板等未确认场景不补记为通过。
+
+## 实际反馈与主线整合
+
+2026-09-15，维护者反馈“R8 正常，合入”。master 从 `20901884259bacfe34b9ca435c81021862800a5a` 快进至已验收候选 `df58d88962ffc17414ea9d3f9dccd79cd3180b72`，随后仅补充整合文档。
+
+合入前后在已构建的 R8 工作区分别运行完整回归，均为 420 项通过、0 跳过，耗时分别为 44.553 秒和 43.993 秒。合入后测试时该工作区与 master 为同一提交；使用本轮实际库、对象和运行目录，没有将主目录旧 dist 当作 R8 产物。
+
+复核 5143 个 R8 交付文件，文件集合及 SHA-256 全部不变。生产代码和测试未在整合中修改；分支、工作区和既有运行目录均保留，未 push。证据位于主工作区 `.local-validation/r8-integration-20260915/`，包括合入前后日志、merge.log、before.json 和 verification.json。原候选构建及验证记录保持原样。
+
+主目录摘要检查发现 184 个未发生逻辑变更的文件仍保留旧 CRLF 落盘格式，而新的 Git 属性要求保持提交中的原始字节。逐个确认仅换行不同、HEAD blob 与来源摘要一致后，保存旧字节并按已合入的 blob 刷新；主目录和 R8 工作区全部来源摘要随后一致。没有修改提交内容或交付产物，证据见 `checkout-byte-differences.json` 与 `checkout-before/`。
