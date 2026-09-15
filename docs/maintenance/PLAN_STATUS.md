@@ -20,6 +20,8 @@ R4 整合：[字体依赖升级](../validation/2026-09-14-font-dependencies.md)�
 
 最新整合：[R6 Expat 2.8.4](../validation/2026-09-15-expat.md)，构建源码 `73e74d4bd`。源码、Windows 静态库及 Mesa 配置回归通过，完整构建经恢复后完成；合入前后各 404 项测试通过、0 跳过，独立运行检查 PASS，5134 个运行文件不变。2026-09-15 取得“R6 正常，合入”的反馈后快进合入 master，运行目录与工作区保留，未 push。
 
+当前候选：[R7 OpenSSL 3.5.8 LTS](../validation/2026-09-15-openssl.md)，构建源码 `e41de0979`。完整 x64 Release All 构建成功，410 项测试通过、0 跳过，独立运行检查 PASS；R6 旧对象与新 DLL 的 6 项兼容对照通过。独立目录 `D:/File/Program/GitHub/zzxsrv-openssl-20260915/dist/x64/Release` 待本版本实际反馈，未合入或推送。
+
 此前源码分层已完成，完整 x64 Release 构建、61 项测试及运行验证通过，见[验证报告](../validation/2026-09-10-source-layout.md)。
 
 ## 当前结论
@@ -74,7 +76,7 @@ R9 Fontconfig 目录枚举修复 `cd444aa641d50355c0d7b47f4a7167b78e313e45` 已�
 | R4 | 字体链路 | libXfont2 2.0.9、FreeType 2.14.3 已取得有限实际反馈并合入；合入前后各 363 项测试通过；[报告](../validation/2026-09-14-font-dependencies.md) | 升级整合已完成；字体／字号切换未确认，异常输入回归被自动安全审核拒绝而未执行，继续保留验证缺口；Fontconfig 重复缓存另列 R9 |
 | R5 | libxml2 来源与重建 | [已合入](../validation/2026-09-15-libxml2-native.md)：`af0cd70e4` 从源码构建 libxml2 2.15.4 + iconv 1.19，适配 gzip/HTTP，重编消费者；393 项自动回归通过、0 跳过；本版本反馈使用正常 | 实现与整合已完成。HTTPS/真实代理等未验收，原 2.9.1 二进制的历史来源未知项保留 |
 | R6 | Expat | [已合入](../validation/2026-09-15-expat.md)：官方 2.8.4，修正 Windows 配置并重建整包；404 项测试通过、0 跳过，本版本实际使用正常 | 实现与整合已完成；Mesa 当前未启用 WITH_XMLCONFIG，本次保留静态配置，不升级 Mesa；日常人工未测范围继续保留 |
-| R7 | OpenSSL 版本维护 | 已评估 LTS 迁移，尚未升级 | 复核目标版本及实际 API 兼容性，独立导入和验证；当前源码仍为 3.4.1 |
+| R7 | OpenSSL 版本维护 | [候选待验收](../validation/2026-09-15-openssl.md)：官方 3.5.8 LTS，完整构建与 410 项测试通过、0 跳过；保留现有 SHA-1 接口及 DLL 命名 | 在 R7 新目录取得实际反馈后整合；仅 x64 Release 完整产品已验证，日常人工未测范围保留 |
 | R8 | xkbcomp、libXpm、zlib | 已列候选，尚未逐项实施 | 分组件决定是否需要更新或回补，并验证对应键盘、图标、压缩及字体链路 |
 | R9 | 其余依赖与来源清单 | [来源目录盘点](../dependencies/SOURCES.md)已完成；Fontconfig 目录枚举修复已获本版本反馈并整合；部分精确来源仍未知 | 沿清单继续补证 libX11、libxcb、Pixman、Fontconfig、PuTTY 等的固定来源和适用改动；libxml2、libregex、libwinmain 等按各自证据澄清归属，不假定都能对应纯净组件仓库 |
 
@@ -101,6 +103,7 @@ R3 原清单的代码修复和主线整合已完成；临时登记清理的限�
 | codex/fontconfig-20260914 | 修复已合入，分支与工作区保留 | 构建源码 `cd444aa641d50355c0d7b47f4a7167b78e313e45`；本版本实际使用正常，逐项未测范围保留 |
 | codex/libxml2-20260915 | R5 已合入，分支与工作区保留 | 构建源码 `af0cd70e417d8bce105afe07b59e6b5c8298a396`；本版本实际使用正常，逐项未测范围保留 |
 | codex/expat-20260915 | R6 已合入，分支与工作区保留 | 构建源码 `73e74d4bdc69b242d8605d41a7ae9c542312568f`；本版本实际使用正常，逐项未测范围保留 |
+| codex/openssl-20260915 | R7 独立候选，尚未合入 | 构建源码 `e41de0979d1c842157656c704529a3bf009c6636`；410 项测试通过，本版本人工反馈待取得 |
 | codex/r3-final-20260914 | 已合入的临时分支，因自动审批阻止清理而保留 | 工作区及运行目录仍在原路径，未解除 Git 登记 |
 | 旧引用和提交 | 已归档；upstream、旧工作分支及旧 tags 已删除 | 通过[整理报告](../validation/2026-09-10-repository-reorganization.md)查映射和归档，不再按旧名称操作 |
 | 原输入候选，历史源码 c06e0db16 | 已实测，修复已按当前目录恢复并合入主线 | 旧运行目录继续保留；常用操作正常，剪贴板/OpenGL 等未验证，GUI-001 已关闭，不再跟进 |
@@ -133,6 +136,8 @@ R3 已确认并整合的运行目录为 `D:/File/Program/GitHub/zzxsrv-r3-final-
 最新已确认并整合的 R6 运行目录为 `D:/File/Program/GitHub/zzxsrv-expat-20260915/dist/x64/Release`，构建来源 `73e74d4bdc69b242d8605d41a7ae9c542312568f`。继续从 R6 目录启动；合入源码不会自动重编译主目录旧 dist，既有运行目录均保留。
 
 ## 建议的收敛顺序
+
+R7 已交付独立候选，下一步取得该目录实际反馈后整合；后续继续处理 R8、R9 的独立维护事项。
 
 R3 原清单、R4 依赖升级、Fontconfig 目录枚举修复、R5 原生 XML 依赖及 R6 Expat 已完成整合。继续保留 R2/R4/R5 验证补录及 R7–R9 独立维护。临时登记清理因审批限制保留待办。不恢复 upstream 源码分支。GUI-001 按维护者要求关闭，不再跟进，未验证场景继续保留在[兼容性记录](COMPATIBILITY.md)。体验改善、整仓 CMake 迁移、Mesa 整体升级和产品发布保留为独立方向。
 
