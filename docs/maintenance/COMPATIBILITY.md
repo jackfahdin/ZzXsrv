@@ -2,6 +2,8 @@
 
 更新日期：2026-09-15。任务状态见 [PLAN_STATUS.md](PLAN_STATUS.md)。本表记录实际操作结果，不把自动启动成功或笼统的“能用”换算成全部场景通过。最新反馈对应 R7 OpenSSL 版本；下列源码号为对应构建来源。
 
+当前另有 R8 待验收候选，源码 `4f8ddf84ae9f7e1da90a884577c31fa703f04725`，运行目录 `D:/File/Program/GitHub/zzxsrv-r8-20260915/dist/x64/Release`。420 项自动回归和独立运行检查通过，但尚无本版本人工反馈，不能沿用 R7 的正常反馈；详见 [R8 报告](../validation/2026-09-15-r8-dependencies.md)。
+
 ## R7 OpenSSL 版本的实际反馈
 
 构建源码 `e41de0979d1c842157656c704529a3bf009c6636`，运行目录 `D:/File/Program/GitHub/zzxsrv-openssl-20260915/dist/x64/Release`。2026-09-15，维护者反馈“R7 正常，合入”，记录为本版本实际使用正常，并明确授权合入；已快进合入 master，整合验证见 [报告](../validation/2026-09-15-openssl.md)。
