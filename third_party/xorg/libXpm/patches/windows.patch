@@ -1,0 +1,42 @@
+--- a/src/RdFToBuf.c
++++ b/src/RdFToBuf.c
+@@ -62,7 +62,11 @@
+ 
+     *buffer_return = NULL;
+ 
+-    fd = open(filename, O_RDONLY | O_CLOEXEC);
++    fd = open(filename, O_RDONLY | O_CLOEXEC
++#ifdef WIN32
++              | _O_BINARY
++#endif
++    );
+     if (fd < 0)
+ 	return XpmOpenFailed;
+ 
+@@ -70,7 +74,7 @@
+ 	close(fd);
+ 	return XpmOpenFailed;
+     }
+-    fp = fdopen(fd, "r");
++    fp = fdopen(fd, "rb");
+     if (!fp) {
+ 	close(fd);
+ 	return XpmOpenFailed;
+--- a/src/XpmI.h
++++ b/src/XpmI.h
+@@ -203,11 +203,11 @@
+ HFUNC(xpmHashIntern, int, (xpmHashTable *table, char *tag, void *data));
+ 
+ #if defined(_MSC_VER) && defined(_M_X64)
+-#define HashAtomData(i) ((void *)(long long)i)
+-#define HashColorIndex(slot) ((unsigned long long)((*slot)->data))
++#define HashAtomData(i) ((void *)(uintptr_t)i)
++#define HashColorIndex(slot) ((uintptr_t)((*slot)->data))
+ #else
+-#define HashAtomData(i) ((void *)(long)i)
+-#define HashColorIndex(slot) ((unsigned long)((*slot)->data))
++#define HashAtomData(i) ((void *)(uintptr_t)i)
++#define HashColorIndex(slot) ((unsigned long)(uintptr_t)((*slot)->data))
+ #endif
+ #define USE_HASHTABLE (cpp > 2 && ncolors > 4)
+ 

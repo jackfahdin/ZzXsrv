@@ -44,11 +44,6 @@
 #include <sys/types.h>
 #include <sys/wait.h>
 #include <unistd.h>
-typedef int pid_t;
-#else
-#ifdef FOR_MSW
-#include <fcntl.h>
-#endif
 #endif
 
 LFUNC(OpenReadFile, int, (const char *filename, xpmData *mdata));
@@ -262,7 +257,7 @@ OpenReadFile(
 #endif /* z-files */
 	{
 	    mdata->type = XPMFILE;
-	    mdata->stream.file = _fdopen(fd, "r");
+	    mdata->stream.file = fdopen(fd, "r");
 	}
 	if (!mdata->stream.file)
 	{
