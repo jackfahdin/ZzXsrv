@@ -597,26 +597,38 @@
     {
       "name": "expat",
       "path": "third_party/expat",
-      "revision": "2.6.2",
-      "revision_kind": "declared_version",
+      "revision": "2.8.4",
+      "revision_kind": "official_release_archive",
       "upstream_url": "https://github.com/libexpat/libexpat",
       "evidence": [
-        "third_party/expat/lib/expat.h:1067-1069",
-        "docs/dependencies/packages.txt",
-        "docs/history/upstream-releases/releasenote_21.1.16.1.txt"
+        "third_party/expat/README.vcxsrv.md",
+        "third_party/expat/source-files.json",
+        "docs/validation/2026-09-15-expat.md"
       ],
       "confidence": "high",
-      "notes": "本地版本和发布说明一致；精确下载归档、导入 tag/commit 与二进制重现关系未证实。",
+      "notes": "官方 2.8.4 完整源码包 170 个文件原样导入；摘要与 GitHub 发布 asset digest 一致，未本地验证签名。独立 msvc 配置和 mhmake 静态构建；Windows Mesa 未启用 WITH_XMLCONFIG。",
       "nested": false,
       "id": "dep-024",
       "category": "core_libraries_headers",
       "inherited_material_urls": [
         "https://github.com/marchaesen/vcxsrv/tree/d0a1eaf7ee15fcdf4f683388a88fec49078e6408/expat"
       ],
-      "import_method": "inherited_vcxsrv_source_collection",
+      "import_method": "official_release_archive",
       "actual_import_urls": [
-        "https://github.com/marchaesen/vcxsrv/tree/d0a1eaf7ee15fcdf4f683388a88fec49078e6408/expat"
-      ]
+        "https://github.com/libexpat/libexpat/releases/download/R_2_8_4/expat-2.8.4.tar.xz"
+      ],
+      "historical_import": {
+        "revision": "2.6.2",
+        "revision_kind": "declared_version",
+        "import_method": "inherited_vcxsrv_source_collection",
+        "actual_import_urls": [
+          "https://github.com/marchaesen/vcxsrv/tree/d0a1eaf7ee15fcdf4f683388a88fec49078e6408/expat"
+        ],
+        "notes": "本地版本和发布说明一致；精确下载归档、导入 tag/commit 与二进制重现关系未证实。"
+      },
+      "archive_sha256": "656ae1cc8da3b4ea513bb4e254f33e6243938084c0ec6239da873376b09985a7",
+      "upstream_tag": "R_2_8_4",
+      "upstream_commit": "12cf0b1f25f026a022fe728ad8f7e3d017285b80"
     },
     {
       "name": "freetype",
@@ -1532,24 +1544,38 @@
     {
       "name": "SipHash implementation",
       "path": "third_party/expat/lib/siphash.h",
-      "revision": null,
-      "revision_kind": "unknown",
+      "revision": "Expat R_2_8_4 bundled snapshot",
+      "revision_kind": "official_release_archive",
       "upstream_url": "https://www.131002.net/siphash/",
       "evidence": [
-        "third_party/expat/lib/siphash.h:1-45"
+        "third_party/expat/README.vcxsrv.md",
+        "third_party/expat/source-files.json",
+        "docs/validation/2026-09-15-expat.md"
       ],
-      "confidence": "medium",
-      "notes": "文件列出 SipHash 参考实现来源及本地修改；精确导入 revision 未记录，来源 URL 为原文件记录。",
+      "confidence": "high",
+      "notes": "来自官方 Expat 2.8.4 源码包内的 SipHash 文件，逐文件摘要已记录；不将 Expat tag 当作独立 SipHash 仓库 revision。",
       "nested": true,
       "id": "dep-062",
       "category": "embedded_dependencies",
       "inherited_material_urls": [
         "https://github.com/marchaesen/vcxsrv/tree/d0a1eaf7ee15fcdf4f683388a88fec49078e6408/expat/lib/siphash.h"
       ],
-      "import_method": "inherited_vcxsrv_source_collection",
+      "import_method": "official_release_archive",
       "actual_import_urls": [
-        "https://github.com/marchaesen/vcxsrv/tree/d0a1eaf7ee15fcdf4f683388a88fec49078e6408/expat/lib/siphash.h"
-      ]
+        "https://github.com/libexpat/libexpat/releases/download/R_2_8_4/expat-2.8.4.tar.xz"
+      ],
+      "historical_import": {
+        "revision": null,
+        "revision_kind": "unknown",
+        "import_method": "inherited_vcxsrv_source_collection",
+        "actual_import_urls": [
+          "https://github.com/marchaesen/vcxsrv/tree/d0a1eaf7ee15fcdf4f683388a88fec49078e6408/expat/lib/siphash.h"
+        ],
+        "notes": "文件列出 SipHash 参考实现来源及本地修改；精确导入 revision 未记录，来源 URL 为原文件记录。"
+      },
+      "archive_sha256": "656ae1cc8da3b4ea513bb4e254f33e6243938084c0ec6239da873376b09985a7",
+      "upstream_tag": "R_2_8_4",
+      "upstream_commit": "12cf0b1f25f026a022fe728ad8f7e3d017285b80"
     },
     {
       "name": "DirectX-Headers (Meson fallback)",

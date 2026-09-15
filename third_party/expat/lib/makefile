@@ -1,9 +1,9 @@
 LIBRARY = libexpat
 
-DEFINES = SWRAST_DRI_EXPORT INSERVER _USE_MATH_DEFINES __STDC_CONSTANT_MACROS __STDC_CONSTANT_MACROS __STDC_FORMAT_MACROS \
-  __NOT_HAVE_DRM_H XML_STATIC COMPILED_FROM_DSP XML_STATIC
+# Keep the narrow-character static ABI used by the Windows Mesa build.
+DEFINES = XML_STATIC
+INCLUDES = ../msvc .. $(MHMAKECONF)/include
+CCFLAGS += /source-charset:utf-8
 
-INCLUDES = .. $(MHMAKECONF)/include
-
-CSRCS := xmlparse.c xmltok_ns.c xmltok.c xmlrole.c
-
+# xmltok_ns.c and xmltok_impl.c are included by xmltok.c, not separate units.
+CSRCS := xmlparse.c xmltok.c xmlrole.c random_rand_s.c

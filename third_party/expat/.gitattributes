@@ -1,0 +1,2 @@
+# Preserve official release file bytes for source-files.json verification.
+** -text -whitespace

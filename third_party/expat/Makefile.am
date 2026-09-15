@@ -6,10 +6,12 @@
 #                      \___/_/\_\ .__/ \__,_|\__|
 #                               |_| XML parser
 #
-# Copyright (c) 2017-2023 Sebastian Pipping <sebastian@pipping.org>
+# Copyright (c) 2017-2026 Sebastian Pipping <sebastian@pipping.org>
 # Copyright (c) 2018      KangLin <kl222@126.com>
 # Copyright (c) 2022      Johnny Jazeix <jazeix@gmail.com>
 # Copyright (c) 2023      Sony Corporation / Snild Dolkow <snild@sony.com>
+# Copyright (c) 2024      Alexander Bluhm <alexander.bluhm@gmx.net>
+# Copyright (c) 2024      Dag-Erling Smørgrav <des@des.dev>
 # Licensed under the MIT license:
 #
 # Permission is  hereby granted,  free of charge,  to any  person obtaining
@@ -56,10 +58,8 @@ pkgconfig_DATA = expat.pc
 pkgconfigdir = $(libdir)/pkgconfig
 
 
-dist_cmake_DATA = \
-    cmake/autotools/expat.cmake
-
 nodist_cmake_DATA = \
+    cmake/autotools/expat.cmake \
     cmake/autotools/expat-config-version.cmake \
     cmake/autotools/expat-noconfig.cmake \
     cmake/expat-config.cmake
@@ -68,11 +68,15 @@ cmakedir = $(libdir)/cmake/expat-@PACKAGE_VERSION@
 
 
 _EXTRA_DIST_CMAKE = \
+    cmake/autotools/expat__linux.cmake.in \
+    cmake/autotools/expat__macos.cmake.in \
+    cmake/autotools/expat__windows.cmake.in \
     cmake/autotools/expat-noconfig__linux.cmake.in \
     cmake/autotools/expat-noconfig__macos.cmake.in \
     cmake/autotools/expat-noconfig__windows.cmake.in \
     cmake/autotools/expat-package-init.cmake \
-    cmake/mingw-toolchain.cmake \
+    cmake/mingw-toolchain-win32.cmake \
+    cmake/mingw-toolchain-win64.cmake \
     \
     CMakeLists.txt \
     CMake.README \
@@ -91,9 +95,10 @@ EXTRA_DIST = \
     $(_EXTRA_DIST_CMAKE) \
     $(_EXTRA_DIST_WINDOWS) \
     \
-    conftools/expat.m4 \
     conftools/get-version.sh \
     \
+    fuzz/xml_lpm_fuzzer.cpp \
+    fuzz/xml_lpm_fuzzer.proto \
     fuzz/xml_parsebuffer_fuzzer.c \
     fuzz/xml_parse_fuzzer.c \
     \
@@ -114,10 +119,10 @@ buildlib:
 	@echo 'ERROR: is no longer supported.  INSTEAD please:' >&2
 	@echo 'ERROR:' >&2
 	@echo 'ERROR:  * Mass-patch Makefile.am, e.g.' >&2
-	@echo 'ERROR:    # find -name Makefile.am -exec sed \' >&2
+	@echo 'ERROR:    # find . -name Makefile.am -exec sed \' >&2
 	@echo 'ERROR:          -e "s,libexpat\.la,libexpatw.la," \' >&2
 	@echo 'ERROR:          -e "s,libexpat_la,libexpatw_la," \' >&2
-	@echo 'ERROR:          -i {} +' >&2
+	@echo 'ERROR:          -i.bak {} +' >&2
 	@echo 'ERROR:' >&2
 	@echo 'ERROR:  * Run automake to re-generate Makefile.in files' >&2
 	@echo 'ERROR:' >&2
