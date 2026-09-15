@@ -23,26 +23,26 @@
 
 文件：`third_party/libxml2/`、`third_party/libiconv/`、`include/iconv.h`、`scripts/build/`、消费者 makefile、installer manifests、依赖文档与 `tools/tests/test_xml_build.py`，更新现有依赖路径测试。
 
-- [ ] 导入官方 libxml2 2.15.4 源码到 `third_party/libxml2/source/`，官方 libiconv 1.19 加逐项记录的 Winlibs MSVC 适配到 `third_party/libiconv/source/`。原旧文件待引用切换并检查后清除。
-- [ ] 定义固定输出：`third_party/libxml2/build/<Architecture>/<Configuration>/libxml2.{dll,lib}` 和 `third_party/libiconv/build/<Architecture>/<Configuration>/libiconv.{dll,lib}`；生成 XML 头文件目录由 CMake 构建路径明确提供。
-- [ ] 先增加构建/打包契约测试，确认旧规则失败；实现依赖子构建及消费者/打包切换，确认通过。
-- [ ] 编码库以本机原生 CRT 编译，修正 MSVC 工程输出和地址随机化设置，不复用 Winlibs 清理/打包脚本。
-- [ ] 原生依赖构建与运行编码验证通过，记录来源清单并审查导入完整性。
+- [x] 导入官方 libxml2 2.15.4 源码到 `third_party/libxml2/source/`，官方 libiconv 1.19 加逐项记录的 Winlibs MSVC 适配到 `third_party/libiconv/source/`。原旧文件待引用切换并检查后清除。
+- [x] 定义固定输出：`third_party/libxml2/build/<Architecture>/<Configuration>/libxml2.{dll,lib}` 和 `third_party/libiconv/build/<Architecture>/<Configuration>/libiconv.{dll,lib}`；生成 XML 头文件目录由 CMake 构建路径明确提供。
+- [x] 先增加构建/打包契约测试，确认旧规则失败；实现依赖子构建及消费者/打包切换，确认通过。
+- [x] 编码库以本机原生 CRT 编译，修正 MSVC 工程输出和地址随机化设置，不复用 Winlibs 清理/打包脚本。
+- [x] 原生依赖构建与运行编码验证通过，记录来源清单并审查导入完整性。
 
 ## 任务 2：配置兼容与持久回归
 
 文件：`src/xorg-server/hw/xwin/xlaunch/config.cc`、新增局部 XML 输入模块、对应 makefile、`tools/tests/test_xml_config.py` 与 `tools/tests/native/xml_config.cpp`。
 
-- [ ] 用原有实际 CConfig 与新库建立 UTF-8/UTF-16/GBK/GB18030 等正常编码、gzip、HTTP 基线；gzip/HTTP 必须因缺少适配而失败。
-- [ ] 实现局部解析上下文加载、gzip 文件读取、WinHTTP HTTP 读取；处理句柄寿命、失败状态、重定向、响应字符集及压缩响应。避免全局加载器副作用和隐式认证。
-- [ ] 回归普通文件及中文路径、编码往返、gzip、直连/重定向 HTTP、响应字符集、压缩响应和正常 HTTP 错误状态；服务只绑定回环地址并自动关闭。
-- [ ] 保留现有 Save/Load 设置语义，独立审查实际消费者代码和回归结果。
+- [x] 用原有实际 CConfig 与新库建立 UTF-8/UTF-16/GBK/GB18030 等正常编码、gzip、HTTP 基线；gzip/HTTP 必须因缺少适配而失败。
+- [x] 实现局部解析上下文加载、gzip 文件读取、WinHTTP HTTP 读取；处理句柄寿命、失败状态、重定向、响应字符集及压缩响应。避免全局加载器副作用和隐式认证。
+- [x] 回归普通文件及中文路径、编码往返、gzip、直连/重定向 HTTP、响应字符集、压缩响应和正常 HTTP 错误状态；服务只绑定回环地址并自动关闭。
+- [x] 保留现有 Save/Load 设置语义，独立审查实际消费者代码和回归结果。
 
 ## 任务 3：完整集成与候选
 
 文件：验证报告、计划状态、测试指南。
 
-- [ ] 执行完整 x64 Release 构建，重新编译全部消费者，验证 Portable 文件和 DLL 依赖闭包。
-- [ ] 在新工作区运行全部本地自动测试与独立运行检查，修复新失败后按需重测。
-- [ ] 整体代码审查、记录版本/来源/测试范围/人工未测项，提交候选并给出新目录及最少人工验证步骤。
+- [x] 执行完整 x64 Release 构建，重新编译全部消费者，验证 Portable 文件和 DLL 依赖闭包。
+- [x] 在新工作区运行全部本地自动测试与独立运行检查，修复新失败后按需重测。
+- [x] 整体代码审查、记录版本/来源/测试范围/人工未测项，提交候选并给出新目录及最少人工验证步骤。
 - [ ] 人工反馈后才整合主线；当前阶段保留所有既有候选目录。

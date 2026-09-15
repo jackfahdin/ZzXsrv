@@ -50,6 +50,10 @@
 | fix potential buff overflow in XkbVModIndexText for XkbCFile format | [5dfb435c1d864bf154369cb86d085d4159730378](https://gitlab.freedesktop.org/xorg/xserver/-/commit/5dfb435c1d864bf154369cb86d085d4159730378) | [实际下载的固定 SHA API](https://api.github.com/repos/LizardByte-infrastructure/xserver/commits/5dfb435c1d864bf154369cb86d085d4159730378) | `b9081dd495558c1f0f8ef911179015ae109b4256` / [XKB 整合报告](../validation/2026-09-10-xkb.md) |
 | preserve buffer on realloc failure | [d6c462f59927b3702a54e0e8ea2a5de7639294e6](https://gitlab.freedesktop.org/xorg/xserver/-/commit/d6c462f59927b3702a54e0e8ea2a5de7639294e6) | [实际下载的固定 SHA API](https://api.github.com/repos/LizardByte-infrastructure/xserver/commits/d6c462f59927b3702a54e0e8ea2a5de7639294e6) | `b9081dd495558c1f0f8ef911179015ae109b4256` / [XKB 整合报告](../validation/2026-09-10-xkb.md) |
 
+### R5 原生 XML 配置读取适配
+
+候选源码 `af0cd70e417d8bce105afe07b59e6b5c8298a396` 为 XLaunch 增加解析上下文局部的 gzip/WinHTTP 输入适配，与固定 libxml2 2.15.4 源码配套。此为本地兼容实现，不计入 X Server 上游补丁数；原 39 项上游补丁记录不变，另列为第 4 项本地兼容记录。源码导入的 Winlibs 适配在 libiconv 组件字段中单独追溯。候选测试及未验收范围见 [R5 报告](../validation/2026-09-15-libxml2-native.md)。
+
 ### Fontconfig Windows 目录枚举的本地修正
 
 本地提交 `cd444aa641d50355c0d7b47f4a7167b78e313e45` 修正 `third_party/fonts/fontconfig/src/fccompat.c` 的条目缓冲覆盖及无效句柄判断。依据本地正常目录和字体缓存复现编写，未导入上游 patch；Fontconfig 仍为 2.16.0，原记录同步 SHA 和继承来源不变。JSON 的 `local_compatibility_patches` 记录基线与路径，不增加上游补丁计数。验证与候选状态见 [Fontconfig 报告](../validation/2026-09-14-fontconfig-directory.md)。
@@ -303,7 +307,6 @@
 | GNU gperf<br>`scripts/build/buildall.ps1 (external native tools)` | 未知 / 未固定 | [原始上游](https://ftp.gnu.org/gnu/gperf/)；[构建要求](https://github.com/jackfahdin/ZzXsrv/blob/b8be16d052c1665a0f5fe7c497d5b1a5e783c3ca/buildall.ps1) | scripts/build/buildall.ps1; README.md。外部生成工具，当前未固定版本。 |
 | jom<br>`scripts/build/buildall.ps1 (external native tools)` | 未知 / 未固定 | [原始上游](https://code.qt.io/cgit/qt-labs/jom.git/)；[构建要求](https://github.com/jackfahdin/ZzXsrv/blob/b8be16d052c1665a0f5fe7c497d5b1a5e783c3ca/buildall.ps1) | scripts/build/buildall.ps1; README.md。可选工具，未找到时使用已有构建回退。 |
 | Git for Windows<br>`scripts/build/buildall.ps1 (external native tools)` | 未知 / 未固定 | [原始上游](https://github.com/git-for-windows/git)；[构建要求](https://github.com/jackfahdin/ZzXsrv/blob/b8be16d052c1665a0f5fe7c497d5b1a5e783c3ca/buildall.ps1) | scripts/build/buildall.ps1; README.md。版本管理和环境报告依赖，源码未导入。 |
-
 | CMake<br>`scripts/build/buildxml.ps1 (external native tools)` | 要求：`>=3.21`，VS 2022 生成器 | [工具提供方](https://cmake.org/)；[本地构建指南](../build/WINDOWS.md) | 原生 XML 子构建使用；优先 VS 随附版本，可显式覆盖。工具源码未导入，不在构建时下载；实际版本记入验证证据。 |
 
 ## 继承的 Docker 配方声明（外部）

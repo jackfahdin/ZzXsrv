@@ -734,6 +734,14 @@
         "checksum_url": "https://download.gnome.org/sources/libxml2/2.15/libxml2-2.15.4.sha256sum",
         "imported_files": 4426,
         "file_manifest": "third_party/libxml2/source-files.json"
+      },
+      "runtime_verification": {
+        "date": "2026-09-15",
+        "architecture": "x64",
+        "version_string": "21504",
+        "dll_sha256": "fa2bc92849fbbdfb35c6efa0d038ceca2806f1a9aba9e6c3938b75a7e281f6ae",
+        "source_commit": "af0cd70e417d8bce105afe07b59e6b5c8298a396",
+        "report": "../validation/2026-09-15-libxml2-native.md"
       }
     },
     {
@@ -5024,6 +5032,14 @@
           "include/iconv.h",
           "lib/localcharset.h"
         ]
+      },
+      "runtime_verification": {
+        "date": "2026-09-15",
+        "architecture": "x64",
+        "version_hex": "0x113",
+        "dll_sha256": "1e59f951d31cb3d69b2aa4a4f7e690e9c15ffb8af4b7d97e6c645ec8af29a208",
+        "source_commit": "af0cd70e417d8bce105afe07b59e6b5c8298a396",
+        "report": "../validation/2026-09-15-libxml2-native.md"
       }
     },
     {
@@ -6171,6 +6187,18 @@
       ],
       "origin": "Local correction derived from normal Windows directory and font-cache reproduction and the Microsoft FindFirstFileEx API contract; no upstream patch imported. Fontconfig remains the inherited 2.16.0 source with its recorded sync provenance unchanged.",
       "report": "../validation/2026-09-14-fontconfig-directory.md"
+    },
+    {
+      "name": "Preserve XLaunch XML input compatibility with native libxml2",
+      "local_commit": "af0cd70e417d8bce105afe07b59e6b5c8298a396",
+      "baseline_commit": "fdf4e955c72e18e22e74484791b90b843a7616ff",
+      "local_paths": [
+        "src/xorg-server/hw/xwin/xlaunch/config.cc",
+        "src/xorg-server/hw/xwin/xlaunch/xml_input.cpp",
+        "src/xorg-server/hw/xwin/xlaunch/xml_input.h"
+      ],
+      "origin": "Local per-parser-context gzip and WinHTTP input adapter for the fixed libxml2 2.15.4 source replacement; derived from the normal legacy/new-library CConfig comparisons. No X Server upstream patch imported.",
+      "report": "../validation/2026-09-15-libxml2-native.md"
     }
   ]
 }
