@@ -31,10 +31,10 @@
 #define	DEBUG_VAR debugFlags
 #endif
 
-#include <unistd.h>
 #ifdef HAVE_CONFIG_H
 #include "config.h"
 #endif
+#include <unistd.h>
 
 #include <X11/Xlib.h>
 #include <X11/XKBlib.h>

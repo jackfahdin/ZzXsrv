@@ -4,3 +4,8 @@ include/iconv.h -text -whitespace
 docs/dependencies/packages.txt whitespace=cr-at-eol
 # Preserve the complete official OpenSSL release, including upstream whitespace.
 third_party/openssl/** -text -whitespace
+# Preserve release archive bytes and explicitly recorded local adaptations.
+third_party/xorg/xkbcomp/** -text -whitespace
+third_party/xorg/libXpm/** -text -whitespace
+third_party/zlib/** -text -whitespace
+include/X11/xpm.h -text -whitespace

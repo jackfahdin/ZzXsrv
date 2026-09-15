@@ -141,8 +141,6 @@ uInformation(const char * /* s */ , ...
 #include <strings.h>
 #include <string.h>
 
-#define strncasecmp _strnicmp
-
 #if defined(_MSC_VER)
 #define strcasecmp _stricmp
 #define strncasecmp _strnicmp

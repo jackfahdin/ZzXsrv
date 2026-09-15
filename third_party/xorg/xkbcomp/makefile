@@ -13,7 +13,7 @@ else
 WINAPP = xkbcomp
 endif
 
-DEFINES += DFLT_XKB_CONFIG_ROOT="\".\""  PACKAGE_VERSION="\"1.2.3\""
+DEFINES += DFLT_XKB_CONFIG_ROOT="\".\""  PACKAGE_VERSION="\"1.5.0\""
 
 INCLUDES += $(OBJDIR)
 

@@ -414,6 +414,17 @@ MergeKeyGroups(SymbolsInfo * info,
             {
                 resultActs[i] = *fromAct;
             }
+            else if (toAct == NULL && fromAct == NULL)
+            {
+                /*
+                 * May happen with e.g.:
+                 *
+                 *     key <> { [a, A] }; key <> { [NoAction()] };
+                 * or:
+                 *     key <> { [NoAction()] }; augment key <> { [a, A] };
+                 */
+                resultActs[i].type = XkbSA_NoAction;
+            }
             else
             {
                 XkbAction *use, *ignore;
@@ -686,8 +697,9 @@ AddModMapEntry(SymbolsInfo * info, ModMapEntry * new)
         return False;
     }
     *mm = *new;
-    mm->defs.next = &info->modMap->defs;
-    info->modMap = mm;
+    info->modMap = (ModMapEntry *)
+        AddCommonInfo((info->modMap ? &info->modMap->defs : NULL),
+                      &mm->defs);
     return True;
 }
 

@@ -1,0 +1,250 @@
+--- a/compat.c
++++ b/compat.c
+@@ -37,6 +37,8 @@
+ #include "indicators.h"
+ #include "action.h"
+ #include "compat.h"
++
++#define WARN1 printf
+ 
+ typedef struct _SymInterpInfo
+ {
+@@ -116,7 +118,11 @@
+     info->dflt.defs.fileID = info->fileID;
+     info->dflt.defs.defined = 0;
+     info->dflt.defs.merge = MergeOverride;
++    info->dflt.defs.next = NULL;
+     info->dflt.interp.flags = 0;
++    info->dflt.interp.match = 0;
++    info->dflt.interp.mods = 0;
++    info->dflt.interp.sym = 0;
+     info->dflt.interp.virtual_mod = XkbNoModifier;
+     info->dflt.interp.act.type = XkbSA_NoAction;
+     for (int i = 0; i < XkbAnyActionDataSize; i++)
+@@ -658,14 +664,13 @@
+ 
+     if (!ResolveStateAndPredicate(def->match, &pred, &mods, info))
+     {
+-        ERROR("Couldn't determine matching modifiers\n");
++        if (warningLevel > 0)
++          WARN1("Couldn't determine matching modifiers\n");
+         ACTION("Symbol interpretation ignored\n");
+         return True;
+     }
+     if (def->ignore)
+     {
+-        ERROR("Couldn't lookup keysym\n");
+-        ACTION("Symbol interpretation ignored\n");
+         return True;
+     }
+ 
+--- a/keycodes.c
++++ b/keycodes.c
+@@ -293,6 +293,8 @@
+     info->name = NULL;
+     info->leds = NULL;
+     info->aliases = NULL;
++    info->fileID=-1;
++    info->merge=0;
+     ClearKeyNamesInfo(info);
+     info->errorCount = 0;
+     return;
+--- a/listing.c
++++ b/listing.c
+@@ -69,13 +69,16 @@
+ SOFTWARE.
+ 
+ ******************************************************************/
+-
+ #include "utils.h"
+ #include <stdio.h>
+ #include <ctype.h>
+ #include <sys/types.h>
+ #include <sys/stat.h>
+ #include <X11/keysym.h>
++#undef ERROR
++#include <X11/Xwindows.h>
++#undef ERROR
++#define ERROR printf
+ 
+ #define	DEBUG_VAR listingDebug
+ #include "xkbcomp.h"
+@@ -120,6 +123,14 @@
+ #include "misc.h"
+ #include "tokens.h"
+ #include <X11/extensions/XKBgeom.h>
++
++#ifndef S_ISDIR
++# if defined(_S_IFMT) && defined(_S_IFDIR)
++#  define S_ISDIR(a)	(((a) & _S_IFMT) == _S_IFDIR)
++# else
++#  define S_ISDIR(a)	(((a) & S_IFMT) == S_IFDIR)
++# endif
++#endif
+ 
+ #define	lowbit(x)	((x) & (-(x)))
+ 
+@@ -289,6 +300,7 @@
+ #ifdef WIN32
+     if ((dirh = FindFirstFile("*.*", &file)) == INVALID_HANDLE_VALUE)
+         return 0;
++    nMatch = 0;
+ #else
+     if ((dirp = opendir((head ? head : "."))) == NULL)
+         return 0;
+--- a/misc.h
++++ b/misc.h
+@@ -30,7 +30,7 @@
+ typedef struct _CommonInfo
+ {
+     unsigned short defined;
+-    unsigned char fileID;
++    int fileID;
+     unsigned char merge;
+     struct _CommonInfo *next;
+ } CommonInfo;
+--- a/parseutils.c
++++ b/parseutils.c
+@@ -32,6 +32,8 @@
+ #include <limits.h>
+ #include <stdlib.h>
+ 
++#define WARN1 printf
++
+ XkbFile *rtrnValue;
+ 
+ ParseCommon *
+@@ -246,7 +248,12 @@
+             .match = match
+         };
+         if (LookupKeysym(sym_str, &def->sym) == 0)
++        {
+             def->ignore = True;
++            if (warningLevel > 0)
++                WARN1("Couldn't lookup keysym %s\n", sym_str);
++            ACTION("Symbol interpretation ignored\n");
++        }
+         else
+             def->ignore = False;
+     }
+--- a/utils.h
++++ b/utils.h
+@@ -104,6 +104,10 @@
+      extern void uWarning(const char * /* s  */ , ...
+     ) _X_ATTRIBUTE_PRINTF(1, 2);
+ 
++#ifdef ERROR
++#undef ERROR
++#endif
++
+ #define ERROR			uError
+ 
+      extern void uError(const char * /* s  */ , ...
+--- a/xkbcomp.c
++++ b/xkbcomp.c
+@@ -549,8 +549,8 @@
+                 {
+                     WARN("Changing root directory to \"%s\"\n", rootDir);
+                 }
+-                if (chdir(rootDir) == 0)
+-                {
++                XkbAddDirectoryToPath(rootDir);
++                if (XkbAddDirectoryToPath(rootDir) && (warningLevel>0)) {
+                     XkbAddDirectoryToPath(".");
+                 } else if (warningLevel > 0)
+                 {
+@@ -707,7 +707,7 @@
+         else
+         {
+             FILE *file;
+-            file = fopen(inputFile, "r");
++            file = fopen(inputFile, "rb");
+             if (file)
+             {
+                 if (XkmProbe(file))
+@@ -948,7 +948,7 @@
+         }
+         else
+         {
+-            file = fopen(inputFile, "r");
++            file = fopen(inputFile, inputFormat == INPUT_XKM ? "rb" : "r");
+         }
+     }
+     else if (inDpyName != NULL)
+@@ -1171,10 +1171,14 @@
+                     break;
+                 }
+ #endif
++#ifdef _MSC_VER
++		outputFileFd= open(outputFile, O_WRONLY|O_CREAT|O_EXCL|binMode,_S_IREAD | _S_IWRITE);
++#else
+                 outputFileFd =
+                     open(outputFile, O_WRONLY | O_CREAT | O_EXCL,
+                          S_IRUSR | S_IWUSR | S_IRGRP | S_IWGRP | S_IROTH
+                          | S_IWOTH | binMode);
++#endif
+                 if (outputFileFd < 0)
+                 {
+                     ERROR
+--- a/xkbcomp.h
++++ b/xkbcomp.h
+@@ -34,6 +34,7 @@
+ #ifdef HAVE_CONFIG_H
+ #include "config.h"
+ #endif
++#include <unistd.h>
+ 
+ #include <X11/Xlib.h>
+ #include <X11/XKBlib.h>
+--- a/xkbparse.y
++++ b/xkbparse.y
+@@ -91,6 +91,10 @@
+ %{
+ #ifdef DEBUG
+ #define	YYDEBUG 1
++
++#define YYMALLOC malloc
++#define YYFREE free
++
+ #define	DEBUG_VAR parseDebug
+ unsigned int parseDebug;
+ #endif
+--- a/xkbpath.c
++++ b/xkbpath.c
+@@ -34,6 +34,7 @@
+ #define	DEBUG_VAR debugFlags
+ #include "utils.h"
+ #include <stdlib.h>
++#include <unistd.h>
+ #include <X11/extensions/XKM.h>
+ #include "xkbpath.h"
+ 
+--- a/xkbscan.c
++++ b/xkbscan.c
+@@ -36,7 +36,7 @@
+ #include <X11/XKBlib.h>
+ 
+ #include "tokens.h"
+-#define	DEBUG_VAR	scanDebug
++
+ #include "utils.h"
+ #include "parseutils.h"
+ 
+@@ -61,7 +61,7 @@
+ static int readBufLen = 0;
+ 
+ #ifdef DEBUG
+-extern int debugFlags;
++extern unsigned int debugFlags;
+ 
+ static char *
+ tokText(int tok)
+@@ -620,7 +620,7 @@
+ static int
+ yyGetNumber(int ch)
+ {
+-    const int nMaxBuffSize = 1024;
++    #define nMaxBuffSize 1024
+     int isFloat = 0;
+     char buf[nMaxBuffSize];
+     int nInBuf = 0;

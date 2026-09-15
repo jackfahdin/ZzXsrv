@@ -244,12 +244,14 @@ parseArgs(int argc, char *argv[])
                 return False;
         }
         else if ((strcmp(argv[i], "-?") == 0)
-                 || (strcmp(argv[i], "-help") == 0))
+                 || (strcmp(argv[i], "-help") == 0)
+                 || (strcmp(argv[i], "--help") == 0))
         {
             Usage(argc, argv);
             exit(0);
         }
-        else if (strcmp(argv[i], "-version") == 0)
+        else if ((strcmp(argv[i], "-version") == 0) ||
+                 (strcmp(argv[i], "--version") == 0))
         {
             printf("xkbcomp %s\n", PACKAGE_VERSION);
             exit(0);
@@ -705,7 +707,7 @@ parseArgs(int argc, char *argv[])
         else
         {
             FILE *file;
-            file = fopen(inputFile, "r");
+            file = fopen(inputFile, "rb");
             if (file)
             {
                 if (XkmProbe(file))
@@ -946,7 +948,7 @@ main(int argc, char *argv[])
         }
         else
         {
-            file = fopen(inputFile, "r");
+            file = fopen(inputFile, inputFormat == INPUT_XKM ? "rb" : "r");
         }
     }
     else if (inDpyName != NULL)
