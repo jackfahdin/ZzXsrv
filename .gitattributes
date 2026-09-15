@@ -2,3 +2,5 @@
 include/iconv.h -text -whitespace
 # This inherited package inventory is stored with CRLF in Git.
 docs/dependencies/packages.txt whitespace=cr-at-eol
+# Preserve the complete official OpenSSL release, including upstream whitespace.
+third_party/openssl/** -text -whitespace

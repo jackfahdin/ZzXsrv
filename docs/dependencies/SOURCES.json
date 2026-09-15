@@ -667,26 +667,39 @@
     {
       "name": "openssl",
       "path": "third_party/openssl",
-      "revision": "3.4.1",
-      "revision_kind": "declared_version",
+      "revision": "3.5.8",
+      "revision_kind": "official_release_archive",
       "upstream_url": "https://github.com/openssl/openssl",
       "evidence": [
-        "third_party/openssl/VERSION.dat",
-        "docs/dependencies/packages.txt",
-        "docs/history/upstream-releases/releasenote_21.1.16.1.txt"
+        "third_party/openssl/README.vcxsrv.md",
+        "third_party/openssl/source-files.json",
+        "docs/validation/2026-09-15-openssl.md"
       ],
       "confidence": "high",
-      "notes": "本地版本和发布说明一致；精确下载归档、导入 tag/commit 与二进制重现关系未证实。",
+      "notes": "官方 3.5.8 LTS 完整源码包 5767 文件原样导入；摘要与官方 SHA-256 文件及 GitHub asset digest 一致，未本地验证 PGP 签名。保留 Windows 原生共享库构建及现有 SHA-1 消费接口。",
       "nested": false,
       "id": "dep-026",
       "category": "core_libraries_headers",
       "inherited_material_urls": [
         "https://github.com/marchaesen/vcxsrv/tree/d0a1eaf7ee15fcdf4f683388a88fec49078e6408/openssl"
       ],
-      "import_method": "inherited_vcxsrv_source_collection",
+      "import_method": "official_release_archive",
       "actual_import_urls": [
-        "https://github.com/marchaesen/vcxsrv/tree/d0a1eaf7ee15fcdf4f683388a88fec49078e6408/openssl"
-      ]
+        "https://github.com/openssl/openssl/releases/download/openssl-3.5.8/openssl-3.5.8.tar.gz"
+      ],
+      "historical_import": {
+        "path": "third_party/openssl",
+        "revision": "3.4.1",
+        "revision_kind": "declared_version",
+        "import_method": "inherited_vcxsrv_source_collection",
+        "actual_import_urls": [
+          "https://github.com/marchaesen/vcxsrv/tree/d0a1eaf7ee15fcdf4f683388a88fec49078e6408/openssl"
+        ],
+        "notes": "本地版本和发布说明一致；精确下载归档、导入 tag/commit 与二进制重现关系未证实。"
+      },
+      "upstream_tag": "openssl-3.5.8",
+      "upstream_commit": "f4dc4d58b48d346a8270183f89acf826d459b0ca",
+      "archive_sha256": "a8f84a39918ec6415ce765d9b429d313ba97b8143169c172e734b9514464f5b2"
     },
     {
       "name": "FreeType demos",
@@ -1144,24 +1157,36 @@
       "name": "Perl Text::Template",
       "path": "third_party/openssl/external/perl/Text-Template-1.56",
       "revision": "1.56",
-      "revision_kind": "declared_version",
+      "revision_kind": "bundled_official_release_archive",
       "upstream_url": "https://github.com/mschout/perl-text-template",
       "evidence": [
-        "third_party/openssl/external/perl/Text-Template-1.56/META.json:79",
-        "third_party/openssl/external/perl/Text-Template-1.56/lib/Text/Template.pm:13"
+        "third_party/openssl/README.vcxsrv.md",
+        "third_party/openssl/source-files.json",
+        "docs/validation/2026-09-15-openssl.md"
       ],
       "confidence": "high",
-      "notes": "OpenSSL 构建工具内嵌 Perl 包；精确下载校验未记录。README 仍写旧的 v1.46，以 META.json 和模块 VERSION 1.56 为准。",
+      "notes": "来自已校验的 OpenSSL 3.5.8 官方归档，嵌套文件摘要由 OpenSSL 清单覆盖；未另行取得 Text::Template 独立发布包作比较。",
       "nested": true,
       "id": "dep-044",
       "category": "embedded_dependencies",
       "inherited_material_urls": [
         "https://github.com/marchaesen/vcxsrv/tree/d0a1eaf7ee15fcdf4f683388a88fec49078e6408/openssl/external/perl/Text-Template-1.56"
       ],
-      "import_method": "inherited_vcxsrv_source_collection",
+      "import_method": "official_release_archive",
       "actual_import_urls": [
-        "https://github.com/marchaesen/vcxsrv/tree/d0a1eaf7ee15fcdf4f683388a88fec49078e6408/openssl/external/perl/Text-Template-1.56"
-      ]
+        "https://github.com/openssl/openssl/releases/download/openssl-3.5.8/openssl-3.5.8.tar.gz"
+      ],
+      "historical_import": {
+        "path": "third_party/openssl/external/perl/Text-Template-1.56",
+        "revision": "1.56",
+        "revision_kind": "declared_version",
+        "import_method": "inherited_vcxsrv_source_collection",
+        "actual_import_urls": [
+          "https://github.com/marchaesen/vcxsrv/tree/d0a1eaf7ee15fcdf4f683388a88fec49078e6408/openssl/external/perl/Text-Template-1.56"
+        ],
+        "notes": "OpenSSL 构建工具内嵌 Perl 包；精确下载校验未记录。README 仍写旧的 v1.46，以 META.json 和模块 VERSION 1.56 为准。"
+      },
+      "archive_sha256": "a8f84a39918ec6415ce765d9b429d313ba97b8143169c172e734b9514464f5b2"
     },
     {
       "name": "OpenBSD SHA1",

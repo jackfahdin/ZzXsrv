@@ -35,6 +35,12 @@ src/xorg-server/xkbdata/
 /.local-validation/
 /.superpowers/
 
+# Native OpenSSL out-of-source build directories.
+/third_party/openssl/release64/
+/third_party/openssl/debug64/
+/third_party/openssl/release32/
+/third_party/openssl/debug32/
+
 # Historical release scripts are source files, not Release build outputs.
 !/scripts/legacy/release/
 !/scripts/legacy/release/**

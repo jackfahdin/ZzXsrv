@@ -32,6 +32,7 @@ tar -rf $OutFile -C ../hw/xwin/swrastwgl_dri/obj64/release swrastwgl_dri.dll
 tar -rf $OutFile -C ../../../third_party/graphics/dxtn/obj64/release dxtn.dll
 tar -rf $OutFile -C ../../../third_party/libxml2/build/x64/Release libxml2.dll
 tar -rf $OutFile -C ../../../third_party/libiconv/build/x64/Release libiconv.dll
+tar -rf $OutFile -C ../../../third_party/openssl --transform='s|^LICENSE.txt$|licenses/openssl/LICENSE.txt|;s|^README.vcxsrv.md$|licenses/openssl/README.vcxsrv.md|' LICENSE.txt README.vcxsrv.md
 tar -rf $OutFile -C ../../../third_party/expat --transform='s|^COPYING$|licenses/expat/COPYING|;s|^README.vcxsrv.md$|licenses/expat/README.vcxsrv.md|' COPYING README.vcxsrv.md
 tar -rf $OutFile -C ../../../third_party/libxml2 --transform='s|^source/Copyright$|licenses/libxml2/Copyright|;s|^README.vcxsrv.md$|licenses/libxml2/README.vcxsrv.md|' source/Copyright README.vcxsrv.md
 tar -rf $OutFile -C ../../../third_party/libiconv --transform='s|^source/|licenses/libiconv/|;s|^README.vcxsrv.md$|licenses/libiconv/README.vcxsrv.md|' source/COPYING.LIB source/COPYING README.vcxsrv.md
