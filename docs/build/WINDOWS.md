@@ -77,6 +77,8 @@ libxml2 2.15.4 与 GNU libiconv 1.19 从仓库固定源码通过 MSVC/CMake 构�
 
 构建入口先生成 mhmake 和 zlib，再构建 iconv/XML；CMake 只用于此依赖子构建，不替代服务器的 mhmake 工程。独立子入口 [buildxml.ps1](../../scripts/build/buildxml.ps1) 要求先准备对应配置的 zlib 导入库。便携目录包含新 DLL 及其许可证和来源说明。
 
+Expat 2.8.4 沿用 Mesa 的 mhmake 静态依赖构建，Windows 配置位于 `third_party/expat/msvc/expat_config.h`，优先于官方包保留的根目录配置头；随机数使用上游 `rand_s` 实现。当前 Mesa 未启用 `WITH_XMLCONFIG`，运行时使用静态配置。本次升级不启用外部 drirc XML，验证范围见 [R6 报告](../validation/2026-09-15-expat.md)。
+
 XLaunch 保留本地压缩配置和 HTTP 配置读取。HTTP 传输使用 Windows WinHTTP，系统代理设置与历史 libxml2 环境变量代理不完全相同；HTTPS、代理和认证挑战未作本轮实际环境验收。来源、补丁及未知项见[依赖来源清单](../dependencies/SOURCES.md)，原 2.9.1 二进制的未知来源保留在[历史评估](../validation/2026-09-15-libxml2-assessment.md)。原生构建不等于所有第三方来源均已闭合，也不保证重复编译的二进制逐字节相同。
 
 ## 保存工具环境

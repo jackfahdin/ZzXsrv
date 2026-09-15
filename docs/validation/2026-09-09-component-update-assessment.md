@@ -50,13 +50,15 @@ libxml2 使用情况：
 
 - [XLaunch config.cc](../../src/xorg-server/hw/xwin/xlaunch/config.cc) 通过 `xmlReadFile(filename, NULL, 0)` 读取配置。
 - [Fontconfig 配置](../../third_party/fonts/fontconfig/config.h) 启用 `ENABLE_LIBXML2`；xclock 也链接这条依赖链。
-- 对已有完整运行目录中的 `libxml2-2.dll` 调用 `__xmlParserVersion`，返回 `20901`，与 [头文件版本](../../third_party/libxml2/include/libxml/xmlversion.h) 的 2.9.1 一致。DLL SHA-256 为 `3c68a190dc6d550334ff9d0a506e9526105b008364dad0915562413ceec092cb`，与仓库 `libxml2/bin64` 中的 DLL 相同。
+- 对当时已有完整运行目录中的 `libxml2-2.dll` 调用 `__xmlParserVersion`，返回 `20901`，与当时头文件的 2.9.1 一致（旧文件已在 R5 替换，参见[历史版本核对记录](2026-09-15-libxml2-assessment.md)）。DLL SHA-256 为 `3c68a190dc6d550334ff9d0a506e9526105b008364dad0915562413ceec092cb`，与当时仓库 `libxml2/bin64` 中的 DLL 相同。
 
 这确认了 DLL 自报版本，仍不能证明其精确源码、编译选项及补丁。仓库携带头文件、导入库和 DLL，更新前要补齐可重建来源，不能只换一个新版 DLL。
 
 2.15 系列移除了旧的 Windows 构建系统，改用 CMake，并改变内置网络访问、压缩输入等行为。因此 2.15.4 是兼容性试验候选，尚不是已批准可替换版本。试验应覆盖头文件、导入库、DLL 及全部消费者的重建，并验证 XLaunch 配置保存/加载、中文路径、错误 XML、Fontconfig 配置与缓存。它适合作为以后单组件 CMake 试验，不要求现在迁移全仓库。依据：[libxml2 2.15.0 变更说明](https://download.gnome.org/sources/libxml2/2.15/libxml2-2.15.0.news)。
 
 Expat 的实际消费者是 Mesa：[Mesa makefile](../../third_party/graphics/mesalib/src/makefile) 链接 `libexpat.lib`，[xmlconfig.c](../../third_party/graphics/mesalib/src/util/xmlconfig.c) 使用 `XML_ParserCreate` 和 `XML_ParseBuffer` 解析配置。它可以单独更新，不要求同时替换整个 Mesa。需核对 [Expat 2.8.4 变更记录](https://github.com/libexpat/libexpat/blob/R_2_8_4/expat/Changes) 中各问题的配置条件；不能因 Windows 平台就认定启用了 Expat 的 16 位字符接口。
+
+2026-09-15 复核更正：上段只确认了链接声明和源码中存在 API 调用，未区分条件编译。当前 Windows mhmake 未定义 `WITH_XMLCONFIG`，Mesa 实际使用静态配置分支；静态库列入链接输入不代表最终 DLL 包含或执行 Expat。R6 保留现有行为，并新增库独立链接与 Mesa 静态配置回归，详见 [R6 报告](2026-09-15-expat.md)。
 
 ## OpenSSL、Mesa 与其他组件的取舍
 
