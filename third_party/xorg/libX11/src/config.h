@@ -110,22 +110,22 @@
 #define PACKAGE_NAME "libX11"
 
 /* Define to the full name and version of this package. */
-#define PACKAGE_STRING "libX11 1.1.5"
+#define PACKAGE_STRING "libX11 1.8.13"
 
 /* Define to the one symbol short name of this package. */
 #define PACKAGE_TARNAME "libX11"
 
 /* Define to the version of this package. */
-#define PACKAGE_VERSION "1.1.5"
+#define PACKAGE_VERSION "1.8.13"
 
 /* Major version of this package */
 #define PACKAGE_VERSION_MAJOR 1
 
 /* Minor version of this package */
-#define PACKAGE_VERSION_MINOR 1
+#define PACKAGE_VERSION_MINOR 8
 
 /* Patch version of this package */
-#define PACKAGE_VERSION_PATCHLEVEL 5
+#define PACKAGE_VERSION_PATCHLEVEL 13
 
 /* Define as the return type of signal handlers (`int' or `void'). */
 /* #undef RETSIGTYPE */
@@ -158,7 +158,7 @@
 #define USE_XCB 1
 
 /* Version number of package */
-#define VERSION "1.1.5"
+#define VERSION "1.8.13"
 
 /* Support bdf format bitmap font files */
 #define XFONT_BDFFORMAT 1

@@ -16,27 +16,42 @@
     {
       "name": "libX11",
       "path": "third_party/xorg/libX11",
-      "revision": "5f8077b257ea27a5fd6f114d2bc15284b2416b3c",
-      "revision_kind": "recorded_sync_commit",
+      "revision": "1.8.13",
+      "revision_kind": "release_archive_with_local_adaptations",
       "upstream_url": "https://gitlab.freedesktop.org/xorg/lib/libx11",
       "evidence": [
-        "third_party/xorg/libX11/configure.ac: AC_INIT declares 1.8.11",
-        "docs/history/upstream-releases/releasenote_21.1.16.1.txt: Changes in 21.1.16 records 5f8077b257ea27a5fd6f114d2bc15284b2416b3c",
-        "docs/dependencies/packages.txt"
+        "third_party/xorg/libX11/source-files.json",
+        "third_party/xorg/libX11/patches/windows.patch",
+        "docs/validation/2026-09-15-r9-libx11.md"
       ],
       "confidence": "high",
-      "notes": "原作者记录同步 SHA，未将本地文件与上游逐字节比对；含移植修改。",
+      "notes": "官方发布包逐文件记录；保留 Windows 移植，原始散列、落盘散列和补丁分列。历史继承证据见 previous_record。",
       "nested": false,
       "id": "dep-001",
       "category": "core_libraries_headers",
       "inherited_material_urls": [
         "https://github.com/marchaesen/vcxsrv/tree/d0a1eaf7ee15fcdf4f683388a88fec49078e6408/libX11"
       ],
-      "import_method": "inherited_vcxsrv_source_collection",
+      "import_method": "official_release_archive_preserving_local_adaptations",
       "actual_import_urls": [
-        "https://github.com/marchaesen/vcxsrv/tree/d0a1eaf7ee15fcdf4f683388a88fec49078e6408/libX11"
+        "https://xorg.freedesktop.org/archive/individual/lib/libX11-1.8.13.tar.xz"
       ],
-      "upstream_revision_url": "https://gitlab.freedesktop.org/xorg/lib/libx11/-/commit/5f8077b257ea27a5fd6f114d2bc15284b2416b3c"
+      "previous_record": {
+        "revision": "5f8077b257ea27a5fd6f114d2bc15284b2416b3c",
+        "revision_kind": "recorded_sync_commit",
+        "upstream_url": "https://gitlab.freedesktop.org/xorg/lib/libx11",
+        "evidence": [
+          "third_party/xorg/libX11/configure.ac: AC_INIT declares 1.8.11",
+          "docs/history/upstream-releases/releasenote_21.1.16.1.txt: Changes in 21.1.16 records 5f8077b257ea27a5fd6f114d2bc15284b2416b3c",
+          "docs/dependencies/packages.txt"
+        ],
+        "notes": "原作者记录同步 SHA，未将本地文件与上游逐字节比对；含移植修改。",
+        "actual_import_urls": [
+          "https://github.com/marchaesen/vcxsrv/tree/d0a1eaf7ee15fcdf4f683388a88fec49078e6408/libX11"
+        ],
+        "upstream_revision_url": "https://gitlab.freedesktop.org/xorg/lib/libx11/-/commit/5f8077b257ea27a5fd6f114d2bc15284b2416b3c"
+      },
+      "archive_sha256": "69606f485c2c07c14ef64f75b7bb326d48587af33795d9ab3e607c0b5f94f11c"
     },
     {
       "name": "libXau",

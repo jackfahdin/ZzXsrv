@@ -1,0 +1,1290 @@
+--- a/include/X11/Xlib.h
++++ b/include/X11/Xlib.h
+@@ -75,10 +75,12 @@
+ 
+ typedef char *XPointer;
+ 
+-#define Bool int
+-#define Status int
++typedef int Bool;
++typedef int Status;
++#ifndef True
+ #define True 1
+ #define False 0
++#endif
+ 
+ #define QueuedAlready 0
+ #define QueuedAfterReading 1
+--- a/include/X11/Xlibint.h
++++ b/include/X11/Xlibint.h
+@@ -388,29 +388,32 @@
+ 	);
+ };
+ 
+-#if defined(WIN32) && !defined(_XLIBINT_)
+-#define _XCreateMutex_fn (*_XCreateMutex_fn_p)
+-#define _XFreeMutex_fn (*_XFreeMutex_fn_p)
+-#define _XLockMutex_fn (*_XLockMutex_fn_p)
+-#define _XUnlockMutex_fn (*_XUnlockMutex_fn_p)
+-#define _Xglobal_lock (*_Xglobal_lock_p)
+-#endif
++#ifdef WIN32
++#ifdef LIB11_DLL
++#define X11_EXTERN __declspec(dllexport) extern
++#else
++#define X11_EXTERN __declspec(dllimport) extern
++#endif
++#else
++#define X11_EXTERN extern
++#endif
++
+ 
+ /* in XlibInt.c */
+-extern void (*_XCreateMutex_fn)(
++X11_EXTERN void (*_XCreateMutex_fn)(
+     LockInfoPtr /* lock */
+ );
+-extern void (*_XFreeMutex_fn)(
++X11_EXTERN void (*_XFreeMutex_fn)(
+     LockInfoPtr /* lock */
+ );
+-extern void (*_XLockMutex_fn)(
++X11_EXTERN void (*_XLockMutex_fn)(
+     LockInfoPtr	/* lock */
+ #if defined(XTHREADS_WARN) || defined(XTHREADS_FILE_LINE)
+     , char * /* file */
+     , int /* line */
+ #endif
+ );
+-extern void (*_XUnlockMutex_fn)(
++X11_EXTERN void (*_XUnlockMutex_fn)(
+     LockInfoPtr	/* lock */
+ #if defined(XTHREADS_WARN) || defined(XTHREADS_FILE_LINE)
+     , char * /* file */
+@@ -418,7 +421,7 @@
+ #endif
+ );
+ 
+-extern LockInfoPtr _Xglobal_lock;
++X11_EXTERN LockInfoPtr _Xglobal_lock;
+ 
+ #if defined(XTHREADS_WARN) || defined(XTHREADS_FILE_LINE)
+ #define LockDisplay(d)	     if ((d)->lock_fns) (*(d)->lock_fns->lock_display)((d),__FILE__,__LINE__)
+@@ -938,10 +941,10 @@
+ extern int _XIOError(
+     Display*	/* dpy */
+ );
+-extern int (*_XIOErrorFunction)(
++X11_EXTERN int (*_XIOErrorFunction)(
+     Display*	/* dpy */
+ );
+-extern int (*_XErrorFunction)(
++X11_EXTERN int (*_XErrorFunction)(
+     Display*		/* dpy */,
+     XErrorEvent*	/* error_event */
+ );
+--- a/include/X11/Xregion.h
++++ b/include/X11/Xregion.h
+@@ -58,8 +58,10 @@
+ 
+ #define TRUE 1
+ #define FALSE 0
++#ifndef MAXSHORT
+ #define MAXSHORT 32767
+ #define MINSHORT -MAXSHORT
++#endif
+ #ifndef MAX
+ #define MAX(a,b) (((a) > (b)) ? (a) : (b))
+ #endif
+--- a/include/X11/Xresource.h
++++ b/include/X11/Xresource.h
+@@ -81,7 +81,7 @@
+  *
+  ****************************************************************/
+ 
+-typedef int       XrmQuark, *XrmQuarkList;
++typedef intptr_t       XrmQuark, *XrmQuarkList;
+ #define NULLQUARK ((XrmQuark) 0)
+ 
+ typedef char *XrmString;
+--- a/modules/im/ximcp/imDefIc.c
++++ b/modules/im/ximcp/imDefIc.c
+@@ -1341,7 +1341,7 @@
+ 
+     for (p = arg; p && p->name; p++) {
+ 	if (!(strcmp(p->name, XNInputStyle))) {
+-	    *input_style = (XIMStyle)p->value;
++	    *input_style = (XIMStyle)(intptr_t)p->value;
+ 	    return True;
+ 	}
+     }
+--- a/modules/im/ximcp/imInt.c
++++ b/modules/im/ximcp/imInt.c
+@@ -29,6 +29,7 @@
+ #ifdef HAVE_CONFIG_H
+ #include <config.h>
+ #endif
++#include <unistd.h>
+ #include <X11/Xatom.h>
+ #include <X11/Xlib.h>
+ #include <X11/Xmd.h>
+--- a/modules/im/ximcp/imLcLkup.c
++++ b/modules/im/ximcp/imLcLkup.c
+@@ -61,7 +61,7 @@
+ 	    ||(ic->private.local.brl_committed != 0))) {
+ 	if (ic->private.local.brl_committed != 0) { /* Braille Event */
+ 	    unsigned char pattern = ic->private.local.brl_committed;
+-	    char mb2[XLC_PUBLIC(ic->core.im->core.lcd, mb_cur_max)];
++	    char *mb2=alloca(XLC_PUBLIC(ic->core.im->core.lcd, mb_cur_max));
+ 	    ret = _Xlcwctomb(ic->core.im->core.lcd, mb2, BRL_UC_ROW | pattern);
+ 	    if(ret > bytes) {
+ 		if(status) *status = XBufferOverflow;
+--- a/modules/im/ximcp/imRm.c
++++ b/modules/im/ximcp/imRm.c
+@@ -34,6 +34,7 @@
+ #include <config.h>
+ #endif
+ #include <stdio.h>
++#include <unistd.h>
+ #include <X11/Xlib.h>
+ #include "Xlibint.h"
+ #include "Xlcint.h"
+@@ -491,7 +492,7 @@
+     Xic			 ic = (Xic)parm;
+     Window		*out;
+ 
+-    if(ic->core.client_window == (Window)NULL) {
++    if(ic->core.client_window == (Window)(intptr_t)NULL) {
+ 	return True;
+     }
+ 
+@@ -617,7 +618,7 @@
+     XRectangle		 area;
+     XRectangle		*out;
+ 
+-    if(ic->core.focus_window == (Window)NULL) {
++    if(ic->core.focus_window == (Window)(intptr_t)NULL) {
+ 	return True;
+     }
+     if(XGetGeometry(im->core.display, (Drawable)ic->core.focus_window,
+@@ -648,7 +649,7 @@
+     XWindowAttributes	 win_attr;
+     Colormap		*out;
+ 
+-    if(ic->core.client_window == (Window)NULL) {
++    if(ic->core.client_window == (Window)(intptr_t)NULL) {
+ 	return True;
+     }
+     if(XGetWindowAttributes(im->core.display, ic->core.client_window,
+@@ -851,7 +852,7 @@
+     XIMStyle		*out;
+ 
+     out = (XIMStyle *)((char *)top + info->offset);
+-    *out = (XIMStyle)val;
++    *out = (XIMStyle)(intptr_t)val;
+     return True;
+ }
+ 
+@@ -864,7 +865,7 @@
+     Window		*out;
+ 
+     out = (Window *)((char *)top + info->offset);
+-    *out = (Window)val;
++    *out = (Window)(intptr_t)val;
+     return True;
+ }
+ 
+@@ -889,7 +890,7 @@
+     XIMResetState	*out;
+ 
+     out = (XIMResetState *)((char *)top + info->offset);
+-    *out = (XIMResetState)val;
++    *out = (XIMResetState)(intptr_t)val;
+     return True;
+ }
+ 
+@@ -945,7 +946,7 @@
+     XIMHotKeyState	*out;
+ 
+     out = (XIMHotKeyState *)((char *)top + info->offset);
+-    *out = (XIMHotKeyState)val;
++    *out = (XIMHotKeyState)(intptr_t)val;
+     return True;
+ }
+ 
+@@ -984,7 +985,7 @@
+     Colormap		*out;
+ 
+     out = (Colormap *)((char *)top + info->offset);
+-    *out = (Colormap)val;
++    *out = (Colormap)(intptr_t)val;
+     return True;
+ }
+ 
+@@ -997,7 +998,7 @@
+     Atom		*out;
+ 
+     out = (Atom *)((char *)top + info->offset);
+-    *out = (Atom)val;
++    *out = (Atom)(intptr_t)val;
+     return True;
+ }
+ 
+@@ -1010,7 +1011,7 @@
+     unsigned long	*out;
+ 
+     out = (unsigned long *)((char *)top + info->offset);
+-    *out = (unsigned long)val;
++    *out = (unsigned long)(intptr_t)val;
+     return True;
+ }
+ 
+@@ -1023,7 +1024,7 @@
+     Pixmap		*out;
+ 
+     out = (Pixmap *)((char *)top + info->offset);
+-    *out = (Pixmap)val;
++    *out = (Pixmap)(intptr_t)val;
+     return True;
+ }
+ 
+@@ -1049,7 +1050,7 @@
+     int			*out;
+ 
+     out = (int *)((char *)top + info->offset);
+-    *out = (long)val;
++    *out = (long)(intptr_t)val;
+     return True;
+ }
+ 
+@@ -1062,7 +1063,7 @@
+     Cursor		*out;
+ 
+     out = (Cursor *)((char *)top + info->offset);
+-    *out = (Cursor)val;
++    *out = (Cursor)(intptr_t)val;
+     return True;
+ }
+ 
+@@ -1075,7 +1076,7 @@
+     XIMPreeditState	*out;
+ 
+     out = (XIMPreeditState *)((char *)top + info->offset);
+-    *out = (XIMPreeditState)val;
++    *out = (XIMPreeditState)(intptr_t)val;
+     return True;
+ }
+ 
+@@ -2797,7 +2798,7 @@
+     XIMArg		*p = (XIMArg *)val;
+ 
+     if (res->xrm_name == XrmStringToQuark(XNClientWindow)) {
+-	ic->core.client_window = (Window)p->value;
++	ic->core.client_window = (Window)(intptr_t)p->value;
+ 	if (ic->core.focus_window == (Window)0)
+ 	    ic->core.focus_window = ic->core.client_window;
+ 	if (flag) {
+@@ -2811,14 +2812,14 @@
+ 	        _XUnregisterFilter(ic->core.im->core.display,
+ 			ic->core.focus_window, _XimLocalFilter, (XPointer)ic);
+ 	    }
+-	    ic->core.focus_window = (Window)p->value;
++	    ic->core.focus_window = (Window)(intptr_t)p->value;
+ 	    if (flag) {
+ 	        _XRegisterFilterByType(ic->core.im->core.display,
+ 			ic->core.focus_window, KeyPress, KeyRelease,
+ 			_XimLocalFilter, (XPointer)ic);
+ 	    }
+ 	} else
+-	    ic->core.focus_window = (Window)p->value;
++	    ic->core.focus_window = (Window)(intptr_t)p->value;
+     }
+     return True;
+ }
+@@ -2837,7 +2838,7 @@
+ 
+ 	if (!(XGetRGBColormaps(ic->core.im->core.display,
+ 				ic->core.focus_window, &colormap_ret,
+-				&count, (Atom)p->value)))
++				&count, (Atom)(intptr_t)p->value)))
+ 	    return False;
+ 
+ 	Xfree(colormap_ret);
+@@ -2859,7 +2860,7 @@
+ 
+ 	if (!(XGetRGBColormaps(ic->core.im->core.display,
+ 				ic->core.focus_window, &colormap_ret,
+-				&count, (Atom)p->value)))
++				&count, (Atom)(intptr_t)p->value)))
+ 	    return False;
+ 
+ 	Xfree(colormap_ret);
+--- a/modules/im/ximcp/imRmAttr.c
++++ b/modules/im/ximcp/imRmAttr.c
+@@ -604,7 +604,7 @@
+ 	    return False;
+ 	}
+ 
+-	*((CARD8 *)buf) = (CARD8)(long)value;
++	*((CARD8 *)buf) = (CARD8)(intptr_t)value;
+ 	*len = ret_len;
+ 	break;
+ 
+@@ -615,7 +615,7 @@
+ 	    return False;
+ 	}
+ 
+-	*((CARD16 *)buf) = (CARD16)(long)value;
++	*((CARD16 *)buf) = (CARD16)(intptr_t)value;
+ 	*len = ret_len;
+ 	break;
+ 
+@@ -628,7 +628,7 @@
+ 	    return False;
+ 	}
+ 
+-	*((CARD32 *)buf) = (CARD32)(long)value;
++	*((CARD32 *)buf) = (CARD32)(intptr_t)value;
+ 	*len = ret_len;
+ 	break;
+ 
+@@ -944,7 +944,7 @@
+     XIMArg		*p)
+ {
+     if (res->xrm_name == XrmStringToQuark(XNClientWindow)) {
+-	ic->core.client_window = (Window)p->value;
++	ic->core.client_window = (Window)(intptr_t)p->value;
+ 	if (ic->core.focus_window == (Window)0)
+ 	    ic->core.focus_window = ic->core.client_window;
+ 	_XimRegisterFilter(ic);
+@@ -952,10 +952,10 @@
+     } else if (res->xrm_name == XrmStringToQuark(XNFocusWindow)) {
+ 	if (ic->core.client_window) {
+ 	    _XimUnregisterFilter(ic);
+-	    ic->core.focus_window = (Window)p->value;
++	    ic->core.focus_window = (Window)(intptr_t)p->value;
+ 	    _XimRegisterFilter(ic);
+ 	} else /* client_window not yet */
+-	    ic->core.focus_window = (Window)p->value;
++	    ic->core.focus_window = (Window)(intptr_t)p->value;
+     }
+     return True;
+ }
+@@ -972,7 +972,7 @@
+ 
+ 	if (!(XGetRGBColormaps(ic->core.im->core.display,
+ 				ic->core.focus_window, &colormap_ret,
+-				&count, (Atom)p->value)))
++				&count, (Atom)(intptr_t)p->value)))
+ 	    return False;
+ 
+ 	XFree(colormap_ret);
+@@ -1023,7 +1023,7 @@
+ 
+ 	if (!(XGetRGBColormaps(ic->core.im->core.display,
+ 				ic->core.focus_window, &colormap_ret,
+-				&count, (Atom)p->value)))
++				&count, (Atom)(intptr_t)p->value)))
+ 	    return False;
+ 
+ 	XFree(colormap_ret);
+--- a/modules/im/ximcp/imTrans.c
++++ b/modules/im/ximcp/imTrans.c
+@@ -53,18 +53,16 @@
+ #include <config.h>
+ #endif
+ #include <stdio.h>
++#include <unistd.h>
+ #include <X11/Xatom.h>
+ #include <X11/Xmd.h>
+ #include "Xlibint.h"
++#include <X11/Xwindows.h>
+ #include <X11/Xtrans/Xtrans.h>
+ #include "Xlcint.h"
+ #include "Ximint.h"
+ #include "XimTrans.h"
+ #include "XimTrInt.h"
+-
+-#ifdef WIN32
+-#include <X11/Xwindows.h>
+-#endif
+ 
+ 
+ #ifndef XIM_CONNECTION_RETRIES
+--- a/modules/om/generic/omGeneric.c
++++ b/modules/om/generic/omGeneric.c
+@@ -56,6 +56,7 @@
+ #include <X11/Xos.h>
+ #include <X11/Xatom.h>
+ #include <stdio.h>
++#include <unistd.h>
+ #include <string.h>
+ #include <ctype.h>
+ 
+--- a/nls/locale.alias.pre
++++ b/nls/locale.alias.pre
+@@ -1144,7 +1144,6 @@
+ american.iso88591:				en_US.ISO8859-1
+ arabic.iso88596:				ar_AA.ISO8859-6
+ bokmal:						nb_NO.ISO8859-1
+-bokmål:						nb_NO.ISO8859-1
+ bulgarian:					bg_BG.CP1251
+ c-french.iso88591:				fr_CA.ISO8859-1
+ catalan:					ca_ES.ISO8859-1
+@@ -1163,7 +1162,6 @@
+ estonian:					et_EE.ISO8859-1
+ finnish:					fi_FI.ISO8859-1
+ finnish.iso88591:				fi_FI.ISO8859-1
+-français:					fr_FR.ISO8859-1
+ french:						fr_FR.ISO8859-1
+ french.iso88591:				fr_CH.ISO8859-1
+ galego:						gl_ES.ISO8859-1
+--- a/src/ConvSel.c
++++ b/src/ConvSel.c
+@@ -49,5 +49,5 @@
+     req->time = time;
+     UnlockDisplay(dpy);
+     SyncHandle();
+-    return 1;
++    return Success;
+ }
+--- a/src/CrBFData.c
++++ b/src/CrBFData.c
+@@ -60,18 +60,18 @@
+         return (Pixmap) None;
+     } else {
+         XImage ximage = {
+-            .height = height,
+-            .width = width,
+-            .depth = 1,
+-            .bits_per_pixel = 1,
+-            .xoffset = 0,
+-            .format = XYPixmap,
+-            .data = (char *) data,
+-            .byte_order = LSBFirst,
+-            .bitmap_unit = 8,
+-            .bitmap_bit_order = LSBFirst,
+-            .bitmap_pad = 8,
+-            .bytes_per_line = (width + 7) / 8,
++            /*.width =*/ width,
++            /*.height =*/ height,
++            /*.xoffset =*/ 0,
++            /*.format =*/ XYPixmap,
++            /*.data =*/ (char *) data,
++            /*.byte_order =*/ LSBFirst,
++            /*.bitmap_unit =*/ 8,
++            /*.bitmap_bit_order =*/ LSBFirst,
++            /*.bitmap_pad =*/ 8,
++            /*.depth =*/ 1,
++            /*.bytes_per_line =*/ (width + 7) / 8,
++            /*.bits_per_pixel =*/ 1
+         };
+         XPutImage(display, pix, gc, &ximage, 0, 0, 0, 0, width, height);
+         XFreeGC(display, gc);
+--- a/src/CrGlCur.c
++++ b/src/CrGlCur.c
+@@ -40,7 +40,13 @@
+ #define LIBXCURSOR "cygXcursor-1.dll"
+ #endif
+ 
++#ifdef _MSC_VER
++#include <X11/XWindows.h>
++typedef HANDLE XModuleType;
++#define dlsym GetProcAddress
++#else
+ typedef void *XModuleType;
++#endif
+ 
+ #ifndef LIBXCURSOR
+ #define LIBXCURSOR "libXcursor.so.1"
+@@ -56,7 +62,11 @@
+     XModuleType	module;
+     for (;;)
+     {
++#ifdef _MSC_VER
++	module =  LoadLibrary(library);
++#else
+ 	module =  dlopen(library, RTLD_LAZY);
++#endif
+ 	if (module)
+ 	    return module;
+ 	dot = strrchr (library, '.');
+--- a/src/CrPFBData.c
++++ b/src/CrPFBData.c
+@@ -60,8 +60,10 @@
+ {
+     Pixmap pix = XCreatePixmap(display, d, width, height, depth);
+     XGCValues gcv = {
+-        .foreground = fg,
+-        .background = bg
++        /*.function =*/ 0,
++        /*.plane_mask =*/ 0,
++        /*.foreground =*/ fg,
++        /*.background =*/ bg
+     };
+     GC gc = XCreateGC(display, pix, GCForeground|GCBackground, &gcv);
+     if (gc == NULL) {
+@@ -69,18 +71,18 @@
+         return (Pixmap) None;
+     } else {
+         XImage ximage = {
+-            .height = height,
+-            .width = width,
+-            .depth = 1,
+-            .bits_per_pixel = 1,
+-            .xoffset = 0,
+-            .format = XYBitmap,
+-            .data = data,
+-            .byte_order = LSBFirst,
+-            .bitmap_unit = 8,
+-            .bitmap_bit_order = LSBFirst,
+-            .bitmap_pad = 8,
+-            .bytes_per_line = (width + 7) / 8
++            /*.width =*/ width,
++            /*.height =*/ height,
++            /*.xoffset =*/ 0,
++            /*.format =*/ XYBitmap,
++            /*.data =*/ data,
++            /*.byte_order =*/ LSBFirst,
++            /*.bitmap_unit =*/ 8,
++            /*.bitmap_bit_order =*/ LSBFirst,
++            /*.bitmap_pad =*/ 8,
++            /*.depth =*/ 1,
++            /*.bytes_per_line =*/ (width + 7) / 8,
++            /*.bits_per_pixel =*/ 1
+         };
+         XPutImage(display, pix, gc, &ximage, 0, 0, 0, 0, width, height);
+         XFreeGC(display, gc);
+--- a/src/CrWindow.c
++++ b/src/CrWindow.c
+@@ -28,6 +28,10 @@
+ #include <config.h>
+ #endif
+ #include "Xlibint.h"
++
++#ifdef _MSC_VER
++#undef CreateWindow
++#endif
+ 
+ Window XCreateSimpleWindow(
+     register Display *dpy,
+--- a/src/ErrDes.c
++++ b/src/ErrDes.c
+@@ -55,6 +55,7 @@
+ #include <X11/Xos.h>
+ #include "Xresource.h"
+ #include <stdio.h>
++#include <unistd.h>
+ 
+ #ifndef ERRORDB
+ #ifndef XERRORDB
+--- a/src/FSWrap.c
++++ b/src/FSWrap.c
+@@ -63,8 +63,8 @@
+ #include "Xlcint.h"
+ #include <ctype.h>
+ #include <X11/Xos.h>
++#include <unistd.h>
+ #include "reallocarray.h"
+-
+ 
+ #define	XMAXLIST	256
+ 
+--- a/src/GetAtomNm.c
++++ b/src/GetAtomNm.c
+@@ -23,6 +23,8 @@
+ in this Software without prior written authorization from The Open Group.
+ 
+ */
++
++#include <unistd.h>
+ 
+ #ifdef HAVE_CONFIG_H
+ #include <config.h>
+--- a/src/GetDflt.c
++++ b/src/GetDflt.c
+@@ -63,6 +63,7 @@
+ #include <X11/Xos_r.h>
+ #endif
+ #include <stdio.h>
++#include <unistd.h>
+ #include <ctype.h>
+ 
+ 
+@@ -137,9 +138,13 @@
+      * ~/.Xdefaults.  Next, if there is an XENVIRONMENT environment variable,
+      * then load that file.
+      */
+-
++     
+     if (dpy->xdefaults == NULL) {
++	#ifdef _MSC_VER
++	const char *slashDotXdefaults = ".Xdefaults";
++	#else
+ 	const char *slashDotXdefaults = "/.Xdefaults";
++	#endif
+ 
+ 	(void) GetHomeDir (fname, (int) (PATH_MAX - strlen (slashDotXdefaults) - 1));
+ 	(void) strcat (fname, slashDotXdefaults);
+@@ -149,7 +154,11 @@
+     }
+ 
+     if (!(xenv = getenv ("XENVIRONMENT"))) {
++	#ifdef _MSC_VER
++	const char *slashDotXdefaultsDash = ".Xdefaults-";
++	#else
+ 	const char *slashDotXdefaultsDash = "/.Xdefaults-";
++	#endif
+ 	int len;
+ 
+ 	(void) GetHomeDir (fname, (int) (PATH_MAX - strlen (slashDotXdefaultsDash) - 1));
+--- a/src/GetProp.c
++++ b/src/GetProp.c
+@@ -64,7 +64,7 @@
+     req->delete = delete;
+     req->longOffset = offset;
+     req->longLength = length;
+-    error.sequenceNumber = dpy->request;
++    error.sequenceNumber = (CARD16)(dpy->request&0xffff);
+ 
+     if (!_XReply (dpy, (xReply *) &reply, 0, xFalse)) {
+ 	UnlockDisplay(dpy);
+--- a/src/Host.c
++++ b/src/Host.c
+@@ -63,6 +63,10 @@
+ #include <config.h>
+ #endif
+ #include "Xlibint.h"
++
++#ifdef _MSC_VER
++#define inline __inline
++#endif
+ 
+ static inline int
+ changehost (Display *dpy, XHostAddress *host, BYTE mode)
+--- a/src/InitExt.c
++++ b/src/InitExt.c
+@@ -32,6 +32,7 @@
+ #include <X11/Xlibint.h>
+ #include <X11/Xos.h>
+ #include <stdio.h>
++#include <unistd.h>
+ 
+ /* The X11 protocol spec reserves events 64 through 127 for extensions */
+ #ifndef LastExtensionEvent
+--- a/src/KeysymStr.c
++++ b/src/KeysymStr.c
+@@ -34,6 +34,7 @@
+ #include "Xresinternal.h"
+ 
+ #include <stdio.h> /* sprintf */
++#include <unistd.h> /* snprintf */
+ 
+ #define NEEDVTABLE
+ #include "ks_tables.h"
+--- a/src/OpenDis.c
++++ b/src/OpenDis.c
+@@ -32,6 +32,7 @@
+ #include <X11/Xatom.h>
+ #include <X11/Xresource.h>
+ #include <stdio.h>
++#include <unistd.h>
+ #include "Xintconn.h"
+ 
+ #ifdef XKB
+--- a/src/ParseCmd.c
++++ b/src/ParseCmd.c
+@@ -199,7 +199,7 @@
+ 
+ 		case XrmoptionSkipNArgs:
+ 		    {
+-			register int j = 1 + (long) options[i].value;
++			register int j = 1 + (int)(intptr_t) options[i].value;
+ 
+ 			if (j > myargc) j = myargc;
+ 			for (; j > 0; j--) {
+--- a/src/QuColors.c
++++ b/src/QuColors.c
+@@ -74,8 +74,8 @@
+ 
+ int
+ XQueryColors(
+-    register Display * const dpy,
+-    const Colormap cmap,
++    register Display * dpy,
++    Colormap cmap,
+     XColor *defs, 		/* RETURN */
+     int ncolors)
+ {
+--- a/src/RdBitF.c
++++ b/src/RdBitF.c
+@@ -54,22 +54,23 @@
+ #define MAX_SIZE 255
+ 
+ /* shared data for the image read/parse logic */
+-static const short hexTable[256] = {
+-    ['0'] = 0,  ['1'] = 1,
+-    ['2'] = 2,  ['3'] = 3,
+-    ['4'] = 4,  ['5'] = 5,
+-    ['6'] = 6,  ['7'] = 7,
+-    ['8'] = 8,  ['9'] = 9,
+-    ['A'] = 10, ['B'] = 11,
+-    ['C'] = 12, ['D'] = 13,
+-    ['E'] = 14, ['F'] = 15,
+-    ['a'] = 10, ['b'] = 11,
+-    ['c'] = 12, ['d'] = 13,
+-    ['e'] = 14, ['f'] = 15,
+-
+-    [' '] = -1, [','] = -1,
+-    ['}'] = -1, ['\n'] = -1,
+-    ['\t'] = -1
++static const signed char hexTable[256] = {
++    0,  0,  0,  0,  0,  0,  0,  0,  0, -1, -1,  0,  0,  0,  0,  0
++  , 0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0
++  ,-1,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0, -1,  0,  0,  0
++  , 0,  1,  2,  3,  4,  5,  6,  7,  8,  9,  0,  0,  0,  0,  0,  0
++  , 0, 10, 11, 12, 13, 14, 15,  0,  0,  0,  0,  0,  0,  0,  0,  0
++  , 0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0
++  , 0, 10, 11, 12, 13, 14, 15,  0,  0,  0,  0,  0,  0,  0,  0,  0
++  , 0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0, -1,  0,  0
++  , 0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0
++  , 0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0
++  , 0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0
++  , 0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0
++  , 0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0
++  , 0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0
++  , 0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0
++  , 0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0
+ };
+ 
+ /*
+--- a/src/SetLocale.c
++++ b/src/SetLocale.c
+@@ -63,11 +63,12 @@
+ #include <X11/Xlocale.h>
+ #include <X11/Xos.h>
+ #include "XlcPubI.h"
++#include <unistd.h>
+ 
+ #define MAXLOCALE	64	/* buffer size of locale name */
+ 
+ 
+-#if defined(__APPLE__) || defined(__CYGWIN__)
++#if defined(__APPLE__) || defined(__CYGWIN__) || defined(_MSC_VER)
+ char *
+ _Xsetlocale(
+     int           category,
+--- a/src/StrKeysym.c
++++ b/src/StrKeysym.c
+@@ -39,11 +39,13 @@
+ 
+ #ifndef KEYSYMDB
+ #ifndef XKEYSYMDB
+-#define KEYSYMDB "/usr/lib/X11/XKeysymDB"
++#define KEYSYMDB "XKeysymDB"
+ #else
+ #define KEYSYMDB XKEYSYMDB
+ #endif
+ #endif
++
++#include <unistd.h>
+ 
+ static Bool initialized;
+ static XrmDatabase keysymdb;
+--- a/src/util/makekeys.c
++++ b/src/util/makekeys.c
+@@ -34,6 +34,7 @@
+ 
+ #include <stdio.h>
+ #include <stdlib.h>
++#include <unistd.h>
+ #include <string.h>
+ #include <stdint.h>
+ #include <inttypes.h>
+@@ -177,7 +178,7 @@
+     num_found = 0;
+     for (z = ksnum; z < KTNUM; z++) {
+ 	max_rehash = 0;
+-	for (name = tab, i = z; --i >= 0;)
++	for (name = &tab[0], i = z; --i >= 0;)
+ 		*name++ = 0;
+ 	for (i = 0; i < ksnum; i++) {
+ 	    name = info[i].name;
+--- a/src/Window.c
++++ b/src/Window.c
+@@ -28,6 +28,10 @@
+ #include <config.h>
+ #endif
+ #include "Xlibint.h"
++
++#ifdef _MSC_VER
++#undef CreateWindow
++#endif
+ 
+ void _XProcessWindowAttributes (
+     Display *dpy,
+--- a/src/xcb_io.c
++++ b/src/xcb_io.c
+@@ -23,6 +23,9 @@
+ #ifdef HAVE_SYS_SELECT_H
+ #include <sys/select.h>
+ #endif
++#include <sys/time.h>
++
++#include <X11/Xtrans/Xtrans.h>
+ 
+ #define xcb_fail_assert(_message, _var) do { \
+ 	unsigned int _var = 1; \
+@@ -155,7 +158,7 @@
+ static PendingRequest *append_pending_request(Display *dpy, uint64_t sequence)
+ {
+ 	PendingRequest *node = malloc(sizeof(PendingRequest));
+-	assert(node);
++	assert(node!=NULL);
+ 	node->next = NULL;
+ 	node->sequence = sequence;
+ 	node->reply_waiter = 0;
+--- a/src/xcms/cmsCmap.c
++++ b/src/xcms/cmsCmap.c
+@@ -41,6 +41,10 @@
+ #include "Xutil.h"
+ #include "Cmap.h"
+ #include "Cv.h"
++
++#ifdef _MSC_VER
++#undef CreateWindow
++#endif
+ 
+ /*
+  *      FORWARD DECLARATIONS
+--- a/src/xkb/XKB.c
++++ b/src/xkb/XKB.c
+@@ -28,6 +28,11 @@
+ #include <config.h>
+ #endif
+ #include <stdio.h>
++
++#ifdef XKB_IN_SERVER
++#define XkbVirtualModsToReal    SrvXkbVirtualModsToReal
++#endif
++
+ #include "Xlibint.h"
+ #include <X11/extensions/XKBproto.h>
+ #include "XKBlibint.h"
+--- a/src/xkb/XKBBind.c
++++ b/src/xkb/XKBBind.c
+@@ -31,6 +31,34 @@
+ #ifdef HAVE_CONFIG_H
+ #include <config.h>
+ #endif
++
++#ifdef XKB_IN_SERVER
++#define XkbAllocClientMap   SrvXkbAllocClientMap
++#define XkbAllocServerMap   SrvXkbAllocServerMap
++#define XkbChangeTypesOfKey   SrvXkbChangeTypesOfKey
++#define XkbCopyKeyTypes     SrvXkbCopyKeyTypes
++#define XkbFreeClientMap    SrvXkbFreeClientMap
++#define XkbFreeServerMap    SrvXkbFreeServerMap
++#define XkbKeyTypesForCoreSymbols SrvXkbKeyTypesForCoreSymbols
++#define XkbApplyCompatMapToKey    SrvXkbApplyCompatMapToKey
++#define XkbResizeKeyActions   SrvXkbResizeKeyActions
++#define XkbResizeKeySyms    SrvXkbResizeKeySyms
++#define XkbResizeKeyType    SrvXkbResizeKeyType
++#define XkbAllocCompatMap   SrvXkbAllocCompatMap
++#define XkbAllocControls    SrvXkbAllocControls
++#define XkbAllocIndicatorMaps   SrvXkbAllocIndicatorMaps
++#define XkbAllocKeyboard    SrvXkbAllocKeyboard
++#define XkbAllocNames     SrvXkbAllocNames
++#define XkbFreeCompatMap    SrvXkbFreeCompatMap
++#define XkbFreeKeyboard     SrvXkbFreeKeyboard
++#define XkbFreeNames      SrvXkbFreeNames
++#define XkbLatchModifiers   SrvXkbLatchModifiers
++#define XkbLatchGroup     SrvXkbLatchGroup
++#define XkbVirtualModsToReal    SrvXkbVirtualModsToReal
++#define XkbChangeKeycodeRange   SrvXkbChangeKeycodeRange
++#define XkbApplyVirtualModChanges SrvXkbApplyVirtualModChanges
++#endif
++
+ #include "XKBlib.h"
+ #include <X11/Xlibint.h>
+ #include <X11/Xutil.h>
+--- a/src/xkb/XKBGAlloc.c
++++ b/src/xkb/XKBGAlloc.c
+@@ -28,8 +28,10 @@
+ #include <config.h>
+ #endif
+ 
+-
+ #include <stdio.h>
++#include <unistd.h>
++
++
+ #include "Xlibint.h"
+ #include "XKBlibint.h"
+ #include "X11/extensions/XKBgeom.h"
+--- a/src/xkb/XKBGeom.c
++++ b/src/xkb/XKBGeom.c
+@@ -34,12 +34,8 @@
+ #include <X11/extensions/XKBproto.h>
+ #include "XKBlibint.h"
+ 
+-#ifndef MINSHORT
+ #define	MINSHORT	-32768
+-#endif
+-#ifndef MAXSHORT
+ #define	MAXSHORT	32767
+-#endif
+ 
+ /***====================================================================***/
+ 
+--- a/src/xkb/XKBGetMap.c
++++ b/src/xkb/XKBGetMap.c
+@@ -28,6 +28,34 @@
+ #ifdef HAVE_CONFIG_H
+ #include <config.h>
+ #endif
++
++#ifdef XKB_IN_SERVER
++#define XkbAllocClientMap   SrvXkbAllocClientMap
++#define XkbAllocServerMap   SrvXkbAllocServerMap
++#define XkbChangeTypesOfKey   SrvXkbChangeTypesOfKey
++#define XkbCopyKeyTypes     SrvXkbCopyKeyTypes
++#define XkbFreeClientMap    SrvXkbFreeClientMap
++#define XkbFreeServerMap    SrvXkbFreeServerMap
++#define XkbKeyTypesForCoreSymbols SrvXkbKeyTypesForCoreSymbols
++#define XkbApplyCompatMapToKey    SrvXkbApplyCompatMapToKey
++#define XkbResizeKeyActions   SrvXkbResizeKeyActions
++#define XkbResizeKeySyms    SrvXkbResizeKeySyms
++#define XkbResizeKeyType    SrvXkbResizeKeyType
++#define XkbAllocCompatMap   SrvXkbAllocCompatMap
++#define XkbAllocControls    SrvXkbAllocControls
++#define XkbAllocIndicatorMaps   SrvXkbAllocIndicatorMaps
++#define XkbAllocKeyboard    SrvXkbAllocKeyboard
++#define XkbAllocNames     SrvXkbAllocNames
++#define XkbFreeCompatMap    SrvXkbFreeCompatMap
++#define XkbFreeKeyboard     SrvXkbFreeKeyboard
++#define XkbFreeNames      SrvXkbFreeNames
++#define XkbLatchModifiers   SrvXkbLatchModifiers
++#define XkbLatchGroup     SrvXkbLatchGroup
++#define XkbVirtualModsToReal    SrvXkbVirtualModsToReal
++#define XkbChangeKeycodeRange   SrvXkbChangeKeycodeRange
++#define XkbApplyVirtualModChanges SrvXkbApplyVirtualModChanges
++#endif
++
+ #include "Xlibint.h"
+ #include <X11/extensions/XKBproto.h>
+ #include "XKBlibint.h"
+--- a/src/xkb/XKBMisc.c
++++ b/src/xkb/XKBMisc.c
+@@ -35,6 +35,9 @@
+ #include <X11/keysym.h>
+ #include "XKBlibint.h"
+ 
++#ifdef XKB_IN_SERVER
++#define XkbVirtualModsToReal    SrvXkbVirtualModsToReal
++#endif
+ 
+ /***====================================================================***/
+ 
+--- a/src/xkb/XKBSetGeom.c
++++ b/src/xkb/XKBSetGeom.c
+@@ -33,12 +33,8 @@
+ #include "X11/extensions/XKBgeom.h"
+ #include <X11/extensions/XKBproto.h>
+ 
+-#ifndef MINSHORT
+ #define	MINSHORT	-32768
+-#endif
+-#ifndef MAXSHORT
+ #define	MAXSHORT	32767
+-#endif
+ 
+ /***====================================================================***/
+ 
+--- a/src/xkb/XKBUse.c
++++ b/src/xkb/XKBUse.c
+@@ -29,6 +29,34 @@
+ #endif
+ #include <stdio.h>
+ #include <ctype.h>
++
++#ifdef XKB_IN_SERVER
++#define XkbAllocClientMap   SrvXkbAllocClientMap
++#define XkbAllocServerMap   SrvXkbAllocServerMap
++#define XkbChangeTypesOfKey   SrvXkbChangeTypesOfKey
++#define XkbCopyKeyTypes     SrvXkbCopyKeyTypes
++#define XkbFreeClientMap    SrvXkbFreeClientMap
++#define XkbFreeServerMap    SrvXkbFreeServerMap
++#define XkbKeyTypesForCoreSymbols SrvXkbKeyTypesForCoreSymbols
++#define XkbApplyCompatMapToKey    SrvXkbApplyCompatMapToKey
++#define XkbResizeKeyActions   SrvXkbResizeKeyActions
++#define XkbResizeKeySyms    SrvXkbResizeKeySyms
++#define XkbResizeKeyType    SrvXkbResizeKeyType
++#define XkbAllocCompatMap   SrvXkbAllocCompatMap
++#define XkbAllocControls    SrvXkbAllocControls
++#define XkbAllocIndicatorMaps   SrvXkbAllocIndicatorMaps
++#define XkbAllocKeyboard    SrvXkbAllocKeyboard
++#define XkbAllocNames     SrvXkbAllocNames
++#define XkbFreeCompatMap    SrvXkbFreeCompatMap
++#define XkbFreeKeyboard     SrvXkbFreeKeyboard
++#define XkbFreeNames      SrvXkbFreeNames
++#define XkbLatchModifiers   SrvXkbLatchModifiers
++#define XkbLatchGroup     SrvXkbLatchGroup
++#define XkbVirtualModsToReal    SrvXkbVirtualModsToReal
++#define XkbChangeKeycodeRange   SrvXkbChangeKeycodeRange
++#define XkbApplyVirtualModChanges SrvXkbApplyVirtualModChanges
++#endif
++
+ #include "Xlibint.h"
+ #include <X11/extensions/XKBproto.h>
+ #include "XKBlibint.h"
+--- a/src/xlibi18n/IMWrap.c
++++ b/src/xlibi18n/IMWrap.c
+@@ -89,12 +89,12 @@
+ 	} u;
+ 	if (size <= sizeof(XPointer)) {
+ 	    memcpy((char *)&u, (char *)src, (int)size);
+-	    if (size == sizeof(long))	       *dst = (XPointer)u.longval;
++	    if (size == sizeof(long))	       *dst = (XPointer)(intptr_t)u.longval;
+ #ifdef LONG64
+-	    else if (size == sizeof(int))      *dst = (XPointer)(long)u.intval;
++	    else if (size == sizeof(int))      *dst = (XPointer)(intptr_t)u.intval;
+ #endif
+-	    else if (size == sizeof(short))    *dst = (XPointer)(long)u.shortval;
+-	    else if (size == sizeof(char))     *dst = (XPointer)(long)u.charval;
++	    else if (size == sizeof(short))    *dst = (XPointer)(intptr_t)u.shortval;
++	    else if (size == sizeof(char))     *dst = (XPointer)(intptr_t)u.charval;
+ 	    else if (size == sizeof(char*))    *dst = (XPointer)u.charptr;
+ 	    else if (size == sizeof(XPointer)) *dst = (XPointer)u.ptr;
+ 	    else memcpy( (char*)dst, (char*)src, (int)size );
+--- a/src/xlibi18n/lcDB.c
++++ b/src/xlibi18n/lcDB.c
+@@ -49,6 +49,8 @@
+ 
+ #endif	/* NOT_X_ENV */
+ 
++#include <stdint.h>
++
+ /* specifying NOT_X_ENV allows users to just use
+    the database parsing routine. */
+ /* For UDC/VW */
+@@ -64,6 +66,7 @@
+ #endif
+ 
+ #include <stdio.h>
++#include <unistd.h>
+ 
+ typedef struct _DatabaseRec {
+     char *category;
+@@ -995,18 +998,18 @@
+     Database p = db;
+     int i = 0, j;
+ 
+-    printf("***\n*** BEGIN Database\n***\n");
++    fprintf(stderr, "***\n*** BEGIN Database\n***\n");
+     while (p) {
+-	printf("%3d: ", i++);
+-	printf("%s, %s, ", p->category, p->name);
+-	printf("\t[%d: ", p->value_num);
++		fprintf(stderr, "%3d: ", i++);
++		fprintf(stderr, "%s, %s, ", p->category, p->name);
++		fprintf(stderr, "\t[%d: ", p->value_num);
+ 	for (j = 0; j < p->value_num; ++j) {
+-	    printf("%s, ", p->value[j]);
+-	}
+-	printf("]\n");
++		fprintf(stderr, "%s, ", p->value[j]);
++	}
++	fprintf(stderr, "]\n");
+ 	p = p->next;
+     }
+-    printf("***\n*** END   Database\n***\n");
++	fprintf(stderr, "***\n*** END   Database\n***\n");
+ }
+ #endif
+ 
+--- a/src/xlibi18n/lcDynamic.c
++++ b/src/xlibi18n/lcDynamic.c
+@@ -51,7 +51,7 @@
+ #include "Xlcint.h"
+ 
+ #ifndef XLOCALEDIR
+-#define XLOCALEDIR "/usr/lib/X11/locale"
++#define XLOCALEDIR "locale"
+ #endif
+ 
+ #define LCLIBNAME    "xi18n.so"
+--- a/src/xlibi18n/lcFile.c
++++ b/src/xlibi18n/lcFile.c
+@@ -153,7 +153,7 @@
+ }
+ 
+ #ifndef XLOCALEDIR
+-#define XLOCALEDIR "/usr/lib/X11/locale"
++#define XLOCALEDIR "locale"
+ #endif
+ 
+ void
+--- a/src/xlibi18n/lcGeneric.c
++++ b/src/xlibi18n/lcGeneric.c
+@@ -32,6 +32,7 @@
+ #include <config.h>
+ #endif
+ #include <stdio.h>
++#include <unistd.h>
+ #include "Xlibint.h"
+ #include "XlcGeneric.h"
+ #include "reallocarray.h"
+--- a/src/xlibi18n/lcPublic.c
++++ b/src/xlibi18n/lcPublic.c
+@@ -27,6 +27,7 @@
+ #include <config.h>
+ #endif
+ #include <stdio.h>
++#include <unistd.h>
+ #include "Xlibint.h"
+ #include "XlcPubI.h"
+ 
+--- a/src/xlibi18n/lcPubWrap.c
++++ b/src/xlibi18n/lcPubWrap.c
+@@ -28,6 +28,7 @@
+ #endif
+ #include "Xlibint.h"
+ #include "XlcPubI.h"
++#include <unistd.h>
+ 
+ char *
+ _XGetLCValues(XLCd lcd, ...)
+--- a/src/xlibi18n/lcUTF8.c
++++ b/src/xlibi18n/lcUTF8.c
+@@ -75,6 +75,7 @@
+ #include <config.h>
+ #endif
+ #include <stdio.h>
++#include <unistd.h>
+ #include "Xlibint.h"
+ #include "XlcPubI.h"
+ #include "XlcGeneric.h"
+--- a/src/xlibi18n/lcWrap.c
++++ b/src/xlibi18n/lcWrap.c
+@@ -474,15 +474,15 @@
+     int size)
+ {
+     if (size == sizeof(long))
+-	*((long *) dst) = (long) src;
++	*((long *) dst) = (long)(intptr_t) src;
+ #ifdef LONG64
+     else if (size == sizeof(int))
+ 	*((int *) dst) = (int)(long) src;
+ #endif
+     else if (size == sizeof(short))
+-	*((short *) dst) = (short)(long) src;
++	*((short *) dst) = (short)(intptr_t) src;
+     else if (size == sizeof(char))
+-	*((char *) dst) = (char)(long) src;
++	*((char *) dst) = (char)(intptr_t) src;
+     else if (size == sizeof(XPointer))
+ 	*((XPointer *) dst) = (XPointer) src;
+     else if (size > sizeof(XPointer))
+--- a/src/xlibi18n/XDefaultIMIF.c
++++ b/src/xlibi18n/XDefaultIMIF.c
+@@ -64,6 +64,7 @@
+ #include <config.h>
+ #endif
+ #include <stdio.h>
++#include <unistd.h>
+ #include "Xlibint.h"
+ #include "Xlcint.h"
+ #include "XlcGeneric.h"
+@@ -285,11 +286,11 @@
+     for (p = values; p != NULL && p->name != NULL; p++) {
+ 	if(strcmp(p->name, XNInputStyle) == 0) {
+ 	    if (mode == CREATE_IC)
+-		ic->core.input_style = (XIMStyle)p->value;
++		ic->core.input_style = (XIMStyle)(intptr_t)p->value;
+ 	} else if (strcmp(p->name, XNClientWindow) == 0) {
+-	    ic->core.client_window = (Window)p->value ;
++	    ic->core.client_window = (Window)(intptr_t)p->value ;
+ 	} else if (strcmp(p->name, XNFocusWindow) == 0) {
+-	    ic->core.focus_window = (Window)p->value ;
++	    ic->core.focus_window = (Window)(intptr_t)p->value ;
+ 	} else if (strcmp(p->name, XNPreeditAttributes) == 0
+ 		   || strcmp(p->name, XNStatusAttributes) == 0) {
+             return_name = _SetICValueData(ic, (XIMArg*)p->value, mode);
+--- a/src/xlibi18n/XDefaultOMIF.c
++++ b/src/xlibi18n/XDefaultOMIF.c
+@@ -69,6 +69,8 @@
+ #include <X11/Xos.h>
+ #include <X11/Xatom.h>
+ #include <stdio.h>
++#include <unistd.h>
++#include <stdint.h>
+ 
+ #define MAXFONTS		100
+ 
+--- a/src/xlibi18n/XimProto.h
++++ b/src/xlibi18n/XimProto.h
+@@ -143,6 +143,13 @@
+ /*
+  * byte order
+  */
++#ifdef BIGENDIAN
++#undef BIGENDIAN
++#endif
++#ifdef LITTLEENDIAN
++#undef LITTLEENDIAN
++#endif
++
+ #define BIGENDIAN	(CARD8)0x42	/* MSB first */
+ #define LITTLEENDIAN	(CARD8)0x6c	/* LSB first */
+ 
+--- a/src/XlibInt.c
++++ b/src/XlibInt.c
+@@ -33,6 +33,7 @@
+ 
+ #ifdef WIN32
+ #define _XLIBINT_
++#include <X11\Xw32defs.h>
+ #endif
+ #ifdef HAVE_CONFIG_H
+ #include <config.h>
+@@ -43,6 +44,7 @@
+ #include <X11/Xpoll.h>
+ #include <assert.h>
+ #include <stdio.h>
++#include <unistd.h>
+ #ifdef WIN32
+ #include <direct.h>
+ #endif
+@@ -123,6 +125,19 @@
+ 
+ #define POLLFD_CACHE_SIZE 5
+ 
++#if _WIN32_WINNT < _WIN32_WINNT_VISTA
++struct pollfd {
++
++    SOCKET  fd;
++    SHORT   events;
++    SHORT   revents;
++
++};
++#define POLLRDNORM  0x0100
++#define POLLRDBAND  0x0200
++#define POLLIN      (POLLRDNORM | POLLRDBAND)
++#endif
++
+ /* initialize the struct array passed to poll() below */
+ Bool _XPollfdCacheInit(
+     Display *dpy)
+@@ -175,6 +190,11 @@
+     }
+ #endif
+ }
++
++#ifdef _MSC_VER
++#undef min
++#define min __min
++#endif
+ 
+ static int sync_hazard(Display *dpy)
+ {

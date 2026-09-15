@@ -33,6 +33,7 @@
 	assert(!_var); \
 } while (0)
 
+#ifdef XTHREADS
 #define throw_thread_fail_assert(_message, _var) do { \
 	fprintf(stderr, "[xcb] " _message "\n"); \
         if (_Xglobal_lock) { \
@@ -43,6 +44,14 @@
         } \
 	xcb_fail_assert(_message, _var); \
 } while (0)
+#else
+#define throw_thread_fail_assert(_message, _var) do { \
+        fprintf(stderr, "[xcb] " _message "\n"); \
+        fprintf(stderr, "[xcb] The libX11 library was built without " \
+                        "multi-threading support\n"); \
+        xcb_fail_assert(_message, _var); \
+} while (0)
+#endif
 
 /* XXX: It would probably be most useful if we stored the last-processed
  *      request, so we could find the offender from the message. */

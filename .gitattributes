@@ -9,3 +9,4 @@ third_party/xorg/xkbcomp/** -text -whitespace
 third_party/xorg/libXpm/** -text -whitespace
 third_party/zlib/** -text -whitespace
 include/X11/xpm.h -text -whitespace
+third_party/xorg/libX11/** -text -whitespace
