@@ -1,10 +1,10 @@
 # 本地验证记录
 
-[R5 原生 XML 依赖候选](2026-09-15-libxml2-native.md)已在独立分支接入 libxml2 2.15.4 和 libiconv 1.19，保留 gzip/HTTP 配置读取，393 项自动回归通过、0 跳过。候选源码 `af0cd70e4`，尚待本版本人工反馈，未合入 master；完整构建、来源和验证边界见报告。
+[R5 原生 XML 依赖整合](2026-09-15-libxml2-native.md)已接入 libxml2 2.15.4 和 libiconv 1.19，保留 gzip/HTTP 配置读取，393 项自动回归通过、0 跳过。构建源码 `af0cd70e4`，2026-09-15 取得“R5 正常 ，合入吧”的反馈后快进合入 master；完整构建、合入验证、来源和人工反馈边界见报告，未 push。
 
-[libxml2 编码与文件读取兼容性调查](2026-09-15-libxml2-compatibility.md)已构建原生 libiconv 1.19，并与 libxml2 2.15.4、现有 zlib 联动验证：9 组编码及实际 XLaunch/Fontconfig 正常消费者通过。gzip 需显式解压选项，HTTP 需应用层适配；正式实施方案和未验证边界见报告，生产库尚未替换。
+[libxml2 编码与文件读取兼容性调查](2026-09-15-libxml2-compatibility.md)记录正式实施前的调查：原生 libiconv 1.19 与 libxml2 2.15.4、现有 zlib 联动验证，9 组编码及实际 XLaunch/Fontconfig 正常消费者通过。gzip 需显式解压选项，HTTP 需应用层适配；调查阶段尚未替换生产库，后续正式实施与整合见上方 R5 报告。
 
-[libxml2 来源与重建评估](2026-09-15-libxml2-assessment.md)已确认现有 x64 DLL 为 2.9.1，并在隔离目录构建官方 2.15.4，验证实际 XLaunch 配置往返和 Fontconfig 缓存。无 iconv 试验版无法读取旧版支持的 GBK/GB18030，尚不能直接替换；生产依赖与运行版本保持不变，后续先确定编码和文件读取兼容方案。
+[libxml2 来源与重建评估](2026-09-15-libxml2-assessment.md)记录当时继承的 x64 DLL 为 2.9.1，并在隔离目录构建官方 2.15.4，验证实际 XLaunch 配置往返和 Fontconfig 缓存。无 iconv 试验版无法读取旧版支持的 GBK/GB18030，当时未直接替换；后续兼容调查及正式实施见上方报告。
 
 [Fontconfig Windows 目录枚举修复](2026-09-14-fontconfig-directory.md)已于 2026-09-15 取得本版本“没问题，继续”的反馈并快进合入 master，合入前后各 370 项测试通过、0 跳过。实际缓存创建及重载均为 2 条记录，运行目录保持不变；人工反馈的逐项边界和构建恢复记录见报告。仅本地整合，未 push。
 

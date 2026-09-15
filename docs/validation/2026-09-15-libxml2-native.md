@@ -1,8 +1,8 @@
-# R5 原生 XML 依赖候选
+# R5 原生 XML 依赖整合
 
 日期：2026-09-15。构建源码：`af0cd70e417d8bce105afe07b59e6b5c8298a396`。候选分支：`codex/libxml2-20260915`。工作区：`D:/File/Program/GitHub/zzxsrv-libxml2-20260915`。
 
-本轮在[来源评估](2026-09-15-libxml2-assessment.md)和[编码/文件兼容调查](2026-09-15-libxml2-compatibility.md)后正式接入原生源码依赖。候选保留独立工作区，尚未取得本版本人工使用反馈，也未合入 master 或推送。
+本轮在[来源评估](2026-09-15-libxml2-assessment.md)和[编码/文件兼容调查](2026-09-15-libxml2-compatibility.md)后正式接入原生源码依赖。2026-09-15 已取得本版本“R5 正常 ，合入吧”的反馈并快进合入 master；独立工作区及运行目录保留，未推送。下列构建与候选测试记录保留，合入验证见“实际反馈与主线整合”。
 
 ## 实现范围
 
@@ -49,11 +49,21 @@ WinHTTP 使用系统自动代理发现，并关闭自动凭据发送。其代理
 
 ## 运行目录与人工验收
 
-新候选入口：`D:/File/Program/GitHub/zzxsrv-libxml2-20260915/dist/x64/Release/xlaunch.exe`。
+已验收的 R5 入口：`D:/File/Program/GitHub/zzxsrv-libxml2-20260915/dist/x64/Release/xlaunch.exe`。
 
 旧 Fontconfig 已验收目录 `D:/File/Program/GitHub/zzxsrv-fontconfig-20260914/dist/x64/Release` 的 5129 个文件与原记录逐一核对，内容和文件集合均未改变。新目录实际独立文件数为 5132：移除四个旧 DLL，加入两个原生 DLL 和五份许可证/来源文件。打包器输出的 5135 是清单拷贝条目数，独立文件数以最终磁盘枚举为准。
 
-请在新目录验证启动、gitk、中文显示、关闭后重启，以及保存配置后重新加载。不要把旧目录的历史反馈移植到本候选；传统字体、OpenGL、双向复制和字体/字号切换仍按已有兼容性记录保留其未确认边界。
+交付时建议在新目录验证启动、gitk、中文显示、关闭后重启，以及保存配置后重新加载。维护者现已反馈“R5 正常 ，合入吧”，记录为本版本实际使用正常；未逐项列出结果，不补造逐项明细，也不把旧目录的历史反馈移植到本版本。传统字体、OpenGL、双向复制和字体/字号切换仍按已有兼容性记录保留其未确认边界。
+
+## 实际反馈与主线整合
+
+2026-09-15，维护者确认 R5 正常并明确要求合入。master 从 `fdf4e955c72e18e22e74484791b90b843a7616ff` 快进至 `dea338b5dce7eba11cdba338016d6ba7e546af8c`，保留生产源码与候选文档提交，没有 merge commit。
+
+合入前后各 393 项测试通过、0 跳过，耗时分别为 47.314 秒和 46.321 秒。两次均在保留的 R5 工作区运行完整 `python -B -m unittest discover -s tools/tests -v`，启用 `VCXSRV_TEST_LOCAL_TOOLS=1`、`VCXSRV_TEST_RUNTIME=1`，使用匹配的构建依赖、R5 运行目录和构建源码号。合入后确认该工作区 HEAD 与 master 均为 `dea338b5d`，生产源码一致；随后只补充整合文档。本次没有重跑完整构建，产物构建源码仍为 `af0cd70e417d8bce105afe07b59e6b5c8298a396`。
+
+逐一核对交付时的文件清单与 SHA-256，5132 个运行文件全部不变，未增加或缺失文件。继续使用上述 R5 入口；主目录源码合入不会自动重编译其旧 dist。分支、工作区登记及所有既有运行目录保留，未 push。HTTPS/真实代理及其他未测场景不由总体反馈改写为已通过。
+
+整合证据保存在主仓库 `.local-validation/libxml2-integration-20260915/`，包含 `tests-before-merge.log`、`tests-after-merge.log`、`verify-integration.py` 和 `verification.json`。原候选证据继续反映其交付时状态，本节记录后续验收与合入结果。
 
 ## 审查与本地证据
 

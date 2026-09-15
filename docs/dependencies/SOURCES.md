@@ -52,7 +52,7 @@
 
 ### R5 原生 XML 配置读取适配
 
-候选源码 `af0cd70e417d8bce105afe07b59e6b5c8298a396` 为 XLaunch 增加解析上下文局部的 gzip/WinHTTP 输入适配，与固定 libxml2 2.15.4 源码配套。此为本地兼容实现，不计入 X Server 上游补丁数；原 39 项上游补丁记录不变，另列为第 4 项本地兼容记录。源码导入的 Winlibs 适配在 libiconv 组件字段中单独追溯。候选测试及未验收范围见 [R5 报告](../validation/2026-09-15-libxml2-native.md)。
+已合入的源码 `af0cd70e417d8bce105afe07b59e6b5c8298a396` 为 XLaunch 增加解析上下文局部的 gzip/WinHTTP 输入适配，与固定 libxml2 2.15.4 源码配套。此为本地兼容实现，不计入 X Server 上游补丁数；原 39 项上游补丁记录不变，另列为第 4 项本地兼容记录。源码导入的 Winlibs 适配在 libiconv 组件字段中单独追溯。2026-09-15 取得本版本实际使用正常的反馈后快进合入 master，测试及未验收范围见 [R5 报告](../validation/2026-09-15-libxml2-native.md)。
 
 ### Fontconfig Windows 目录枚举的本地修正
 
@@ -95,7 +95,7 @@
 
 ## 核心库与头文件
 
-`include/X11/` 和 `include/gl/` 含多个项目的副本，不能把整个目录等同于一个 xorgproto 提交。本轮仅同步 libXfont2 2.0.9 的 `bdfint.h`、`libxfont2.h` 公共副本并移除 `fontencc.h`，详见 [R4 报告](../validation/2026-09-14-font-dependencies.md)。当前候选分支已从固定源码导入 libxml2 2.15.4 与 GNU libiconv 1.19，并同步公共 iconv 头文件；来源与文件摘要见各组件 README 和 JSON。原 2.9.1 二进制来源未知项保留为[历史评估](../validation/2026-09-15-libxml2-assessment.md)，不借新库导入修改历史结论。
+`include/X11/` 和 `include/gl/` 含多个项目的副本，不能把整个目录等同于一个 xorgproto 提交。本轮仅同步 libXfont2 2.0.9 的 `bdfint.h`、`libxfont2.h` 公共副本并移除 `fontencc.h`，详见 [R4 报告](../validation/2026-09-14-font-dependencies.md)。当前主线已从固定源码导入 libxml2 2.15.4 与 GNU libiconv 1.19，并同步公共 iconv 头文件；来源与文件摘要见各组件 README 和 JSON。原 2.9.1 二进制来源未知项保留为[历史评估](../validation/2026-09-15-libxml2-assessment.md)，不借新库导入修改历史结论。
 
 | 组件 / 本地位置 | 修订与证据性质 | 原始上游 / 实际继承 | 证据与限制 |
 | --- | --- | --- | --- |
@@ -123,7 +123,7 @@
 | expat<br>`third_party/expat` | 声明/源码记录：`2.6.2`；精确 tag/commit 未证实 | [原始上游](https://github.com/libexpat/libexpat)；[继承源码](https://github.com/marchaesen/vcxsrv/tree/d0a1eaf7ee15fcdf4f683388a88fec49078e6408/expat) | third_party/expat/lib/expat.h:1067-1069; docs/dependencies/packages.txt; docs/history/upstream-releases/releasenote_21.1.16.1.txt。本地版本和发布说明一致；精确下载归档、导入 tag/commit 与二进制重现关系未证实。 |
 | freetype<br>`third_party/fonts/freetype` | 正式源码包：`2.14.3`，保留本地适配 | [原始上游](https://gitlab.freedesktop.org/freetype/freetype)；[实际下载](https://mirror.rabisu.com/mirrors/savannah/freetype/freetype-2.14.3.tar.xz) | SHA-256 `36bc4f1cc413335368ee656c42afca65c5a3987e8768cc28cf11ba775e785a5f`；2026-09-14 从正式 2.14.3 包更新既有导入范围并加入新文件；保留本地 .gitignore、ftstring.vcproj、ftview.vcproj。与旧 2.13.3 正式包比较，其余已跟踪文件无本地改动。使用既有 MSBuild 配置；原始继承链接仅为历史。详见 [R4 报告](../validation/2026-09-14-font-dependencies.md)。 |
 | openssl<br>`third_party/openssl` | 声明/源码记录：`3.4.1`；精确 tag/commit 未证实 | [原始上游](https://github.com/openssl/openssl)；[继承源码](https://github.com/marchaesen/vcxsrv/tree/d0a1eaf7ee15fcdf4f683388a88fec49078e6408/openssl) | third_party/openssl/VERSION.dat; docs/dependencies/packages.txt; docs/history/upstream-releases/releasenote_21.1.16.1.txt。本地版本和发布说明一致；精确下载归档、导入 tag/commit 与二进制重现关系未证实。 |
-| libxml2<br>`third_party/libxml2` | 官方源码包：`2.15.4` | [实际官方源码包](https://download.gnome.org/sources/libxml2/2.15/libxml2-2.15.4.tar.xz)；[导入说明](../../third_party/libxml2/README.vcxsrv.md) | 官方摘要匹配；完整 4426 个源码文件原样导入，逐文件原始 SHA-256 在 source-files.json；原生构建定义独立存放。候选尚待整包验收。 |
+| libxml2<br>`third_party/libxml2` | 官方源码包：`2.15.4` | [实际官方源码包](https://download.gnome.org/sources/libxml2/2.15/libxml2-2.15.4.tar.xz)；[导入说明](../../third_party/libxml2/README.vcxsrv.md) | 官方摘要匹配；完整 4426 个源码文件原样导入，逐文件原始 SHA-256 在 source-files.json；原生构建定义独立存放。R5 整包已取得有限实际反馈并合入；未测范围见验证报告。 |
 | GNU libiconv<br>`third_party/libiconv` | 官方源码包：`1.19`，加固定 Windows 适配 | [GNU 包](https://ftp.gnu.org/pub/gnu/libiconv/libiconv-1.19.tar.gz)；[Winlibs 固定提交](https://github.com/winlibs/libiconv/tree/accac417318a3eef7402685a268cab8037e62ba1)；[导入说明](../../third_party/libiconv/README.vcxsrv.md) | 1112 个导入文件有原始 SHA-256；官方包摘要仅本地计算，未验证官方摘要/签名。5 个文件修改、3 个新增头文件另存补丁。 |
 | GNU regex / GNU portability snippets<br>`third_party/libregex` | 未知 / 未固定 | [原始上游](https://sourceware.org/git/glibc.git)；[继承源码](https://github.com/marchaesen/vcxsrv/tree/d0a1eaf7ee15fcdf4f683388a88fec49078e6408/libregex) | third_party/libregex/src/regex.c:1-19 identifies GNU C Library; third_party/libregex/src/nl_langinfo.c:1-16; third_party/libregex/src/langinfo.h:1-15。regex 主体为 glibc 派生；nl_langinfo/langinfo 为 GNU 可移植片段，精确 glibc/gnulib 导入版本及来源打包者未知。不能用版权年份推版本。 |
 | WinMain console adapter<br>`src/platform/libwinmain` | 未知 / 未固定 | 独立上游未知；[继承源码](https://github.com/marchaesen/vcxsrv/tree/d0a1eaf7ee15fcdf4f683388a88fec49078e6408/libwinmain) | src/platform/libwinmain/winmain.c; src/platform/libwinmain/makefile。继承 VcXsrv 的 Windows 入口/控制台适配；未发现独立第三方上游声明或版本。可追溯继承源 https://github.com/marchaesen/vcxsrv/tree/d0a1eaf7ee15fcdf4f683388a88fec49078e6408 |

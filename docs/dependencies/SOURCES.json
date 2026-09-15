@@ -707,7 +707,7 @@
         "docs/validation/2026-09-15-libxml2-compatibility.md"
       ],
       "confidence": "high",
-      "notes": "候选分支从官方 2.15.4 包导入完整源码，source/ 未改动；使用独立 MSVC/CMake 构建定义。历史 2.9.1 二进制来源未知项保留在旧评估记录，不归属于新源码。",
+      "notes": "主线已从官方 2.15.4 包导入完整源码，source/ 未改动；使用独立 MSVC/CMake 构建定义。2026-09-15 取得 R5 使用正常反馈后快进合入，未测范围见验证报告。历史 2.9.1 二进制来源未知项保留在旧评估记录，不归属于新源码。",
       "nested": false,
       "id": "dep-028",
       "category": "core_libraries_headers",
