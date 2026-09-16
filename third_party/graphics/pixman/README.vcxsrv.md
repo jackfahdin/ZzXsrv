@@ -2,7 +2,9 @@
 
 Source: https://www.cairographics.org/releases/pixman-0.46.4.tar.xz
 
-The archive contains 224 files. All are imported: 218 retain original bytes,
+The archive contains 207 regular files and 17 relative symlinks. The links
+are materialized as files for Windows; their original targets are recorded
+in source-files.json. All 224 resulting files are imported: 218 retain upstream bytes,
 while six carry the inherited, explicitly recorded adaptations in
 `patches/windows-adaptations.patch`. `source-files.json` records raw archive,
 upstream, current-file and patch hashes. The downloaded SHA-512 matches the

@@ -478,5 +478,26 @@
     "test/utils/utils.h": "a2b5a5b09f8f9dbf3d04aa740393cca52782344400fb62918618bcd29f8be726"
   },
   "patch_file": "patches/windows-adaptations.patch",
-  "patch_sha256": "e8032ce4a3d3d3e86128889de72817581986a9db1b30365c941092c46155e9aa"
+  "patch_sha256": "d86006c9d02e2446545774d0c6110b2e7b409d49e8e5963109f963db56703f7b",
+  "archive_regular_file_count": 207,
+  "materialized_symlinks": {
+    ".gitlab-ci.d/01-docker/target-env/linux-ppc.env": "linux-amd64.env",
+    ".gitlab-ci.d/01-docker/target-env/linux-ppc64.env": "linux-amd64.env",
+    ".gitlab-ci.d/01-docker/target-env/windows-686.env": "linux-amd64.env",
+    ".gitlab-ci.d/01-docker/target-env/windows-amd64.env": "linux-amd64.env",
+    ".gitlab-ci.d/01-docker/target-env/windows-arm64-v8.env": "linux-arm64-v8.env",
+    ".gitlab-ci.d/meson-cross/linux-386-gnu.meson": "native-gnu.meson",
+    ".gitlab-ci.d/meson-cross/linux-386-llvm.meson": "native-llvm.meson",
+    ".gitlab-ci.d/meson-cross/linux-amd64-gnu.meson": "native-gnu.meson",
+    ".gitlab-ci.d/meson-cross/linux-amd64-llvm.meson": "native-llvm.meson",
+    ".gitlab-ci.d/meson-cross/linux-arm64-v8-gnu.meson": "native-gnu.meson",
+    ".gitlab-ci.d/meson-cross/linux-arm64-v8-llvm.meson": "native-llvm.meson",
+    ".gitlab-ci.d/meson-cross/linux-mipsel-gnu.meson": "native-gnu-noopenmp.meson",
+    ".gitlab-ci.d/meson-cross/linux-mipsel-llvm.meson": "native-llvm-noopenmp.meson",
+    ".gitlab-ci.d/meson-cross/linux-ppc64le-gnu.meson": "native-gnu.meson",
+    ".gitlab-ci.d/meson-cross/linux-ppc64le-llvm.meson": "native-llvm.meson",
+    ".gitlab-ci.d/meson-cross/linux-riscv64-gnu.meson": "native-gnu.meson",
+    ".gitlab-ci.d/meson-cross/linux-riscv64-llvm.meson": "native-llvm.meson"
+  },
+  "upstream_files_semantics": "Raw bytes of 207 regular files and the targets of 17 relative symlinks, materialized as files for Windows; symlink mapping retained separately."
 }
