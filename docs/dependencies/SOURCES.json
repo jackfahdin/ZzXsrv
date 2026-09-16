@@ -1,6 +1,6 @@
 {
   "schema_version": 2,
-  "updated": "2026-09-15",
+  "updated": "2026-09-16",
   "project": "https://github.com/jackfahdin/ZzXsrv",
   "description": "组件来源目录；记录证据类型，不依赖上游源码分支，不将声明版本视为逐字节来源证明。",
   "initial_collection": {
@@ -417,10 +417,12 @@
       "evidence": [
         "third_party/xorg/libxcb/configure.ac: AC_INIT declares 1.17.0",
         "docs/history/upstream-releases/releasenote_21.1.16.1.txt: Changes in 21.1.16 records daf2c5397607c32c3814f02831b9c1158fd1e52c",
-        "docs/dependencies/packages.txt"
+        "docs/dependencies/packages.txt",
+        "third_party/xorg/libxcb/source-audit.json",
+        "docs/validation/2026-09-16-r9-xcb.md"
       ],
       "confidence": "high",
-      "notes": "原作者记录同步 SHA，未将本地文件与上游逐字节比对；含移植修改。",
+      "notes": "原作者记录同步 SHA，未将本地文件与上游逐字节比对；含移植修改。 2026-09-16 已与官方 1.17.0 归档逐文件对比（本地比较仅规范化行尾）；保留继承源码与 Windows 适配，并非重新导入纯净归档。原记录同步 SHA 尚未独立核验。",
       "nested": false,
       "id": "dep-015",
       "category": "core_libraries_headers",
@@ -431,7 +433,14 @@
       "actual_import_urls": [
         "https://github.com/marchaesen/vcxsrv/tree/d0a1eaf7ee15fcdf4f683388a88fec49078e6408/libxcb"
       ],
-      "upstream_revision_url": "https://gitlab.freedesktop.org/xorg/lib/libxcb/-/commit/daf2c5397607c32c3814f02831b9c1158fd1e52c"
+      "upstream_revision_url": "https://gitlab.freedesktop.org/xorg/lib/libxcb/-/commit/daf2c5397607c32c3814f02831b9c1158fd1e52c",
+      "release_comparison": {
+        "version": "1.17.0",
+        "archive_url": "https://xorg.freedesktop.org/archive/individual/lib/libxcb-1.17.0.tar.xz",
+        "archive_sha256": "599ebf9996710fea71622e6e184f3a8ad5b43d0e5fa8c4e407123c88a59a6d55",
+        "manifest": "third_party/xorg/libxcb/source-audit.json",
+        "report": "docs/validation/2026-09-16-r9-xcb.md"
+      }
     },
     {
       "name": "libxkbfile",
@@ -489,10 +498,12 @@
       "upstream_url": "https://gitlab.freedesktop.org/xorg/proto/xcbproto",
       "evidence": [
         "docs/history/upstream-releases/releasenote_21.1.16.1.txt: Changes in 21.1.16 records nested xcb-proto under libxcb at 4d2879ad9e394ff832762e8961eca9415cc9934c",
-        "third_party/xorg/libxcb/xcb-proto/configure.ac: 1.17.0"
+        "third_party/xorg/libxcb/xcb-proto/configure.ac: 1.17.0",
+        "third_party/xorg/libxcb/source-audit.json",
+        "docs/validation/2026-09-16-r9-xcb.md"
       ],
       "confidence": "high",
-      "notes": "原作者记录同步 SHA，未逐文件证实等同上游。",
+      "notes": "原作者记录同步 SHA，未逐文件证实等同上游。 2026-09-16 已与官方 1.17.0 归档逐文件对比（本地比较仅规范化行尾）；保留继承源码与 Windows 适配，并非重新导入纯净归档。原记录同步 SHA 尚未独立核验。",
       "nested": true,
       "id": "dep-018",
       "category": "embedded_dependencies",
@@ -503,7 +514,14 @@
       "actual_import_urls": [
         "https://github.com/marchaesen/vcxsrv/tree/d0a1eaf7ee15fcdf4f683388a88fec49078e6408/libxcb/xcb-proto"
       ],
-      "upstream_revision_url": "https://gitlab.freedesktop.org/xorg/proto/xcbproto/-/commit/4d2879ad9e394ff832762e8961eca9415cc9934c"
+      "upstream_revision_url": "https://gitlab.freedesktop.org/xorg/proto/xcbproto/-/commit/4d2879ad9e394ff832762e8961eca9415cc9934c",
+      "release_comparison": {
+        "version": "1.17.0",
+        "archive_url": "https://xorg.freedesktop.org/archive/individual/proto/xcb-proto-1.17.0.tar.xz",
+        "archive_sha256": "2c1bacd2110f4799f74de6ebb714b94cf6f80fb112316b1219480fd22562148c",
+        "manifest": "third_party/xorg/libxcb/source-audit.json",
+        "report": "docs/validation/2026-09-16-r9-xcb.md"
+      }
     },
     {
       "name": "xtrans",

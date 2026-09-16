@@ -142,6 +142,11 @@ Section "VcXsrv (required)"
   SetOutPath $INSTDIR\licenses\xkbcomp
   File "..\..\..\third_party\xorg\xkbcomp\COPYING"
   File "..\..\..\third_party\xorg\xkbcomp\README.vcxsrv.md"
+  SetOutPath $INSTDIR\licenses\libxcb
+  File "..\..\..\third_party\xorg\libxcb\COPYING"
+  File "..\..\..\third_party\xorg\libxcb\README.vcxsrv.md"
+  SetOutPath $INSTDIR\licenses\xcb-proto
+  File "..\..\..\third_party\xorg\libxcb\xcb-proto\COPYING"
   SetOutPath $INSTDIR\licenses\libX11
   File "..\..\..\third_party\xorg\libX11\COPYING"
   File "..\..\..\third_party\xorg\libX11\README.vcxsrv.md"
@@ -302,6 +307,8 @@ Section "Uninstall"
   Delete "$INSTDIR\libxml2.dll"
   Delete "$INSTDIR\libiconv.dll"
   RMDir /r "$INSTDIR\licenses\xkbcomp"
+  RMDir /r "$INSTDIR\licenses\libxcb"
+  RMDir /r "$INSTDIR\licenses\xcb-proto"
   RMDir /r "$INSTDIR\licenses\libX11"
   RMDir /r "$INSTDIR\licenses\libXpm"
   RMDir /r "$INSTDIR\licenses\zlib"

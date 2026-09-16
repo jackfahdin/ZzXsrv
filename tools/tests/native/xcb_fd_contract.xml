@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Ordinary generator inputs; this test-only protocol is never sent to a server. -->
+<xcb header="xcb_fd_contract" extension-xname="FDContract" extension-name="FDContract" major-version="1" minor-version="0">
+  <request name="Fixed" opcode="0"><fd name="value" /></request>
+  <request name="Array" opcode="1">
+    <field type="CARD8" name="count" /><pad bytes="3" />
+    <list type="fd" name="values"><fieldref>count</fieldref></list>
+  </request>
+  <request name="Mixed" opcode="2">
+    <field type="CARD8" name="count" /><pad bytes="3" />
+    <fd name="value" />
+    <list type="fd" name="values"><fieldref>count</fieldref></list>
+  </request>
+</xcb>

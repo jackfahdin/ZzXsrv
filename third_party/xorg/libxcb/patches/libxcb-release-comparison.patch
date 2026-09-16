@@ -1,0 +1,394 @@
+--- a/src/c_client.py
++++ b/src/c_client.py
+@@ -286,6 +286,7 @@
+     _c('#include <stddef.h>  /* for offsetof() */')
+     _c('#include "xcbext.h"')
+     _c('#include "%s.h"', _ns.header)
++    _c('#include <X11/Xtrans/Xtrans.h>')
+ 
+     _c('')
+     _c('#define ALIGNOF(type) offsetof(struct { char dummy; type member; }, member)')
+@@ -304,7 +305,7 @@
+         _h('#define XCB_%s_MAJOR_VERSION %s', _ns.ext_name.upper(), _ns.major_version)
+         _h('#define XCB_%s_MINOR_VERSION %s', _ns.ext_name.upper(), _ns.minor_version)
+         _h('') #XXX
+-        _h('extern xcb_extension_t %s;', _ns.c_ext_global_name)
++        _h('XCB_EXTERN xcb_extension_t %s;', _ns.c_ext_global_name)
+ 
+         _c('')
+         _c('xcb_extension_t %s = { "%s", 0 };', _ns.c_ext_global_name, _ns.ext_xname)
+@@ -2385,7 +2386,7 @@
+         num_fds_expr.append('%d' % (num_fds_fixed))
+     if len(num_fds_expr) > 0:
+         num_fds = '+'.join(num_fds_expr)
+-        _c('    int fds[%s];' % (num_fds))
++        _c('    int *fds = alloca((%s) * sizeof(*fds));' % (num_fds))
+         _c('    int fd_index = 0;')
+     else:
+         num_fds = None
+@@ -2660,14 +2661,14 @@
+         name = 'man/%s.%s' % (linkname, section)
+         if manpaths:
+             sys.stdout.write(name)
+-        f = open(name, 'w')
++        f = open(name, 'w', encoding='UTF-8')
+         f.write('.so man%s/%s.%s' % (section, func_name, section))
+         f.close()
+ 
+     if manpaths:
+         sys.stdout.write('man/%s.%s ' % (func_name, section))
+     # Our CWD is src/, so this will end up in src/man/
+-    f = open('man/%s.%s' % (func_name, section), 'w')
++    f = open('man/%s.%s' % (func_name, section), 'w', encoding='UTF-8')
+     f.write('.TH %s %s  "%s" "%s" "XCB Requests"\n' % (func_name, section, center_footer, left_footer))
+     # Left-adjust instead of adjusting to both sides
+     f.write('.ad l\n')
+@@ -3035,7 +3036,7 @@
+     if manpaths:
+         sys.stdout.write('man/%s.%s ' % (self.c_type, section))
+     # Our CWD is src/, so this will end up in src/man/
+-    f = open('man/%s.%s' % (self.c_type, section), 'w')
++    f = open('man/%s.%s' % (self.c_type, section), 'w', encoding='UTF-8')
+     f.write('.TH %s %s  "%s" "%s" "XCB Events"\n' % (self.c_type, section, center_footer, left_footer))
+     # Left-adjust instead of adjusting to both sides
+     f.write('.ad l\n')
+--- a/src/xcb.h
++++ b/src/xcb.h
+@@ -29,14 +29,11 @@
+ #define __XCB_H__
+ #include <sys/types.h>
+ 
+-#if defined(__solaris__)
+-#include <inttypes.h>
+-#else
+ #include <stdint.h>
+-#endif
+ 
+ #ifndef _WIN32
+ #include <sys/uio.h>
++#define XCB_EXTERN extern
+ #else
+ #include "xcb_windefs.h"
+ #endif
+@@ -51,10 +48,34 @@
+  * @file xcb.h
+  */
+ 
+-#ifdef __GNUC__
++#ifndef __has_attribute
++# define __has_attribute(x) 0  /* Compatibility with older compilers. */
++#endif
++
++/*
++ * For the below checks, we currently assume that __GNUC__ indicates
++ * gcc 3.0 (released 2001) or later, as we require support for C99.
++ */
++
++/* Supported in gcc 2.5 and later */
++#if defined(__GNUC__) || __has_attribute(__const__)
++#define XCB_CONST_FUNCTION __attribute__((__const__))
++#else
++#define XCB_CONST_FUNCTION XCB_PURE_FUNCTION
++#endif
++
++/* Supported in gcc 2.7 and later */
++#if defined(__GNUC__) ||  __has_attribute(__packed__)
+ #define XCB_PACKED __attribute__((__packed__))
+ #else
+ #define XCB_PACKED
++#endif
++
++/* Supported in gcc 2.96 and later */
++#if defined(__GNUC__) || __has_attribute(__pure__)
++#define XCB_PURE_FUNCTION __attribute__((__pure__))
++#else
++#define XCB_PURE_FUNCTION
+ #endif
+ 
+ /**
+@@ -469,6 +490,7 @@
+  *
+  * The result must not be freed.
+  */
++XCB_PURE_FUNCTION
+ const struct xcb_setup_t *xcb_get_setup(xcb_connection_t *c);
+ 
+ /**
+@@ -479,6 +501,7 @@
+  * Accessor for the file descriptor that was passed to the
+  * xcb_connect_to_fd call that returned @p c.
+  */
++XCB_PURE_FUNCTION
+ int xcb_get_file_descriptor(xcb_connection_t *c);
+ 
+ /**
+@@ -499,6 +522,7 @@
+  * @return XCB_CONN_CLOSED_PARSE_ERR, error during parsing display string.
+  * @return XCB_CONN_CLOSED_INVALID_SCREEN, because the server does not have a screen matching the display.
+  */
++XCB_PURE_FUNCTION
+ int xcb_connection_has_error(xcb_connection_t *c);
+ 
+ /**
+--- a/src/xcb_auth.c
++++ b/src/xcb_auth.c
+@@ -267,21 +267,15 @@
+ /* `sockaddr_un.sun_path' typical size usually ranges between 92 and 108 */
+ #define INITIAL_SOCKNAME_SLACK 108
+ 
++#ifndef WIN32
++typedef int (*LPFN_GETPEERNAME)(int,struct sockaddr *,socklen_t *);
++#endif
+ /* Return a dynamically allocated socket address structure according
+    to the value returned by either getpeername() or getsockname()
+    (according to POSIX, applications should not assume a particular
+    length for `sockaddr_un.sun_path') */
+-#ifdef _WIN32
+-static struct sockaddr *get_peer_sock_name(int(_stdcall *socket_func)(SOCKET,
+-    struct sockaddr *,
+-    socklen_t *),
+-    int fd)
+-#else
+-static struct sockaddr *get_peer_sock_name(int (*socket_func)(int,
+-                                                              struct sockaddr *,
+-                                                              socklen_t *),
++static struct sockaddr *get_peer_sock_name(LPFN_GETPEERNAME socket_func,
+                                            int fd)
+-#endif
+ {
+     socklen_t socknamelen = sizeof(struct sockaddr) + INITIAL_SOCKNAME_SLACK;
+     socklen_t actual_socknamelen = socknamelen;
+--- a/src/xcb_conn.c
++++ b/src/xcb_conn.c
+@@ -54,6 +54,12 @@
+ #include <netinet/in.h>
+ #endif /* _WIN32 */
+ 
++#include <X11/Xtrans/Xtrans.h>
++
++#ifdef _MSC_VER
++#define _close(fd) closesocket(fd)
++#endif
++
+ /* SHUT_RDWR is fairly recent and is not available on all platforms */
+ #if !defined(SHUT_RDWR)
+ #define SHUT_RDWR 2
+@@ -105,7 +111,7 @@
+ 
+ #ifdef _WIN32
+    u_long iMode = 1; /* non-zero puts it in non-blocking mode, 0 in blocking mode */
+-   int ret = 0;
++   int ret;
+ 
+    ret = ioctlsocket(fd, FIONBIO, &iMode);
+    if(ret != 0)
+@@ -145,7 +151,7 @@
+     out.authorization_protocol_name_len = 0;
+     out.authorization_protocol_data_len = 0;
+     parts[count].iov_len = sizeof(xcb_setup_request_t);
+-    parts[count++].iov_base = &out;
++    parts[count++].iov_base = (caddr_t) &out;
+     parts[count].iov_len = XCB_PAD(sizeof(xcb_setup_request_t));
+     parts[count++].iov_base = (char *) pad;
+ 
+@@ -517,6 +523,13 @@
+         }
+ #else
+         ret = select(c->fd + 1, &rfds, &wfds, 0, 0);
++        if (ret==SOCKET_ERROR)
++        {
++           ret=-1;
++           errno = WSAGetLastError();
++           if (errno == WSAEINTR)
++               errno=EINTR;
++        }
+ #endif
+     } while (ret == -1 && errno == EINTR);
+     if(ret < 0)
+--- a/src/xcb_ext.c
++++ b/src/xcb_ext.c
+@@ -123,6 +123,8 @@
+ 
+ void _xcb_ext_destroy(xcb_connection_t *c)
+ {
++    if (!c->ext.lock)
++      return; /* mutex is not initialised */
+     pthread_mutex_destroy(&c->ext.lock);
+     while(c->ext.extensions_size-- > 0)
+         if(c->ext.extensions[c->ext.extensions_size].tag == LAZY_FORCED)
+--- a/src/xcb_out.c
++++ b/src/xcb_out.c
+@@ -37,13 +37,14 @@
+ #include <unistd.h>
+ #endif
+ #include <string.h>
++#include <X11/Xtrans/Xtrans.h>
+ 
+ #include "xcb.h"
+ #include "xcbext.h"
+ #include "xcbint.h"
+ #include "bigreq.h"
+ 
+-static inline void send_request(xcb_connection_t *c, int isvoid, enum workarounds workaround, int flags, struct iovec *vector, int count)
++static __inline void send_request(xcb_connection_t *c, int isvoid, enum workarounds workaround, int flags, struct iovec *vector, int count)
+ {
+     if(c->has_error)
+         return;
+@@ -294,10 +295,10 @@
+         {
+             prefix[0] = ((uint32_t *) vector[0].iov_base)[0];
+             prefix[1] = ++longlen;
+-            vector[0].iov_base = (uint32_t *) vector[0].iov_base + 1;
++            vector[0].iov_base = (caddr_t)((uint32_t *) vector[0].iov_base + 1);
+             vector[0].iov_len -= sizeof(uint32_t);
+             --vector, ++veclen;
+-            vector[0].iov_base = prefix;
++            vector[0].iov_base = (caddr_t)prefix;
+             vector[0].iov_len = sizeof(prefix);
+         }
+     }
+--- a/src/xcb_util.c
++++ b/src/xcb_util.c
+@@ -66,6 +66,13 @@
+ # define  __has_builtin(x) 0
+ #endif
+ 
++#ifdef _MSC_VER
++#ifdef close
++#undef close
++#endif
++#define close(fd) closesocket(fd)
++#endif
++
+ int xcb_popcount(uint32_t mask)
+ {
+ #if __has_builtin(__builtin_popcount)
+@@ -354,7 +361,7 @@
+ 
+ 
+ static int _xcb_do_connect(int fd, const struct sockaddr* addr, int addrlen) {
+-    int on = 1;
++    char on = 1;
+ 
+     if(fd < 0)
+         return -1;
+@@ -364,6 +371,23 @@
+ 
+     return connect(fd, addr, addrlen);
+ }
++
++#ifdef WIN32
++int InitWSA(void)
++{
++  static WSADATA wsadata;
++
++  if (!wsadata.wVersion)
++  {
++    __ptw32_processInitialize();
++    if (WSAStartup(0x0202, &wsadata))
++      return -1;
++  }
++  return 0;
++}
++#else
++#define InitWSA()
++#endif
+ 
+ static int _xcb_open_tcp(const char *host, char *protocol, const unsigned short port)
+ {
+@@ -402,6 +426,11 @@
+         hints.ai_flags |= AI_NUMERICHOST;
+         hints.ai_family = AF_INET6;
+     }
++#endif
++
++#ifdef WIN32
++    if (InitWSA()<0)
++      return -1;
+ #endif
+ 
+     snprintf(service, sizeof(service), "%hu", port);
+--- a/src/xcb_windefs.h
++++ b/src/xcb_windefs.h
+@@ -31,15 +31,31 @@
+ #define WINVER 0x0501 /* required for getaddrinfo/freeaddrinfo defined only for WinXP and above */
+ #endif
+ 
++#ifdef INCL_WINSOCK_API_TYPEDEFS
++#undef INCL_WINSOCK_API_TYPEDEFS
++#endif
++#define INCL_WINSOCK_API_TYPEDEFS 1 /* Needed for LPFN_GETPEERNAME */
++
++#define FD_SETSIZE 1024
++
++#include <X11/Xwinsock.h>
+ #include <winsock2.h>
+ #include <ws2tcpip.h>
+ #include <windef.h>
+ 
+-struct iovec  {
+-    void *iov_base;    /* Pointer to data.  */
+-    int iov_len;       /* Length of data.  */
+-};
++typedef unsigned char BYTE;
+ 
+ typedef unsigned int in_addr_t;
+ 
++#define HANDLE void *
++typedef int pid_t;
++
++#define STDERR_FILENO 2
++
++#ifdef LIBXCB_DLL
++#define XCB_EXTERN __declspec(dllexport) extern
++#else
++#define XCB_EXTERN __declspec(dllimport) extern
++#endif
++
+ #endif /* xcb_windefs.h */
+--- a/src/xcb_xid.c
++++ b/src/xcb_xid.c
+@@ -97,5 +97,7 @@
+ 
+ void _xcb_xid_destroy(xcb_connection_t *c)
+ {
++    if (!c->xid.lock)
++      return; /* mutex was not initialised yet */
+     pthread_mutex_destroy(&c->xid.lock);
+ }
+--- a/src/xcbext.h
++++ b/src/xcbext.h
+@@ -297,6 +297,7 @@
+  * @param replylen The size of the reply.
+  * @return Pointer to the location where received file descriptors are stored.
+  */
++XCB_CONST_FUNCTION
+ int *xcb_get_reply_fds(xcb_connection_t *c, void *reply, size_t replylen);
+ 
+ 
+@@ -306,6 +307,7 @@
+  * @param mask The mask to check
+  * @return The number of set bits in the mask
+  */
++XCB_CONST_FUNCTION
+ int xcb_popcount(uint32_t mask);
+ 
+ /**
+@@ -313,6 +315,7 @@
+  * @param len The length of the array
+  * @return The sum of all entries in the array.
+  */
++XCB_PURE_FUNCTION
+ int xcb_sumof(uint8_t *list, int len);
+ 
+ #ifdef __cplusplus
+--- a/src/xcbint.h
++++ b/src/xcbint.h
+@@ -225,6 +225,7 @@
+ 
+ void _xcb_conn_shutdown(xcb_connection_t *c, int err);
+ 
++XCB_CONST_FUNCTION
+ xcb_connection_t *_xcb_conn_ret_error(int err);
+ 
+ int _xcb_conn_wait(xcb_connection_t *c, pthread_cond_t *cond, struct iovec **vector, int *count);
