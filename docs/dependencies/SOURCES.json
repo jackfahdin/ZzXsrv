@@ -1,6 +1,6 @@
 {
   "schema_version": 2,
-  "updated": "2026-09-16",
+  "updated": "2026-09-17",
   "project": "https://github.com/jackfahdin/ZzXsrv",
   "description": "组件来源目录；记录证据类型，不依赖上游源码分支，不将声明版本视为逐字节来源证明。",
   "initial_collection": {
@@ -3262,10 +3262,12 @@
       "revision_kind": "reported_upstream_commit",
       "upstream_url": "https://gitlab.freedesktop.org/xorg/app/xwininfo/-/commit/ab427b9bfd495a7e9a5dc690f5abe5a2859b8de3",
       "evidence": [
-        "docs/history/upstream-releases/releasenote_21.1.16.1.txt:30"
+        "docs/history/upstream-releases/releasenote_21.1.16.1.txt:30",
+        "third_party/xorg/apps/xwininfo/source-audit.json",
+        "docs/validation/2026-09-17-r9-apps.md"
       ],
-      "confidence": "high-reported,remote-unverified",
-      "notes": "发行说明记录的固定提交，当前包含VcXsrv及fork修改。远端对象未独立验证。",
+      "confidence": "high",
+      "notes": "远端对象已于 R9.7 核验：该提交存在（xwininfo-1.1.6-1-gab427b9，已被 1.1.7 收录）。上游 17 个文件中 13 个逐字节相同、4 个为 VcXsrv/MSVC 继承适配，另 2 个本地构建文件；逐文件明细见 third_party/xorg/apps/xwininfo/source-audit.json 与 docs/validation/2026-09-17-r9-apps.md。",
       "id": "dep-107",
       "category": "server_apps_tools",
       "inherited_material_urls": [
@@ -3283,10 +3285,12 @@
       "revision_kind": "reported_upstream_commit",
       "upstream_url": "https://gitlab.freedesktop.org/xorg/app/mkfontscale/-/commit/bcfa27aeef3a9eb720e6b48e3fb8a4c2813fef52",
       "evidence": [
-        "docs/history/upstream-releases/releasenote_21.1.16.1.txt:29"
+        "docs/history/upstream-releases/releasenote_21.1.16.1.txt:29",
+        "third_party/xorg/mkfontscale/source-audit.json",
+        "docs/validation/2026-09-17-r9-apps.md"
       ],
-      "confidence": "high-reported,remote-unverified",
-      "notes": "发行说明记录的固定提交，当前包含VcXsrv及fork修改。远端对象未独立验证。",
+      "confidence": "high",
+      "notes": "远端对象已于 R9.7 核验：该提交存在且即 tag mkfontscale-1.2.3。上游 21 个文件中 17 个逐字节相同、4 个为 MSVC/Win32 继承适配，另 2 个本地构建文件；逐文件明细见 third_party/xorg/mkfontscale/source-audit.json 与 docs/validation/2026-09-17-r9-apps.md。",
       "id": "dep-108",
       "category": "server_apps_tools",
       "inherited_material_urls": [
@@ -3306,10 +3310,12 @@
       "evidence": [
         "third_party/xorg/xkbcomp/source-files.json",
         "third_party/xorg/xkbcomp/patches/windows.patch",
-        "docs/validation/2026-09-15-r8-dependencies.md"
+        "docs/validation/2026-09-15-r8-dependencies.md",
+        "third_party/xorg/xkbcomp/source-audit.json",
+        "docs/validation/2026-09-17-r9-apps.md"
       ],
-      "confidence": "high-reported,remote-unverified",
-      "notes": "官方发布包逐文件记录；保留或修正 Windows 移植，原始散列、落盘散列和补丁分列。历史继承证据见 previous_record。",
+      "confidence": "high",
+      "notes": "官方发布包逐文件记录；保留或修正 Windows 移植，原始散列、落盘散列和补丁分列。历史继承证据见 previous_record。 R9.7 克隆官方仓库核验 tag xkbcomp-1.5.0 提交 2c7789785981ad1fce3858c726615b49293f7de0 存在，并独立复核本地树与该 tag 一致（差异全部为已记录的适配与本地文件），见 third_party/xorg/xkbcomp/source-audit.json 与 docs/validation/2026-09-17-r9-apps.md。",
       "id": "dep-109",
       "category": "server_apps_tools",
       "inherited_material_urls": [
@@ -3326,7 +3332,7 @@
         "evidence": [
           "docs/history/upstream-releases/releasenote_21.1.16.1.txt:16"
         ],
-        "notes": "发行说明记录的固定提交，当前包含VcXsrv及fork修改。远端对象未独立验证。",
+        "notes": "发行说明记录的固定提交，当前包含VcXsrv及fork修改。远端对象未独立验证。 R9.7 已核验该远端对象存在；该记录为 1.4.7 时代历史，本地实际基线经 R8 升级为官方 1.5.0，R9.7 复核一致。",
         "actual_import_urls": [
           "https://github.com/marchaesen/vcxsrv/tree/d0a1eaf7ee15fcdf4f683388a88fec49078e6408/xkbcomp"
         ]
@@ -3361,10 +3367,12 @@
       "revision_kind": "reported_upstream_commit",
       "upstream_url": "https://gitlab.freedesktop.org/xkeyboard-config/xkeyboard-config/-/commit/595342a90876efb2f60a488b702ef03f90c62e35",
       "evidence": [
-        "docs/history/upstream-releases/releasenote_21.1.16.1.txt:13"
+        "docs/history/upstream-releases/releasenote_21.1.16.1.txt:13",
+        "src/xorg-server/xkeyboard-config/source-audit.json",
+        "docs/validation/2026-09-17-r9-apps.md"
       ],
-      "confidence": "high-reported,remote-unverified",
-      "notes": "发行说明记录的固定提交，当前包含VcXsrv及fork修改。远端对象未独立验证。 meson.build版本2.44；xorg-server/xkbdata是生成输出。",
+      "confidence": "high",
+      "notes": "远端对象已于 R9.7 核验：该提交存在（xkeyboard-config-2.44-16-g595342a9，已被 2.45-2.48 收录）。上游 457 个文件中 446 个逐字节相同；11 个差异均可解释（8 个符号链接 Windows 物化、3 个 meson 构建适配）；另 35 个本地构建/legacy 文件。该固定提交的改动后被上游回退并在 rules 层重做，属版本时效信息。 meson.build版本2.44；xorg-server/xkbdata是生成输出。逐文件明细见 src/xorg-server/xkeyboard-config/source-audit.json 与 docs/validation/2026-09-17-r9-apps.md。",
       "id": "dep-111",
       "category": "server_apps_tools",
       "inherited_material_urls": [

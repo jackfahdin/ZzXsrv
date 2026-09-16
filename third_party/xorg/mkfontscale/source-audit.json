@@ -1,0 +1,86 @@
+{
+ "schema_version": 1,
+ "audited_on": "2026-09-16",
+ "scope": "VcXsrv-inherited tree of mkfontscale with MSVC/Win32 build adaptations; pinned upstream commit verified against remote objects in R9.7",
+ "local_hash_normalization": "none; local hashes are sha256 of raw working-tree bytes, upstream hashes are sha256 of git blobs at the pinned commit",
+ "components": {
+  "mkfontscale": {
+   "upstream_repo_url": "https://gitlab.freedesktop.org/xorg/app/mkfontscale.git",
+   "upstream_commit": "bcfa27aeef3a9eb720e6b48e3fb8a4c2813fef52",
+   "upstream_commit_describe": "mkfontscale-1.2.3",
+   "upstream_commit_author": "Alan Coopersmith <alan.coopersmith@oracle.com>",
+   "upstream_commit_author_date": "2024-03-03T10:06:37-08:00",
+   "upstream_commit_subject": "mkfontscale 1.2.3",
+   "verified_against_remote": "full clone fetched 2026-09-16; git cat-file -t = commit; tag mkfontscale-1.2.3 resolves to this commit",
+   "comparison_counts": {
+    "local_files": 23,
+    "upstream_files": 21,
+    "byte_identical": 17,
+    "newline_only": 0,
+    "content_different": 4,
+    "local_only": 2,
+    "upstream_only": 0
+   },
+   "upstream_files": {
+    ".gitignore": "08fb52536ded59e8214231f409b8d58306a64da1026709fbd718a68a65ebacb2",
+    ".gitlab-ci.yml": "2309f0d5fda8cc2c3b534be0bdb5dc3d7c103a48dca263da0821e98c9225c24d",
+    "COPYING": "7555388a38693cccb140946065534f4b7743aa334c883209a34f41abaeb62bd1",
+    "Makefile.am": "9f7d0828a63ca4f7a6e872703eaef147b790a50823758f95a465f14388105be5",
+    "README.md": "3cd0d5572a5a19f60aa4914115b3c6b905da8041117d22b374b6ef8fd635b468",
+    "autogen.sh": "1e8c26b92829c622f9836361dfe97585e77a5284a0d8c22693fbd251dd8c5dde",
+    "configure.ac": "4982cb92e18021787923a6d330b94b8b9000c68f81d97f34f4d8ba2099f20095",
+    "constlist.c": "e3aff52bb1f5faa96a3abd9f9561b2717a7f0ac7e8b0beeec120c82e97a1ff39",
+    "constlist.h": "ad42680e0ca14f376a1c2479d34f9078f86fe9c7c250b1333bff486cde0fe2e4",
+    "data.h": "e4983c04fbe6229b3d9a1d1c1d298a5b40621c1c05946978c8952936dd9b1a64",
+    "hash.c": "f7ce01eee42f95a205845a35d823a64b94583bd68533c1b410c42d712c42c2fd",
+    "hash.h": "681b9110f1ec275563ff0279eb6962edaaa88a5a95c8eabd5e23c6753a773752",
+    "ident.c": "c177db41ef42598d63c06afbeb97f5315ee8828dd4bbed884d19b9b96220eb25",
+    "ident.h": "abd4a25fa4c1e724bb31e849eaa0d06b611a9b7c0c1dcd776c00c715a4da9b2d",
+    "list.c": "84b6db2a4d648ef4b461fdf79cb0b48c50d7feed044316608575f04d68ea4000",
+    "list.h": "7466e8c4ddd5d6373fc4d8461e1ee1fbdc24c407c4ad1cf94cd238aa0ff3721e",
+    "man/Makefile.am": "fa19ef5fbca8cd32888ad3fe3411c1dd736f62f79cb93ba5d803e576ae050f3b",
+    "man/mkfontdir.man": "dbc8e7eed34dfa81f012073a98a8693292ea45eef16140a1b3ffb91431b283f4",
+    "man/mkfontscale.man": "9a88928899d97a2827ebe4450da780b7839d2706ef25c46ccbc782c1bd00f123",
+    "mkfontdir.in": "2b29b43b338298b107447864d3adcff16023346de24b3ff84978943d621687d5",
+    "mkfontscale.c": "a7c0fc82f2b313cf60d1e8c70494fa574ec1fae6f116c48b3b2788f865540fcc"
+   },
+   "local_files_sha256": {
+    ".gitignore": "08fb52536ded59e8214231f409b8d58306a64da1026709fbd718a68a65ebacb2",
+    ".gitlab-ci.yml": "2309f0d5fda8cc2c3b534be0bdb5dc3d7c103a48dca263da0821e98c9225c24d",
+    "COPYING": "7555388a38693cccb140946065534f4b7743aa334c883209a34f41abaeb62bd1",
+    "Makefile.am": "9f7d0828a63ca4f7a6e872703eaef147b790a50823758f95a465f14388105be5",
+    "README.md": "3cd0d5572a5a19f60aa4914115b3c6b905da8041117d22b374b6ef8fd635b468",
+    "autogen.sh": "1e8c26b92829c622f9836361dfe97585e77a5284a0d8c22693fbd251dd8c5dde",
+    "config.h": "7403de1515fce79418578fb777215df79712b1e9715a4b155968383e951f512f",
+    "configure.ac": "4982cb92e18021787923a6d330b94b8b9000c68f81d97f34f4d8ba2099f20095",
+    "constlist.c": "e3aff52bb1f5faa96a3abd9f9561b2717a7f0ac7e8b0beeec120c82e97a1ff39",
+    "constlist.h": "ad42680e0ca14f376a1c2479d34f9078f86fe9c7c250b1333bff486cde0fe2e4",
+    "data.h": "e4983c04fbe6229b3d9a1d1c1d298a5b40621c1c05946978c8952936dd9b1a64",
+    "hash.c": "dd672322da446aef42b068d7917ca85abb0b1ac8bca210243f937853482aea0e",
+    "hash.h": "5b785493f274bb06695f82e05e93804e690dd6950446e07cd4173e6a009e44e7",
+    "ident.c": "43dd0d3cd0dc7a737ab723c617e8d3485c7dd2f6f44511c9bb729ceaa5fc9121",
+    "ident.h": "abd4a25fa4c1e724bb31e849eaa0d06b611a9b7c0c1dcd776c00c715a4da9b2d",
+    "list.c": "84b6db2a4d648ef4b461fdf79cb0b48c50d7feed044316608575f04d68ea4000",
+    "list.h": "7466e8c4ddd5d6373fc4d8461e1ee1fbdc24c407c4ad1cf94cd238aa0ff3721e",
+    "makefile": "160eccd514f62d7887b325fdeb308762fa0bb0179d3bf16f0bb59a9a4c60d4c6",
+    "man/Makefile.am": "fa19ef5fbca8cd32888ad3fe3411c1dd736f62f79cb93ba5d803e576ae050f3b",
+    "man/mkfontdir.man": "dbc8e7eed34dfa81f012073a98a8693292ea45eef16140a1b3ffb91431b283f4",
+    "man/mkfontscale.man": "9a88928899d97a2827ebe4450da780b7839d2706ef25c46ccbc782c1bd00f123",
+    "mkfontdir.in": "2b29b43b338298b107447864d3adcff16023346de24b3ff84978943d621687d5",
+    "mkfontscale.c": "7a4a99cea856b9f3171749e9cb138537ade08fb8d14746f36b2a4ff4f6cf7401"
+   },
+   "modified_upstream_files": [
+    "hash.c",
+    "hash.h",
+    "ident.c",
+    "mkfontscale.c"
+   ],
+   "newline_only_files": [],
+   "local_only_files": [
+    "config.h",
+    "makefile"
+   ],
+   "omitted_upstream_files": []
+  }
+ }
+}

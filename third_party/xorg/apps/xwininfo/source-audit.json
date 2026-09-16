@@ -1,0 +1,115 @@
+{
+ "schema_version": 1,
+ "audited_on": "2026-09-16",
+ "scope": "inherited from VcXsrv pinned commit with VcXsrv/MSVC adaptations; upstream pinned commit verified against git remote objects in R9.7",
+ "upstream_artifact": {
+  "git_url": "https://gitlab.freedesktop.org/xorg/app/xwininfo.git",
+  "pinned_commit": "ab427b9bfd495a7e9a5dc690f5abe5a2859b8de3",
+  "verification": "git cat-file -t => commit; object hash self-validates; fetched 2026-09-16T16:12:11Z from gitlab.freedesktop.org",
+  "commit_metadata": {
+   "author": "積丹尼 Dan Jacobson <jidanni@jidanni.org>",
+   "author_date": "2023-06-08T18:08:42Z",
+   "subject": "Update xwininfo.man for #2"
+  },
+  "describe": "xwininfo-1.1.6-1-gab427b9",
+  "contained_in_tags": [
+   "xwininfo-1.1.7"
+  ]
+ },
+ "local_hash_normalization": "CRLF to LF for newline_only classification; upstream hashes use raw blob bytes from git cat-file",
+ "components": {
+  "xwininfo": {
+   "upstream_repo_url": "https://gitlab.freedesktop.org/xorg/app/xwininfo.git",
+   "upstream_commit": "ab427b9bfd495a7e9a5dc690f5abe5a2859b8de3",
+   "upstream_commit_describe": "xwininfo-1.1.6-1-gab427b9",
+   "comparison_counts": {
+    "local_files": 19,
+    "upstream_files": 17,
+    "byte_identical": 13,
+    "newline_only": 0,
+    "content_different": 4,
+    "local_only": 2,
+    "upstream_only": 0
+   },
+   "classification": {
+    "byte_identical": [
+     ".gitignore",
+     ".gitlab-ci.yml",
+     "COPYING",
+     "Makefile.am",
+     "README.md",
+     "autogen.sh",
+     "clientwin.h",
+     "config.rpath",
+     "configure.ac",
+     "man/Makefile.am",
+     "man/xwininfo.man",
+     "strnlen.c",
+     "strnlen.h"
+    ],
+    "newline_only": [],
+    "content_different": [
+     "clientwin.c",
+     "dsimple.c",
+     "dsimple.h",
+     "xwininfo.c"
+    ],
+    "local_only": [
+     "config.h",
+     "makefile"
+    ],
+    "upstream_only": []
+   },
+   "content_different_nature": {
+    "clientwin.c": "VcXsrv build integration: add #include \"config.h\" before xcb headers",
+    "dsimple.c": "MSVC portability: add #include <unistd.h>",
+    "dsimple.h": "MSVC portability: replace 'typedef enum { False = 0, True } Bool' with 'typedef int Bool' + #define False/True (enum-as-Bool incompatible with MSVC)",
+    "xwininfo.c": "VcXsrv/MSVC adaptations: #include <unistd.h>; guard #include <langinfo.h> and nl_langinfo(CODESET) with #ifndef _MSC_VER; add local -pause option (getchar() at exit)"
+   },
+   "local_only_nature": {
+    "config.h": "build-integration header generated/maintained for the VcXsrv mhmake build (not from upstream autotools)",
+    "makefile": "VcXsrv mhmake build integration file"
+   },
+   "upstream_files": {
+    ".gitignore": "3561eb5ec34ef3a721eaaf8153f7bd20224371283d29a46f0b89deaabb28cab5",
+    ".gitlab-ci.yml": "6ed983906581acc45eda4e888657a99a28982e2a4f917e1691fb83df4ca3f085",
+    "COPYING": "1be1f0763a5efd08e48089c52728a822bf769b690a2fd82fbab456cfffee822f",
+    "Makefile.am": "15cc30993f3e897c2214492bd76293b32791ed836264263695dd4e499ec00d11",
+    "README.md": "27a566bd99e0c8583b0eaf1bc6913acca0ff6a0e65d5f88196d5239c38e159fe",
+    "autogen.sh": "342facb7024344b924daaf556098a87be65f3c4c4d8e9fca3184a3e0d744eb66",
+    "clientwin.c": "7c8f870c1ea619adb709162dee5819e67638ca942f758415d21a6c61fa0eeed3",
+    "clientwin.h": "532961619ae1b6eae16ed4308564e3cfd2cf781d1a02e91833bed5d8194db25d",
+    "config.rpath": "7fabd48bc71286d0c9d96b05da8732b2bc875ff69c6692500923de67d552c636",
+    "configure.ac": "8119918fdcec4ffde4ee8861006c5ddb1ed7f9a68eba6ac157358f43806a2a49",
+    "dsimple.c": "7b4bd5e42bdaa59b8d83e58802136720bf861229de519b54ad081168c7cecb1c",
+    "dsimple.h": "028c89989e86e3e239e00b27701511b4bd73e0717b0a7d343c6a92229d08dca4",
+    "man/Makefile.am": "b4b910d39ce9d4675f1419320a1c8aaba9614305bc7164622b39474290266950",
+    "man/xwininfo.man": "704741258923d7169d3980f32703cac82971f92dc210339a33abe32122b1c64d",
+    "strnlen.c": "91b6cf268ef8b27ba13b36345ba3c1a602d167402fac26cd9d56b2817e6ac0cb",
+    "strnlen.h": "728d8960e20797fd1ca162f0c17d1b352cb7cae97d35d186cbfe799ec9f56356",
+    "xwininfo.c": "9dcb59b592a713f4d4d38aa6f0278b257017a06b86e1c4a1218b3cd7a44b1def"
+   },
+   "local_files_sha256": {
+    ".gitignore": "3561eb5ec34ef3a721eaaf8153f7bd20224371283d29a46f0b89deaabb28cab5",
+    ".gitlab-ci.yml": "6ed983906581acc45eda4e888657a99a28982e2a4f917e1691fb83df4ca3f085",
+    "COPYING": "1be1f0763a5efd08e48089c52728a822bf769b690a2fd82fbab456cfffee822f",
+    "Makefile.am": "15cc30993f3e897c2214492bd76293b32791ed836264263695dd4e499ec00d11",
+    "README.md": "27a566bd99e0c8583b0eaf1bc6913acca0ff6a0e65d5f88196d5239c38e159fe",
+    "autogen.sh": "342facb7024344b924daaf556098a87be65f3c4c4d8e9fca3184a3e0d744eb66",
+    "clientwin.c": "6f2f4be6e45419125e3d770e1d5bc3a166e0a61a2b14364aa97935b75bc1df36",
+    "clientwin.h": "532961619ae1b6eae16ed4308564e3cfd2cf781d1a02e91833bed5d8194db25d",
+    "config.h": "241bc6053ead47c46885b9430a6b322db74e5c4317f69cada45202d48c37eb94",
+    "config.rpath": "7fabd48bc71286d0c9d96b05da8732b2bc875ff69c6692500923de67d552c636",
+    "configure.ac": "8119918fdcec4ffde4ee8861006c5ddb1ed7f9a68eba6ac157358f43806a2a49",
+    "dsimple.c": "016f09f9de173ae2c9b92ccfe64f3e47ae228765c050695603484f32aea28c3d",
+    "dsimple.h": "f90af3d9fbfa293881808f38b7af741f35bc2e57c0038fa435fbebf68dbad3ea",
+    "makefile": "c5042fef694af8516f7991e2a1d566f33dae116eb9be2e44b72b95f42b90b0a9",
+    "man/Makefile.am": "b4b910d39ce9d4675f1419320a1c8aaba9614305bc7164622b39474290266950",
+    "man/xwininfo.man": "704741258923d7169d3980f32703cac82971f92dc210339a33abe32122b1c64d",
+    "strnlen.c": "91b6cf268ef8b27ba13b36345ba3c1a602d167402fac26cd9d56b2817e6ac0cb",
+    "strnlen.h": "728d8960e20797fd1ca162f0c17d1b352cb7cae97d35d186cbfe799ec9f56356",
+    "xwininfo.c": "81122ec312f9cf57b0bd9b39508159627e309fe2eb4e4addd0a7d684cf5e3eac"
+   }
+  }
+ }
+}
