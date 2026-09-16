@@ -3378,28 +3378,31 @@
     {
       "name": "PuTTY (Plink)",
       "path": "tools/plink",
-      "revision": "50e360fc7474898b4de0e3533aff50857f2b3289",
-      "revision_kind": "reported_upstream_commit",
-      "upstream_url": "https://git.tartarus.org/?p=simon/putty.git;a=commit;h=50e360fc7474898b4de0e3533aff50857f2b3289",
+      "revision": "0.85",
+      "revision_kind": "official_release_archive",
+      "upstream_url": "https://git.tartarus.org/simon/putty.git",
       "evidence": [
-        "docs/history/upstream-releases/releasenote_21.1.16.1.txt:21",
-        "tools/plink/README",
-        "tools/plink/LATEST.VER:1: 0.83",
-        "tools/plink/version.h: Unidentified build",
-        "tools/plink/source-audit.json",
-        "docs/validation/2026-09-16-r9-plink.md"
+        "tools/plink/LATEST.VER:1: 0.85",
+        "tools/plink/version.h: Release 0.85",
+        "tools/plink/source-audit.json: 688 official files, 5 recorded adaptations and 9 local-only files",
+        "tools/plink/patches/local-adaptations.patch: retained upstream adaptations",
+        "docs/validation/2026-09-16-r9-putty.md"
       ],
       "confidence": "high",
-      "notes": "路径在tools而非apps。2026-09-16 克隆 https://git.tartarus.org/simon/putty.git 核验 commit 对象存在（git cat-file；作者 Jacob Nevins，2025-02-11，主题 \"Docs: belated updates for protocol controls.\"；git describe 0.83-24-g50e360fc，已收录于 0.84/0.85），与 LATEST.VER 0.83 一致。逐文件比对：本地 682 文件中 669 个逐字节相同、0 个仅换行差异、6 个继承适配改动、7 个本地构建文件，无仅上游存在文件；目录含 VcXsrv 继承适配，非纯净上游。",
+      "notes": "官方 0.85 发布归档与 clearsigned sha256sums 一致，归档及校验文件均由 PuTTY 2026 发布密钥（1A07DAC0F220CF12248EA7195C67D0F88BC3E5B5）签名且 gpg 验证 Good signature；归档与 git tag 0.85（a3cce3a48d4ab12e0fccb32998b9042d4f7c3ff1）交叉核对 688 文件中 686 个逐字节一致，2 个差异为发布戳（version.h、cmake/gitcommit.cmake），归档另有 36 个生成文档未导入。6 个继承适配保留 5 个（.gitignore 清空、defs.h NDEBUG 保护块、settings.c 强转、windows/gss.c 宏保护、windows/plink.c fcntl.h），ssh/x11fwd.c 初始化适配因上游 0.85 已修复而丢弃；6 个 mhmake makefile 与 version.c 桩保留，并同步 4 个上游新源文件到构建清单。",
       "id": "dep-112",
       "category": "server_apps_tools",
       "inherited_material_urls": [
         "https://github.com/marchaesen/vcxsrv/tree/d0a1eaf7ee15fcdf4f683388a88fec49078e6408/tools/plink"
       ],
-      "import_method": "inherited_vcxsrv_source_collection",
+      "import_method": "official_release_archive_with_recorded_windows_adaptations",
       "actual_import_urls": [
-        "https://github.com/marchaesen/vcxsrv/tree/d0a1eaf7ee15fcdf4f683388a88fec49078e6408/tools/plink"
-      ]
+        "https://the.earth.li/~sgtatham/putty/0.85/putty-0.85.tar.gz"
+      ],
+      "upstream_revision_url": "https://the.earth.li/~sgtatham/putty/0.85/putty-0.85.tar.gz",
+      "previous_recorded_sync_commit": "50e360fc7474898b4de0e3533aff50857f2b3289",
+      "archive_sha256": "13fd4db2936d03b73812a7bcc2a658e4dd29cc776a56c3670a7fc6f1a0ee8af8",
+      "release_tag_commit": "a3cce3a48d4ab12e0fccb32998b9042d4f7c3ff1"
     },
     {
       "name": "bdftopcf",
