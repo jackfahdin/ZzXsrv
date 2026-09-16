@@ -2,7 +2,7 @@
 
 日期：2026-09-16。基线 `74c102e780baa2d78a88c8933396c52106694818`；分支 `codex/r9-fontconfig-20260916`，独立工作区 `D:/File/Program/GitHub/zzxsrv-r9-fontconfig-20260916`。
 
-状态：实现和组件验证完成，完整产品验证进行中，尚未合入、未推送。
+状态：候选已完成完整产品验证，待人工验收；尚未合入、未推送。
 
 ## 来源与维护范围
 
@@ -21,8 +21,16 @@
 - 组件构建成功；仅在这一步借用 R9.3 未变的 libxml2 生成头，初步消费者使用 R9.3 未变的依赖 DLL。最终完整构建和测试须使用本工作区全部产物，不能把组件结果当成产品结果。
 - 现有 FreeType 缓存消费者增加格式 12、缓存内按位编码的 2.18.3 版本和重载不改写缓存的断言。独立进程已实际验证旧格式 9 和新格式 12 缓存共存；两种路径拼写各有缓存，两个正常字体各出现一次，旧缓存字节不变。最终会使用完整本工作区依赖重跑。
 
+## 完整候选验证
+
+- 完整 x64 Release All 构建：来源 `6b2f8aecfefd52bd18dee3e95e754309cab6d38e`，2026-09-16 14:04 至 14:16 完成，退出码 0，环境报告与结果见 `build-all-result.json`、`environment-all.json`。
+- 全量回归 449 项通过、0 跳过（49.814 秒，`tests-final.log`）；Fontconfig 静态库消费者 7 项通过（0.604 秒，头与库版本均为 21803，`tests-fontconfig-final.log`）。两套日志均为候选定稿后重跑。
+- 候选独立运行检查 PASS（1.259 秒，`runtime/result.json`）；旧格式 9 缓存保留、格式 12 缓存重载不改写（`cache-coexist-final/result.json`）。
+- 交付目录 5152 个文件、33 个 PE；`vcxsrv.exe` 与构建输出逐字节一致，Fontconfig COPYING 与 README.vcxsrv.md 交付摘要匹配；完整快照见 `portable-files.json`。
+- 37 个继承签出的 CRLF 记录已修正并提交 `f3b110522`，与 `source-files.json` 清单逐字节一致；验证期间主仓库保持 `74c102e78`，R9.3 运行目录摘要不变。
+
 ## 证据与边界
 
-本地证据位于 `.local-validation/r9-fontconfig-20260916/`，包括官方归档/校验、旧标签对照、继承文件备份、组件构建、红绿日志及独立审查。完整候选结果将补于此。
+本地证据位于 `.local-validation/r9-fontconfig-20260916/`，包括官方归档/校验、旧标签对照、继承文件备份、组件构建、红绿日志及独立审查；完整候选结果汇总于 `verification.json`。
 
 验证目标为 x64 Release；全部上游测试、Win32、Debug、Fontations、NSIS 执行不在通过范围。传统字体、OpenGL、双向复制等此前未确认的手工场景继续保留。旧运行目录、主分支和既有缓存均不作清理。
