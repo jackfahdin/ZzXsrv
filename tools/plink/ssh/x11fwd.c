@@ -525,7 +525,7 @@ static size_t x11_send(
         void *greeting;
         int greeting_len;
         unsigned char *socketdata;
-        int socketdatalen=0;
+        int socketdatalen;
         char new_peer_addr[32];
         int new_peer_port;
         char endian = xconn->firstpkt[0];

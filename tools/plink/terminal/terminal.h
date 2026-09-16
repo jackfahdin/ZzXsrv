@@ -77,8 +77,9 @@ typedef enum {
     OSCLIKE_OSC,
     OSCLIKE_OSC_W,
     OSCLIKE_APC,
-    OSCLIKE_SOS,
+    OSCLIKE_DCS,
     OSCLIKE_PM,
+    OSCLIKE_SOS,
 } OscType;
 
 struct terminal_tag {
@@ -94,8 +95,6 @@ struct terminal_tag {
                                           ("temporary scrollback") */
 
     termline **disptext;               /* buffer of text on real screen */
-    int dispcursx, dispcursy;          /* location of cursor on real screen */
-    int curstype;                      /* type of cursor on real screen */
 
 #define VBELL_TIMEOUT (TICKSPERSEC/10) /* visual bell lasts 1/10 sec */
 
@@ -443,6 +442,9 @@ struct terminal_tag {
      */
     struct term_userpass_state *userpass_state;
     bool userpass_utf8_override;
+
+    /* Input method state. */
+    termline *preedit_termline;
 };
 
 static inline bool in_utf(Terminal *term)

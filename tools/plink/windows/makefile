@@ -14,6 +14,7 @@ UTILS_CSRCS = \
   agent_named_pipe_name.c \
   arm_arch_queries.c \
   aux_match_opt.c \
+  blink_time.c \
   centre_window.c \
   cryptoapi.c \
   defaults.c \
@@ -43,6 +44,7 @@ UTILS_CSRCS = \
   security.c \
   shinydialogbox.c \
   split_into_argv.c \
+  subprocess_waiter.c \
   version.c \
   win_strerror.c \
 	cmdline_arg.c \

@@ -23,6 +23,7 @@ CSRCS = settings.c \
  socks5.c \
  http.c \
  telnet.c \
+ newmain.c \
  local.c \
  be_list.c \
  sshproxy.c \
