@@ -44,7 +44,7 @@ else
 install-libtool-import-lib:
 uninstall-libtool-import-lib:
 
-fontconfig_def_dependency = 
+fontconfig_def_dependency =
 
 endif
 
@@ -71,8 +71,12 @@ uninstall-ms-import-lib:
 endif
 
 AM_CPPFLAGS = 						\
+	-I$(top_builddir)				\
 	-I$(top_srcdir)					\
 	-I$(top_srcdir)/src				\
+	-I$(top_builddir)/fc-lang			\
+	-I$(top_builddir)/fc-const			\
+	-I$(top_builddir)/fc-genericfamily	\
 	$(FREETYPE_CFLAGS)				\
 	$(ICONV_CFLAGS)					\
 	$(LIBXML2_CFLAGS)				\
@@ -109,7 +113,7 @@ fcobjshash.gperf: Makefile stamp-fcobjshash.gperf
 	@$(MAKE) stamp-fcobjshash.gperf
 	@touch -r stamp-fcobjshash.gperf $@
 stamp-fcobjshash.gperf: fcobjshash.gperf.h fcobjs.h
-	$(AM_V_GEN) $(CPP) -I$(top_srcdir) $(CPPFLAGS) $< | \
+	$(AM_V_GEN) $(CPP) -I$(top_builddir) -I$(top_srcdir) $(CPPFLAGS) $< | \
 	$(SED) 's/^ *//;s/ *, */,/' | \
 	awk ' \
 		/CUT_OUT_BEGIN/ { no_write=1; next; }; \
@@ -140,6 +144,7 @@ libfontconfig_la_SOURCES = \
 	fcformat.c \
 	fcfreetype.c \
 	fcfs.c \
+	fcgenericalias.c \
 	fcptrlist.c \
 	fchash.c \
 	fcinit.c \
@@ -178,7 +183,7 @@ uninstall-local: uninstall-ms-import-lib uninstall-libtool-import-lib
 endif
 
 PUBLIC_FILES = \
-	$(top_srcdir)/fontconfig/fontconfig.h \
+	$(top_builddir)/fontconfig/fontconfig.h \
 	$(top_srcdir)/src/fcdeprecate.h \
 	$(top_srcdir)/fontconfig/fcprivate.h
 

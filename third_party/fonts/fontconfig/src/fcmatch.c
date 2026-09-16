@@ -24,6 +24,8 @@
 
 #include "fcint.h"
 
+#include <locale.h>
+
 static double
 FcCompareNumber (const FcValue *value1, const FcValue *value2, FcValue *bestValue)
 {
@@ -163,6 +165,41 @@ FcCompareBool (const FcValue *v1, const FcValue *v2, FcValue *bestValue)
 }
 
 static double
+FcCompareEqual (const FcValue *value1, const FcValue *value2, FcValue *bestValue)
+{
+    double v1, v2, v;
+
+    switch ((int)value1->type) {
+    case FcTypeInteger:
+	v1 = (double)value1->u.i;
+	break;
+    case FcTypeDouble:
+	v1 = value1->u.d;
+	break;
+    case FcTypeBool:
+	return FcCompareBool (value1, value2, bestValue);
+    default:
+	return -1.0;
+    }
+    switch ((int)value2->type) {
+    case FcTypeInteger:
+	v2 = (double)value2->u.i;
+	break;
+    case FcTypeDouble:
+	v2 = value2->u.d;
+	break;
+    case FcTypeBool:
+	return FcCompareBool (value1, value2, bestValue);
+    default:
+	return -1.0;
+    }
+    v = !(v1 == v2);
+    *bestValue = FcValueCanonicalize (value2);
+
+    return v;
+}
+
+static double
 FcCompareCharSet (const FcValue *v1, const FcValue *v2, FcValue *bestValue)
 {
     *bestValue = FcValueCanonicalize (v2); /* TODO Improve. */
@@ -294,6 +331,7 @@ FcCompareFilename (const FcValue *v1, const FcValue *v2, FcValue *bestValue)
 #define PRI_FcCompareFamily(n)     PRI1 (n)
 #define PRI_FcCompareString(n)     PRI1 (n)
 #define PRI_FcCompareNumber(n)     PRI1 (n)
+#define PRI_FcCompareEqual(n)      PRI1 (n)
 #define PRI_FcCompareBool(n)       PRI1 (n)
 #define PRI_FcCompareFilename(n)   PRI1 (n)
 #define PRI_FcCompareCharSet(n)    PRI1 (n)
@@ -329,6 +367,7 @@ typedef enum _FcMatcherPriority {
     PRI1 (FOUNDRY),
     PRI1 (CHARSET),
     PRI_FAMILY_STRONG,
+    PRI1 (GENERIC_FAMILY),
     PRI_POSTSCRIPT_NAME_STRONG,
     PRI1 (LANG),
     PRI_FAMILY_WEAK,
@@ -564,7 +603,7 @@ FcCompareFamilies (FcPattern     *pat,
 	}
     }
     if (FcDebug() & FC_DBG_MATCHV) {
-	printf ("%s: %g ", FcObjectName (FC_FAMILY_OBJECT), strong_value);
+	printf ("%s: %g (%g) ", FcObjectName (FC_FAMILY_OBJECT), strong_value, weak_value);
 	FcValueListPrint (v1orig);
 	printf (", ");
 	FcValueListPrint (v2orig);
@@ -748,8 +787,8 @@ FcFontRenderPrepare (FcConfig  *config,
 	         fe->object == FC_WIDTH_OBJECT ||
 	         fe->object == FC_SIZE_OBJECT)) {
 		double      num;
-		FcChar8     temp[128];
 		const char *tag = "    ";
+
 		assert (v.type == FcTypeDouble);
 		num = v.u.d;
 		if (variations.len)
@@ -768,8 +807,7 @@ FcFontRenderPrepare (FcConfig  *config,
 		    tag = "opsz";
 		    break;
 		}
-		sprintf ((char *)temp, "%4s=%g", tag, num);
-		FcStrBufString (&variations, temp);
+		FcStrBufFormat (&variations, "%4s=%g", tag, num);
 	    }
 	} else {
 	    FcPatternObjectListAdd (newp, fe->object,
@@ -918,7 +956,7 @@ FcFontSetMatchInternal (FcFontSet **sets,
 	    char  *p;
 	    FcBool f = FcTrue;
 
-	    ss = s = strdup (env);
+	    ss = s = (char *)FcStrCopy ((const FcChar8 *)env);
 	    os = FcObjectSetCreate();
 	    while (f) {
 		size_t len;
@@ -1107,7 +1145,7 @@ FcFontSetSortDestroy (FcFontSet *fs)
 }
 
 FcFontSet *
-FcFontSetSort (FcConfig   *config FC_UNUSED,
+FcFontSetSort (FcConfig   *config,
                FcFontSet **sets,
                int         nsets,
                FcPattern  *p,
@@ -1156,6 +1194,10 @@ FcFontSetSort (FcConfig   *config FC_UNUSED,
     if (!nnodes)
 	return FcFontSetCreate();
 
+    if (!config)
+	config = FcConfigGetCurrent();
+    FcConfigReference (config);
+
     for (nPatternLang = 0;
          FcPatternGet (p, FC_LANG, nPatternLang, &patternLang) == FcResultMatch;
          nPatternLang++)
@@ -1186,6 +1228,13 @@ FcFontSetSort (FcConfig   *config FC_UNUSED,
 	    newp->pattern = s->fonts[f];
 	    if (!FcCompare (p, newp->pattern, newp->score, result, &data))
 		goto bail1;
+	    /* TODO: Should we check a FcPattern in FcFontSet?
+	     * This way may not work if someone has own list of application fonts
+	     * That said, just to reduce the cost for lookup so far.
+	     */
+	    if (config->prefer_app_fonts && s != config->fonts[FcSetApplication]) {
+		newp->score[PRI_ORDER] += 1000;
+	    }
 	    if (FcDebug() & FC_DBG_MATCHV) {
 		printf ("Score");
 		for (i = 0; i < PRI_END; i++) {
@@ -1260,12 +1309,15 @@ FcFontSetSort (FcConfig   *config FC_UNUSED,
 
     free (nodes);
 
-    if (FcDebug() & FC_DBG_MATCH) {
-	printf ("First font ");
-	FcPatternPrint (ret->fonts[0]);
-    }
-    if (ret->nfont > 0)
+    if (ret->nfont > 0) {
 	*result = FcResultMatch;
+	if (FcDebug() & FC_DBG_MATCH) {
+	    printf ("First font ");
+	    FcPatternPrint (ret->fonts[0]);
+	}
+    }
+    if (config)
+	FcConfigDestroy (config);
 
     return ret;
 
@@ -1274,6 +1326,8 @@ bail2:
 bail1:
     free (nodes);
 bail0:
+    if (config)
+	FcConfigDestroy (config);
     return 0;
 }
 

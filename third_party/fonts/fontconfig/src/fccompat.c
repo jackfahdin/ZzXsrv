@@ -40,6 +40,7 @@
 #if HAVE_UNISTD_H
 #  include <unistd.h>
 #endif
+#include <locale.h>
 #include <stdarg.h>
 #include <stdlib.h>
 #include <string.h>
@@ -70,6 +71,21 @@
 #else
 #  define FC_O_NOINHERIT 0
 #endif
+
+#ifndef HAVE_UNISTD_H
+/* Values for the second argument to access. These may be OR'd together. */
+#  ifndef R_OK
+#    define R_OK 4 /* Test for read permission.  */
+#  endif
+#  ifndef W_OK
+#    define W_OK 2 /* Test for write permission.  */
+#  endif
+#  ifndef F_OK
+#    define F_OK 0 /* Test for existence.  */
+#  endif
+
+typedef int mode_t;
+#endif /* !HAVE_UNISTD_H */
 
 #if !defined(HAVE_MKOSTEMP) && !defined(HAVE_MKSTEMP) && !defined(HAVE__MKTEMP_S)
 static int
@@ -221,7 +237,7 @@ FcRandom (void)
 }
 
 #ifdef _WIN32
-#undef mkdir
+#  undef mkdir
 #  define mkdir(path, mode) _mkdir (path)
 #endif
 
@@ -352,6 +368,41 @@ FcCompatClosedirWin32 (DIR *dir)
     return 0;
 }
 #endif /* HAVE_DIRENT_H */
+
+FcLocale
+FcLocaleCreate (FcLocaleMask mask, const char *locale)
+{
+#ifdef _WIN32
+    return _create_locale (mask, locale);
+#else
+    return newlocale (mask, locale, (locale_t)0);
+#endif
+}
+
+#ifndef _WIN32
+FcLocale
+FcLocaleSetCurrent (FcLocale loc)
+{
+#  if HAVE_VASPRINTF_L || HAVE__VSNPRINTF_L
+    /* This function won't be used */
+    return NULL;
+#  elif HAVE_USELOCALE
+    return uselocale (loc);
+#  else
+#    error No thread-safe locale switching implemented
+#  endif
+}
+#endif
+
+void
+FcLocaleDestroy (FcLocale locale)
+{
+#ifdef _WIN32
+    _free_locale (locale);
+#else
+    freelocale (locale);
+#endif
+}
 
 #define __fccompat__
 #include "fcaliastail.h"

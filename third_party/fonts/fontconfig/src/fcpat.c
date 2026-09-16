@@ -22,7 +22,11 @@
 
 #include "fcint.h"
 
+#if ENABLE_FREETYPE
 #include "fcftint.h"
+#else
+typedef struct FT_FaceRec_* FT_Face;
+#endif
 
 /* Objects MT-safe for readonly access. */
 
@@ -100,7 +104,7 @@ FcValueSave (FcValue v)
 {
     switch ((int)v.type) {
     case FcTypeString:
-	v.u.s = FcStrdup (v.u.s);
+	v.u.s = FcStrCopy (v.u.s);
 	if (!v.u.s)
 	    v.type = FcTypeVoid;
 	break;
@@ -304,8 +308,12 @@ FcValueHash (const FcValue *v)
     case FcTypeCharSet:
 	return (FcChar32)FcValueCharSet (v)->num;
     case FcTypeFTFace:
+#if ENABLE_FREETYPE
 	return FcStringHash ((const FcChar8 *)((FT_Face)v->u.f)->family_name) ^
 	       FcStringHash ((const FcChar8 *)((FT_Face)v->u.f)->style_name);
+#else
+    return 0;
+#endif
     case FcTypeLangSet:
 	return FcLangSetHash (FcValueLangSet (v));
     case FcTypeRange:
@@ -578,10 +586,9 @@ FcPatternEqualSubset (const FcPattern *pai, const FcPattern *pbi, const FcObject
     FcPatternElt *ea, *eb;
     int           i;
 
-    for (i = 0; i < os->nobject; i++) {
-	FcObject object = FcObjectFromName (os->objects[i]);
-	ea = FcPatternObjectFindElt (pai, object);
-	eb = FcPatternObjectFindElt (pbi, object);
+    for (i = 0; i < os->nobjIds; i++) {
+	ea = FcPatternObjectFindElt (pai, os->objIds[i]);
+	eb = FcPatternObjectFindElt (pbi, os->objIds[i]);
 	if (ea) {
 	    if (!eb)
 		return FcFalse;
@@ -870,11 +877,15 @@ FcPatternAddCharSet (FcPattern *p, const char *object, const FcCharSet *c)
 FcBool
 FcPatternAddFTFace (FcPattern *p, const char *object, const FT_Face f)
 {
+#if ENABLE_FREETYPE
     FcValue v;
 
     v.type = FcTypeFTFace;
     v.u.f = (void *)f;
     return FcPatternAdd (p, object, v, FcTrue);
+#else
+    return FcFalse;
+#endif
 }
 
 FcBool
@@ -1067,10 +1078,16 @@ FcPatternGetBool (const FcPattern *p, const char *object, int id, FcBool *b)
 FcResult
 FcPatternGetCharSet (const FcPattern *p, const char *object, int id, FcCharSet **c)
 {
+    return FcPatternObjectGetCharSet (p, FcObjectFromName (object), id, c);
+}
+
+FcResult
+FcPatternObjectGetCharSet (const FcPattern *p, FcObject object, int id, FcCharSet **c)
+{
     FcValue  v;
     FcResult r;
 
-    r = FcPatternGet (p, object, id, &v);
+    r = FcPatternObjectGet (p, object, id, &v);
     if (r != FcResultMatch)
 	return r;
     if (v.type != FcTypeCharSet)
@@ -1082,6 +1099,7 @@ FcPatternGetCharSet (const FcPattern *p, const char *object, int id, FcCharSet *
 FcResult
 FcPatternGetFTFace (const FcPattern *p, const char *object, int id, FT_Face *f)
 {
+#if ENABLE_FREETYPE
     FcValue  v;
     FcResult r;
 
@@ -1092,15 +1110,24 @@ FcPatternGetFTFace (const FcPattern *p, const char *object, int id, FT_Face *f)
 	return FcResultTypeMismatch;
     *f = (FT_Face)v.u.f;
     return FcResultMatch;
+#else
+    return FcResultNoMatch;
+#endif
 }
 
 FcResult
 FcPatternGetLangSet (const FcPattern *p, const char *object, int id, FcLangSet **ls)
 {
+    return FcPatternObjectGetLangSet (p, FcObjectFromName (object), id, ls);
+}
+
+FcResult
+FcPatternObjectGetLangSet (const FcPattern *p, FcObject object, int id, FcLangSet **ls)
+{
     FcValue  v;
     FcResult r;
 
-    r = FcPatternGet (p, object, id, &v);
+    r = FcPatternObjectGet (p, object, id, &v);
     if (r != FcResultMatch)
 	return r;
     if (v.type != FcTypeLangSet)
@@ -1233,9 +1260,8 @@ FcPatternFilter (FcPattern *p, const FcObjectSet *os)
     if (!ret)
 	return NULL;
 
-    for (i = 0; i < os->nobject; i++) {
-	FcObject object = FcObjectFromName (os->objects[i]);
-	e = FcPatternObjectFindElt (p, object);
+    for (i = 0; i < os->nobjIds; i++) {
+	e = FcPatternObjectFindElt (p, os->objIds[i]);
 	if (e) {
 	    for (v = FcPatternEltValues (e); v; v = FcValueListNext (v)) {
 		if (!FcPatternObjectAddWithBinding (ret, e->object,
@@ -1566,5 +1592,7 @@ FcValueListSerialize (FcSerialize *serialize, const FcValueList *vl)
 
 #define __fcpat__
 #include "fcaliastail.h"
+#if ENABLE_FREETYPE
 #include "fcftaliastail.h"
+#endif
 #undef __fcpat__

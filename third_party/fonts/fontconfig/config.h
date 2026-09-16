@@ -22,3 +22,10 @@
 #define CONFIGDIR "./fonts"
 #define HAVE_UNISTD_H 1
 
+
+/* Native MSVC FreeType backend and locale-independent formatting. */
+#define ENABLE_FREETYPE 1
+#define HAVE__VSNPRINTF_L 1
+#define FC_VERSION_MAJOR 2
+#define FC_VERSION_MINOR 18
+#define FC_VERSION_MICRO 3

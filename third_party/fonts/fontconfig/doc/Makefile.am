@@ -83,6 +83,7 @@ DOC_FUNCS_FNCS =		\
 	fcblanks.fncs		\
 	fccache.fncs		\
 	fccharset.fncs		\
+	fcconffile.fncs		\
 	fcconfig.fncs		\
 	fcconstant.fncs		\
 	fcdircache.fncs		\
@@ -90,6 +91,7 @@ DOC_FUNCS_FNCS =		\
 	fcfontset.fncs		\
 	fcformat.fncs		\
 	fcfreetype.fncs		\
+	fcfontations.fncs	\
 	fcinit.fncs		\
 	fclangset.fncs		\
 	fcmatrix.fncs		\
@@ -121,6 +123,7 @@ BUILT_DOCS =		\
 	$(NULL)
 DOCS_DEPS =			\
 	$(DOC_FUNCS_SGML)	\
+	cache-version.sgml	\
 	confdir.sgml		\
 	version.sgml		\
 	$(NULL)
@@ -140,6 +143,7 @@ noinst_SCRIPTS =		\
 ##
 check_SCRIPTS =			\
 	check-missing-doc	\
+	check-missing-doc.py	\
 	check-whitespace-in-args	\
 	check-whitespace-in-args.py	\
 	$(NULL)
@@ -176,7 +180,7 @@ BUILT_SOURCES +=		\
 	$(AM_V_GEN) $(RM) $@; \
 	$(DOC2HTML) -u $*.sgml > $@
 ##
-fonts-conf.5: local-fontconfig-user.sgml version.sgml confdir.sgml
+fonts-conf.5: local-fontconfig-user.sgml cache-version.sgml version.sgml confdir.sgml
 	$(AM_V_GEN) $(RM) $@; \
 	$(DOC2MAN) local-fontconfig-user.sgml && \
 	$(RM) manpage.*

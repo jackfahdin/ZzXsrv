@@ -1,8 +1,13 @@
 project('fontconfig', 'c',
-  version: '2.16.0',
-  meson_version : '>= 1.6.0',
-  default_options: [ 'buildtype=debugoptimized', ]
+  version: '2.18.3',
+  meson_version : '>= 1.11.0',
+  default_options: [
+    'c_std=c11,c99',
+    'buildtype=debugoptimized',
+    'rust_std=2021',
+  ]
 )
+
 
 fs = import('fs')
 
@@ -20,6 +25,14 @@ curversion = fc_version_minor - 1
 libversion = '@0@.@1@.0'.format(soversion, curversion)
 defversion = '@0@.@1@'.format(curversion, fc_version_micro)
 osxversion = curversion + 1
+cacheversion = 12
+cachemincompat = 9
+cachesnapversion = 0
+if cachesnapversion > 0
+  nextcacheversion = cacheversion + 1
+else
+  nextcacheversion = 0
+endif
 
 freetype_req = '>= 21.0.15'
 freetype_req_cmake = '>= 2.8.1'
@@ -29,7 +42,14 @@ math_dep = cc.find_library('m', required: false)
 
 conf = configuration_data()
 
+conf.set('FC_VERSION_MAJOR', fc_version_major)
+conf.set('FC_VERSION_MINOR', fc_version_minor)
+conf.set('FC_VERSION_MICRO', fc_version_micro)
+
 freetype_dep = dependency('freetype2', method: 'pkg-config', version: freetype_req, required: false)
+
+# Preparation for enabling a FreeType-less build, for now, default enable.
+conf.set('ENABLE_FREETYPE', 1)
 
 # Give another shot using CMake
 if not freetype_dep.found()
@@ -103,12 +123,13 @@ check_headers = [
   ['sys/mount.h'],
   ['time.h'],
   ['wchar.h'],
+  ['xlocale.h'],
 ]
 
 check_funcs = [
   ['link'],
+  ['symlink'],
   ['mkstemp'],
-  ['mkostemp'],
   ['_mktemp_s'],
   ['mkdtemp'],
   ['getopt'],
@@ -127,14 +148,20 @@ check_funcs = [
   ['strerror'],
   ['strerror_r'],
   ['mmap'],
+  ['vasprintf_l'],
+  ['vasprintf'],
   ['vprintf'],
   ['vsnprintf'],
+  ['_vsnprintf_l'],
+  ['_vsnprintf_l', {'prefix': '#include <stdio.h>'}],
   ['vsprintf'],
   ['getpagesize'],
   ['getpid'],
   ['dcgettext'],
   ['gettext'],
   ['localtime_r'],
+  ['strdup'],
+  ['uselocale'],
 ]
 
 check_freetype_funcs = [
@@ -146,7 +173,8 @@ check_freetype_funcs = [
 ]
 
 check_header_symbols = [
-  ['posix_fadvise', 'fcntl.h']
+  ['posix_fadvise', 'fcntl.h'],
+  ['mkostemp', 'stdlib.h'],
 ]
 
 check_struct_members = [
@@ -172,7 +200,7 @@ add_project_arguments('-DHAVE_CONFIG_H', language: 'c')
 c_args = []
 
 deps = [freetype_dep, xml_dep]
-incbase = include_directories('.')
+incbase = include_directories('.', 'fc-lang')
 
 # For compatibility to autoconf (regardless of the usage in fontconfig)
 conf.set_quoted('PACKAGE_NAME', meson.project_name())
@@ -189,12 +217,18 @@ else
   conf.set('EXEEXT', '')
 endif
 
+if host_machine.system() == 'sunos'
+  if not cc.has_header_symbol('string.h', 'strdup')
+    add_project_arguments('-D__EXTENSIONS__', language: 'c')
+  endif
+endif
+
 i18n = import('i18n')
 gettext_args = [ '--msgid-bugs-address=@0@'.format(conf.get('PACKAGE_BUGREPORT')) ]
 
 # Check for libintl.h
 opt_nls = get_option('nls')
-libintl_dep = dependency('intl', required: false, fallback: ['libintl', 'libintl_dep'])
+libintl_dep = dependency('intl', required: opt_nls, fallback: ['libintl', 'libintl_dep'])
 if libintl_dep.found()
   conf.set('ENABLE_NLS', opt_nls.allowed().to_int())
   deps += [libintl_dep]
@@ -242,8 +276,9 @@ foreach check : check_funcs
   name = check[0]
   opts = check.length() > 1 ? check[1] : {}
   extra_deps = opts.get('dependencies', [])
+  prefix = opts.get('prefix', '')
 
-  if cc.has_function(name, dependencies: extra_deps)
+  if cc.has_function(name, dependencies: extra_deps, prefix: prefix)
     conf.set('HAVE_@0@'.format(name.to_upper()), 1)
   endif
 endforeach
@@ -313,6 +348,7 @@ if cc.links(files('meson-cc-tests/solaris-atomic-operations.c'), name: 'Solaris 
   conf.set('HAVE_SOLARIS_ATOMIC_OPS', 1)
 endif
 
+conf.set('HAVE_C99_VSNPRINTF', 1)
 
 prefix = get_option('prefix')
 
@@ -323,7 +359,7 @@ if default_fonts_dirs == ['yes']
   if host_machine.system() == 'windows'
     fc_fonts_paths = ['WINDOWSFONTDIR', 'WINDOWSUSERFONTDIR']
   elif host_machine.system() == 'darwin'
-    fc_fonts_paths = ['/System/Library/Fonts', '/Library/Fonts', '~/Library/Fonts', '/System/Library/Assets/com_apple_MobileAsset_Font3', '/System/Library/Assets/com_apple_MobileAsset_Font4']
+    fc_fonts_paths = ['/System/Library/Fonts', '/Library/Fonts', '~/Library/Fonts', '/System/Library/Assets', '/System/Library/AssetsV2']
   elif host_machine.system() == 'android'
     fc_fonts_paths = ['/system/fonts/', '/product/fonts/']
   else
@@ -364,10 +400,10 @@ endif
 xml_path = ''
 escaped_xml_path = ''
 foreach p : fc_add_fonts
-  s = '\t<dir>' + p + '</dir>\n'
+  s = '<dir>' + p + '</dir>\n\t'
   xml_path += s
   # No substitution method for string
-  s = '\\t<dir>' + p + '</dir>\\n'
+  s = '<dir>' + p + '</dir>\\n\\t'
   escaped_xml_path += s
 endforeach
 conf.set_quoted('FC_FONTPATH', escaped_xml_path)
@@ -414,9 +450,7 @@ conf.set_quoted('CONFIGDIR', fc_configdir)
 conf.set_quoted('FC_CACHEDIR', fc_cachedir)
 conf.set_quoted('FC_TEMPLATEDIR', fc_templatedir)
 conf.set_quoted('FONTCONFIG_PATH', fc_baseconfigdir)
-conf.set_quoted('FC_FONTPATH', '')
 
-fonts_conf.set('FC_FONTPATH', '')
 fonts_conf.set('FC_CACHEDIR', fc_cachedir)
 fonts_conf.set('CONFIGDIR', fc_configdir)
 # strip off fc_baseconfigdir prefix if that is the prefix
@@ -427,7 +461,7 @@ endif
 gperf = find_program('gperf', required: false)
 gperf_len_type = ''
 
-if gperf.found()
+if gperf.found() and get_option('wrap_mode') != 'forcefallback'
   gperf_test_format = '''
   #include <string.h>
   const char * in_word_set(const char *, @0@);
@@ -474,10 +508,20 @@ endforeach
 fcstdint_h = fs.copyfile('src/fcstdint.h.in', 'fcstdint.h')
 
 makealias = files('src/makealias.py')[0]
+fcobjs_h = files('src/fcobjs.h')[0]
+
+
+subdir('fontconfig')
+
+
+alias_input_headers = [fontconfig_h, 'src/fcdeprecate.h', 'fontconfig/fcprivate.h']
+if get_option('fontations').enabled()
+  alias_input_headers += ['fontconfig/fcfontations.h']
+endif
 
 alias_headers = custom_target('alias_headers',
                               output: ['fcalias.h', 'fcaliastail.h'],
-                              input: ['fontconfig/fontconfig.h', 'src/fcdeprecate.h', 'fontconfig/fcprivate.h'],
+                              input: alias_input_headers,
                               command: [python3, makealias, join_paths(meson.current_source_dir(), 'src'), '@OUTPUT@', '@INPUT@'],
                              )
 
@@ -489,19 +533,62 @@ ft_alias_headers = custom_target('ft_alias_headers',
 
 tools_man_pages = []
 
+
 # Do not reorder
 subdir('fc-case')
 subdir('fc-lang')
+subdir('fc-const')
+subdir('fc-genericfamily')
 subdir('src')
 
 if get_option('fontations').enabled()
   subdir('fc-fontations')
+  lib_fontconfig_kwargs = lib_fontconfig_kwargs + {
+    'link_with' : lib_fontconfig_kwargs['link_with'] + [fc_fontations, fontations_query_lib]}
 endif
+
+libfontconfig = library('fontconfig',
+  lib_fontconfig_sources,
+  c_shared_args: win_export_args,
+  soversion: soversion,
+  version: libversion,
+  darwin_versions: osxversion,
+  install: true,
+  kwargs: lib_fontconfig_kwargs)
+
+if get_option('default_library') == 'both'
+  libfontconfig_internal = libfontconfig.get_static_lib()
+elif get_option('default_library') == 'static'
+  libfontconfig_internal = libfontconfig
+else
+  libfontconfig_internal = static_library('fontconfig',
+    lib_fontconfig_sources,
+    kwargs: lib_fontconfig_kwargs)
+endif
+
+fontconfig_dep = declare_dependency(link_with: libfontconfig,
+  include_directories: incbase,
+  dependencies: deps,
+)
+
+pkgmod.generate(libfontconfig,
+  description: 'Font configuration and customization library',
+  filebase: 'fontconfig',
+  name: 'Fontconfig',
+  requires_private: ['freetype2 ' + freetype_req],
+  version: fc_version,
+  variables: [
+    'sysconfdir=@0@'.format(join_paths(prefix, get_option('sysconfdir'))),
+    'localstatedir=@0@'.format(join_paths(prefix, get_option('localstatedir'))),
+    'confdir=@0@'.format(fc_baseconfigdir),
+    'cachedir=@0@'.format(fc_cachedir),
+  ])
 
 if not get_option('tools').disabled()
   subdir('fc-cache')
   subdir('fc-cat')
   subdir('fc-conflist')
+  subdir('fc-genconf')
   subdir('fc-list')
   subdir('fc-match')
   subdir('fc-pattern')
@@ -542,7 +629,7 @@ install_data('fonts.dtd',
              install_tag: 'runtime')
 
 fc_headers = [
-  'fontconfig/fontconfig.h',
+  fontconfig_h,
   'fontconfig/fcfreetype.h',
   'fontconfig/fcprivate.h',
 ]
@@ -566,6 +653,8 @@ summary({
   'Documentation': (doc_targets.length() > 0 ? doc_targets : false),
   'NLS': not opt_nls.disabled(),
   'Tests': not get_option('tests').disabled(),
+  'Tests (external fonts)': get_option('tests-external-fonts').allowed(),
+  'Pytest': pytest.found(),
   'Tools': not get_option('tools').disabled(),
   'iconv': found_iconv == 1,
   'XML backend': xmltype,
@@ -573,6 +662,8 @@ summary({
 }, section: 'General', bool_yn: true, list_sep: ', ')
 summary({
   'Hinting': preferred_hinting,
+  'Sub Pixel Rendering': preferred_sub_pixel_rendering,
+  'Bitmap': preferred_bitmap,
   'Font directories': fc_fonts_paths,
   'Additional font directories': fc_add_fonts,
 }, section: 'Defaults', bool_yn: true, list_sep: ', ')

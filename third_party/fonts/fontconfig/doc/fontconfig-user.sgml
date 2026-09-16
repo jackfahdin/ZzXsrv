@@ -1,4 +1,5 @@
 <!DOCTYPE refentry PUBLIC "-//OASIS//DTD DocBook V3.1//EN" [
+<!ENTITY cacheversion SYSTEM "cache-version.sgml">
 <!ENTITY version SYSTEM "version.sgml">
 <!ENTITY confdir SYSTEM "confdir.sgml">
 ]>
@@ -148,9 +149,10 @@ fonthashint     Bool    Whether the font has hinting
 order           Int     Order number of the font
 desktop         String  Current desktop name
 namedinstance   Bool    Whether font is a named instance
-fontwarapper    String  The font wrapper format, current values are WOFF, WOFF2,
+fontwrapper     String  The font wrapper format, current values are WOFF, WOFF2,
                         SFNT for any other SFNT font, and CFF for standalone
                         CFF fonts.
+genericfamily   Int     Type of Generic Family
     </programlisting>
   </refsect2>
   <refsect2>
@@ -338,7 +340,7 @@ a directory in the users home directory.  If 'prefix' is set to "xdg", the value
 The default directory is ``$XDG_CACHE_HOME/fontconfig'' and it contains the cache files
 named ``<literal>&lt;hash value&gt;</literal>-<literal>&lt;architecture&gt;</literal>.cache-<literal>&lt;version&gt;</literal>'',
 where <literal>&lt;version&gt;</literal> is the fontconfig cache file
-version number (currently 8).
+version number (currently &cacheversion;).
   </para></refsect2>
   <refsect2><title><literal>&lt;include ignore_missing="no" prefix="default"&gt;</literal></title><para>
 This element contains the name of an additional configuration file or
@@ -479,7 +481,7 @@ elements hold either true or false.  An important limitation exists in
 the parsing of floating point numbers -- fontconfig requires that
 the mantissa start with a digit, not a decimal point, so insert a leading
 zero for purely fractional values (e.g. use 0.5 instead of .5 and -0.5
-instead of -.5).
+instead of -.5). also xsi:nil attribute is supported to indicate an empty element.
   </para></refsect2>
   <refsect2><title><literal>&lt;matrix&gt;</literal></title><para>
 This element holds four numerical expressions of an affine transformation.
@@ -492,11 +494,11 @@ representation.
   </para></refsect2>
   <refsect2><title><literal>&lt;charset&gt;</literal></title><para>
 This element holds at least one <literal>&lt;int&gt;</literal> element of
-an Unicode code point or more.
+an Unicode code point or more. also xsi:nil attribute is supported to indicate an empty element.
   </para></refsect2>
   <refsect2><title><literal>&lt;langset&gt;</literal></title><para>
 This element holds at least one <literal>&lt;string&gt;</literal> element of
-a RFC-3066-style languages or more.
+a RFC-3066-style languages or more. also xsi:nil attribute is supported to indicate an empty element.
   </para></refsect2>
   <refsect2><title><literal>&lt;name&gt;</literal></title><para>
 Holds a property name.  Evaluates to the first value from the property of
@@ -508,7 +510,8 @@ explicitly choose which pattern to use.  It is an error to use a target
 of 'font' in a match that has target="pattern".
   </para></refsect2>
   <refsect2><title><literal>&lt;const&gt;</literal></title><para>
-Holds the name of a constant; these are always integers and serve as
+Holds the name of a constant. also xsi:nil attribute is supported to indicate an empty element;
+ these are always integers and serve as
 symbolic names for common font values:
     <programlisting>
 Constant        Property        Value
@@ -562,6 +565,19 @@ hintnone        hintstyle       0
 hintslight      hintstyle       1
 hintmedium      hintstyle       2
 hintfull        hintstyle       3
+serif           genericfamily   1
+sans-serif      genericfamily   2
+monospace       genericfamily   3
+cursive         genericfamily   4
+fantasy         genericfamily   5
+system-ui       genericfamily   6
+ui-serif        genericfamily   7
+ui-sans-serif   genericfamily   8
+ui-monospace    genericfamily   9
+ui-rounded      genericfamily   10
+emoji           genericfamily   11
+math            genericfamily   12
+fangsong        genericfamily   13
     </programlisting>
       </para>
     </refsect2>
@@ -881,6 +897,10 @@ is used to control the use of mmap(2) for the cache files if available. this tak
   <para>
 <emphasis>SOURCE_DATE_EPOCH</emphasis>
 is used to ensure <literal>fc-cache(1)</literal> generates files in a deterministic manner in order to support reproducible builds. When set to a numeric representation of UNIX timestamp, fontconfig will prefer this value over using the modification timestamps of the input files in order to identify which cache files require regeneration. If <literal>SOURCE_DATE_EPOCH</literal> is not set (or is newer than the mtime of the directory), the existing behaviour is unchanged.
+  </para>
+  <para>
+<emphasis>FONTCONFIG_WARN_INVALID_ATTRS</emphasis>
+is used to get back the invalid attribute warning for config files.
   </para>
 </refsect1>
 <refsect1><title>See Also</title>

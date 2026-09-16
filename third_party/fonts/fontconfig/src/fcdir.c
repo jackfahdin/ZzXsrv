@@ -28,6 +28,14 @@
 #  include <dirent.h>
 #endif
 
+#if ENABLE_FONTATIONS
+#  include "fontconfig/fcfontations.h"
+#endif
+
+#if ENABLE_FREETYPE
+#include "fontconfig/fcfreetype.h"
+#endif
+
 FcBool
 FcFileIsDir (const FcChar8 *file)
 {
@@ -77,7 +85,19 @@ FcFileScanFontConfig (FcFontSet     *set,
 	fflush (stdout);
     }
 
-    if (!FcFreeTypeQueryAll (file, -1, NULL, NULL, set))
+    unsigned int (*query_function) (const FcChar8 *, unsigned int, FcBlanks *, int *, FcFontSet *) =
+#if ENABLE_FONTATIONS && !defined(ENABLE_FREETYPE)
+    FcFontationsQueryAll;
+#elif ENABLE_FREETYPE
+    FcFreeTypeQueryAll;
+#endif
+
+#if ENABLE_FONTATIONS
+    if (getenv ("FC_FONTATIONS")) {
+	query_function = FcFontationsQueryAll;
+    }
+#endif
+    if (!query_function (file, -1, NULL, NULL, set))
 	return FcFalse;
 
     if (FcDebug() & FC_DBG_SCAN)
@@ -96,7 +116,7 @@ FcFileScanFontConfig (FcFontSet     *set,
 
 	    if (FcPatternObjectGetString (font, FC_FILE_OBJECT, 0, &f) == FcResultMatch &&
 	        strncmp ((const char *)f, (const char *)sysroot, len) == 0) {
-		FcChar8 *s = FcStrdup (f);
+		FcChar8 *s = FcStrCopy (f);
 		FcPatternObjectDel (font, FC_FILE_OBJECT);
 		if (s[len] != '/')
 		    len--;
@@ -206,7 +226,7 @@ FcDirScanConfig (FcFontSet     *set,
     if (sysroot)
 	s_dir = FcStrBuildFilename (sysroot, dir, NULL);
     else
-	s_dir = FcStrdup (dir);
+	s_dir = FcStrCopy (dir);
     if (!s_dir) {
 	ret = FcFalse;
 	goto bail;
@@ -239,7 +259,12 @@ FcDirScanConfig (FcFontSet     *set,
 	goto bail1;
     }
     while ((e = readdir (d))) {
-	if (e->d_name[0] != '.' && strlen (e->d_name) < FC_MAX_FILE_LEN) {
+	/* Ignore . and .. */
+	if (e->d_name[0] == '.' &&
+	    (e->d_name[1] == 0 ||
+	     (e->d_name[1] == '.' && e->d_name[2] == 0)))
+	    continue;
+	if (strlen (e->d_name) < FC_MAX_FILE_LEN) {
 	    strcpy ((char *)base, (char *)e->d_name);
 	    if (!FcStrSetAdd (files, file_prefix)) {
 		ret = FcFalse;
@@ -312,10 +337,15 @@ FcDirCacheScan (const FcChar8 *dir, FcConfig *config)
     int fd = -1;
 #endif
 
+    if (!FcConfigAcceptFilename (config, dir)) {
+	if (FcDebug() & FC_DBG_CACHE)
+	    printf ("%s: skipping, matching with deny list\n", dir);
+	return NULL;
+    }
     if (sysroot)
 	d = FcStrBuildFilename (sysroot, dir, NULL);
     else
-	d = FcStrdup (dir);
+	d = FcStrCopy (dir);
 
     if (FcDebug() & FC_DBG_FONTSET)
 	printf ("cache scan dir %s\n", d);
@@ -390,7 +420,7 @@ FcDirCacheRescan (const FcChar8 *dir, FcConfig *config)
     if (sysroot)
 	d = FcStrBuildFilename (sysroot, dir, NULL);
     else
-	d = FcStrdup (dir);
+	d = FcStrCopy (dir);
     if (FcStatChecksum (d, &dir_stat) < 0)
 	goto bail;
     dirs = FcStrSetCreateEx (FCSS_GROW_BY_64);

@@ -63,7 +63,7 @@
 #endif
 
 #ifdef _WIN32
-#undef mkdir
+#  undef mkdir
 #  define mkdir(path, mode) _mkdir (path)
 #endif
 

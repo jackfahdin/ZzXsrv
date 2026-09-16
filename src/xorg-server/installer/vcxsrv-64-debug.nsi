@@ -141,6 +141,9 @@ Section "VcXsrv debug exe and dlls (required)"
   SetOutPath $INSTDIR\licenses\xkbcomp
   File "..\..\..\third_party\xorg\xkbcomp\COPYING"
   File "..\..\..\third_party\xorg\xkbcomp\README.vcxsrv.md"
+  SetOutPath $INSTDIR\licenses\fontconfig
+  File "..\..\..\third_party\fonts\fontconfig\COPYING"
+  File "..\..\..\third_party\fonts\fontconfig\README.vcxsrv.md"
   SetOutPath $INSTDIR\licenses\pixman
   File "..\..\..\third_party\graphics\pixman\COPYING"
   File "..\..\..\third_party\graphics\pixman\README.vcxsrv.md"
@@ -317,6 +320,7 @@ Section "Uninstall"
   Delete "$INSTDIR\libxml2.dll"
   Delete "$INSTDIR\libiconv.dll"
   RMDir /r "$INSTDIR\licenses\xkbcomp"
+  RMDir /r "$INSTDIR\licenses\fontconfig"
   RMDir /r "$INSTDIR\licenses\pixman"
   RMDir /r "$INSTDIR\licenses\libxcb"
   RMDir /r "$INSTDIR\licenses\xcb-proto"

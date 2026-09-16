@@ -1,0 +1,142 @@
+--- a/conf.d/50-user.conf
++++ b/conf.d/50-user.conf
+@@ -10,4 +10,6 @@
+ 	-->
+ 	<include ignore_missing="yes" prefix="xdg">fontconfig/conf.d</include>
+ 	<include ignore_missing="yes" prefix="xdg">fontconfig/fonts.conf</include>
++	<include ignore_missing="yes" deprecated="yes">~/.fonts.conf.d</include>
++	<include ignore_missing="yes" deprecated="yes">~/.fonts.conf</include>
+ </fontconfig>
+--- a/src/fcatomic.c
++++ b/src/fcatomic.c
+@@ -63,7 +63,7 @@
+ #endif
+ 
+ #ifdef _WIN32
+-#  include <direct.h>
++#  undef mkdir
+ #  define mkdir(path, mode) _mkdir (path)
+ #endif
+ 
+--- a/src/fccompat.c
++++ b/src/fccompat.c
+@@ -237,7 +237,7 @@
+ }
+ 
+ #ifdef _WIN32
+-#  include <direct.h>
++#  undef mkdir
+ #  define mkdir(path, mode) _mkdir (path)
+ #endif
+ 
+@@ -287,6 +287,7 @@
+     HANDLE          handle;
+     WIN32_FIND_DATA fdata;
+     FcBool          valid;
++    FcBool          first;
+ };
+ 
+ FcPrivate DIR *
+@@ -313,19 +314,21 @@
+ 
+     dir->handle = FindFirstFileEx (name, FindExInfoBasic, &dir->fdata, FindExSearchNameMatch, NULL, 0);
+ 
+-    free (name);
+-
+-    if (!dir->handle) {
++    if (dir->handle == INVALID_HANDLE_VALUE) {
++	DWORD error = GetLastError ();
++	free (name);
+ 	free (dir);
+-	dir = NULL;
+-
+-	if (GetLastError() == ERROR_FILE_NOT_FOUND)
++
++	if (error == ERROR_FILE_NOT_FOUND || error == ERROR_PATH_NOT_FOUND)
+ 	    errno = ENOENT;
+ 	else
+ 	    errno = EACCES;
+-    }
+-
++	return NULL;
++    }
++
++    free (name);
+     dir->valid = FcTrue;
++    dir->first = FcTrue;
+     return dir;
+ }
+ 
+@@ -334,6 +337,14 @@
+ {
+     if (dir->valid != FcTrue)
+ 	return NULL;
++
++    /* Keep the returned name and attributes intact until the next readdir. */
++    if (dir->first)
++	dir->first = FcFalse;
++    else if (!FindNextFile (dir->handle, &dir->fdata)) {
++	dir->valid = FcFalse;
++	return NULL;
++    }
+ 
+     dir->d_ent.d_name = dir->fdata.cFileName;
+ 
+@@ -343,9 +354,6 @@
+ 	dir->d_ent.d_type = DT_REG;
+     else
+ 	dir->d_ent.d_type = DT_UNKNOWN;
+-
+-    if (!FindNextFile (dir->handle, &dir->fdata))
+-	dir->valid = FcFalse;
+ 
+     return &dir->d_ent;
+ }
+--- a/src/fcinit.c
++++ b/src/fcinit.c
+@@ -40,18 +40,18 @@
+ FcInitFallbackConfig (const FcChar8 *sysroot)
+ {
+     FcConfig      *config;
+-    const FcChar8 *fallback = (const FcChar8 *)
+-	""
+-	"<fontconfig>" FC_DEFAULT_FONTS
++    FcChar8 fallback[1024];
++    snprintf(fallback, sizeof(fallback), ""
++	"<fontconfig>%s"
+ 	"  <dir prefix=\"xdg\">fonts</dir>"
+-	"  <cachedir>" FC_CACHEDIR
++	"  <cachedir>%s"
+ 	"</cachedir>"
+ 	"  <cachedir prefix=\"xdg\">fontconfig</cachedir>"
+ 	"  <include ignore_missing=\"yes\">" CONFIGDIR
+ 	"</include>"
+ 	"  <include ignore_missing=\"yes\" prefix=\"xdg\">fontconfig/conf.d</include>"
+ 	"  <include ignore_missing=\"yes\" prefix=\"xdg\">fontconfig/fonts.conf</include>"
+-	"</fontconfig>";
++	"</fontconfig>", FC_DEFAULT_FONTS, FC_CACHEDIR);
+ 
+     config = FcConfigCreate();
+     if (!config)
+--- a/src/fcstat.c
++++ b/src/fcstat.c
+@@ -97,7 +97,7 @@
+ 	return -1;
+ 
+     rc = GetLongPathName (full_path_name, full_path_name, sizeof (full_path_name));
+-    statb->st_ino = FcStringHash ((const FcChar8 *)full_path_name);
++    statb->st_ino = FcStringHash ((const FcChar8 *)full_path_name) & 0xffff;
+ 
+     statb->st_mode = _S_IREAD | _S_IWRITE;
+     statb->st_mode |= (statb->st_mode >> 3) | (statb->st_mode >> 6);
+--- a/src/fcstr.c
++++ b/src/fcstr.c
+@@ -183,7 +183,7 @@
+     free (s);
+ }
+ 
+-#include "../fc-case/fccase.h"
++#include "fccase.h"
+ 
+ #define FcCaseFoldUpperCount(cf) \
+     ((cf)->method == FC_CASE_FOLD_FULL ? 1 : (cf)->count)

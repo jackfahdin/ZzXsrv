@@ -36,6 +36,10 @@
 #include <fontconfig/fontconfig.h>
 #include <fontconfig/fcfreetype.h>
 
+#if ENABLE_FONTATIONS
+#  include <fontconfig/fcfontations.h>
+#endif
+
 #include <locale.h>
 #include <stdio.h>
 #include <stdlib.h>
@@ -135,7 +139,7 @@ main (int argc, char **argv)
 	    brief = 1;
 	    break;
 	case 'f':
-	    format = (FcChar8 *)strdup (optarg);
+	    format = FcStrCopy ((const FcChar8 *)optarg);
 	    break;
 	case 'V':
 	    fprintf (stderr, "fontconfig version %d.%d.%d\n",
@@ -157,8 +161,15 @@ main (int argc, char **argv)
 
     fs = FcFontSetCreate();
 
+    unsigned int (*query_function) (const FcChar8 *, unsigned int, FcBlanks *, int *, FcFontSet *) = FcFreeTypeQueryAll;
+#if ENABLE_FONTATIONS
+    if (getenv ("FC_FONTATIONS") != NULL) {
+	query_function = FcFontationsQueryAll;
+    }
+#endif
+
     for (; i < argc; i++) {
-	if (!FcFreeTypeQueryAll ((FcChar8 *)argv[i], id, NULL, NULL, fs)) {
+	if (!query_function ((FcChar8 *)argv[i], id, NULL, NULL, fs)) {
 	    fprintf (stderr, _("Can't query face %u of font file %s\n"), id, argv[i]);
 	    err = 1;
 	}
@@ -179,6 +190,8 @@ main (int argc, char **argv)
 	    if (s) {
 		printf ("%s", s);
 		FcStrFree (s);
+	    } else {
+		err = 1;
 	    }
 	} else {
 	    FcPatternPrint (pat);

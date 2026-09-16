@@ -40,6 +40,7 @@ CONF_LINKS = \
 	40-nonlatin.conf \
 	45-generic.conf \
 	45-latin.conf \
+	48-guessfamily.conf \
 	48-spacing.conf \
 	49-sansserif.conf \
 	50-user.conf \
@@ -52,7 +53,12 @@ CONF_LINKS = \
 	80-delicious.conf \
 	90-synthetic.conf
 
-EXTRA_DIST = $(template_DATA) $(DOC_SOURCES)
+CONF_LINKS += 70-$(PREFERRED_BITMAP).conf
+if OS_DARWIN
+CONF_LINKS += 05-macos.conf
+endif
+
+EXTRA_DIST = $(template_DATA) 05-macos.conf $(DOC_SOURCES)
 CLEANFILES = $(DOC_FILES)
 
 configdir = $(CONFIGDIR)
@@ -87,6 +93,7 @@ template_DATA =				\
 	40-nonlatin.conf		\
 	45-generic.conf			\
 	45-latin.conf			\
+	48-guessfamily.conf		\
 	48-spacing.conf			\
 	49-sansserif.conf		\
 	50-user.conf			\
@@ -103,6 +110,9 @@ template_DATA =				\
 	70-yes-bitmaps.conf		\
 	80-delicious.conf		\
 	90-synthetic.conf
+if OS_DARWIN
+template_DATA += 05-macos.conf
+endif
 
 README: $(srcdir)/README.in
 	sed "s|\@TEMPLATEDIR\@|$(templatedir)|" $< > $@

@@ -33,7 +33,7 @@ dnl This is the package version number, not the shared library
 dnl version.  This same version number must appear in fontconfig/fontconfig.h
 dnl Yes, it is a pain to synchronize version numbers.  Unfortunately, it's
 dnl not possible to extract the version number here from fontconfig.h
-AC_INIT([fontconfig],[2.16.0],[https://gitlab.freedesktop.org/fontconfig/fontconfig/issues/new])
+AC_INIT([fontconfig],[2.18.3],[https://gitlab.freedesktop.org/fontconfig/fontconfig/issues/new])
 AM_INIT_AUTOMAKE([1.11 parallel-tests dist-xz foreign])
 m4_ifdef([AM_SILENT_RULES],[AM_SILENT_RULES([yes])])
 
@@ -68,16 +68,41 @@ dnl Initialize libtool
 LT_PREREQ([2.2])
 LT_INIT([disable-static win32-dll])
 
+dnl fc version
+eval `echo $VERSION |
+	awk -F. '{ printf ("major=%d\nminor=%d\nrevision=%d\n",
+			   $1, $2, $3); }'`
+AC_DEFINE_UNQUOTED([FC_VERSION_MAJOR], [$major], [major version])
+AC_DEFINE_UNQUOTED([FC_VERSION_MINOR], [$minor], [minor version])
+AC_DEFINE_UNQUOTED([FC_VERSION_MICRO], [$revision], [revision])
+
+dnl Preparation for enabling a FreeType-less build, for now, default enable.
+AC_DEFINE_UNQUOTED([ENABLE_FREETYPE], [1], [Enable building with FreeType.])
+
+dnl cache version
+CACHE_VERSION=12
+AC_SUBST(CACHE_VERSION)
+CACHE_MIN_COMPAT_VERSION=9
+AC_SUBST(CACHE_MIN_COMPAT_VERSION)
+CACHE_SNAP_VERSION=0
+AC_SUBST(CACHE_SNAP_VERSION)
+if [[ "$CACHE_SNAP_VERSION" -gt 0 ]]; then
+  NEXT_CACHE_VERSION=`expr $CACHE_VERSION + 1`
+else
+  NEXT_CACHE_VERSION=0
+fi
+AC_SUBST(NEXT_CACHE_VERSION)
+
 dnl libtool versioning
 
 dnl bump revision when fixing bugs
 dnl bump current and age, reset revision to zero when adding APIs
 dnl bump current, leave age, reset revision to zero when changing/removing APIS
-LIBT_CURRENT=16
-LIBT_REVISION=0
+LIBT_CURRENT=17
+LIBT_REVISION=1
 AC_SUBST(LIBT_CURRENT)
 AC_SUBST(LIBT_REVISION)
-LIBT_AGE=15
+LIBT_AGE=16
 
 LIBT_VERSION_INFO="$LIBT_CURRENT:$LIBT_REVISION:$LIBT_AGE"
 AC_SUBST(LIBT_VERSION_INFO)
@@ -92,7 +117,11 @@ dnl ==========================================================================
 AC_CANONICAL_HOST
 os_win32=no
 os_darwin=no
+os_android=no
 case "${host_os}" in
+	linux*android*)
+        os_android=yes
+        ;;
 	cygwin*|mingw*)
 		os_win32=yes
 		;;
@@ -126,7 +155,7 @@ WARNING_CPP_DIRECTIVE="no"
 if test "x$GCC" = "xyes"; then
 	WARN_CFLAGS="-Wall -Wpointer-arith -Wstrict-prototypes \
 	-Wmissing-prototypes -Wmissing-declarations \
-	-Wnested-externs -fno-strict-aliasing"
+	-Wnested-externs"
 	WARNING_CPP_DIRECTIVE="yes"
 elif test "x$SUNCC" = "xyes"; then
 	WARN_CFLAGS="-v -fd"
@@ -176,9 +205,12 @@ AC_C_FLEXIBLE_ARRAY_MEMBER
 AC_TYPE_PID_T
 
 # Checks for library functions.
+AX_FUNC_SNPRINTF
 AC_FUNC_VPRINTF
 AC_FUNC_MMAP
-AC_CHECK_FUNCS([link mkstemp mkostemp _mktemp_s mkdtemp getopt getopt_long getprogname getexecname rand random lrand48 random_r rand_r readlink fstatvfs fstatfs lstat strerror strerror_r])
+AC_CHECK_FUNCS([link symlink mkstemp _mktemp_s mkdtemp getopt getopt_long getprogname getexecname rand random lrand48 random_r rand_r readlink fstatvfs fstatfs lstat strerror strerror_r strdup vasprintf uselocale])
+
+AC_CHECK_DECL([mkostemp],[AC_DEFINE_UNQUOTED([HAVE_MKOSTEMP],[1],[Define to 1 if you have the 'mkostemp' function.])],[],[#include <stdlib.h>])
 
 AC_SEARCH_LIBS([fabs], [m], [], [AC_MSG_ERROR([unable to find the fabs() function])])
 
@@ -232,6 +264,41 @@ AC_COMPILE_IFELSE([AC_LANG_PROGRAM([[
 )])
 AC_DEFINE_UNQUOTED(FC_GPERF_SIZE_T, $FC_GPERF_SIZE_T, [The type of len parameter of the gperf hash/lookup function])
 AC_MSG_RESULT($FC_GPERF_SIZE_T)
+
+AC_CHECK_VA_COPY
+
+AC_CACHE_CHECK([Whether vsnprintf is C99-compliant], [fc_cv_c99_vsnprintf],
+	[AC_RUN_IFELSE([AC_LANG_SOURCE([[
+#include <sys/types.h>
+#include <stdio.h>
+#include <stdarg.h>
+#include <stdlib.h>
+int
+foo(char *format, ...)
+{
+	va_list ap;
+	char c;
+	int retval = 0;
+
+	va_start(ap, format);
+	if (vsnprintf(&c, 1, format, ap) < 0) {
+		retval = -1;
+	}
+	va_end(ap);
+
+	return retval;
+}
+int
+main(void)
+{
+	char c;
+
+	return foo("foo: %s", "bar");
+}]])],
+	[fc_cv_c99_vsnprintf=yes],[fc_cv_c99_vsnprintf=no],[fc_cv_c99_vsnprintf=no])])
+if test "x$fc_cv_c99_vsnprintf" = xyes; then
+	AC_DEFINE(HAVE_C99_VSNPRINTF, 1, [Have C99-compliant vsnprintf])
+fi
 
 #
 # Checks for iconv
@@ -484,6 +551,30 @@ none|slight|medium|full)
 esac
 
 #
+# default bitmap config
+#
+
+AC_ARG_WITH(bitmap-conf,
+    [AS_HELP_STRING([--with-bitmap-conf=NAME],[Enable your preferred bitmap related configuration (yes/no/no-except-emoji) [default=no-except-emoji]])],
+    preferred_bitmap="$withval", preferred_bitmap=no-except-emoji)
+
+case "$preferred_bitmap" in
+yes)
+    PREFERRED_BITMAP="yes-bitmaps"
+    ;;
+no)
+    PREFERRED_BITMAP="no-bitmaps-and-emoji"
+    ;;
+no-except-emoji)
+    PREFERRED_BITMAP="no-bitmaps-except-emoji"
+    ;;
+*)
+	AC_MSG_ERROR([Invalid bitmap config. please choose one of yes, no, or no-except-emoji])
+	;;
+esac
+AC_SUBST(PREFERRED_BITMAP)
+
+#
 # Set default font directory
 #
 
@@ -496,7 +587,9 @@ yes)
 	if test "$os_win32" = "yes"; then
 		default_fonts="WINDOWSFONTDIR,WINDOWSUSERFONTDIR"
 	elif test "$os_darwin" = "yes"; then
-		default_fonts="/System/Library/Fonts,/Library/Fonts,~/Library/Fonts,/System/Library/Assets/com_apple_MobileAsset_Font3,/System/Library/Assets/com_apple_MobileAsset_Font4"
+		default_fonts="/System/Library/Fonts,/Library/Fonts,~/Library/Fonts,/System/Library/Assets,/System/Library/AssetsV2"
+	elif test "$os_android" = "yes"; then
+		default_fonts="/system/fonts,/product/fonts"
 	else
 		default_fonts="/usr/share/fonts"
 	fi
@@ -820,13 +913,18 @@ conf.d/Makefile
 fc-cache/Makefile
 fc-cat/Makefile
 fc-conflist/Makefile
+fc-const/Makefile
+fc-genconf/Makefile
+fc-genericfamily/Makefile
 fc-list/Makefile
 fc-match/Makefile
 fc-pattern/Makefile
 fc-query/Makefile
 fc-scan/Makefile
 fc-validate/Makefile
+fontconfig/fontconfig.h
 doc/Makefile
+doc/cache-version.sgml
 doc/version.sgml
 its/Makefile
 po/Makefile.in

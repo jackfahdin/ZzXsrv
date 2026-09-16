@@ -7,7 +7,7 @@ $(OBJDIR)\fcobjshash.gperf: fcobjshash.gperf.h fcobjs.h
 	del $@.tmp
 	del $<.c
 
-$(OBJDIR)\fcobjshash.h: $(OBJDIR)\fcobjshash.gperf
+$(OBJDIR)\fcobjshash.h: $(OBJDIR)\fcobjshash.gperf converttype.py
 	$(GPERF_COMMAND) -m 100 < $< > $@
 	$(PYTHON) converttype.py $@
 
@@ -22,6 +22,8 @@ CSRCS = \
 	fccfg.c \
 	fccharset.c \
 	fccompat.c \
+	fcconffile.c \
+	fcgenericalias.c \
 	fcdbg.c \
 	fcdefault.c \
 	fcdir.c \
@@ -59,3 +61,15 @@ INCLUDES := .. uuid $(OBJDIR) $(INCLUDES) $(COMPONENT_FREETYPE_DIR)\include\free
 
 load_makefile IS64=0 NORELDBG=1 makefile.srcs
 
+
+# New upstream constant and generic-family tables. All inputs are dependencies.
+$(OBJDIR)\fcconst.h: ..\fc-const\fc-const.py ..\fc-const\fcconst.list fcobjs.h
+	$(PYTHON) ..\fc-const\fc-const.py ..\fc-const\fcconst.list fcobjs.h --output $@
+
+GENERIC_INPUTS = $(wildcard ..\fc-genericfamily\*.txt)
+$(OBJDIR)\fcgenericfamily.gperf: ..\fc-genericfamily\fc-genericfamily.py $(GENERIC_INPUTS)
+	$(PYTHON) ..\fc-genericfamily\fc-genericfamily.py -d ..\fc-genericfamily -o $@
+
+$(OBJDIR)\fcgenericfamily.h: $(OBJDIR)\fcgenericfamily.gperf converttype.py
+	$(GPERF_COMMAND) --pic -m 100 < $< > $@
+	$(PYTHON) converttype.py $@

@@ -57,6 +57,7 @@
  * delete	delete chars
  * escape	escape chars
  * translate	translate chars
+ * const	FcNameGetConstantNameFrom
  *
  * builtins:
  * unparse	FcNameUnparse
@@ -564,10 +565,10 @@ interpret_enumerate (FcFormatContext *c,
     /* If we have one element and it's of type FcLangSet, we want
      * to enumerate the languages in it. */
     lang_strs = NULL;
-    if (os->nobject == 1) {
+    if (os->nobjIds == 1) {
 	FcLangSet *langset;
 	if (FcResultMatch ==
-	    FcPatternGetLangSet (pat, os->objects[0], 0, &langset)) {
+	    FcPatternObjectGetLangSet (pat, os->objIds[0], 0, &langset)) {
 	    FcStrSet *ss;
 	    if (!(ss = FcLangSetGetLangs (langset)) ||
 	        !(lang_strs = FcStrListCreate (ss)))
@@ -589,25 +590,25 @@ interpret_enumerate (FcFormatContext *c,
 	if (lang_strs) {
 	    FcChar8 *lang;
 
-	    FcPatternDel (subpat, os->objects[0]);
+	    FcPatternObjectDel (subpat, os->objIds[0]);
 	    if ((lang = FcStrListNext (lang_strs))) {
 		/* XXX binding? */
-		FcPatternAddString (subpat, os->objects[0], lang);
+		FcPatternObjectAddString (subpat, os->objIds[0], lang);
 		done = FcFalse;
 	    }
 	} else {
-	    for (i = 0; i < os->nobject; i++) {
+	    for (i = 0; i < os->nobjIds; i++) {
 		FcValue v;
 
 		/* XXX this can be optimized by accessing valuelist linked lists
 		 * directly and remembering where we were.  Most (all) value lists
 		 * in normal uses are pretty short though (language tags are
 		 * stored as a LangSet, not separate values.). */
-		FcPatternDel (subpat, os->objects[i]);
+		FcPatternObjectDel (subpat, os->objIds[i]);
 		if (FcResultMatch ==
-		    FcPatternGet (pat, os->objects[i], idx, &v)) {
+		    FcPatternObjectGet (pat, os->objIds[i], idx, &v)) {
 		    /* XXX binding */
-		    FcPatternAdd (subpat, os->objects[i], v, FcFalse);
+		    FcPatternObjectAdd (subpat, os->objIds[i], v, FcFalse);
 		    done = FcFalse;
 		}
 	    }
@@ -885,24 +886,51 @@ translate_chars (FcFormatContext *c,
 }
 
 static FcBool
+const_chars (FcFormatContext *c,
+             const FcChar8   *elm,
+             const FcChar8   *str,
+             FcStrBuf        *buf)
+{
+    int            n;
+    char          *p = NULL;
+    const FcChar8 *con;
+
+    n = strtoul ((const char *)str, &p, 10);
+    if (p && *p != 0)
+        return FcFalse;
+    con = FcNameGetConstantNameFrom ((const char *)elm, n);
+    if (!con)
+        return FcFalse;
+
+    FcStrBufString (buf, con);
+
+    return FcTrue;
+}
+
+static FcBool
 interpret_convert (FcFormatContext *c,
                    FcStrBuf        *buf,
                    int              start)
 {
     const FcChar8 *str;
-    FcChar8       *new_str;
+    FcChar8       *new_str, *elm;
     FcStrBuf       new_buf;
     FcChar8        buf_static[8192];
     FcBool         ret;
 
+    elm = FcStrCopy (c->word);
     if (!expect_char (c, '|') ||
-        !read_word (c))
-	return FcFalse;
+        !read_word (c)) {
+        ret = FcFalse;
+        goto bail;
+    }
 
     /* prepare the buffer */
     FcStrBufChar (buf, '\0');
-    if (buf->failed)
-	return FcFalse;
+    if (buf->failed) {
+        ret = FcFalse;
+        goto bail;
+    }
     str = buf->buf + start;
     buf->len = start;
 
@@ -926,9 +954,12 @@ interpret_convert (FcFormatContext *c,
 	if (new_str) {
 	    FcStrBufString (buf, new_str);
 	    FcStrFree (new_str);
-	    return FcTrue;
-	} else
-	    return FcFalse;
+            ret = FcTrue;
+            goto bail;
+	} else {
+            ret = FcFalse;
+            goto bail;
+        }
     }
 
     FcStrBufInit (&new_buf, buf_static, sizeof (buf_static));
@@ -936,6 +967,8 @@ interpret_convert (FcFormatContext *c,
     /* now try our custom converters */
     if (0) {
     }
+    else if (strcmp ((const char *)c->word, "const") == 0)
+        ret = const_chars(c, elm, str, &new_buf);
 #define CONVERTER(name, func)                           \
     else if (0 == strcmp ((const char *)c->word, name)) \
 	ret = func (c, str, &new_buf)
@@ -956,6 +989,8 @@ interpret_convert (FcFormatContext *c,
 	         c->word);
 
     FcStrBufDestroy (&new_buf);
+ bail:
+    FcStrFree (elm);
 
     return ret;
 }

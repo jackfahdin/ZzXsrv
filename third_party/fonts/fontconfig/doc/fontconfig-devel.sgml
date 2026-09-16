@@ -3,10 +3,12 @@
 <!ENTITY fcblanks SYSTEM "fcblanks.sgml">
 <!ENTITY fccache SYSTEM "fccache.sgml">
 <!ENTITY fccharset SYSTEM "fccharset.sgml">
+<!ENTITY fcconffile SYSTEM "fcconffile.sgml">
 <!ENTITY fcconfig SYSTEM "fcconfig.sgml">
 <!ENTITY fcconstant SYSTEM "fcconstant.sgml">
 <!ENTITY fcdircache SYSTEM "fcdircache.sgml">
 <!ENTITY fcfile SYSTEM "fcfile.sgml">
+<!ENTITY fcfontations SYSTEM "fcfontations.sgml">
 <!ENTITY fcfontset SYSTEM "fcfontset.sgml">
 <!ENTITY fcformat SYSTEM "fcformat.sgml">
 <!ENTITY fcfreetype SYSTEM "fcfreetype.sgml">
@@ -216,7 +218,9 @@ convenience for the application's rendering mechanism.
     order          FC_ORDER               Int     Order number of the font
     desktop        FC_DESKTOP_NAME        String  Current desktop name
     namedinstance  FC_NAMED_INSTANCE      Bool    Whether font is a named instance
-    fontwarapper   FC_FONT_WRAPPER        String  The font wrapper format
+    fontwrapper    FC_FONT_WRAPPER        String  The font wrapper format
+    genericfamily  FC_GENERIC_FAMILY      Int     Type of Generic Family corresponding
+                                                  to FC_FAMILY_* constants
     </programlisting>
   </sect2>
 </sect1>
@@ -498,6 +502,14 @@ functions.
     </para>
     &fcfreetype;
   </sect2>
+  <sect2><title>Fontations specific functions</title>
+    <para>
+For font indexing, an alternative backend based on the Fontations set
+of font libraries is in development. The indexing functions are exposed
+as Fontations specific functions.
+    </para>
+    &fcfontations;
+  </sect2>
   <sect2><title>FcValue</title>
     <para>
 FcValue is a structure containing a type tag and a union of all possible
@@ -539,6 +551,12 @@ FcMatrix structures hold an affine transformation in matrix form.
 An FcRange holds two variables to indicate a range in between.
     </para>
     &fcrange;
+  </sect2>
+  <sect2><title>FcConfigFile</title>
+    <para>
+Generate a configuration in XML format from a font file
+    </para>
+    &fcconffile;
   </sect2>
   <sect2><title>FcConfig</title>
     <para>

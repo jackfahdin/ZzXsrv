@@ -9,6 +9,7 @@ import os
 from pathlib import Path
 import shutil
 import subprocess
+import struct
 import tempfile
 import unittest
 from xml.sax.saxutils import escape
@@ -137,10 +138,17 @@ class FreeTypeConsumerTests(unittest.TestCase):
                     '/Fe:' + str(exe)], cwd=self.work, timeout=120)
         self.assertIn('PASS fontconfig build',
                       run_logged([exe, config, self.fontdir, 'build'], cwd=self.work, env=self.env))
-        self.assertTrue(list(cache.glob('*cache*')), 'Fontconfig must write a disk cache')
+        caches = list(cache.glob('*.cache-12'))
+        self.assertEqual(len(caches), 1, 'Fontconfig must write the new cache format')
+        cache_bytes = caches[0].read_bytes()
+        self.assertEqual(struct.unpack_from('<i', cache_bytes, 4)[0], 12)
+        self.assertEqual(struct.unpack_from('<q', cache_bytes, 64)[0],
+                         (2 << 24) + (18 << 12) + 3)
         # A second process must load the disk cache; it cannot use in-memory state.
         self.assertIn('PASS fontconfig reload',
                       run_logged([exe, config, self.fontdir, 'reload'], cwd=self.work, env=self.env))
+        self.assertEqual(caches[0].read_bytes(), cache_bytes,
+                         'Reload must consume the existing cache without rewriting it')
 
     def test_mkfontscale_indexes_ttf_and_cff(self):
         exe = required_file(ROOT / 'third_party/xorg/mkfontscale/obj64/release/mkfontscale.exe')

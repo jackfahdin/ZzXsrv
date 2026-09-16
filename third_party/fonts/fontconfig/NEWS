@@ -1,11 +1,408 @@
                               Fontconfig
              Font configuration and customization library
-                             Version 2.16
-                              2025-01-17
+                            Version 2.18.3
+                              2026-08-06
 
 
 Check INSTALL for compilation and installation instructions.
 Report bugs to https://gitlab.freedesktop.org/fontconfig/fontconfig/issues/new.
+
+2.18.3
+
+Akira TAGOH (33):
+      ci: Add --werror option to the build script
+      fc-cat: exit with non-zero if not successfully done
+      Workaround a longstanding use-after-free warning
+      Fix a null pointer dereference
+      Add Noto Sans as system-ui for fallback
+      Drop Noto Sans CJK KR from 60-nonlatin.conf
+      Correct sat.orth
+      Add an orth file for Balinese
+      Update orth files for jv, so, su, tl to use native scripts
+      Add orth files for scripts used by Noto font families
+      Update mni.orth to use Meetei Mayek script
+      Add orth files for Cuneiform languages (akk, sux, hit)
+      ci: Suppress abidiff false positives for all internal structs
+      test: Add cache format compatibility tests for orth file additions
+      Add orth files for ancient scripts (xna, hlu, ecy)
+      fc-cache: Create backward-compatible cache symlinks for cross-version discovery
+      ci: Update dependencies
+      Add implicit rule to update genericfamily property against syntactic-sugar
+      fc-genconf: Use alias syntactic-sugar instead of the pair of test-edit config
+      Allow to limit the targeted family for TTC
+      test: Fix test_genconf.py to avoid unexpected family name in testing conf
+      ci: Enable -Werror in CI
+      ci: drop duplicate pipelines
+      ci: cleanup
+      ci: gate distro jobs until all tests passed
+      ci: reduce more duplicate jobs
+      ci: Update base ci-templates
+      test: Fix compiler warnings
+      fc-fontations: Allow unnecessary_transmutes lint in bindgen-generated Rust code
+      Fix another compiler warnings
+      ci: Bump FreeBSD version to 14.4
+      Fix the compiler warnings on MinGW
+      Update INSTALL
+
+Julien Nabet (2):
+      Fix "FileType is deprecated"
+      Fix unknown type name locale_t on macOS
+
+2.18.2
+
+Akira TAGOH (26):
+      test: fix unexpected error when something went wrong in pytest
+      test: Fix a regression for sysroot in test framework
+      test: Fix a test case failure when BUILDDIR is under /tmp
+      test: cleanup
+      Add .gitignore
+      meson: Add tests-external-fonts option to disable network-dependent tests
+      Add .editorconfig
+      test: improve marker handling
+      test: Fix a fail on subproject build
+      test: Do not assume all-files-installed before testing
+      ci: set SOURCE_DATE_EPOCH to the build script
+      test: unset SOURCE_DATE_EPOCH for some test cases
+      Use genericfamily for the search of monospace against :spacing=100
+      conf.d: Add OpenMoji Color and OpenMoji Black
+      test: Fix a KeyError
+      Add a hash table for fonts to generate expected genericfamily
+      Add Nerd Fonts to the table
+      doc: Fallback to wkhtmltopdf if no docbook2pdf available
+      fc-genericfamily: Add Noto fonts
+      fc-cache: do not generate cache when target directory is in deny list
+      conf.d/Makefile.am: install 05-macos.conf for macOS only
+      Add more conditional code for FcLocaleSetCurrent()
+      Do not ship unnecessary files in archive
+      fc-genericfamily: Add major missing fonts across multiple categories
+      Use Special FC_CACHE_VERSION for snapshot
+      new-version.sh: fix an error
+
+Emilio Cobos Álvarez (1):
+      Fix FcNameUnparse regression.
+
+2.18.1
+
+Akira TAGOH (11):
+      ci: Fix wrong short options for glab
+      Fix not matching with a font family name
+      test-conf: Add a feature to load a certain config for testing
+      test: Add comprehensive documentation for test-conf JSON format
+      Fix another font matching issue
+      Do not set 'sans-serif' for default genericfamily
+      test: use const instead of number for genericfamily
+      meson: force enabling HAVE_C99_VSNPRINTF
+      Disable invalid attribute warning by default
+      ci: Add .abidiff for suppression
+      Workaround :-prefixed filename used in Qt
+
+Jan Alexander Steffens (heftig) (1):
+      meson: Only install 05-macos.conf on darwin
+
+Marcus Spencer (1):
+      Fix a null pointer dereference when computing a pattern from an FT_Face that has no family
+
+2.18
+
+Akira TAGOH (79):
+      ci: Add Fedora 42 and drop 40
+      ci: Add FreeBSD 14.2 and drop 14.1
+      ci: Update ci-tamplates
+      ci: Add Alpine Linux
+      ci: Fix a typo
+      ci: make sure build.sh is running on bash
+      ci: Use venv to avoid externally-managed-environment error on Alpine
+      ci: Add extra setup hook
+      ci: install test fonts for Alpine
+      test: Fix a build issue with musl libc
+      fc-lang: Add suz.orth for Sunuwar
+      test: add common helper class
+      test: port basic functionality check to Python
+      test: update to pass test cases on Win32
+      do not mix up a slash and a backslash in file object on Win32
+      meson: Add a missing fontconfig architecture test case
+      Add fontconfig version in FcCache
+      Improve a warning message
+      Better error message when missing default config
+      ci: install before test to avoid fontconfig error
+      Fix regex to pick up libtool version
+      Improve performance in FcConfigAdd
+      Improve log header in FcConfigSubstituteWithPat
+      meson: Update WrapDB files for v2 format migration
+      ci: add an option for the address sanitizer
+      Fix "UBSAN null pointer passed" to qsort
+      ci: Enable ASAN and UBSAN
+      Add genericfamily object in FcPattern
+      Add xsi:nil attribute support to limited elements
+      Get out from FcConfigAdd immediately if no valid pointer given
+      Bump the cache version again
+      fc-case: Update CaseFolding.txt to Unicode 17
+      ci: Update git repo for subproject build
+      ci: Add a test case for static build on Win32
+      Add obvious namespace to macros for FC_SPACING
+      Improve handling of constant name
+      test: fix pytest error when running on the top project directory
+      meson: Update wrapdb for expat to the latest
+      Use FcStrCopy instead of strdup
+      Fix -Wpointer-sign warnings
+      Do not store duplicate object name into FcObjectSet
+      Fix unused variable warning when iconv support disabled
+      doc: Fix a typo in FcPatternAdd description
+      Add fc-genconf the configuration generator tool
+      test-conf: Correct test results to display at the proper place
+      Fix unexpected priority change when looking up by specific family name
+      Return error code if FcPatternFormat failed
+      Add const converter for pattern format
+      fc-genconf: Add scan pattern to update genericfamily with commandline option
+      Fix dereferencing a null pointer of FcConfig in FcFontSetSort
+      conf.d: Fix a typo in 65-khmer.conf
+      Update doc for xsi:nil attribute support
+      test: add more conditional for bwrap sandbox test cases
+      meson: add tests-bwrap option
+      Avoid locale-dependent float-to-string
+      ci: enable json-c for MinGW
+      test-conf: add wrapper setenv for Win32
+      ci: Use 14.3 CI image for FreeBSD
+      Fix invalid memory access on Win32
+      More fixes for locale-dependent float-to-string conversion
+      Replace strtod() with FcStrtod()
+      ci: Fix warnings from shellcheck
+      ci: workaround for the ownership change issue on extracting tar
+      ci: Fix a typo
+      ci: simplify scriptlet
+      ci: Hold the version of meson at 1.10.1 temporarily
+      ci: Enable the debugging build by default
+      ci: Do not store the build log at the source dir
+      Explicitly declare FcPatternObjectCount as a public function
+      ci: Add API/ABI checker in CI
+      ci: Fix 'refusing to fetch into branch' error
+      Update meson dependency to 1.11.0
+      ci: Update Fedora Image to 44 and 43
+      ci: Disable pipelines for macOS and VS on Windows
+      Revert "ci: Disable pipelines for macOS and VS on Windows"
+      ci: Replace shell scripts with portable Python build system
+      ci: Add MSYS2 build pipeline
+      ci: Use CI_PROJECT_DIR instead of hardcode path
+      ci: fix argument error in abicheck.sh
+
+Albert Lee (1):
+      Define __EXTENSIONS__ on illumos/Solaris to access strdup()
+
+Changwoo Ryu (1):
+      Update default Korean fonts
+
+Daniel Tang (1):
+      Remove unused global variable default_langs
+
+Dominik Röttsches (15):
+      Fix rustc warning for mismatching referred lifetimes
+      [Fontations] Fix use-after-free in handling exclusive lang
+      Fix memory leak after path canonicalization in e42188283f0ee
+      [Fontations] Remaining fix for UaF
+      Architecture-dependent hex formatting of int64_t in fccache.c
+      [Fontations] Don't leak PatternElement values
+      Roll Fontations Crates
+      [Fontations] Match FreeType for two types of broken fonts
+      [Fontations] Fix compilation under -D unsafe-op-in-unsafe-fn
+      Move FreeType-related API to fcfreetype.h header
+      Minimal preparations for FreeType-less build
+      Follow-up for preparation for FreeType-less build
+      Roll Fontations and libc crates
+      Update Mac OS image to upstream gStreamer image
+      Roll Fontations crates
+
+Florian "sp1rit"​ (1):
+      build: Added missing target rule-dependencies
+
+Florian Mayer (1):
+      Use uintptr_t to represent pointers
+
+Gabriele Barbero (1):
+      macOS: use selectfont globs for font asset directories
+
+Kleis Auke Wolthuizen (1):
+      meson: Don't dllexport when built as static library on Win32
+
+Rudi Heitbaum (1):
+      Do not cast as const as the variable is being modified
+
+Steve Lhomme (1):
+      detect mkostemp with stdlib.h
+
+Werner Lemberg (1):
+      doc: Fix two typos
+
+correctmost (1):
+      Fix -Wnewline-eof warning with fcconst.h
+
+2.17.1
+
+Akira TAGOH (3):
+      Fix a heap buffer overflow
+      meson: Add 'noinstall' to default-hinting, default-sub-pixel-rendering, bitmap-conf build options
+      Bump the libtool version
+
+2.17
+
+Akira TAGOH (48):
+      ci: Add a subproject test case for meson
+      test: Set sys-root to WINEPATH for MinGW
+      ci: Correct reference to not trigger fetching a branch for main
+      ci: clean up and add changelog to the release note through changelog API
+      meson: don't try to call run_command for gperf on --wrap-mode=forcefallback
+      Make sure that the debugging facilities are initialized at loading config phase
+      Add FcConfigPerferAppFont() to allow changing the order of application fonts
+      conf.d/65-nonlatin.conf: Rename Lohit Oriya to Lohit Odia
+      ci: disable meson static fontations build tentatively
+      conf.d/65-nonlatin.conf: drop the leading extra white spaces
+      ci: quote pip's requirement specifier in the build script
+      ci: Add -O option to the build script for convenience
+      ci: add installation test
+      Add a test case for FcPtrList
+      Improve performance of FcPtrListIterInitAtLast
+      test: make sure we have fcstdint.h before building test programs
+      Drop FcDefaultFini() from FcFini() to fix memory leaks
+      test: do not free FcFontSet From FcConfigGetFonts
+      Drop the configuration path migration code
+      Drop FcObjectFini() from FcFini() to fix memory leaks
+      Free the mutex object only when all cache objects isn't referenced
+      Free the mutex object only when there are no references to the default FcConfig instance
+      Increase a reference count for default FcConfig instance with FcInit()
+      conf.d: Add a conf to guess a generic-family for substitution
+      test: add a pattern test
+      test: add a test scenario for 48-guessfamily.conf
+      test-crbug1004254: hold FcConfig during running a test in a thread
+      Simplify FcConfigFini()
+      Revert "test-crbug1004254: hold FcConfig during running a test in a thread"
+      Call FcMutexUnlock only when valid instance is available
+      Fix a memory leak in default_langs
+      Avoid possibly invalid access on MT
+      Add bitmap-conf build option to choose default bitmap conf
+      doc: rewrite check-missing-doc in Python
+      Do not hardcode a cache version
+      Add default font paths for Android in configure script
+      meson: Fix additional-fonts-dirs build option that not taking effect
+      meson: rename meson_options.txt to meson.options
+      Allow dotfiles to scan for caching
+      Trim trailing newline in string in cache
+      Fix a crash with broken cache
+      ci: cleanup builddir
+      Do not fallback decoding with UTF-16BE if no iconv support
+      Fix padding with "und" in pattern elements
+      ci: fix pipeline fail of subproject build on forked project
+      ci: add some usage text to build script
+      Bump libtool version for autotools build
+      Fix release script
+
+Albert Lee (1):
+      Avoid conflict between dgettext macro and declaration in fcint.h
+
+ComixHe (1):
+      fix: Skip empty entries in XDG_DATA_DIRS parsing
+
+Dominik Röttsches (40):
+      [Fontations] Factor out fcpat.c - add Fontations dependencies
+      Add FcPatternObjectGet* impl for CharSet and LangSet
+      [Fontations] Improve resolution of Rust crate features
+      [Fontations] Roll Skrifa, Read-Fonts, Font-Types
+      [Fontations] Pattern Bindings for CharSet and LangSet
+      [Fontations] Container and local download of testfiles
+      Add Pytest status to Meson Summary
+      Add Roboto Flex to font downloading script
+      Migrate pytest testcase 431 to pre-downloaded fonts
+      [Fontations] Enable fc-query indexing through Fontations
+      Revert "ci: disable meson static fontations build tentatively"
+      [Fontations] Fix Rust edition, do not require extern crate
+      [Fontations] Add support for "foundry" pattern element
+      [Fontations] Add support for "version" pattern element
+      [Fontations] Clippy fix for foundries mapping
+      [Fontations] Add attributes weight, width, slant to Pattern
+      Cargo build improvements
+      [Fontations] Iterate over TrueType collections and named instances
+      Amend license headers
+      [Fontations] Process and append font capabilities to Pattern
+      Speculative fix for uninitialised value used in FcFontSort
+      [Fontations] Add charset pattern element
+      [Fontations] Add langset pattern element
+      [Fontations] Add fontwrapper, filename and symbol elements to pattern
+      [Fontations] Add woff wrapper and filename if file is woff or woff2
+      [Fontations] Roll Fontations, Skrifa to 0.31.3
+      [Fontations] Match name id append order to FreeType indexer
+      Sort test pattern elements
+      [Fontations] Add pixel size information
+      [Fontations] Fix size element and enable more element tests
+      [Fontations] Add spacing property
+      [Fontations] No style element for variable instance
+      [Fontations] Remove pattern filter from tests
+      Parse foundry from OS/2 for table version 0
+      [Fontations] Assorted fixes to match FreeType indexing
+      [Fontations] Do not combine bindings into one crate
+      Make "retry:" label conditional on ICONV
+      [Fontations] Clarify import of FcLangSet
+      Rename FcFreeTypeLangSet to FcLangSetFromCharset
+      [Fontations] Fix downstream build of indexing with Fontations
+
+Federico Gallo Herosa (2):
+      fccharset.c Avoid use-after-free warning
+      fccharset.c Avoid use-after-free warning
+
+Sam James (1):
+      configure.ac: drop -fno-strict-aliasing
+
+Thomas Anderson (1):
+      Fix heap buffer underflow in FcConfigXdgDataDirs
+
+Tom Anderson (1):
+      Fix use-after-free in FcConfigGetPrgname
+
+Xi Ruoyao (1):
+      meson: don't force installation of a static library
+
+2.16.2
+
+Akira TAGOH (12):
+      meson: do not require libintl if nls feature is disabled
+      ci: Add back Android build in a common way
+      ci: drop Language to make sure they are applied as default style
+      ci: Change the default build system to meson
+      ci: Stop on fail anyway
+      ci: default to clean-build
+      ci: detect OS from os-release if no FC_DISTRO_NAME is set
+      ci: add missing dependency of pytest
+      ci: Set more timeout for pytest
+      ci: fix too many open files on test
+      ci: add missing dependency of requests
+      meson: Use Requires.private instead of Requires
+
+Dominik Röttsches (2):
+      Upgrade bindgen in Fontations enabled Rust builds
+      [Fontations] Add internal PatternBuilder abstraction
+
+Kacper Michajłow (1):
+      meson: don't force build of a shared library
+
+Thomas Devoogdt (1):
+      meson.build: define a 'c' standard for the project (C99 and C11)
+
+2.16.1
+
+Akira TAGOH (10):
+      meson: create fc_cachedir at the installation time
+      meson: set WORDS_BIGENDIAN
+      ci: get back MinGW build to rawhide
+      meson: make sure config.h contains config-fixups.h for OSX
+      Reformatting with clang-format
+      ci: Add a workflow to check the coding style
+      ci: workaround conflict between systemd and systemd-standalone-sysusers
+      conf.d: Add Adwaita Sans as system-ui
+      ci: disable  job tentatively
+      ci: Add a release workflow
+
+Dominik Röttsches (1):
+      [Fontations] Allow linkage to internals in tests
+
+Thomas Devoogdt (1):
+      meson.build: explicitly check for pthread support
 
 2.16
 

@@ -168,8 +168,8 @@ FcCharSetPutLeaf (FcCharSet  *fcs,
 	} else {
 	    int          i;
 	    unsigned int alloced = fcs->num;
+	    uintptr_t    old_leaves = (uintptr_t)leaves;
 	    intptr_t    *new_leaves;
-	    ptrdiff_t    distance;
 
 	    alloced *= 2;
 	    numbers = realloc (numbers, alloced * sizeof (*numbers));
@@ -189,9 +189,10 @@ FcCharSetPutLeaf (FcCharSet  *fcs,
 		fcs->numbers_offset = FcPtrToOffset (fcs, numbers);
 		return FcFalse;
 	    }
-	    distance = (char *)new_leaves - (char *)leaves;
 	    for (i = 0; i < fcs->num; i++) {
-		new_leaves[i] -= distance;
+		// Reconstruct FcCharLeaf* from offset, similar to how FcCharSetLeaf() macro operates
+		FcCharLeaf *leaf = FcOffsetToPtr (old_leaves, new_leaves[i], FcCharLeaf);
+		new_leaves[i] = FcPtrToOffset (new_leaves, leaf);
 	    }
 	    leaves = new_leaves;
 	}

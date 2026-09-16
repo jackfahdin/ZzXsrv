@@ -579,26 +579,29 @@
     {
       "name": "fontconfig",
       "path": "third_party/fonts/fontconfig",
-      "revision": "25f58a52b0b30efbba0ea27c98dc58e411a42b84",
-      "revision_kind": "recorded_sync_commit",
+      "revision": "2.18.3",
+      "revision_kind": "official_release_archive",
       "upstream_url": "https://gitlab.freedesktop.org/fontconfig/fontconfig",
       "evidence": [
-        "docs/history/upstream-releases/releasenote_21.1.16.1.txt: Changes in 21.1.16 records fontconfig 25f58a52b0b30efbba0ea27c98dc58e411a42b84",
-        "third_party/fonts/fontconfig/configure.ac: 2.16.0"
+        "third_party/fonts/fontconfig/source-files.json: 1060 official payload hashes and 45 retained inherited files",
+        "third_party/fonts/fontconfig/patches/windows-adaptations.patch: explicit upstream adaptations",
+        "docs/validation/2026-09-16-r9-fontconfig.md"
       ],
       "confidence": "high",
-      "notes": "原作者记录同步 SHA，未逐文件证实等同上游。",
+      "notes": "官方发布归档与公开 SHA-256 一致；保留 Windows 原生构建和已验证的目录枚举修复，缓存格式 12 与旧缓存共存。历史同步 SHA 未独立证实。",
       "nested": false,
       "id": "dep-021",
       "category": "core_libraries_headers",
       "inherited_material_urls": [
         "https://github.com/marchaesen/vcxsrv/tree/d0a1eaf7ee15fcdf4f683388a88fec49078e6408/fontconfig"
       ],
-      "import_method": "inherited_vcxsrv_source_collection",
+      "import_method": "official_release_archive_with_recorded_windows_adaptations",
       "actual_import_urls": [
-        "https://github.com/marchaesen/vcxsrv/tree/d0a1eaf7ee15fcdf4f683388a88fec49078e6408/fontconfig"
+        "https://gitlab.freedesktop.org/api/v4/projects/890/packages/generic/fontconfig/2.18.3/fontconfig-2.18.3.tar.xz"
       ],
-      "upstream_revision_url": "https://gitlab.freedesktop.org/fontconfig/fontconfig/-/commit/25f58a52b0b30efbba0ea27c98dc58e411a42b84"
+      "upstream_revision_url": "https://gitlab.freedesktop.org/api/v4/projects/890/packages/generic/fontconfig/2.18.3/fontconfig-2.18.3.tar.xz",
+      "previous_recorded_sync_commit": "25f58a52b0b30efbba0ea27c98dc58e411a42b84",
+      "archive_sha256": "4f7b554a38cdf78c033f666c8871f3749e14a094f65a07f630c91ed0b43d35e3"
     },
     {
       "name": "Mesa",
