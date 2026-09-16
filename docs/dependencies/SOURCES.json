@@ -3385,10 +3385,12 @@
         "docs/history/upstream-releases/releasenote_21.1.16.1.txt:21",
         "tools/plink/README",
         "tools/plink/LATEST.VER:1: 0.83",
-        "tools/plink/version.h: Unidentified build"
+        "tools/plink/version.h: Unidentified build",
+        "tools/plink/source-audit.json",
+        "docs/validation/2026-09-16-r9-plink.md"
       ],
-      "confidence": "high-reported,remote-unverified",
-      "notes": "路径在tools而非apps；LATEST.VER不是当前检出的发布tag。Web工具未能读取官方commit页，未独立验证远端对象。",
+      "confidence": "high",
+      "notes": "路径在tools而非apps。2026-09-16 克隆 https://git.tartarus.org/simon/putty.git 核验 commit 对象存在（git cat-file；作者 Jacob Nevins，2025-02-11，主题 \"Docs: belated updates for protocol controls.\"；git describe 0.83-24-g50e360fc，已收录于 0.84/0.85），与 LATEST.VER 0.83 一致。逐文件比对：本地 682 文件中 669 个逐字节相同、0 个仅换行差异、6 个继承适配改动、7 个本地构建文件，无仅上游存在文件；目录含 VcXsrv 继承适配，非纯净上游。",
       "id": "dep-112",
       "category": "server_apps_tools",
       "inherited_material_urls": [
