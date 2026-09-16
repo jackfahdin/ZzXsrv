@@ -1,12 +1,12 @@
 # 日常使用兼容性记录
 
-更新日期：2026-09-16。任务状态见 [PLAN_STATUS.md](PLAN_STATUS.md)。本表记录实际操作结果，不把自动启动成功或笼统的“能用”换算成全部场景通过。最新反馈对应 R9.3 Pixman 版本；下列源码号为对应构建来源。
+更新日期：2026-09-16。任务状态见 [PLAN_STATUS.md](PLAN_STATUS.md)。本表记录实际操作结果，不把自动启动成功或笼统的“能用”换算成全部场景通过。最新反馈对应 R9.4 Fontconfig 版本；下列源码号为对应构建来源。
 
-## R9.4 Fontconfig 候选待测
+## R9.4 Fontconfig 版本的实际反馈
 
-R9.4 Fontconfig 2.18.3 候选已完成。完整 x64 Release 构建、449 项回归（0 跳过）、7 项 Fontconfig 消费者检查、独立运行及新旧缓存共存检查通过。编译源码 `6b2f8aecfefd52bd18dee3e95e754309cab6d38e`，后续仅修正继承签出记录与文档。尚未取得本版本人工反馈，未合入或推送；R9.3 仍为最新已验收版本，新旧目录保留。
+R9.4 已于 2026-09-16 取得本版本使用正常的反馈并快进合入 master。Fontconfig 2.18.3 的完整构建、合入前后各 449 项回归（0 跳过）、7 项 Fontconfig 消费者检查、候选独立运行和新旧缓存共存检查通过。编译源码 `6b2f8aecfefd52bd18dee3e95e754309cab6d38e`；5152 个交付文件及摘要不变。本版本实际使用正常，未提供逐项测试明细，未确认范围保留；分支、工作区与新旧运行目录保留，未推送。
 
-运行目录：`D:/File/Program/GitHub/zzxsrv-r9-fontconfig-20260916/dist/x64/Release`。建议测试启动、gitk、中文显示、字体缓存重建及重启。R9.3 反馈不转记为本轮结果；传统字体、OpenGL、双向复制等未确认范围继续保留。详见 [R9.4 报告](../validation/2026-09-16-r9-fontconfig.md)。
+运行目录：`D:/File/Program/GitHub/zzxsrv-r9-fontconfig-20260916/dist/x64/Release`。传统字体、OpenGL、双向复制等未确认范围继续保留；缓存格式 12 与旧格式 9 分名共存，不清理既有用户缓存。详见 [R9.4 报告](../validation/2026-09-16-r9-fontconfig.md)。
 
 ## R9.3 Pixman 版本的实际反馈
 

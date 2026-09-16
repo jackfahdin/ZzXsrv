@@ -2,7 +2,7 @@
 
 日期：2026-09-16。基线 `74c102e780baa2d78a88c8933396c52106694818`；分支 `codex/r9-fontconfig-20260916`，独立工作区 `D:/File/Program/GitHub/zzxsrv-r9-fontconfig-20260916`。
 
-状态：候选已完成完整产品验证，待人工验收；尚未合入、未推送。
+状态：R9.4 已于 2026-09-16 取得本版本使用正常的反馈并快进合入 master。Fontconfig 2.18.3 的完整构建、合入前后各 449 项回归（0 跳过）、7 项 Fontconfig 消费者检查、候选独立运行和新旧缓存共存检查通过。编译源码 `6b2f8aecfefd52bd18dee3e95e754309cab6d38e`；5152 个交付文件及摘要不变。本版本实际使用正常，未提供逐项测试明细，未确认范围保留；分支、工作区与新旧运行目录保留，未推送。
 
 ## 来源与维护范围
 
@@ -34,3 +34,17 @@
 本地证据位于 `.local-validation/r9-fontconfig-20260916/`，包括官方归档/校验、旧标签对照、继承文件备份、组件构建、红绿日志及独立审查；完整候选结果汇总于 `verification.json`。
 
 验证目标为 x64 Release；全部上游测试、Win32、Debug、Fontations、NSIS 执行不在通过范围。传统字体、OpenGL、双向复制等此前未确认的手工场景继续保留。旧运行目录、主分支和既有缓存均不作清理。
+
+## 本版本反馈与主线整合
+
+2026-09-16 维护者反馈本版本使用正常并要求合入。记录为本版本实际使用正常；未提供逐项测试明细，不将传统字体、OpenGL、双向剪贴板或其他未确认场景补记为通过。
+
+候选 `14d98565c1387745b328caa00cc13a84b5f25e82` 从基线 `74c102e780baa2d78a88c8933396c52106694818` 快进合入 master，无冲突。合入前 449 项回归通过，49.814 秒；合入后在主仓库相同提交运行 449 项回归通过，50.861 秒，均为 0 跳过。随后只更新整合文档。
+
+主仓库原检出中的 467 个文件仅有 CRLF/LF 差异：先逐文件确认除换行外完全等同 HEAD，再保留原始字节备份并同步到 HEAD 原始字节。同步后检出与 HEAD 逐字节一致，1105 个清单来源文件及补丁摘要完全匹配；随后仅刷新索引 stat 信息（`git add -u` 无内容入栈），工作区干净。没有覆盖独立源码改动。
+
+R9.4 的 5152 个交付文件、R9.3 的 5150 个文件及主目录原有 dist（5136 个文件）均保持不变。保留工作区、分支和所有运行目录，未推送。主仓库源码已更新，其旧 dist 不会因合入自动重建。
+
+主仓库整合证据：`.local-validation/r9-fontconfig-integration-20260916/` 中的 `before.json`、`merge.log`、`tests-before-merge.log`、`tests-after-merge.log`、`checkout-byte-differences.json`、`checkout-before/`、`repo-checkout-eol-sync.json`、`verification.json` 和 `verify-integration.py`。原候选验证脚本保留合入前基线断言，不用于合入后状态；当前以整合核验为准。
+
+继续使用 `D:/File/Program/GitHub/zzxsrv-r9-fontconfig-20260916/dist/x64/Release/xlaunch.exe`。R9 后续为 PuTTY 等组件的固定来源补证，尚未实施。
