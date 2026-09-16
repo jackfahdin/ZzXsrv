@@ -1,0 +1,3156 @@
+{
+ "schema_version": 1,
+ "audited_on": "2026-09-17",
+ "scope": "provenance verification of inherited VcXsrv xserver tree (src/xorg-server) against upstream git repository",
+ "local_hash_normalization": "raw working-tree bytes; newline_only means identical after CRLF->LF normalization",
+ "components": {
+  "xserver": {
+   "upstream_repo_url": "https://gitlab.freedesktop.org/xorg/xserver.git",
+   "upstream_remote_fetched_at": "2026-09-16T16:57:00Z",
+   "clone_method": "git init + git fetch --depth 1 origin <pinned-sha> (GitLab allows fetching a reachable SHA directly), then git fetch --filter=blob:none --refetch for master/server-21.1-branch and xwayland-*/xorg-server-* tags; initial shallow boundary truncated later history fetches and required the --refetch repair",
+   "recorded_upstream_commit": "af86c5cbc2475b410a2edeb0482ac58309296adb",
+   "recorded_commit_exists": true,
+   "recorded_commit_metadata": {
+    "author": "Enrico Weigelt, metux IT consult <info@metux.net>",
+    "date": "2025-02-26T16:27:34+01:00",
+    "subject": "Xnest: use authorative declarations from X11/XKBlib.h",
+    "describe": "xorg-server-21.0.99.1-1772-gaf86c5cbc",
+    "meson_version": "21.1.99.1",
+    "branch": "master (ancestor of origin/master 0da4d2480066fb2c783325e7594902aacc23413e, 329 commits behind tip); NOT an ancestor of server-21.1-branch or tag xorg-server-21.1.16 (tagged 2025-02-25, one day before the pinned commit)"
+   },
+   "mixed_tree_note": "src/xorg-server is a mixed tree: upstream xserver at the pinned commit + VcXsrv fork changes (hw/xwin, MSVC/Win32 adaptations, build files) + 39 registered upstream patches + separately registered subtrees (fonts.src 40 font packages, xkeyboard-config, bitmaps, installer) that are not upstream xserver content and are counted apart, not compared against the xserver tree",
+   "comparison_counts": {
+    "xserver_body": {
+     "local_files": 1674,
+     "upstream_files": 1580,
+     "byte_identical": 1314,
+     "newline_only": 0,
+     "content_different": 263,
+     "local_only": 97,
+     "upstream_only": 3
+    },
+    "separately_registered_subtrees_local_files": {
+     "fonts.src": 1113,
+     "xkeyboard-config": 493,
+     "bitmaps": 76,
+     "installer": 7,
+     "xkbdata": "no git-tracked files under src/xorg-server/xkbdata (generated at build time)"
+    }
+   },
+   "byte_identical_sample_verification": [
+    {
+     "path": ".appveyor.yml",
+     "sha256": "b5b713655eca5d5eed97e7006263bd92719fe44e49cc14e49ea528639f35898e",
+     "upstream_blob_sha1": "c023790cfcd185f275645e4c2f0114cde7c5b0e8",
+     "verified": "local git blob sha1 == upstream blob sha1 (byte identical)"
+    },
+    {
+     "path": "Xi/chgprop.h",
+     "sha256": "ba4054f8dbeb8edd9fa26da891ed7cd0badb525010e8bc091992846ea5282d72",
+     "upstream_blob_sha1": "89d6b56954ad1dc4ffce1295fb830676bb1138c2",
+     "verified": "local git blob sha1 == upstream blob sha1 (byte identical)"
+    },
+    {
+     "path": "composite/compositeext.h",
+     "sha256": "c3e7544cad2531a4fdef666368c5f9625a1a9cb6ef76ea85a955d459b19062db",
+     "upstream_blob_sha1": "24f4edac3540b11cdf7722d30778a57748a4442b",
+     "verified": "local git blob sha1 == upstream blob sha1 (byte identical)"
+    },
+    {
+     "path": "doc/smartsched",
+     "sha256": "6f8ef8cfcbc04f3983759a6231bdcf6ce098f7716eb37c7fd6d8fee1360c3771",
+     "upstream_blob_sha1": "bd7627410f09a84beb3b66af1ea321d5297e54e9",
+     "verified": "local git blob sha1 == upstream blob sha1 (byte identical)"
+    },
+    {
+     "path": "glamor/glamor_gradient.c",
+     "sha256": "e0c9aaf8e7540aaa98f4f09795a189ddd1229f4ccb7cab89513be394eb86f884",
+     "upstream_blob_sha1": "7c22ccdb27f9a2454c554a582c5f931418bef2e5",
+     "verified": "local git blob sha1 == upstream blob sha1 (byte identical)"
+    },
+    {
+     "path": "hw/kdrive/src/kinfo.c",
+     "sha256": "8ecef9f765eac4ce9083bbf4fd75beeb4e7fc69cd9c7fe0c0c2306dba7849895",
+     "upstream_blob_sha1": "9a158541378986c2312a8ab3ec12b96a01b19a61",
+     "verified": "local git blob sha1 == upstream blob sha1 (byte identical)"
+    },
+    {
+     "path": "hw/xfree86/common/xf86pciBus.h",
+     "sha256": "60da8bb13bc77a2420dbd43feb43659f8eece58aaf2d8577ac18a55c5378ecb9",
+     "upstream_blob_sha1": "14ae9760e732b5d883d8b074fdc890c52916109c",
+     "verified": "local git blob sha1 == upstream blob sha1 (byte identical)"
+    },
+    {
+     "path": "hw/xfree86/drivers/modesetting/driver.h",
+     "sha256": "f9f7d73554934a1ebe21075bfd2d96069e1c9c48750382155574a8490610e743",
+     "upstream_blob_sha1": "74630cac45cf9b867a955b0ccb644ac5896ac5df",
+     "verified": "local git blob sha1 == upstream blob sha1 (byte identical)"
+    },
+    {
+     "path": "hw/xfree86/modes/xf86RandR12_priv.h",
+     "sha256": "8ff869cb5d261161728f07dac2ad1b19b9e4df043c349358346048f9b3e46b34",
+     "upstream_blob_sha1": "a3fbab1f65a4e5f98264ba90eb8c7cdf4c0a5308",
+     "verified": "local git blob sha1 == upstream blob sha1 (byte identical)"
+    },
+    {
+     "path": "hw/xfree86/os-support/xf86_OSproc.h",
+     "sha256": "d7916bd24f733607e33a3648aedb498a1f2564778f76d6a8e3647e6503bf60a0",
+     "upstream_blob_sha1": "74b71ea34307dc4ccd2c178bff88b46e7d378677",
+     "verified": "local git blob sha1 == upstream blob sha1 (byte identical)"
+    },
+    {
+     "path": "hw/xfree86/x86emu/x86emu/x86emui.h",
+     "sha256": "cacd329e9f748e1443b99403b5500727130f67c935ecfc60e7c03012d842f157",
+     "upstream_blob_sha1": "1d1decc4ccf612814b6ed0641af17445c0cbb7dc",
+     "verified": "local git blob sha1 == upstream blob sha1 (byte identical)"
+    },
+    {
+     "path": "hw/xquartz/bundle/Resources/Dutch.lproj/Localizable.strings",
+     "sha256": "845699b669271ba7ce31dd17ebdde5a45e731c91f9804efffc3e11f362254e9d",
+     "upstream_blob_sha1": "da1315b4fc9d3052df9e10f8cbe5692b4f317dc4",
+     "verified": "local git blob sha1 == upstream blob sha1 (byte identical)"
+    },
+    {
+     "path": "hw/xquartz/bundle/Resources/fi.lproj/main.nib/keyedobjects.nib",
+     "sha256": "dd312b7cf372fcf3bc08f9cf022759c17f4bf0ed59a0a304ed11e1445db4a928",
+     "upstream_blob_sha1": "89f5b0d6d523b91eba8cd6c0344c831d1da7addc",
+     "verified": "local git blob sha1 == upstream blob sha1 (byte identical)"
+    },
+    {
+     "path": "hw/xquartz/bundle/Resources/th.lproj/main.nib/keyedobjects.nib",
+     "sha256": "1344cbfe5d901dd65df873e706afa9c7b9ab80b270789b3f7a68b8a1865c4833",
+     "upstream_blob_sha1": "0a5a3b3673b3bace61e6a45c6c39afccfc927fe8",
+     "verified": "local git blob sha1 == upstream blob sha1 (byte identical)"
+    },
+    {
+     "path": "hw/xquartz/xpr/appledri.h",
+     "sha256": "da03cc7c9794bbbf4d792c2c3a32cd9b338f91a51202dc338371c0d1c5509424",
+     "upstream_blob_sha1": "a96c96fc8e16767be39fe29110dce3fa0fd446fe",
+     "verified": "local git blob sha1 == upstream blob sha1 (byte identical)"
+    },
+    {
+     "path": "hw/xwin/dri/windowsdri.c",
+     "sha256": "e1972a3b1fa5f671a00993b0a6e2ee8c95153099121fca72609e5c8756d9ce2c",
+     "upstream_blob_sha1": "5d4c5ea54bd84aeea20a8c78044f3b25a3799c45",
+     "verified": "local git blob sha1 == upstream blob sha1 (byte identical)"
+    },
+    {
+     "path": "include/probes.h",
+     "sha256": "0440077a145c1b3bd016a0d8e3786562692cc8d91633fe69cef5aaf238adad45",
+     "upstream_blob_sha1": "b7d69f57c504d404d0ef7846ea4cc86d944fcbc1",
+     "verified": "local git blob sha1 == upstream blob sha1 (byte identical)"
+    },
+    {
+     "path": "miext/damage/meson.build",
+     "sha256": "50a5f3143e17e3e29fac02d6fca4a50168aa7ba253fd94bdc14c14deb9492253",
+     "upstream_blob_sha1": "c7ec109381b9564de1979139279584493d54ca6a",
+     "verified": "local git blob sha1 == upstream blob sha1 (byte identical)"
+    },
+    {
+     "path": "os/reallocarray.c",
+     "sha256": "7c91ac3a5de979d6167172dfdfbc5d1767209ceeaf629cfae2156da2c6b63c97",
+     "upstream_blob_sha1": "3c34f7ff9a52bf6ef86c4865d5a9e5a4fb619ba1",
+     "verified": "local git blob sha1 == upstream blob sha1 (byte identical)"
+    },
+    {
+     "path": "test/damage/meson.build",
+     "sha256": "66c632484f474d24704dc1360df002660938a24908f164d1c96af57afd08fedb",
+     "upstream_blob_sha1": "091caff5f04e41ce4e3536346ccb4dcb010e8c7a",
+     "verified": "local git blob sha1 == upstream blob sha1 (byte identical)"
+    }
+   ],
+   "content_different_classification_counts": {
+    "other_inherited_local_adaptation": 97,
+    "registered_upstream_patch": 21,
+    "msvc_win32_adaptation": 46,
+    "msvc_designated_initializer_revert": 51,
+    "vcxsrv_fork_hw_xwin": 65
+   },
+   "content_different_files": [
+    {
+     "path": ".gitignore",
+     "local_sha256": "a4dfb33a680ccef4b798ea353a7892eac4e53f8276beab6dda9df2af22abdcc9",
+     "upstream_sha256": "23287cf65182631609482e966952906575b97ed6df438979988527e80759fd34",
+     "upstream_blob_sha1": "a73481552d6ffff33c4a680066eb16951b89e32e",
+     "classification": [
+      "other_inherited_local_adaptation"
+     ]
+    },
+    {
+     "path": "Xext/hashtable.c",
+     "local_sha256": "8469ae29feefd9b1c87715cd76be4b826cb993cbbc6ed0c2c18a6f3ba7987aa5",
+     "upstream_sha256": "71cb42b68656d9391796a77fa740b81c68ff83887bd472f2ccee0260bb5ccf91",
+     "upstream_blob_sha1": "13db19f9d810bde6b2a7a2e8f9a67cda2105b40d",
+     "classification": [
+      "other_inherited_local_adaptation"
+     ]
+    },
+    {
+     "path": "Xext/saver.c",
+     "local_sha256": "30cf79ed4cd683de6a7a4006c372fb12875a05dea16cd99d1af3e41566723d1e",
+     "upstream_sha256": "f5d9b30a7ccc54fcf8c0256019466725e0d894597ad4ae879358df5fd03b8f90",
+     "upstream_blob_sha1": "a91bc0aed59d1f5d4a0def0be6ec1b5102d73092",
+     "classification": [
+      "registered_upstream_patch"
+     ]
+    },
+    {
+     "path": "Xext/shm.c",
+     "local_sha256": "82a668c851a20ed9af34d1356355ffc507ce98ed3c68d71e2aba0aba4a448e91",
+     "upstream_sha256": "4949c7885b6816e8b770dde63285460016b01ff8b0afbc917b2f41a852862afe",
+     "upstream_blob_sha1": "725cafc33705e1e79059d6bb7a0250f288aae3c4",
+     "classification": [
+      "msvc_win32_adaptation"
+     ]
+    },
+    {
+     "path": "Xext/sync.c",
+     "local_sha256": "8ceba1a8302762177be1e1e35529e08faefb6a9782e5260dcb2d3a38ab9382b9",
+     "upstream_sha256": "cca69ce6912d65cda7ab8fdd9de30337405f7f2aa2cf8e7beb1c35f38578de4c",
+     "upstream_blob_sha1": "cab73be92729766e8f402bbdd17fcc6a7178a8a5",
+     "classification": [
+      "registered_upstream_patch",
+      "msvc_win32_adaptation"
+     ]
+    },
+    {
+     "path": "Xext/xf86bigfont.c",
+     "local_sha256": "c84de03428c1a2c7c0fa373033e403c1a8b8f2345e2f3230a0f115aca28f8d94",
+     "upstream_sha256": "7f8527aa75137903a9560def4102e32b54b5a9b0b754803b096d7c554258f3ef",
+     "upstream_blob_sha1": "6dfa811e6057e737ef94dbfc7ab42826d081bbb3",
+     "classification": [
+      "msvc_win32_adaptation"
+     ]
+    },
+    {
+     "path": "Xext/xres.c",
+     "local_sha256": "1a77436d6b36724a1c2c1826e4acd240e93d7484ed3d8d72ea3ea0c859aa4d47",
+     "upstream_sha256": "883702626063f3a48545c1cb3d3174658ba37d326326e6df25a849d864f051f6",
+     "upstream_blob_sha1": "90f8bc2851258057cc65c26f038e4b13e57e70b4",
+     "classification": [
+      "other_inherited_local_adaptation"
+     ]
+    },
+    {
+     "path": "Xext/xvmain.c",
+     "local_sha256": "139f657c96038269f9e704f67e336528b8b6f2536ac2e5465ad00df9a69230e5",
+     "upstream_sha256": "538dc64598cae3fa1a30939c1a270bbdb6a02cce99f519c5de6111776471d081",
+     "upstream_blob_sha1": "bc4a7489d4a3e6edb5e375ff6ec0c1fc8fde8509",
+     "classification": [
+      "other_inherited_local_adaptation"
+     ]
+    },
+    {
+     "path": "Xi/chgdctl.c",
+     "local_sha256": "b31b4801c80c0989f6de42bfcd46485566b7dfbccade7b97257c6779a7c10603",
+     "upstream_sha256": "b4874de547027c35ad8d6593da0f612d5e8d390e696ea1c62025ff9ba07dab16",
+     "upstream_blob_sha1": "7fdb5d5e09aab80df7962ac171c4f4c7bab62e48",
+     "classification": [
+      "msvc_designated_initializer_revert"
+     ]
+    },
+    {
+     "path": "Xi/exevents.c",
+     "local_sha256": "c550704610df758a4d5f1538d711b4e1aa4b6d75d6b3193973b0b8c80e8599c4",
+     "upstream_sha256": "0baeb0a0687ee4de76804a46c3cb8ed0009c3b7d1f0abddb7542ca31f24973a6",
+     "upstream_blob_sha1": "753172c0ecf7920db67b506c63ed5bea96dddfba",
+     "classification": [
+      "msvc_win32_adaptation"
+     ]
+    },
+    {
+     "path": "Xi/getbmap.c",
+     "local_sha256": "59894424caad407266ac0171ce1c816dd8b1f0e656b193e417267d2f80da2d13",
+     "upstream_sha256": "7208908cdd0d29b396bd106c10cec2268b8af652452d9692f85503bfab979982",
+     "upstream_blob_sha1": "623978fd59c1366016ee921d60b193c044742480",
+     "classification": [
+      "msvc_designated_initializer_revert"
+     ]
+    },
+    {
+     "path": "Xi/getdctl.c",
+     "local_sha256": "3ac7980efc096e9f5ad58a62ecc9c6d6bf50b06de4575af0af0f4906879f2395",
+     "upstream_sha256": "d39d0728b71d2519fa0cbb22442158cdca30956b5d988de62e2055bb4042b81a",
+     "upstream_blob_sha1": "07b6bec7eb0ba8626d7f00d1c74162a39f8b9d54",
+     "classification": [
+      "msvc_designated_initializer_revert"
+     ]
+    },
+    {
+     "path": "Xi/getfctl.c",
+     "local_sha256": "19fbdcdd3ffe5f9f409c5bdc9110eb23389207600ceb5c5a6b8e46083237dbdc",
+     "upstream_sha256": "260627cad4e45be87b014a8efd89a1751e4f9df4fc11f61ebb53187601378067",
+     "upstream_blob_sha1": "562cd52604032895e85fbea5ee4eed11a0eaca16",
+     "classification": [
+      "msvc_designated_initializer_revert"
+     ]
+    },
+    {
+     "path": "Xi/getfocus.c",
+     "local_sha256": "b3501cf35ece652ff635a9f72f8a493d29b315b550ed68ad07b0ccb2853b6ba4",
+     "upstream_sha256": "a4039cdadc31897fe158406f3c4049c08f73084a98fc04d4735afabcb32aef92",
+     "upstream_blob_sha1": "731896b7db11e6de4fbf4a5feffc7a4f064a1072",
+     "classification": [
+      "msvc_designated_initializer_revert"
+     ]
+    },
+    {
+     "path": "Xi/getkmap.c",
+     "local_sha256": "ce6fe0ff40aa3e5dd4fa1927613ccad073045f608d853dd3cc23d308398ca1c6",
+     "upstream_sha256": "223446ccf79f52d1103bbeac8190f53261bb770d869da33a185797db529f1388",
+     "upstream_blob_sha1": "5d9cba1d570744eb174bcf2a16d81be055fb4c93",
+     "classification": [
+      "msvc_designated_initializer_revert"
+     ]
+    },
+    {
+     "path": "Xi/getmmap.c",
+     "local_sha256": "aeb280ac03d1251e0476c8a6e69673a9f11abaafad1cfd3f16c2a6b6323b3bd0",
+     "upstream_sha256": "dba1a9fa7c6f36fd321e6ddd9d98a42c905b55a96b4c4859af73fc0956fcc856",
+     "upstream_blob_sha1": "4ff03a3bdc3ce5857c1d88f0e27a06445843b766",
+     "classification": [
+      "msvc_designated_initializer_revert"
+     ]
+    },
+    {
+     "path": "Xi/getprop.c",
+     "local_sha256": "41fc4b9d3dadb1c467df6bb127c1a31f6d28cadb222615ff78db4d14f1e5fc2d",
+     "upstream_sha256": "a88eb459b94f5708be6cfe3f2286ff1d7a069b1f3a48aaa7e281dd19acf1aaa3",
+     "upstream_blob_sha1": "54b8131ecc4659f3ee8d48b90df63396dbb280e2",
+     "classification": [
+      "msvc_designated_initializer_revert"
+     ]
+    },
+    {
+     "path": "Xi/getselev.c",
+     "local_sha256": "a1191868c64b4f7a084e1ccbf43997667a60eb2c53a13f41135b5304d4a53081",
+     "upstream_sha256": "38290c608e4f0e4bab121d7c12c63dc34fed915e8c015775d67c15172360b22a",
+     "upstream_blob_sha1": "0abf9faa9aa25d2997f46d0bae064e1676eebdc8",
+     "classification": [
+      "msvc_designated_initializer_revert"
+     ]
+    },
+    {
+     "path": "Xi/getvers.c",
+     "local_sha256": "0cf35e78580bedab797ca22026b3182235f00c3572b771ac19578b7af60d6bde",
+     "upstream_sha256": "ef7fa64bc27c05b9cbf6810f289818aba014bb138042b58faf88fd7743e6bdfc",
+     "upstream_blob_sha1": "0d90fc9a88decd78173d281a7f1494c62c458dfd",
+     "classification": [
+      "msvc_designated_initializer_revert"
+     ]
+    },
+    {
+     "path": "Xi/grabdev.c",
+     "local_sha256": "3f86c49a7fbc6ff905f4ef45e4a1f3854ee2dcad0d540595deefd2b7825e7847",
+     "upstream_sha256": "03f4a33c7960a37f4981a9764092c91e0ca7b71b21451d434f00281b22df8dbb",
+     "upstream_blob_sha1": "9bae237d13c3ea020cca814e4b5303e206c0b744",
+     "classification": [
+      "msvc_designated_initializer_revert"
+     ]
+    },
+    {
+     "path": "Xi/grabdevb.c",
+     "local_sha256": "1bdab5a25512f71d50c95b8d9debe20b9b8811a43faae6769b5cd04a36f2efb2",
+     "upstream_sha256": "d13500c8a1bd64e7fd207415b0612483429f20c078de6a8565020a877ba30477",
+     "upstream_blob_sha1": "9a2ef87ab2ae216965b760698619702e21df8e69",
+     "classification": [
+      "msvc_designated_initializer_revert"
+     ]
+    },
+    {
+     "path": "Xi/grabdevk.c",
+     "local_sha256": "d54f89b8bdbae54761b1feaa58f951d262b028563f232e2ea04603314b2a6063",
+     "upstream_sha256": "c23fbc19f9dc8ca00cd35f1ddb63b272e28c6279089a182d888d8371534507f6",
+     "upstream_blob_sha1": "7668735ea18e0a0e4e9e224ef5c74d2e677cbcaa",
+     "classification": [
+      "msvc_designated_initializer_revert"
+     ]
+    },
+    {
+     "path": "Xi/gtmotion.c",
+     "local_sha256": "cb7e72f7132293b8ab75676bdab3282d25ff1ee8f8c1c571409fd0a724ba9af7",
+     "upstream_sha256": "55d032024cca1091021a76081773382bc63756b631c5d9b7ed44974baa6ad94b",
+     "upstream_blob_sha1": "41d68ec8795f5a120c9fc17d90fe73ed793ad7c3",
+     "classification": [
+      "msvc_designated_initializer_revert"
+     ]
+    },
+    {
+     "path": "Xi/listdev.c",
+     "local_sha256": "823d0c3861ecd48e1836656eb377231d730dbd5acf94ab3527da4561a1fcbbcc",
+     "upstream_sha256": "19601a3451fd7c42a761de0b7d92823a3f9f89239c8ecb3ce58185dbf3f959a5",
+     "upstream_blob_sha1": "bf2f439a41c27f2cf57467841f7b9083396adfad",
+     "classification": [
+      "msvc_designated_initializer_revert"
+     ]
+    },
+    {
+     "path": "Xi/opendev.c",
+     "local_sha256": "58ecce50f6ad974d69518ba502cb99aa046aca83dfe430b7eee639bb0b84d9bd",
+     "upstream_sha256": "3648ede2777388fe0382960eaf97384f7bbd4c3752f012ea62dc03d3b86fc109",
+     "upstream_blob_sha1": "977a44115095489f968b2b546872da820755192b",
+     "classification": [
+      "msvc_designated_initializer_revert"
+     ]
+    },
+    {
+     "path": "Xi/queryst.c",
+     "local_sha256": "04bf84397bb68a85403b24d0c0d9d882572c84a65f36584b3f2a92216a0f510e",
+     "upstream_sha256": "9662a224eeba0ea773cb9fc140d16d0652d2f36191be90f22aa98c5586564a2d",
+     "upstream_blob_sha1": "ca386f5dcdb50d7f7125a62ab58aea949f6d118a",
+     "classification": [
+      "msvc_designated_initializer_revert"
+     ]
+    },
+    {
+     "path": "Xi/setbmap.c",
+     "local_sha256": "c1c1566f8e99cd62e6b711e09b8d6a4ee33dea071e90801691c4c0bb0652689e",
+     "upstream_sha256": "d17007a52270067b9fa3c867de098dd9ca0c78931b9555d441d9b83b0d4938d7",
+     "upstream_blob_sha1": "4afa655fa90a267e476523a48d62141a635ea736",
+     "classification": [
+      "msvc_designated_initializer_revert"
+     ]
+    },
+    {
+     "path": "Xi/setdval.c",
+     "local_sha256": "05577632a599402c9c82cff90d9ab4460fc9f47a7638b66b499cca08fcdf0db8",
+     "upstream_sha256": "5c8ab1290a8c2c7d7965f228cb6b7c52bcbdc6f64761b7ac40af90cae56941ec",
+     "upstream_blob_sha1": "2127e6afed0e50275668a1a02485f4128f72974c",
+     "classification": [
+      "msvc_designated_initializer_revert"
+     ]
+    },
+    {
+     "path": "Xi/setmmap.c",
+     "local_sha256": "56c58d898becfdb625560a6ad5c0c43fbdbdd58a092676f29b3f45676b1367ab",
+     "upstream_sha256": "c1f8f00e51fa81d7c82d6e3a2f190c5c15d3b94491f692f3d9455bf998357983",
+     "upstream_blob_sha1": "1c8df53c2e786dae9c7cc41a556f5ed091417cc1",
+     "classification": [
+      "msvc_designated_initializer_revert"
+     ]
+    },
+    {
+     "path": "Xi/setmode.c",
+     "local_sha256": "19b36aa6650418566e24f37c45a5133a72c235f7fbc5406f8c178c42c3ad1460",
+     "upstream_sha256": "ee70b3bb7a2972a7d2ad7b917786fc31ae51167466f9edee4ad27ea11ff705e0",
+     "upstream_blob_sha1": "9c94761346c6d2ebe007a80c5f2ca7a265964e1e",
+     "classification": [
+      "msvc_designated_initializer_revert"
+     ]
+    },
+    {
+     "path": "Xi/xibarriers.c",
+     "local_sha256": "de131225a1367a62792d87c97f6c8f20b9f7519aca617e16a23818cccfede43d",
+     "upstream_sha256": "1e5d20fddb3c81d645ec468eeb721ba9e57ff2fc9cd133411a525c8727b08f46",
+     "upstream_blob_sha1": "6761bcb49acf17fc38cd051f45ea3d28de69bae6",
+     "classification": [
+      "msvc_designated_initializer_revert"
+     ]
+    },
+    {
+     "path": "Xi/xigetclientpointer.c",
+     "local_sha256": "955114807fde1646055b76ee13e0a327355f02cc860a11d5f61078b2c4160b34",
+     "upstream_sha256": "69e8aecc13bb96f22986c902c7fb5e79ebabe564191315e5ad938b1066006491",
+     "upstream_blob_sha1": "95fb6f2d1e32a384b26a46ddc28e272617234bb3",
+     "classification": [
+      "msvc_designated_initializer_revert"
+     ]
+    },
+    {
+     "path": "Xi/xigrabdev.c",
+     "local_sha256": "9de129d338f72b3d9c9077b79fb2b5ad3a9ce95480b0df31a0fbe23707b50e0c",
+     "upstream_sha256": "2fa5c6766447daf5de4792cef23caec7540890044114318f55b9ec3a9f0d614c",
+     "upstream_blob_sha1": "0ea42db88173a1976f365fe05f51f0fd71f5709d",
+     "classification": [
+      "msvc_designated_initializer_revert"
+     ]
+    },
+    {
+     "path": "Xi/xipassivegrab.c",
+     "local_sha256": "c4b1cd9f43775c7f75af42de9568ed62f2ad023a7b23d57442cd9c7cffa4f793",
+     "upstream_sha256": "29d72b0cca92ecc0e5a1ae267cf50b7ce3febac34e1506b92fa18029301e1705",
+     "upstream_blob_sha1": "2d6c51eb586df75e7b9ca86099d7f060bb46e2c7",
+     "classification": [
+      "msvc_designated_initializer_revert"
+     ]
+    },
+    {
+     "path": "Xi/xiproperty.c",
+     "local_sha256": "23de5a7530f60ac0e2e96429c410f059f24b6e046cdc63c49ee0ab205a37c0d0",
+     "upstream_sha256": "43855131b3b8f9aed03d47fcaf8e81333fa005c25af8f3e5645c92d28abd02e4",
+     "upstream_blob_sha1": "8db6b03d17b0dddac288917b36f225b6e342123f",
+     "classification": [
+      "msvc_designated_initializer_revert"
+     ]
+    },
+    {
+     "path": "Xi/xiquerydevice.c",
+     "local_sha256": "37f540f543d3fba83f6ab35d1def5ff618952d751b8b2ca7956657b451b8b62f",
+     "upstream_sha256": "c222f8ef0b707a5838f3fb2d2a92d934875253eaf13bee6042f7f3f2585ce7c7",
+     "upstream_blob_sha1": "2e974e3ab9b350f992e866e788918a8801c1cd81",
+     "classification": [
+      "msvc_designated_initializer_revert"
+     ]
+    },
+    {
+     "path": "Xi/xiquerypointer.c",
+     "local_sha256": "f202aee51b64faf856fc7b69d49c6f11bc52787833ddeaedaa40f33865483990",
+     "upstream_sha256": "6971d9900f733dfed4dca7ba3d47f1d82933ee1d98ea50742c1ad971f7dd7973",
+     "upstream_blob_sha1": "19eb8cad16308f7be4eaac5ed5495ca7ccecf240",
+     "classification": [
+      "msvc_designated_initializer_revert"
+     ]
+    },
+    {
+     "path": "Xi/xiqueryversion.c",
+     "local_sha256": "80e26935ad3ed6fc95b15cbac6bab8498921c41e154bd1b551810ad6daf3fc51",
+     "upstream_sha256": "95e64c1c4bc2cc5c3b5566c3c41ef64ba1de59af931050f0a0bac3393f15915c",
+     "upstream_blob_sha1": "b2055f010ac23e7ff4b06c372878102af7575ffb",
+     "classification": [
+      "msvc_designated_initializer_revert"
+     ]
+    },
+    {
+     "path": "Xi/xiselectev.c",
+     "local_sha256": "e394b582d226977ff6b209aad6046b2b406f2d37ae8d3bd9f5dc31d50031d8a6",
+     "upstream_sha256": "317cc072412d3a534830bc3b17d3f9d8048556add2034c0bd89386aadfb2b0d0",
+     "upstream_blob_sha1": "d341a12d5f8a079815415eeea608ad37f829b410",
+     "classification": [
+      "msvc_designated_initializer_revert"
+     ]
+    },
+    {
+     "path": "Xi/xisetdevfocus.c",
+     "local_sha256": "9d0cc9d6b042efae80ead466d0be070c00a890f3f2440e743b9a43a9a596fcb2",
+     "upstream_sha256": "30c6377f5b95db9a354ccf67e1de5855fc9c233c117fbb701dec21e194bd7659",
+     "upstream_blob_sha1": "bf2103fdc0d531fba59d5ddeb4bbf965de824a42",
+     "classification": [
+      "msvc_designated_initializer_revert"
+     ]
+    },
+    {
+     "path": "composite/compalloc.c",
+     "local_sha256": "4403ac7e7dbf5532c63c35a27dc8fcd002d7ff1607419840f5799d9bb9c48422",
+     "upstream_sha256": "83408a5f45e650405f17bb11d58b6d085eeee58b8a7a29a8d98037cd095abd22",
+     "upstream_blob_sha1": "4a1243170dd1b87d86ee18543870dc54be2a9327",
+     "classification": [
+      "other_inherited_local_adaptation"
+     ]
+    },
+    {
+     "path": "composite/compext.c",
+     "local_sha256": "49b3dd03818e3b9be544dc78d0ac4a2c5d291d32fe82477b35aa8b00d0894f8d",
+     "upstream_sha256": "c1e99edc0418a2a7f7b999d509c4915d41120a078bf1154ed3f5c6b4df530f0d",
+     "upstream_blob_sha1": "bb8f5946d3e142f1640d3805ace834a431da1b18",
+     "classification": [
+      "msvc_designated_initializer_revert"
+     ]
+    },
+    {
+     "path": "composite/compoverlay.c",
+     "local_sha256": "922a3c103e86d1ae1971bb715284e1a047b5e659b06ef84925dcd325bb2ded18",
+     "upstream_sha256": "2c688d974e6a56086cbbcd7508ec172b9bc4321da779489a4a8d8901e1550ee4",
+     "upstream_blob_sha1": "ffff34b7b22dc5a3b5fe3163d81cb94a60cc2705",
+     "classification": [
+      "other_inherited_local_adaptation"
+     ]
+    },
+    {
+     "path": "damageext/damageext.c",
+     "local_sha256": "0faaa17504580dd8d25b54f8e1457e6ac128af0c9875c05de1de9ecca4599de5",
+     "upstream_sha256": "a6215d38c85baa3ab386ee94fef7b950c655182ee9c08ab503496d177b3ba211",
+     "upstream_blob_sha1": "219cdaad29125a667b65cb0a412ece1527f0c2cc",
+     "classification": [
+      "msvc_designated_initializer_revert"
+     ]
+    },
+    {
+     "path": "dix/.gitignore",
+     "local_sha256": "d79a7f3541c216011ff923d62803cfa9ee20b996f321b09657f84b07f466e431",
+     "upstream_sha256": "22a6d3fb341c381f31a18c5629e2866ca24bcb5aaecc012c4d7f14cde4a838db",
+     "upstream_blob_sha1": "47cb0826e3fe70c9e8628f855d3adadda73c980d",
+     "classification": [
+      "other_inherited_local_adaptation"
+     ]
+    },
+    {
+     "path": "dix/closestr.h",
+     "local_sha256": "1af4e3d5cc1a6f60e00ed99058b76dbdc8849dfbe5d96c1beaa62dba4f8e7b9e",
+     "upstream_sha256": "49b7530168afaad95499383438a40dd5744b0f3942ce83063a8f17a50ec9ff36",
+     "upstream_blob_sha1": "60e6f09bc871f6c18152a72c60b74cc2bb72b916",
+     "classification": [
+      "registered_upstream_patch"
+     ]
+    },
+    {
+     "path": "dix/colormap.c",
+     "local_sha256": "d6f06e9c85c0976f7fac52feb19d63d48902ac86d7d8e43cafa7289949706b26",
+     "upstream_sha256": "4e37dfdc0b2fdd3d89f44a4bc93eca8521151097cf7605a395dd2c6a16c89923",
+     "upstream_blob_sha1": "9a8be28e2c6d5a1b6b34f05a2384700ed7657a58",
+     "classification": [
+      "msvc_win32_adaptation",
+      "msvc_designated_initializer_revert"
+     ]
+    },
+    {
+     "path": "dix/devices.c",
+     "local_sha256": "15a651cedf75bbd221f107b067ff9a76cd68248eec0c8b3b082cf92beeb288fc",
+     "upstream_sha256": "d5791ea0acad3b7208d5255f534d3f16c25807097a43bf40fd7d3b6c98f99525",
+     "upstream_blob_sha1": "310364730883ef5a59035c15c1189107ade09c04",
+     "classification": [
+      "msvc_designated_initializer_revert"
+     ]
+    },
+    {
+     "path": "dix/dispatch.c",
+     "local_sha256": "50b0389a6d52acecdaaf70597450ff6821bdf27320040417f3f99e629fe017f4",
+     "upstream_sha256": "b2811863b163049e58acfe4a4caaa243d1ac07089328d9518e6fece63d05d0da",
+     "upstream_blob_sha1": "b3e5feacc299b15502e3010bbc52bf9f2351289e",
+     "classification": [
+      "msvc_win32_adaptation",
+      "msvc_designated_initializer_revert"
+     ]
+    },
+    {
+     "path": "dix/display.c",
+     "local_sha256": "32b64ead08957507b016b0772b25c826a382a51aae327bbe01bb4ee3ce6f08b9",
+     "upstream_sha256": "882f10734ad2bd4340d144846bdfb7ee469e53911ff7bc7eb99eb8f310518781",
+     "upstream_blob_sha1": "5e8cf7bc5ef4b97a57c14714eb9442e3f1076e91",
+     "classification": [
+      "other_inherited_local_adaptation"
+     ]
+    },
+    {
+     "path": "dix/dix_priv.h",
+     "local_sha256": "801b292811606ff9d3b7283446b2a1ee88183fb714bb1ee9805f8649870204f7",
+     "upstream_sha256": "74fe5f7e46dbf092abccf7ada621a2fcb5fa4aff3e8ae112c2f30a1646abeabc",
+     "upstream_blob_sha1": "47c18817f968de0c6dc9f2e8ab02fde84c9f6bda",
+     "classification": [
+      "other_inherited_local_adaptation"
+     ]
+    },
+    {
+     "path": "dix/dixfonts.c",
+     "local_sha256": "cb7c73b895fd9c19c40a470d241da0f3542ff855cdcce845ee7898242d1a7f6a",
+     "upstream_sha256": "e3a5eaa2859baaa649c31c850a7c374e4a2b08de3bef7a3db021bb10dac21b83",
+     "upstream_blob_sha1": "dd617d99cf7211c7c1f24362ecba2e1881c4a5fb",
+     "classification": [
+      "registered_upstream_patch",
+      "msvc_designated_initializer_revert"
+     ]
+    },
+    {
+     "path": "dix/enterleave.c",
+     "local_sha256": "6cdececc458845ca1bc90714a04ab415e31a124159f3d97360a6275f524f3db7",
+     "upstream_sha256": "778e2009ca58825b8174beaaeae355dfc57da7266a19f14df34bca79314776e6",
+     "upstream_blob_sha1": "c735e880790338c828140a0f275476b1cda5e038",
+     "classification": [
+      "msvc_designated_initializer_revert"
+     ]
+    },
+    {
+     "path": "dix/eventconvert.c",
+     "local_sha256": "d6b3b41f2d2f82e5e69c7322124da863c12e98972e1acb680224193f02e9c324",
+     "upstream_sha256": "398217d08e68d1614edfda9da5e564e210a5864e2da8b2c13ba49d94830e33b6",
+     "upstream_blob_sha1": "d805018f8df1f792b41ddf90935df1ef7b3ba292",
+     "classification": [
+      "other_inherited_local_adaptation"
+     ]
+    },
+    {
+     "path": "dix/events.c",
+     "local_sha256": "ff65202a9873f3a44bd942d1c608fcfb3b52bd159c06d9de4f9f94850e771e2d",
+     "upstream_sha256": "14448233bd20954bde0f725faf315fc4a9de5dc027ed25f892b1281b3ace0810",
+     "upstream_blob_sha1": "c8fd77ec84fbb176773abdceeb4120c3b52e57c7",
+     "classification": [
+      "msvc_designated_initializer_revert"
+     ]
+    },
+    {
+     "path": "dix/extension.c",
+     "local_sha256": "4ba415f0422ccc8270722441a372e8264019e6abeb0904203a6380e17d6b5293",
+     "upstream_sha256": "2f82bb9d4159026c0829b2389d8ae8a83104f1c3263887651477ab9d254a8e88",
+     "upstream_blob_sha1": "fd143995718f7904ac3b8b3a6104eac1443e1343",
+     "classification": [
+      "msvc_designated_initializer_revert"
+     ]
+    },
+    {
+     "path": "dix/gc.c",
+     "local_sha256": "81ff6e5f433fce170b93c60ceda8b995441b4fecab52e1232bfc1b8b635a4b27",
+     "upstream_sha256": "69abce7168cb14826d989771f246fb7dc70d9c1e67c750c48299641c41ed3687",
+     "upstream_blob_sha1": "ab584435396ae62abad5a7a7c969e155eae44682",
+     "classification": [
+      "other_inherited_local_adaptation"
+     ]
+    },
+    {
+     "path": "dix/getevents.c",
+     "local_sha256": "f7de2161b33d2d8cf3e9a2de98e48a68eafce0c5742eb1557ecfe343373d76b7",
+     "upstream_sha256": "19cd6d58aae3e4aefed8314591da33c0cf7cd2f010a9641b354cd6fcd320ed18",
+     "upstream_blob_sha1": "34014ffbb82416dbc786242d1dfe662ff2ebd78b",
+     "classification": [
+      "msvc_win32_adaptation"
+     ]
+    },
+    {
+     "path": "dix/inpututils.c",
+     "local_sha256": "82b2303f0becac2c24ab2dc733c218335a6da7b68e7fcc935b96882c26240afa",
+     "upstream_sha256": "cd024e1d94fa3ed42529c9a57d5be7bc762a8fb87b167659fd99dfe7db299f40",
+     "upstream_blob_sha1": "863e78cbcffd19bff7a02f4b8cce51b0c3b97c6e",
+     "classification": [
+      "msvc_designated_initializer_revert"
+     ]
+    },
+    {
+     "path": "dix/main.c",
+     "local_sha256": "4741a12f91c6d145e35770e11d8c9ae3eb471324c82370ed202d19e4579e43e2",
+     "upstream_sha256": "9037cadead8a5aba962313ca6bf966e9272019d8c4cadeb5740676a71149a822",
+     "upstream_blob_sha1": "0c57ba605a2ee399f3eeb587183048043b5d0c75",
+     "classification": [
+      "msvc_win32_adaptation"
+     ]
+    },
+    {
+     "path": "dix/pixmap.c",
+     "local_sha256": "4d9eb903f26bc2bf0d9d8ebefaa184b9d16dc98b04a3095afe408233fd55eb86",
+     "upstream_sha256": "1b6e503f2c56bce9b503efef295732a3ba162b88a413724f66481435ba6d8da2",
+     "upstream_blob_sha1": "f7812804a7dd6f3143f79e2208b04cf05142f97f",
+     "classification": [
+      "other_inherited_local_adaptation"
+     ]
+    },
+    {
+     "path": "dix/privates.c",
+     "local_sha256": "8cb32e9223c6c6576224cfaf858009abbe14309491e22de7f87d964adf70fbf9",
+     "upstream_sha256": "f93d03c56017955cfda0513069ef7d61b3bb2cef2cfffb247652aecb79156690",
+     "upstream_blob_sha1": "62309d769aebbac9e51bbf3f9089427e91fc2a45",
+     "classification": [
+      "other_inherited_local_adaptation"
+     ]
+    },
+    {
+     "path": "dix/property.c",
+     "local_sha256": "cf8f044bf58a547ed12e0b00a2ebfd16018205cf774dc1b9774746c411ef398b",
+     "upstream_sha256": "6e753aab78247103a178af60a57ef3cf5e86726730cfdf87dfa56871d8f21dd3",
+     "upstream_blob_sha1": "e5e579f9581f21b70eed8bbd8808d3f65715dda8",
+     "classification": [
+      "msvc_designated_initializer_revert"
+     ]
+    },
+    {
+     "path": "dix/ptrveloc.c",
+     "local_sha256": "229a5ffba458bbffb9d384970fa3248b9dcc8766187bcfd885a8f34112a637e7",
+     "upstream_sha256": "f1bd54d404302e0156c067a24eca91542c99787f3ebba582badd39842761aae7",
+     "upstream_blob_sha1": "cae377333441049d2cf1fcad92b9a20304215963",
+     "classification": [
+      "msvc_win32_adaptation"
+     ]
+    },
+    {
+     "path": "dix/registry.c",
+     "local_sha256": "37167e64e766c2a3f1b9224e5b3afa92dcef022600ec4fdc69dd1e86d07bad0b",
+     "upstream_sha256": "9af06f392daea92cf274a586a64317e68635e877bbb63299a69a96ad357b3602",
+     "upstream_blob_sha1": "c37dbce5d4eef3949c165069712e591b5ebfb8c7",
+     "classification": [
+      "other_inherited_local_adaptation"
+     ]
+    },
+    {
+     "path": "dix/resource.c",
+     "local_sha256": "5d5e65c16d023ecc55402fcc2b69d594f135803f2c9c84cb30eec7d445955fba",
+     "upstream_sha256": "30c0f31216d8e2c3d30bebbc77a0d0f7f14f3f96e1306f54a99cf8496da47625",
+     "upstream_blob_sha1": "7542f0c42219fbe4ea6ecbd02609839c707f87d9",
+     "classification": [
+      "other_inherited_local_adaptation"
+     ]
+    },
+    {
+     "path": "dix/selection.c",
+     "local_sha256": "de0d9bce1792894920793bb21b3b45c80e61ab6d1fd01206f1ef39ec779f8ca9",
+     "upstream_sha256": "39547190664bd440f2235829ef53df742c0e924be830520bed967af04b54f867",
+     "upstream_blob_sha1": "ec9b4e85b542d30468d88992f3d26fec92910372",
+     "classification": [
+      "msvc_designated_initializer_revert"
+     ]
+    },
+    {
+     "path": "dix/swapreq.c",
+     "local_sha256": "460c36082f10cff950fea9e68c94711a5cec282d6f1583b8fb6e7d32796dac32",
+     "upstream_sha256": "4411e44b5b7394bbab25241a1dda2528b4102d842f9e453763bf5a47494df72a",
+     "upstream_blob_sha1": "18bc75186d37804c006e909c8cbd5c83467dffea",
+     "classification": [
+      "other_inherited_local_adaptation"
+     ]
+    },
+    {
+     "path": "dix/window.c",
+     "local_sha256": "20a820537dc3e7bd60c53c65cd28b67b9cc34029af27097e9757ff406f96dbde",
+     "upstream_sha256": "b83da9d6785c718b01aa79375af865ceaa1141450129ffff264cd3656d3c1865",
+     "upstream_blob_sha1": "672593512654b37b412498da01a853d8113f6042",
+     "classification": [
+      "msvc_designated_initializer_revert"
+     ]
+    },
+    {
+     "path": "exa/exa_accel.c",
+     "local_sha256": "138ff5f0bfb2fab63862cf6c021856d56b998d4388f1ebff9b41d7c84525cbea",
+     "upstream_sha256": "e5300cef38113128e85ecd9accccc158e42b6fb6c09a1f7da6ab6b21a45e1b68",
+     "upstream_blob_sha1": "92211964f37f1573adbdac179b5138785230a3dd",
+     "classification": [
+      "other_inherited_local_adaptation"
+     ]
+    },
+    {
+     "path": "exa/exa_migration_classic.c",
+     "local_sha256": "b5b0f5b2b848cd8f600d89aa07dac77e26c777aecd5c4b76c44c6e6cdcd98a9c",
+     "upstream_sha256": "4cc65ad0079c238d938535e3318b95644812f8e22e53868c1f3088d0f3ef747b",
+     "upstream_blob_sha1": "82578957863f353fada003051e090fe33c026307",
+     "classification": [
+      "msvc_designated_initializer_revert"
+     ]
+    },
+    {
+     "path": "exa/exa_unaccel.c",
+     "local_sha256": "7d0efca42025f1659f743d09d09d3bd3864bb0e9eacc257febbe9d99af89d625",
+     "upstream_sha256": "53ede613ad3d51762e083eb535b9ae474b9de4154de9466c5f1c5ed4566712e4",
+     "upstream_blob_sha1": "ed1401a989f5f534341dbf21faf7df006f78782a",
+     "classification": [
+      "other_inherited_local_adaptation"
+     ]
+    },
+    {
+     "path": "fb/fb.h",
+     "local_sha256": "727ad811d702a9ca89a6d841c9fdac435a7a5079777a0f3f2f5f29d86cc6542c",
+     "upstream_sha256": "0d8da67b826ba786e7b9b535643aa1cea2937d06715f6ae81dd041132cf9418f",
+     "upstream_blob_sha1": "717fea8af9d4ef1520681a2165797cd55952a9a2",
+     "classification": [
+      "other_inherited_local_adaptation"
+     ]
+    },
+    {
+     "path": "fb/fbgetsp.c",
+     "local_sha256": "6fec9d8d20bdf4b795e54fe03ab6d3dbbea9c66d04e71d5bf46d32a8c01f26d9",
+     "upstream_sha256": "8ac71c1ca5e8b9a92e1e19937486f7760b50509929b04ce5b1765e1cd29541b2",
+     "upstream_blob_sha1": "2bccb5dd89b2fb25697a528ec430bad40ee21972",
+     "classification": [
+      "other_inherited_local_adaptation"
+     ]
+    },
+    {
+     "path": "fb/fbglyph.c",
+     "local_sha256": "0f47f847c2fc6156f7016080d28e0bc8762b99326b01413720158e7fff1fb1b1",
+     "upstream_sha256": "5c9ca09eb8eb697ff0d7400744b6e5318df46bdd5a0fd8e9bc56b307344ef329",
+     "upstream_blob_sha1": "5a1282ba938ed06b7b985f21ab737881107c7f24",
+     "classification": [
+      "registered_upstream_patch"
+     ]
+    },
+    {
+     "path": "fb/fboverlay.c",
+     "local_sha256": "b0d3c061229db8bbd3989c5a7a6381dbf302006624b1203be34402608a31f402",
+     "upstream_sha256": "b0f1c3887ea0fd596ad3d0d886e8e8ff2d35cf28950fa27416bfb6507a6d5200",
+     "upstream_blob_sha1": "d8d9c2d7575ff8b704273e8e6d5e5c4773d6df1d",
+     "classification": [
+      "other_inherited_local_adaptation"
+     ]
+    },
+    {
+     "path": "fb/fbpixmap.c",
+     "local_sha256": "cdf8ed2e21d8fc286af15ab396e3a73c27a49017f5419da3a54edcbb6e2528d2",
+     "upstream_sha256": "f17668a359056d9e5a9d0bd5a2cd0627bfec5c259018042f69d760bf5ee4ec65",
+     "upstream_blob_sha1": "3ed2b568093538c21d629ab8d0788c01d1b2390d",
+     "classification": [
+      "other_inherited_local_adaptation"
+     ]
+    },
+    {
+     "path": "fb/fbsetsp.c",
+     "local_sha256": "50bcfe6ec6a7fd93f1a84b9176da9a04f703488310e7504ab6c87c53b987ab27",
+     "upstream_sha256": "7fc9ce2297bc9286b3bd5aaf8d7c2c5439d227d2472e665eb71d681e066d90df",
+     "upstream_blob_sha1": "0fdc173801446b0195474ccbb913dca24b7cdb8e",
+     "classification": [
+      "other_inherited_local_adaptation"
+     ]
+    },
+    {
+     "path": "fb/fbwindow.c",
+     "local_sha256": "cd78872488f87d43ea587807b459d60c5802232300878a37452899725236eceb",
+     "upstream_sha256": "14587e36382d8eaa45241651d7fe3b304e98f37900500fc6afbcd3291b5ab1a2",
+     "upstream_blob_sha1": "96e749a205c048e91b9122673164803e62ebf6fb",
+     "classification": [
+      "other_inherited_local_adaptation"
+     ]
+    },
+    {
+     "path": "fb/wfbrename.h",
+     "local_sha256": "15c8070b842df84cb0264ee0a71e166e5270ada5af53412f19105730b2892850",
+     "upstream_sha256": "5b67d79b083545ab254f700a440d3eb2a6bbbaa10e30e087815a879c52ab1cbc",
+     "upstream_blob_sha1": "4977f20674381c91e077fb07b9b1bcff8726add7",
+     "classification": [
+      "other_inherited_local_adaptation"
+     ]
+    },
+    {
+     "path": "glx/glxcmds.c",
+     "local_sha256": "6a0b2dedfb22f93cf59a8686d554a2e98dbd27e40488e695632b79fe35594627",
+     "upstream_sha256": "cf4903c31f849a9062442554a24a3a968e1a6e4c04be81195df17e8e4f747a81",
+     "upstream_blob_sha1": "f8c3a965c129f2d7d0b47334e3a5aad6a8755469",
+     "classification": [
+      "registered_upstream_patch"
+     ]
+    },
+    {
+     "path": "glx/glxcmdsswap.c",
+     "local_sha256": "61d341dcd39c8966428be0e4536a2640c36f21d1d7f78a50e64bfec916380715",
+     "upstream_sha256": "80b5d7a0af8592aacfb8638a86b0e21d92f5f994e908329daa7b3ef19b8670a4",
+     "upstream_blob_sha1": "59ce663b79a9db6aa0f8b50fcfbc1f596b51dcdd",
+     "classification": [
+      "registered_upstream_patch"
+     ]
+    },
+    {
+     "path": "glx/glxdrawable.h",
+     "local_sha256": "b1aac92975758343d0ac806257646b5ee06b263b61263968063e20c769ff1a3a",
+     "upstream_sha256": "b1e3e6728ac3a53cf2bd4f2a1a8a0ce4d35ff9ce93542b3e750d9718faecef2d",
+     "upstream_blob_sha1": "441d72dd7083ff2956085a67df3e4abb703d11f6",
+     "classification": [
+      "other_inherited_local_adaptation"
+     ]
+    },
+    {
+     "path": "glx/glxdricommon.c",
+     "local_sha256": "0629175ecfba05bc31614314aaebf5e3e594731174d91ebf14532fd5ef6a6277",
+     "upstream_sha256": "8f1def8bec6dd28fd3b56ac19aafcf8b06d79d0534152faa2a05fe7e21f42f5b",
+     "upstream_blob_sha1": "0d83fa714daafcb0fac1185f3cfc5dbeeabe73a8",
+     "classification": [
+      "msvc_win32_adaptation"
+     ]
+    },
+    {
+     "path": "glx/glxdriswrast.c",
+     "local_sha256": "fa206ec072d299f88e5d4c99b701134edf39544d46b5a297928d5a571bb5d3b1",
+     "upstream_sha256": "1d14001083aed989556a912f1ff1b6cdf0850e99e3b98d3b22d50fa6341c7297",
+     "upstream_blob_sha1": "ac657d6f892922f5aa183b4850f1346954513f1b",
+     "classification": [
+      "msvc_win32_adaptation"
+     ]
+    },
+    {
+     "path": "glx/glxext.c",
+     "local_sha256": "1c5b173db98dfc9b60f37bd22ff90dfc42b14d3cfeb8d4da86908843d7e3f12e",
+     "upstream_sha256": "7cf7bfddd101b01f4c9e8c1f03e7cbf9e4c8714eea9ebe44764d0ae3f18de5ef",
+     "upstream_blob_sha1": "216dea98d2a63bb620ec0991aa13467d1f528511",
+     "classification": [
+      "other_inherited_local_adaptation"
+     ]
+    },
+    {
+     "path": "glx/glxext.h",
+     "local_sha256": "2250941aaa435824710d9ff5d6fc045e90a0c590963b1242cab5e18b5ca2908f",
+     "upstream_sha256": "be99614085daf815cfa1e5f6a4e8c4034ac2d25f4c60aef5601884443c1ca093",
+     "upstream_blob_sha1": "abaf1225c1d14a360242d1c941efb43dc3559d52",
+     "classification": [
+      "other_inherited_local_adaptation"
+     ]
+    },
+    {
+     "path": "glx/glxscreens.c",
+     "local_sha256": "749348b45b6437789f155c23102ab3d173372659407a1dde7586b522465ba0ef",
+     "upstream_sha256": "734f13064ff425aceeb1ca6c0c8baa160f0154162f2d199b2d3bf3587395058d",
+     "upstream_blob_sha1": "ef969fcd62bfac050c6193c7a127a2831c81e9d0",
+     "classification": [
+      "other_inherited_local_adaptation"
+     ]
+    },
+    {
+     "path": "glx/indirect_dispatch.c",
+     "local_sha256": "9a401dabcf9286e26e734b26098f8491e2e966d058fb99b84b789875b74495f9",
+     "upstream_sha256": "e48f6d6522c60c7b232ddfb27204eaf6f47e4799afc27bfbc1e03d8ffd58b3d0",
+     "upstream_blob_sha1": "6459dbf266fe3f03849867282524d638e70b268e",
+     "classification": [
+      "other_inherited_local_adaptation"
+     ]
+    },
+    {
+     "path": "glx/indirect_dispatch.h",
+     "local_sha256": "7f9a41bae2a22a10c70eac22fdf85685aa34d02cfd343b5c317eeb999eccf6a7",
+     "upstream_sha256": "64c66929eba5898de3df4b1bafccc7e0a8daf177396d1844e6fab2e91a5c0f94",
+     "upstream_blob_sha1": "536be60ace03d5501bd6c2c1f4a7aa68297a5162",
+     "classification": [
+      "other_inherited_local_adaptation"
+     ]
+    },
+    {
+     "path": "glx/indirect_dispatch_swap.c",
+     "local_sha256": "4e3adc9e5fd9920077110d0c75e2210a925e9ffcf791532010d972c01449e2b2",
+     "upstream_sha256": "5600bc45a3af597a79e7500bcf757557dbdd5afd4a0580e30c7c2290c3a219f5",
+     "upstream_blob_sha1": "aa31ebded17e511d519b5d3e9ea496943fdca38b",
+     "classification": [
+      "other_inherited_local_adaptation"
+     ]
+    },
+    {
+     "path": "glx/indirect_program.c",
+     "local_sha256": "5e5ed8cf275a20b39b476444121a6a2f755929e620241b243d93fd2f0309dc59",
+     "upstream_sha256": "202cd93ddb3f1b77a6c206d1be85c5d183a1ff21920654bd967b54bd91e61a52",
+     "upstream_blob_sha1": "1f10c41a79336046217a9b8e8829f3dcd9f1ffd4",
+     "classification": [
+      "other_inherited_local_adaptation"
+     ]
+    },
+    {
+     "path": "glx/indirect_reqsize.c",
+     "local_sha256": "c278351b61f425ecf60b0e8fdf6b9086eeb9f6e834fb2552070fb0c4ab10007c",
+     "upstream_sha256": "123b89174ac8900d27228ddb7c5a41d5d267740526d6d932a881f11d87fe7116",
+     "upstream_blob_sha1": "18dcfee2af83f3bbe146d00748e1cb69a1b5c260",
+     "classification": [
+      "other_inherited_local_adaptation"
+     ]
+    },
+    {
+     "path": "glx/indirect_reqsize.h",
+     "local_sha256": "7a21373bea0ec32d54f868f13683c4474e75a304702e2aeb73379913df2cb581",
+     "upstream_sha256": "52e8f015d6b135b6f63185bcacd6b350edff3abfc2aa3d98051fbd3bf5b965dd",
+     "upstream_blob_sha1": "8096819315ebf281344630ac50873efdb3703077",
+     "classification": [
+      "other_inherited_local_adaptation"
+     ]
+    },
+    {
+     "path": "glx/indirect_size.h",
+     "local_sha256": "2954bfabd6ab50b5e045931e41cb35bb28918036c1bb911ed81df598235b9790",
+     "upstream_sha256": "c330d82b7d573517418c0ff4c917d6e3a4f2a1b830b7d67328e3cfbb195fc698",
+     "upstream_blob_sha1": "e36c22ab3779e8337271bfac316b9cfaaad9b969",
+     "classification": [
+      "other_inherited_local_adaptation"
+     ]
+    },
+    {
+     "path": "glx/indirect_size_get.c",
+     "local_sha256": "6b3b8e7956a1ea59f116db253b040a668c744efa82eac7eff91ad872ccfb4190",
+     "upstream_sha256": "456b7fef5b64bf49302762325717d55798c88e4925ef8f57a21cba16f35fafac",
+     "upstream_blob_sha1": "46d0687692475f8a6deac513c2c5e496b9d50831",
+     "classification": [
+      "other_inherited_local_adaptation"
+     ]
+    },
+    {
+     "path": "glx/indirect_size_get.h",
+     "local_sha256": "66061f3d65b842a3caf4e51ab327acf5c508f1b35f29fe1c18da8d283d9a8193",
+     "upstream_sha256": "ef4d374f3e5152025715b317133c2061eaed1b2cdcc3f6337c13f096fca1cac4",
+     "upstream_blob_sha1": "587e4148a05e1ac360432745a1f8e8d1d1976d22",
+     "classification": [
+      "other_inherited_local_adaptation"
+     ]
+    },
+    {
+     "path": "glx/indirect_table.c",
+     "local_sha256": "3ccff6e2be2f6f12d4b2bf613bcdc78ce43b3bf575bf798b3eba2546eacdc2d5",
+     "upstream_sha256": "df39100bd2d9677a4eb92e677b8ec0f928fd6f4926171cd5f4324de4ecef2788",
+     "upstream_blob_sha1": "f0f0b83c8a9db5b5f76e05215b463dda86ef9539",
+     "classification": [
+      "other_inherited_local_adaptation"
+     ]
+    },
+    {
+     "path": "glx/indirect_texture_compression.c",
+     "local_sha256": "0988535e138e11ec22a6d1ed046f731d16175a5be5d0c982c122b0e58dedd218",
+     "upstream_sha256": "590be5ab61e06643b3823a865739cba007216f76470480c47150335cb3a1dc63",
+     "upstream_blob_sha1": "d45b0a910f9a32e44f8a54e0dc9e9dcc4357ef95",
+     "classification": [
+      "other_inherited_local_adaptation"
+     ]
+    },
+    {
+     "path": "glx/indirect_util.c",
+     "local_sha256": "fd589bbf0745bceed90f5fe230e96309c55ef9c5d8d2bddf9ee412c8dbefb34c",
+     "upstream_sha256": "9f47e4ea09bce9845a26a448e492bffe1a8416c58732b586cdde9a5f53ac7a84",
+     "upstream_blob_sha1": "83579c5293b7db917a54ec5076f87c2470cd2320",
+     "classification": [
+      "other_inherited_local_adaptation"
+     ]
+    },
+    {
+     "path": "glx/render2.c",
+     "local_sha256": "1c4c934f657ecf33f8d3e9248dd032cd25036a47b80fef1e69dbc5397925bc3e",
+     "upstream_sha256": "40f57180b71f18f7aa3d514b48e3891ad6646cdebaa7c3f6ec060a27b27c02be",
+     "upstream_blob_sha1": "5d126eeca795adcd33878f50ec50888e14b76e4b",
+     "classification": [
+      "other_inherited_local_adaptation"
+     ]
+    },
+    {
+     "path": "glx/render2swap.c",
+     "local_sha256": "98ac092bb551c47ff92d8b04fcd2bdba82e154b9a34b4e044b8e2b15c160e379",
+     "upstream_sha256": "4705fdc3dd3935412925e5368e34a5c4ab5db27986704b0474e465617b57dc53",
+     "upstream_blob_sha1": "243dd0fedc676d9e81eab0533b26d0545c6e19e5",
+     "classification": [
+      "other_inherited_local_adaptation"
+     ]
+    },
+    {
+     "path": "glx/renderpix.c",
+     "local_sha256": "b51e2f2cb78b08b42dd648b29613d953645ce619a3194dd70b6300875725ebdf",
+     "upstream_sha256": "b0bfa0525a9100bf43cb2b850e4eccb1b60a8c5fe123879c442002a8a6cb57ad",
+     "upstream_blob_sha1": "958f699c14ff5fce4f9586e502f90ccc72f94389",
+     "classification": [
+      "other_inherited_local_adaptation"
+     ]
+    },
+    {
+     "path": "glx/renderpixswap.c",
+     "local_sha256": "786c07f466a986cfb38bc0db786f5e24426541154722d6e118225755d1a89838",
+     "upstream_sha256": "69025b1b59826e5327203b4b95163b72e3a3dab0bf15a8a49d7c42305c7f17fb",
+     "upstream_blob_sha1": "322dc7e860d8175b9cb61a42b960d350dc7f3e33",
+     "classification": [
+      "other_inherited_local_adaptation"
+     ]
+    },
+    {
+     "path": "glx/single2.c",
+     "local_sha256": "4e6ca684e88af6efc4e895032743707f95faef06a1c116c3175bbbb75d0495a4",
+     "upstream_sha256": "d6b6ec612cee26bb2bab4d3f42826d2b8947bb8e7776fbb784960febdfa49044",
+     "upstream_blob_sha1": "18fd2c1bc1e6fc2e09a537a4e320346a6c2b10bd",
+     "classification": [
+      "other_inherited_local_adaptation"
+     ]
+    },
+    {
+     "path": "glx/single2swap.c",
+     "local_sha256": "ae265bd073704b9779619f754b06e52a32d733298947555d90057b6341f01a81",
+     "upstream_sha256": "65bde9775c6e09737c34f5f8f78fa02deadb65b9081fb398b589882cd5e74a9f",
+     "upstream_blob_sha1": "4bafd0dd5408b5b063bea5ab238f92446db89f9c",
+     "classification": [
+      "other_inherited_local_adaptation"
+     ]
+    },
+    {
+     "path": "glx/singlepix.c",
+     "local_sha256": "0a2d838027d5708c62a9e55b618e28359ee1d7452629a6d37ef54c89c7880ea1",
+     "upstream_sha256": "6c33c19c875c6ab7409accf6a9d1f1f55f28e88adbd24c7632c4e6bd13ed3921",
+     "upstream_blob_sha1": "95dbf51e790dbda0edb5005efb894f3b69c2bae3",
+     "classification": [
+      "other_inherited_local_adaptation"
+     ]
+    },
+    {
+     "path": "glx/singlepixswap.c",
+     "local_sha256": "428db1de9cb741bb17943488d6198cd62744e8287227641f526867fd8a09b4a6",
+     "upstream_sha256": "60a97560c7d9d79d3f04962359648b705fe1ecbe0322786a151b34cff68a9eca",
+     "upstream_blob_sha1": "0e27791452044dc9ec77dee2689a2c2eafd09dbd",
+     "classification": [
+      "other_inherited_local_adaptation"
+     ]
+    },
+    {
+     "path": "glx/singlesize.c",
+     "local_sha256": "f423e881cb3119acc6161b0440023e1aae48b9d1c6ca66b9e2c0a66634e2c742",
+     "upstream_sha256": "65c8be4417954026bbfcbe1b10dd0c0e544905c94a4550205829fd97ec724432",
+     "upstream_blob_sha1": "344ffef7ff385ed9cf7b4238f7be9f8bbadd90a8",
+     "classification": [
+      "other_inherited_local_adaptation"
+     ]
+    },
+    {
+     "path": "glx/swap_interval.c",
+     "local_sha256": "e04e560c7601cf51a76455534650283c16b2b8faf459d29ac98792ae3c6be8d7",
+     "upstream_sha256": "6ae1f1a3b69414cafe1db02d8ffecd1c92d7c60a5b87a9291bdd77d215a9957c",
+     "upstream_blob_sha1": "0af258e09693777c9840ed42aba61971df5cb064",
+     "classification": [
+      "other_inherited_local_adaptation"
+     ]
+    },
+    {
+     "path": "glx/unpack.h",
+     "local_sha256": "bbcabd962ccf6accf2c66480e600576e765f9bb4161c0989b3e4f39862acd3a5",
+     "upstream_sha256": "b029818677cfe7472ca47c7d61189da8d1ddb9ee905b780714a39e801f8f0f10",
+     "upstream_blob_sha1": "256073470e184c38c16646a728d76f95b8d201de",
+     "classification": [
+      "other_inherited_local_adaptation"
+     ]
+    },
+    {
+     "path": "glx/vndcmds.c",
+     "local_sha256": "204c756500bc03ce519c04e6a68549716493e99738d4c545966f25610a9eab6f",
+     "upstream_sha256": "1bbdc9b422b6961ba5a1dd5073ea6ff5818db20fd05a8fa71447ab1e15b172fe",
+     "upstream_blob_sha1": "4ffa5f19f5f549941a5c6317144ade8301bb2dce",
+     "classification": [
+      "other_inherited_local_adaptation"
+     ]
+    },
+    {
+     "path": "glx/xfont.c",
+     "local_sha256": "7f5a850ecd564d1f110b1d163de902b32cc0456badcb0886b51eed3545e99b27",
+     "upstream_sha256": "143385660eb121ce77a1717139868c4736e5285445c72b3d2a8afd4b57701d60",
+     "upstream_blob_sha1": "3e84369e8f1c6b9b3b551ccb14f9305ecb0522fd",
+     "classification": [
+      "other_inherited_local_adaptation"
+     ]
+    },
+    {
+     "path": "hw/kdrive/ephyr/ephyr.c",
+     "local_sha256": "68cb3f34110d17d935f575e4783141eac561c5a884e7c8c2fc3e41025b5fc713",
+     "upstream_sha256": "757f16127a95b345bde31d5d4e68e9514bf698159f66a9020bab64b8bb7245c6",
+     "upstream_blob_sha1": "069270219d891b2a9f9d60a9459e9b8dccf1ac6b",
+     "classification": [
+      "msvc_win32_adaptation"
+     ]
+    },
+    {
+     "path": "hw/kdrive/ephyr/ephyr.h",
+     "local_sha256": "59bed2e0ce88bfe4d8ab899b1c39761c738d696fe8483ad198316b88d6859f90",
+     "upstream_sha256": "b21d0ec4ddd62ec6a74d2e7abf7cfe54b8f3f445a35e70968ae31726d7fe006d",
+     "upstream_blob_sha1": "8833de8a92182f9c68655f223f0d1843d478c238",
+     "classification": [
+      "msvc_win32_adaptation"
+     ]
+    },
+    {
+     "path": "hw/kdrive/ephyr/ephyrinit.c",
+     "local_sha256": "404e12eae32e462eb93da630cc53601d745280c533b3d5a418ebe022dff401b0",
+     "upstream_sha256": "47569d772eeaf01bd9c46e0145fbb041d5b1970c80471a3c7a66e8a3a1641c9c",
+     "upstream_blob_sha1": "9306f33676a9950f93d90718eb4864a672108ce6",
+     "classification": [
+      "msvc_win32_adaptation"
+     ]
+    },
+    {
+     "path": "hw/kdrive/ephyr/ephyrlog.h",
+     "local_sha256": "22c42785b7dd0c54f707ad426857d456d9705775756623646b83c6b83bda1f02",
+     "upstream_sha256": "20df6dfe6b474604990814287385693439e610b5a35aa24c9a4519dc572b89b2",
+     "upstream_blob_sha1": "744da74c5869e02ea26156706c8e748efde81017",
+     "classification": [
+      "other_inherited_local_adaptation"
+     ]
+    },
+    {
+     "path": "hw/kdrive/ephyr/hostx.c",
+     "local_sha256": "fc6ec8b7f40908e9a63d0ed38b61df087c535f206c413d8c18429a1fa99a6f09",
+     "upstream_sha256": "6eefa1cbaff493c4c4c07567f43968b4141ce5f0d8ef44ff0f6c73c9dab8ece9",
+     "upstream_blob_sha1": "33dcccf8f3c61214a84cf990ea4783d2743603f5",
+     "classification": [
+      "msvc_win32_adaptation"
+     ]
+    },
+    {
+     "path": "hw/kdrive/ephyr/hostx.h",
+     "local_sha256": "5af87129a1c404e0825de4bf9ea3b8f20d649f4223f0207e705d7b26c5fa289e",
+     "upstream_sha256": "28e5b8d2cbf6728d1c923e98755b276955d786a510fcbd685dd13e2f7617fcdc",
+     "upstream_blob_sha1": "8b3caf245e338f1f6db41765ad16a99354e0542c",
+     "classification": [
+      "msvc_win32_adaptation"
+     ]
+    },
+    {
+     "path": "hw/kdrive/src/kdrive.c",
+     "local_sha256": "d354c8285bc3ececea3b0b2273e25fb57cfceae42ae6a4caeb06ac8c28314290",
+     "upstream_sha256": "cb48b192f4a0d80440eec664d5f7a47f93c64277d60c4249307bcfd0580b29e1",
+     "upstream_blob_sha1": "e2eb847d70fe0211b27389ad7fcd759dc3cd8e2e",
+     "classification": [
+      "msvc_win32_adaptation"
+     ]
+    },
+    {
+     "path": "hw/kdrive/src/kdrive.h",
+     "local_sha256": "0208639ce72513cc84c8fc63227f14dce33ca126495dbfb0bd88647cc7d25f49",
+     "upstream_sha256": "4df97257fe44518dbb58f0c49dc9f153cb0c6d865c5c6099056d44f2c3492b16",
+     "upstream_blob_sha1": "432f8914079c7ffd67188f43bb287a80b35fc855",
+     "classification": [
+      "other_inherited_local_adaptation"
+     ]
+    },
+    {
+     "path": "hw/kdrive/src/kinput.c",
+     "local_sha256": "99890547271215f935caee231dcf9d18221780f2fbff1fd8031c12ab14b6b7cc",
+     "upstream_sha256": "f600497cc3a1f8f61775b197674fbd3a6dd47844c75ae0838fb4bc6ad6378132",
+     "upstream_blob_sha1": "ad5d4b0476f0bfe0596ad228a3ca46485dc4bfda",
+     "classification": [
+      "msvc_win32_adaptation"
+     ]
+    },
+    {
+     "path": "hw/xfree86/common/compiler.h",
+     "local_sha256": "9b6b6a0f0078917f7250fb363d53b50071514a05fae48a5f04e9a8cda8a12f33",
+     "upstream_sha256": "c230830505d771e4241a746ea3bdf2e3d92e8ef2e169d651b6c7324d3c27fffa",
+     "upstream_blob_sha1": "af9ac044d8ba2ac90faf005ec89afc6c3c96bd96",
+     "classification": [
+      "msvc_win32_adaptation"
+     ]
+    },
+    {
+     "path": "hw/xwin/InitInput.c",
+     "local_sha256": "7d0182f8e722b090662fbd9e0655cd87d150e43d7b117e251fc2bff73362e3b5",
+     "upstream_sha256": "fad550d2ac5b43e53d8698ae877aa46e196f9e7e54673b538a479a038ec0eee8",
+     "upstream_blob_sha1": "c50464a60c50a9114b6996866f9ce43170fe0be4",
+     "classification": [
+      "vcxsrv_fork_hw_xwin"
+     ]
+    },
+    {
+     "path": "hw/xwin/InitOutput.c",
+     "local_sha256": "2042686db18e89ccd100476a34369cc3fa8f1e72a79ff71db02ff12eb1d2cbee",
+     "upstream_sha256": "00850d6e40a6e37d3ba1f3e10f67ee1a86901e3e729420f2d6a624e5a19ec186",
+     "upstream_blob_sha1": "a8a8cac245d19e58079f9513d845967329d958b3",
+     "classification": [
+      "vcxsrv_fork_hw_xwin",
+      "msvc_win32_adaptation"
+     ]
+    },
+    {
+     "path": "hw/xwin/XWin.rc",
+     "local_sha256": "56399e4fa135f66bfffc7ee9baa6aaf9437fb2cc88baf99ae34cf8d1252ccd8e",
+     "upstream_sha256": "45a02e43bb68ae3c923a6f1e8b0f05e93517db54d87bd9ebfc8f0deb550dd4ab",
+     "upstream_blob_sha1": "a54e0fdbb2526167e711560f40cf2514100a16a6",
+     "classification": [
+      "vcxsrv_fork_hw_xwin"
+     ]
+    },
+    {
+     "path": "hw/xwin/glx/.gitignore",
+     "local_sha256": "ac20e1c8f46ec29aeaf27bedbe67ea3cf2a9cab4ea9e840ee7ffb0a5cd2d25f7",
+     "upstream_sha256": "948af47d78719eeb85cc5516aa9df3859763462f26f0ce1059fc0ff672a585c4",
+     "upstream_blob_sha1": "9684410ac9a3c6c1e7f0fddda7b1febe0f05f325",
+     "classification": [
+      "vcxsrv_fork_hw_xwin"
+     ]
+    },
+    {
+     "path": "hw/xwin/glx/gen_gl_wrappers.py",
+     "local_sha256": "5bff22328b831a67fb9c62afd840ad2536582565b1424f402fbf8654050a6056",
+     "upstream_sha256": "c0eecb225a0ed8d8e553328e20aa0fd5a2e49ae543f1c4081dbaabb049ad9989",
+     "upstream_blob_sha1": "256f2d752aa7caf16db2142c60f1dc183a3b8636",
+     "classification": [
+      "vcxsrv_fork_hw_xwin"
+     ]
+    },
+    {
+     "path": "hw/xwin/glx/glwindows.h",
+     "local_sha256": "ba711a4c61a80adf7f968d0bebb7d841a7fdf9e32b03064c91d02b753b751bc1",
+     "upstream_sha256": "a44374f37b9539cdebc3162b3279deea9993f166d1518f356de1c09c123960b2",
+     "upstream_blob_sha1": "34ff24c24945034f4fa921006cd822869d7d94a8",
+     "classification": [
+      "vcxsrv_fork_hw_xwin",
+      "msvc_win32_adaptation"
+     ]
+    },
+    {
+     "path": "hw/xwin/glx/indirect.c",
+     "local_sha256": "12171f72419f59c23941506743ff04e58a70731360ed74f068b4b5ee42f96fc6",
+     "upstream_sha256": "65a71acad995c19c59a16c94621577c71a7a1b08d9c394de46b3931a388e432f",
+     "upstream_blob_sha1": "e34437ace469e68f50c903f6e562037373a0cd55",
+     "classification": [
+      "vcxsrv_fork_hw_xwin"
+     ]
+    },
+    {
+     "path": "hw/xwin/glx/indirect.h",
+     "local_sha256": "9c2711928fd625b99d0adbebc971caa7f25a99696fe215ff9d829c2f4ac9c1fb",
+     "upstream_sha256": "82238224276365e85a6b25bf6e66617b6d167244c70c24c6e5a8041a4d09b114",
+     "upstream_blob_sha1": "c32ce7894918cea50f9f004070530bf883e14377",
+     "classification": [
+      "vcxsrv_fork_hw_xwin"
+     ]
+    },
+    {
+     "path": "hw/xwin/glx/wgl_ext_api.c",
+     "local_sha256": "0a5518aaf6a0c5de2263112d27426fa82c030c4921600c7c4299d2fdf8951436",
+     "upstream_sha256": "398671aa01701ddab4240218d8b74634bb7ede7ce34261dd5a6a6b32dc5fa461",
+     "upstream_blob_sha1": "61cfe8003c0ca9c77ad45a73d9127267862e036e",
+     "classification": [
+      "vcxsrv_fork_hw_xwin"
+     ]
+    },
+    {
+     "path": "hw/xwin/glx/wgl_ext_api.h",
+     "local_sha256": "53d6c9e13e0abac19279e3e32236867c95345780c11ae950dc3a37e6c284079f",
+     "upstream_sha256": "09182749fd0c3de5e7f49be5837dd5376da7b6c5506099f5c15b5169afa04d68",
+     "upstream_blob_sha1": "b7231eb1398aedb8ee2f5da775e4f904a278fd09",
+     "classification": [
+      "vcxsrv_fork_hw_xwin"
+     ]
+    },
+    {
+     "path": "hw/xwin/glx/winpriv.c",
+     "local_sha256": "6e1c19aebc721695e91d976d0b43bee23939262e21cde8ac5adc652da615535e",
+     "upstream_sha256": "57114c03a88df1955311137d3d8692d676eea1efc74cb9cd2907a0a12fcc8106",
+     "upstream_blob_sha1": "d72c047863be7b0f9e7c517b4e16a90d03b6abd5",
+     "classification": [
+      "vcxsrv_fork_hw_xwin"
+     ]
+    },
+    {
+     "path": "hw/xwin/glx/winpriv.h",
+     "local_sha256": "3c1c858583214605ac318bffdbd672b8674d50ad00f9260554e6da0feee023de",
+     "upstream_sha256": "d5fcaf3dcb1d676d04f5e5d6febf1a51f2d3fa2abf5098939707fcd7b3d001d5",
+     "upstream_blob_sha1": "6f695a971ccd6373c38df85671fe923308ec7b4b",
+     "classification": [
+      "vcxsrv_fork_hw_xwin"
+     ]
+    },
+    {
+     "path": "hw/xwin/propertystore.h",
+     "local_sha256": "d9af9083d3fc654701c70b7dcd2cf237a5581067f65235d86e48568e6bb0ee4f",
+     "upstream_sha256": "4460d61ae1a3c24b27aaea497493cbf0006e11e7c9a36b8278b51603a99ef7ec",
+     "upstream_blob_sha1": "6afc6c954ecd613a47ecc6919cea5377c05bcca5",
+     "classification": [
+      "vcxsrv_fork_hw_xwin",
+      "msvc_win32_adaptation"
+     ]
+    },
+    {
+     "path": "hw/xwin/win.h",
+     "local_sha256": "96aea0bbb3b9e354c67814c5d2f52e6cc752c5b9ce61bd30295cfcdebfe3a558",
+     "upstream_sha256": "bbbb11f238467fdbd291a5bec0e1f65b4bb7b66cf3b9fd60c10348fcbbfd3212",
+     "upstream_blob_sha1": "44736a08b90b33257390255362047943884907c6",
+     "classification": [
+      "vcxsrv_fork_hw_xwin",
+      "msvc_win32_adaptation"
+     ]
+    },
+    {
+     "path": "hw/xwin/winSetAppUserModelID.c",
+     "local_sha256": "e6b5d5f4d15716e0f1084274fceb946de7c206fbb9628a95d1cd9374876209e6",
+     "upstream_sha256": "63093512b9449d2a082dcba59e816a194faaf4cae55a38f98f08c406cf938179",
+     "upstream_blob_sha1": "f9cb92cdd01ae5682dc59090a8d16faf2122b079",
+     "classification": [
+      "vcxsrv_fork_hw_xwin"
+     ]
+    },
+    {
+     "path": "hw/xwin/winallpriv.c",
+     "local_sha256": "9779b39f2c03da81b1d53e7cc510316a55d7bf7979b281f77dae4ca52c9766f8",
+     "upstream_sha256": "72a1ddc66980b5456976d2a7280b7081015309820303c86239bbe1eb7de12e50",
+     "upstream_blob_sha1": "7e96ae3d887e489babacd09896203f447e3a2d2e",
+     "classification": [
+      "vcxsrv_fork_hw_xwin"
+     ]
+    },
+    {
+     "path": "hw/xwin/winauth.c",
+     "local_sha256": "0d1a6936f6744048c07791fb2f35ac6440cb7375bedac730ffeaa45e499c8c43",
+     "upstream_sha256": "80bfdd3c78776523bab4989afba546b1a32d2040aafbeebdc0ba65338475eef7",
+     "upstream_blob_sha1": "5bc5a7316c9f19a2384895b47c0edd1da8e7c4e6",
+     "classification": [
+      "vcxsrv_fork_hw_xwin"
+     ]
+    },
+    {
+     "path": "hw/xwin/winblock.c",
+     "local_sha256": "e487cdfdff04c4eeab8cab25b9261ef45e411b187b811e49a64426752b6a1374",
+     "upstream_sha256": "6180dfa1cf491bafc7fce096ca2d565f609ed5c84cf8f94fe356264d24ce6f1d",
+     "upstream_blob_sha1": "c8eb0c9a18180074377218f4602d1c7c524d40c6",
+     "classification": [
+      "vcxsrv_fork_hw_xwin"
+     ]
+    },
+    {
+     "path": "hw/xwin/winclipboard/internal.h",
+     "local_sha256": "a6193fd676e6e58151fe013811fd2c6b7ebcf7f395af1e23d9d2804639014164",
+     "upstream_sha256": "d50b3fd9b0e03a34fa75883106c3321a3ee70dda459a28adff9f6a0820b94758",
+     "upstream_blob_sha1": "368fa70570d1dca770fb75f46bb2473844cbc073",
+     "classification": [
+      "vcxsrv_fork_hw_xwin",
+      "msvc_win32_adaptation"
+     ]
+    },
+    {
+     "path": "hw/xwin/winclipboard/thread.c",
+     "local_sha256": "671752cccf306bd47902e8473d9d31014a44cf6c2758e46fc152982ec15f0b6f",
+     "upstream_sha256": "ead991497ac869eba43417abaae79df204cd42aaf77ad17e00ea58922651761d",
+     "upstream_blob_sha1": "0e60c1b24a4f3127f23b00a6043afa30919aff6c",
+     "classification": [
+      "vcxsrv_fork_hw_xwin",
+      "msvc_win32_adaptation"
+     ]
+    },
+    {
+     "path": "hw/xwin/winclipboard/winclipboard.h",
+     "local_sha256": "bb2b54f3bfe4d20c4ef37fc00d0c7e1d21289a057926e871e1687f0e1eaa56e8",
+     "upstream_sha256": "92bde9c98ca540dee32fae88d9d69736ce34f6e0fee202a64bdfaa132b22b3e6",
+     "upstream_blob_sha1": "243aa24dcc589206143dbe51d5095e16031bbb49",
+     "classification": [
+      "vcxsrv_fork_hw_xwin"
+     ]
+    },
+    {
+     "path": "hw/xwin/winclipboard/wndproc.c",
+     "local_sha256": "cea20144faee442c5cc0d31e965d9c7e761b2534afed689374f365fab3eb09ab",
+     "upstream_sha256": "f390e4fbceb700dffa76d8be3d186965d2cb1f70a2937be16ee6d18d1be25963",
+     "upstream_blob_sha1": "63de4b9e510d92518fe197cf0e9c2c86df0d2e77",
+     "classification": [
+      "vcxsrv_fork_hw_xwin"
+     ]
+    },
+    {
+     "path": "hw/xwin/winclipboard/xevents.c",
+     "local_sha256": "c7e35051159c6fafa7ee3524ce3504f336fd2af7e61b553a1b1341da71f437e7",
+     "upstream_sha256": "5d8889f99bd2b33af71f11df9649bdc5b8a4367f397282216c5478690c70f61e",
+     "upstream_blob_sha1": "6a846902e1946522822bfd690209ad250451f972",
+     "classification": [
+      "vcxsrv_fork_hw_xwin"
+     ]
+    },
+    {
+     "path": "hw/xwin/winclipboardinit.c",
+     "local_sha256": "ba0cd4b0453340221cd62a17c09f7fac9084081e9eeb27406fc0fe64bce8025a",
+     "upstream_sha256": "03685ce814feeef0ac355fc755d2eebadb62f61c23d72bc83e5a5909330124d9",
+     "upstream_blob_sha1": "dbce0bc17de41dacf4aa5735f8dfd6049ab20858",
+     "classification": [
+      "vcxsrv_fork_hw_xwin"
+     ]
+    },
+    {
+     "path": "hw/xwin/winclipboardwrappers.c",
+     "local_sha256": "b0acd5532eb007f8131434dc0beb52d9352c30c958070dfc4ea8aa8ac2b8168c",
+     "upstream_sha256": "5406186c461754721e2a96a5e6280ff16d9347d8ca034db4e108d710eb658c5d",
+     "upstream_blob_sha1": "eee7882bddbb295f86b6c50ce1f3b9cccb38b15f",
+     "classification": [
+      "vcxsrv_fork_hw_xwin"
+     ]
+    },
+    {
+     "path": "hw/xwin/wincmap.c",
+     "local_sha256": "bae6b89ec5e250dcd11f8d543d4fc2cff1e8148de1cb6b715d5f37f4b3ac3b6b",
+     "upstream_sha256": "8b1ed850722d08245ddc5f984445b98d2d93cefa7cbfe05d4042d4e99b1a0331",
+     "upstream_blob_sha1": "3567afad548d8f85de49e3e8466724aa30524233",
+     "classification": [
+      "vcxsrv_fork_hw_xwin"
+     ]
+    },
+    {
+     "path": "hw/xwin/winconfig.c",
+     "local_sha256": "9fbac99884b04668371037caaa4546330f08b0f92d5b3f16c7a2f0b8f02fa440",
+     "upstream_sha256": "0bea12726440b4f2cc6711175ce87bcd49f5782bc16461f89ac32eb566f46e1d",
+     "upstream_blob_sha1": "4f16b21e02d16b415b1b9a1f335cc02840f5bf14",
+     "classification": [
+      "vcxsrv_fork_hw_xwin"
+     ]
+    },
+    {
+     "path": "hw/xwin/wincreatewnd.c",
+     "local_sha256": "311bdb67514dcb63c1e357fc8ddd72e8db944ab41c1b853761180842e59f2909",
+     "upstream_sha256": "a842cfe4c89f8930c7c00de8ebc3296d7cd95695cd724181147d36ed51ae64b6",
+     "upstream_blob_sha1": "58247675f42f03715592767cc6915137f5f3f821",
+     "classification": [
+      "vcxsrv_fork_hw_xwin"
+     ]
+    },
+    {
+     "path": "hw/xwin/wincursor.c",
+     "local_sha256": "73c6a47422bdd64cd1be4ceec94de9921f75448d855e6a87a71f3fb69302f795",
+     "upstream_sha256": "9851971b55ebeedd85f2db3be2bb931e8aeb4085a299e07f1b8d14961cc8d89c",
+     "upstream_blob_sha1": "6b42c990eb3f05da3634a577c62bb375e86fea23",
+     "classification": [
+      "vcxsrv_fork_hw_xwin",
+      "msvc_win32_adaptation"
+     ]
+    },
+    {
+     "path": "hw/xwin/windialogs.c",
+     "local_sha256": "7fe231bac92b5429ab5b96f9b40746beb5dd88c1a6abc3e5df08d320d4ee4257",
+     "upstream_sha256": "611c780449d1d1fe031a100ba4bce48d74f1939b0f0ab1516f1cd1adf5760eb8",
+     "upstream_blob_sha1": "91222f5a226c5aeeeaa7ac2715f8340455df7b9e",
+     "classification": [
+      "vcxsrv_fork_hw_xwin"
+     ]
+    },
+    {
+     "path": "hw/xwin/windisplay.c",
+     "local_sha256": "1066f5c8062b91db7b1fe5fbb0dbaf1c355e5fd79dc55efe8aa2bdeb87403a12",
+     "upstream_sha256": "0d789e2fee351da22113208c81db0836e07b6e9da6da55eff4e8a026708c3bc1",
+     "upstream_blob_sha1": "52ece1d8892b54f9f6c7a5632a02c8658add639c",
+     "classification": [
+      "vcxsrv_fork_hw_xwin"
+     ]
+    },
+    {
+     "path": "hw/xwin/winengine.c",
+     "local_sha256": "779c593c58a5686a336257d493bff5b7f3321ca093ddd4475cfadae63100a91d",
+     "upstream_sha256": "49de9b340c8afa9c098249405c9f5d2ea1e476af3f739c7df2d49b77f1d4277d",
+     "upstream_blob_sha1": "f822324244d9bff1c4d6e93eb06b26c4ef491868",
+     "classification": [
+      "vcxsrv_fork_hw_xwin"
+     ]
+    },
+    {
+     "path": "hw/xwin/winerror.c",
+     "local_sha256": "66e6b340a8a6b01e4101364c246ce058b6fa8bb375223cfe1c6dd1081f022469",
+     "upstream_sha256": "3b5efcdad8d9b0c2d328eedc8092928bf177a0d08abd3cbca2144faa50d98dc6",
+     "upstream_blob_sha1": "40148132793691e9e947db19c77ce37c92c08052",
+     "classification": [
+      "vcxsrv_fork_hw_xwin"
+     ]
+    },
+    {
+     "path": "hw/xwin/winglobals.c",
+     "local_sha256": "9d355274b7d5894709673eba36bf1439c32695bb158e2556c2ef42e539e79c4d",
+     "upstream_sha256": "8b7c4772c473c089dbefa26907a5a995b4ab548abe013d8b30e433d12c69df3b",
+     "upstream_blob_sha1": "29abe1970f0468c733bb82c545eed9b0bbb7a810",
+     "classification": [
+      "vcxsrv_fork_hw_xwin"
+     ]
+    },
+    {
+     "path": "hw/xwin/winglobals.h",
+     "local_sha256": "6138aec00061388d3ab75a0d16fb178701ef7ddfe7f7ec47d3ad170b9c4d477d",
+     "upstream_sha256": "44ec88e8ed032e996f9ab3025c15c1779ef11f42a35fba17d303452cb2509e5b",
+     "upstream_blob_sha1": "29535f05a7f87d74c6df6ce4850e5f32214ca449",
+     "classification": [
+      "vcxsrv_fork_hw_xwin"
+     ]
+    },
+    {
+     "path": "hw/xwin/winkeybd.c",
+     "local_sha256": "77c8d50fbce7bdf00602899f0bcb7ee6528c197bc33e05532d8cefdc5b0bc2db",
+     "upstream_sha256": "f4b26e4b755c48c0f887f7943e78d9520032ecc39538956e152b949e48c7f521",
+     "upstream_blob_sha1": "8956b859e679dfcdb8451346a173b80767cadadf",
+     "classification": [
+      "vcxsrv_fork_hw_xwin"
+     ]
+    },
+    {
+     "path": "hw/xwin/winmonitors.c",
+     "local_sha256": "a8636edd38c4e2dec2de04243d11246185cbd600629711d49d34624080c6312e",
+     "upstream_sha256": "27d6f747372e34293ce0f9efc4e3ee57f8de0e5d0778dc2e074068c0177e9363",
+     "upstream_blob_sha1": "5ff56530898bac0c465ee3a8ad310fffc725e322",
+     "classification": [
+      "vcxsrv_fork_hw_xwin"
+     ]
+    },
+    {
+     "path": "hw/xwin/winmouse.c",
+     "local_sha256": "36def5d7977e06a72a6ede10a1621fcd3d493aabf928f265a4bfa88c87f920b3",
+     "upstream_sha256": "a008c072a10fc5c8735c80ada359be165eeaed37263d30c2b59e21157cca00f2",
+     "upstream_blob_sha1": "52166a850725499b240d48f7fe62cbd24e225885",
+     "classification": [
+      "vcxsrv_fork_hw_xwin"
+     ]
+    },
+    {
+     "path": "hw/xwin/winmsg.c",
+     "local_sha256": "6c6ca38f10c8eff42aabbb8ec5e9e4fc97378449798d8a9b0f46d7b3a286d721",
+     "upstream_sha256": "bb453793e9baeb8f33c15d17f4ad0d9c6790c127baf7e55c116670e34b40d273",
+     "upstream_blob_sha1": "8629875c3d5d9214f31ac6dd4f0c06d96d92181f",
+     "classification": [
+      "vcxsrv_fork_hw_xwin"
+     ]
+    },
+    {
+     "path": "hw/xwin/winmsg.h",
+     "local_sha256": "58d0dabe7fbb5e6a2b18c20fcd0a61c16c70a4d52c439593f0ab528552a15308",
+     "upstream_sha256": "c1cc0647a728bd7fdc87beb74e5ee382bf6c1ff59e2f41d05b3a580d5281b9cd",
+     "upstream_blob_sha1": "02f672f08f0261ad59de857bf2afac62eb21f6a0",
+     "classification": [
+      "vcxsrv_fork_hw_xwin",
+      "msvc_win32_adaptation"
+     ]
+    },
+    {
+     "path": "hw/xwin/winmsgwindow.c",
+     "local_sha256": "afc07ae886ef4edc0565828a8d5024f887f2b53a562b8eb83b5ee4164a3cfbcf",
+     "upstream_sha256": "5a03017ba6a46daf8d19f662cd8fc4458ff7e5393a283f04c1836971076bf376",
+     "upstream_blob_sha1": "8792d779cc3077c5330dd5044894364b288e43b8",
+     "classification": [
+      "vcxsrv_fork_hw_xwin"
+     ]
+    },
+    {
+     "path": "hw/xwin/winmultiwindowclass.c",
+     "local_sha256": "644ba40a10cd1c0303cbd75c9fac5c7fc8e838f9fc15f8a413f29ffbafd9d19c",
+     "upstream_sha256": "7dc58e099983207a92a6d19fa72faf759ddfa9936c9147652d02cb9c52dffa0e",
+     "upstream_blob_sha1": "6787332a3d5da19e080cdcb7f112ed3af8e06663",
+     "classification": [
+      "vcxsrv_fork_hw_xwin"
+     ]
+    },
+    {
+     "path": "hw/xwin/winmultiwindowclass.h",
+     "local_sha256": "4414730bbdf1125852c48c4692684d5a68136a2e15fc237084af4ccfd4ede9a5",
+     "upstream_sha256": "2e22e292e7841f56bcc21cf7d05f61f7ff0c7ad06d437d16769e5c16e20ab43c",
+     "upstream_blob_sha1": "37ee9fb13a20910b953c99c38765e390aa6014cb",
+     "classification": [
+      "vcxsrv_fork_hw_xwin"
+     ]
+    },
+    {
+     "path": "hw/xwin/winmultiwindowicons.c",
+     "local_sha256": "cf18373b3acc0c88ad2cb99f42a0f16daa1d0f84236a5aab6a4bb480b3f48b35",
+     "upstream_sha256": "f0ca63d290bfe28eac0cdd95c972ffcf142a15f8d17bbddfd865e01f3817c358",
+     "upstream_blob_sha1": "e5b09e48d7d54d55a47a8955f51918d185e63d8b",
+     "classification": [
+      "vcxsrv_fork_hw_xwin"
+     ]
+    },
+    {
+     "path": "hw/xwin/winmultiwindowshape.c",
+     "local_sha256": "ad20853aabcb3b24fe84932e7df32266be1def06a053a5f7b8e5b82db5e805b5",
+     "upstream_sha256": "f14768d00e591946f4199f6e3dff08bec62c6eaa67f071db808725309fb9401f",
+     "upstream_blob_sha1": "dba3202d2e95a30ef2571a452116806e70262fb0",
+     "classification": [
+      "vcxsrv_fork_hw_xwin"
+     ]
+    },
+    {
+     "path": "hw/xwin/winmultiwindowwindow.c",
+     "local_sha256": "930b988db400aa476b3cbd5e650a52d54a03f35c98a77749cf6125308d458728",
+     "upstream_sha256": "db444dc903d65cdfbb8fd347aa739201a542dd2e7b017f50372203d6fce4bb51",
+     "upstream_blob_sha1": "24e226c5152e105764e0bddf1638f171c0a1a419",
+     "classification": [
+      "vcxsrv_fork_hw_xwin"
+     ]
+    },
+    {
+     "path": "hw/xwin/winmultiwindowwm.c",
+     "local_sha256": "07c200149c76abb466c2e91f61a077c2c79f6ccb38151c6017f9b00cd184d86a",
+     "upstream_sha256": "eab6f09e0d4ce50caba78cb733350650665a34422766793a2e2d00c26ade534a",
+     "upstream_blob_sha1": "2d5ebc2f5936d50f77bcdff9abde419c78e8151f",
+     "classification": [
+      "vcxsrv_fork_hw_xwin",
+      "msvc_win32_adaptation"
+     ]
+    },
+    {
+     "path": "hw/xwin/winmultiwindowwndproc.c",
+     "local_sha256": "5260dfcf0cbe21eac6cc339a76b59e84a9a42d288dc00b7e460724f5c7f1aea1",
+     "upstream_sha256": "60e86130900a77b46cfdd7a15a6a513c4730ca6af6fa6c2dd2fbf8c110605acf",
+     "upstream_blob_sha1": "edc1c0a039b00acdc9fa060f7022bad10d43217b",
+     "classification": [
+      "vcxsrv_fork_hw_xwin"
+     ]
+    },
+    {
+     "path": "hw/xwin/winos.c",
+     "local_sha256": "59829b2f67b14e90e6565b6d41b4ff66ecbf3f2b033a2239b60b4f7ec78dd755",
+     "upstream_sha256": "258bf7925bb06fc5ff40b3db077c626cbc94d4a063567100ae42974690b53f8c",
+     "upstream_blob_sha1": "0d825bb83fa588783c6c35312e4e75b03ab4bf66",
+     "classification": [
+      "vcxsrv_fork_hw_xwin"
+     ]
+    },
+    {
+     "path": "hw/xwin/winprefs.c",
+     "local_sha256": "c5579f7ed13b42889155b4dd56cbc1bd2046031b2db6a27220db6a0c89d9f26c",
+     "upstream_sha256": "abfb756d1d9f6c96c2a5dabce1ded82edf29b24991e91071f9dd2d0752596f00",
+     "upstream_blob_sha1": "8cf45fd5103e8682509b0bf96a8389a84bb48596",
+     "classification": [
+      "vcxsrv_fork_hw_xwin"
+     ]
+    },
+    {
+     "path": "hw/xwin/winprefs.h",
+     "local_sha256": "4a83829ab40f5cf9bb1625b5808305fa1778258adfc1ae28856d3bd386ea1cda",
+     "upstream_sha256": "136da15689cb90deefe7489b3b04d3032fb585c791f1842ff3e8a7f112f29b6c",
+     "upstream_blob_sha1": "597398ee2a780b600ff05207b460d9cf9d00b0bc",
+     "classification": [
+      "vcxsrv_fork_hw_xwin"
+     ]
+    },
+    {
+     "path": "hw/xwin/winprefslex.l",
+     "local_sha256": "009eee2b77664847d0f34f4b8d5060e2f1b41fdd64500b32e08766ac1d0dd189",
+     "upstream_sha256": "09ecdbd4ed192d8978b763d0fc91bcad05dc44e6d9b6fc56228870ac7bed18f2",
+     "upstream_blob_sha1": "9e6f0d6d471130723a718b576f3af4fa4e66cd9f",
+     "classification": [
+      "vcxsrv_fork_hw_xwin"
+     ]
+    },
+    {
+     "path": "hw/xwin/winprefsyacc.y",
+     "local_sha256": "a4260187b88f984e843d94fc78d2652cbb9ea92890f66b8e90ffa1b7c7168cd8",
+     "upstream_sha256": "3bc5f6de700df0c0c05f3372bd1bbb1e55a3e74b40ae0200da89956e57e4d1f5",
+     "upstream_blob_sha1": "9bb28ae9211d1031af20f8c1d3348fd7b5c2c3c7",
+     "classification": [
+      "vcxsrv_fork_hw_xwin"
+     ]
+    },
+    {
+     "path": "hw/xwin/winprocarg.c",
+     "local_sha256": "977b69bd33e90ad5891519d37c60eaf487e06f15600d5eef8d7fead8e3c52069",
+     "upstream_sha256": "27c2d3d39468f9ea74d05c06f33074c764452574de6a09ea34818122a46bdd7e",
+     "upstream_blob_sha1": "d87c40936b5bfff5027576b6785aa2f76e9aa718",
+     "classification": [
+      "vcxsrv_fork_hw_xwin"
+     ]
+    },
+    {
+     "path": "hw/xwin/winrandr.c",
+     "local_sha256": "2506b913441b85596cc85f8581efdf3b3a6bc0f2127ceb606ad538d1b246f417",
+     "upstream_sha256": "b0b388b080b8642c3d464337a0cd2a373bf6c55eb4b395e509a15d350f07514d",
+     "upstream_blob_sha1": "038d63bded5d39a64c89a4a2e6525fb75ec79dcb",
+     "classification": [
+      "vcxsrv_fork_hw_xwin"
+     ]
+    },
+    {
+     "path": "hw/xwin/winresource.h",
+     "local_sha256": "ca15e91cc2ded4424acc962a9d91c242bff5685cf562159a11550daff51b4270",
+     "upstream_sha256": "171ef5721d16964e0c8ccdb94eddbcc665df1cea8990b712e52c723b377ba4bb",
+     "upstream_blob_sha1": "37e92ce61cc84affb3625b8423d1b48f6c11061b",
+     "classification": [
+      "vcxsrv_fork_hw_xwin"
+     ]
+    },
+    {
+     "path": "hw/xwin/winscrinit.c",
+     "local_sha256": "8dedee85ec285e65a51868b7bcb68e9457c7dbd543d866b96b2399c3ad910af1",
+     "upstream_sha256": "4d789949fceec3b02abf055efcb782c2a496b7dee11a05f7bc2ff7f029ec5d8f",
+     "upstream_blob_sha1": "48d3e7a260d98977f90845b6a47a3036750e8a5a",
+     "classification": [
+      "vcxsrv_fork_hw_xwin"
+     ]
+    },
+    {
+     "path": "hw/xwin/winshadddnl.c",
+     "local_sha256": "70f4dd319cc0f2abcce672924c0b82fc1e4ac27663a46f03f416eb43ccdc2605",
+     "upstream_sha256": "f7cfe77d45edf8d9d36a533bc9f02ff783d52900d1ac1153a38cb5eea72adbc2",
+     "upstream_blob_sha1": "38ce01f08bc0f9fd8dc2743a8e37cf0724bbbbdd",
+     "classification": [
+      "vcxsrv_fork_hw_xwin"
+     ]
+    },
+    {
+     "path": "hw/xwin/winshadgdi.c",
+     "local_sha256": "a72b89ddb6aa474c7dc5a7ac69ad5cafa59a3545ea4392ef6eabca2d4b28c6bc",
+     "upstream_sha256": "6668e812aede05c40ddf1d01fb345f255d998cc36620a4dd17f5bd4f1afe1d3c",
+     "upstream_blob_sha1": "f8317ad27b419ec82fcaefae4d320941b0a5e2fe",
+     "classification": [
+      "vcxsrv_fork_hw_xwin"
+     ]
+    },
+    {
+     "path": "hw/xwin/wintaskbar.c",
+     "local_sha256": "66e2f28eac3ee011f19b39348663234d8f60d6d8f0cabe5f7c8b32a14783fe15",
+     "upstream_sha256": "f9374ffc34773f26b4041a5ceaa2df901a38bd12b554f01f1b19944d0ee82dad",
+     "upstream_blob_sha1": "401ec175a2643e2faa5af89f560dcfff9c9be056",
+     "classification": [
+      "vcxsrv_fork_hw_xwin"
+     ]
+    },
+    {
+     "path": "hw/xwin/wintrayicon.c",
+     "local_sha256": "55e402dac06c440221f2ef37f56a6b0560e0f56311b81ba2bc39ca761d409756",
+     "upstream_sha256": "eac3caf30c75a2a3a9fabdb6fc0b61b21a959249457d23742d33232911b96cca",
+     "upstream_blob_sha1": "7da170d27dc602feb24c21a39889202a3b4c9afa",
+     "classification": [
+      "vcxsrv_fork_hw_xwin"
+     ]
+    },
+    {
+     "path": "hw/xwin/winvalargs.c",
+     "local_sha256": "309e62db8caa4f2adcfd6828270c40b97f95dc053cad08c62809e175b5234598",
+     "upstream_sha256": "c424bc388e0bb6646de120289be76e68e6e5501fcfdd7b42e98a75d674bbd4c3",
+     "upstream_blob_sha1": "008c111a6e3e9c2c8833dc7a560d42f07d46847d",
+     "classification": [
+      "vcxsrv_fork_hw_xwin"
+     ]
+    },
+    {
+     "path": "hw/xwin/winwindow.c",
+     "local_sha256": "d6a116fcdaedeec41239a31ecb985109c7b6828a625cdff1c2b68beb6a786439",
+     "upstream_sha256": "8fe6ca9645153d73301b436b5a8534abe337b6cf2fcec714d913243983efac3f",
+     "upstream_blob_sha1": "60be32da46b647daf03177db6d40fe7304e15455",
+     "classification": [
+      "vcxsrv_fork_hw_xwin"
+     ]
+    },
+    {
+     "path": "hw/xwin/winwindow.h",
+     "local_sha256": "b8af2f4d7f5dc5c1f696bcc8b13095404c42611407133cbab6d54c16f2f6db3a",
+     "upstream_sha256": "2a62acfaab14b4dae24507fa571565e679b5d2bd363327fc271a10c83565bf18",
+     "upstream_blob_sha1": "2ad4b475e00f58e5ffed34bff5eaba0273634cd6",
+     "classification": [
+      "vcxsrv_fork_hw_xwin"
+     ]
+    },
+    {
+     "path": "hw/xwin/winwndproc.c",
+     "local_sha256": "5709735630ea97717925225b04bfb4202473b633a964c01372d532473628f3e9",
+     "upstream_sha256": "8fca088677c440a7f416434e02227001ea6c254b9be17acdb81c433cc30d574e",
+     "upstream_blob_sha1": "f15ab3a96e9f3ef786886363002859ab10e82050",
+     "classification": [
+      "vcxsrv_fork_hw_xwin"
+     ]
+    },
+    {
+     "path": "include/callback.h",
+     "local_sha256": "03eeaac01dd0700410227109e3f3afeadfa6d081503f241907cd1ff88414065c",
+     "upstream_sha256": "10b231bbfe1cd5e82274acda068137ebb14822f21f32c441f64ee17ebd58d0e6",
+     "upstream_blob_sha1": "a1f9f15c0414203d6d0114eac93f276fbc157536",
+     "classification": [
+      "msvc_win32_adaptation"
+     ]
+    },
+    {
+     "path": "include/dixstruct.h",
+     "local_sha256": "862e5f8053358c4489d2667c2a46632d568f11201373ecd76d18e42715d64df7",
+     "upstream_sha256": "5ac1e5d9a675b4d78f3d49e3f9b159a0cf174618408b276f696293c13800c7ae",
+     "upstream_blob_sha1": "66f6081b0b645727dfa795099ceb05557695f350",
+     "classification": [
+      "other_inherited_local_adaptation"
+     ]
+    },
+    {
+     "path": "include/gc.h",
+     "local_sha256": "001ecff2f16296655e3d7ae1d4afb79a75d27fc14ca96a0b0a8abe1e95247acc",
+     "upstream_sha256": "7166a946a94afd3061c2d1d84ec01a6caa5743a43ff412415e88da45b287a647",
+     "upstream_blob_sha1": "66e27bceae9d6eb2afa0ec88e676384b28720483",
+     "classification": [
+      "other_inherited_local_adaptation"
+     ]
+    },
+    {
+     "path": "include/globals.h",
+     "local_sha256": "caf1c3dc72349c6e74b41b7d266d4bc59c8a6b422d087135291bf8ec95a35e9e",
+     "upstream_sha256": "025cfa3fb06a6b4a8aad5d2dd94b957e24bd7f44df58b8ebae9b7a60fb3afd87",
+     "upstream_blob_sha1": "65a25855eb6f2fe29b06dda9262923d8f2efba57",
+     "classification": [
+      "other_inherited_local_adaptation"
+     ]
+    },
+    {
+     "path": "include/list.h",
+     "local_sha256": "7d90d136296bdfb5ae366a9c496ceeb85f3485b959d109f3b704527204377227",
+     "upstream_sha256": "6734c9449f964b54b0fecad8ea91922607eebb6f981d961dc7a93976f2e3501a",
+     "upstream_blob_sha1": "f585b8f10d5bd0c7278d09f1a0f1aed3e54236d4",
+     "classification": [
+      "other_inherited_local_adaptation"
+     ]
+    },
+    {
+     "path": "include/misc.h",
+     "local_sha256": "82b55b78141a3054dba71e6c4f637c20ec35074a337b557c763a696305eb6cdb",
+     "upstream_sha256": "73bcd8a691fc139aa9be54be67109fd1a41f6040cdc63855b8656f0014bcbdd4",
+     "upstream_blob_sha1": "90d7046d3b778c864d3af6bd2c2eda12c4ff5bd6",
+     "classification": [
+      "msvc_win32_adaptation"
+     ]
+    },
+    {
+     "path": "include/os.h",
+     "local_sha256": "4c3e3f87b92dbcb23056ef9d16ee5ca295401c288389ff83421f39b774aff030",
+     "upstream_sha256": "b2b2abd4acf17b5dddd4a16808d0886ab3f4ad89134abb25502d0aa062a6da93",
+     "upstream_blob_sha1": "929769fb3109df65ae5ba127bd125589e97cbb7d",
+     "classification": [
+      "msvc_win32_adaptation"
+     ]
+    },
+    {
+     "path": "include/pixmapstr.h",
+     "local_sha256": "97b2ea6ec8a63053ac994ac02fe3da6e224c01cd490866b26bccdab5f1a5adf1",
+     "upstream_sha256": "442a3699288dc56eabb294fc7cc0654e405a99d3143c53d342ed4502a3161cc2",
+     "upstream_blob_sha1": "54fc26508c08f469ed12e4c8f3d0e22ec7f354bb",
+     "classification": [
+      "other_inherited_local_adaptation"
+     ]
+    },
+    {
+     "path": "include/resource.h",
+     "local_sha256": "65638a7d8e9a1e4982996fb2b64863c405289dcc33996cf79de41c4bd23284b3",
+     "upstream_sha256": "b56dc3c07270183624ac494ba18c20a585b72d1f524c8d8e30a8d14730b7f908",
+     "upstream_blob_sha1": "a48735ba030763b9539ac60dd05e51f606cdb059",
+     "classification": [
+      "other_inherited_local_adaptation"
+     ]
+    },
+    {
+     "path": "include/scrnintstr.h",
+     "local_sha256": "fc9baa84925aa67c8144bfa44d0da5c49bfbecfc66e31d9b85093af5860594ab",
+     "upstream_sha256": "e846905eb3bbe4e794f593acb794163dfb2ecf44eb650814479f547f6e794e3b",
+     "upstream_blob_sha1": "98f47bf51c5a1c97fab9d6b00674eaee246c3f9b",
+     "classification": [
+      "other_inherited_local_adaptation"
+     ]
+    },
+    {
+     "path": "include/servermd.h",
+     "local_sha256": "0940c7c62dea1e388391097b79697700905746aba0ead16209b69ac57fc7fca9",
+     "upstream_sha256": "de319686c39d247137641c7c88dd96ce18bfe9bc85da082dc232da59aa2df7a6",
+     "upstream_blob_sha1": "087826f4881898f131229758afff734e53a65bfc",
+     "classification": [
+      "msvc_win32_adaptation"
+     ]
+    },
+    {
+     "path": "include/windowstr.h",
+     "local_sha256": "320b2969f925ea49ae3c073b738bd2860aa9e5d4054cc5cc0da934fef2781816",
+     "upstream_sha256": "cbfab7491cbe276880edda07e793d74529fce9a2dac5857fec6ee2d307cad03b",
+     "upstream_blob_sha1": "c7e27965e0d4359b7e8633386fee2e45f9bc11b1",
+     "classification": [
+      "other_inherited_local_adaptation"
+     ]
+    },
+    {
+     "path": "include/xkbstr.h",
+     "local_sha256": "5b436ac52449626f513c4b34a358c92ae42b7ec012b7c8eff42c1a5ac376a751",
+     "upstream_sha256": "52d806614f96be9b1dfda8f7803702c463a4f9553b208613ef6f884593b67868",
+     "upstream_blob_sha1": "749f1f26e500fdb6eb46780fa989f4f9a57e5fa6",
+     "classification": [
+      "other_inherited_local_adaptation"
+     ]
+    },
+    {
+     "path": "meson_options.txt",
+     "local_sha256": "509138fb10ca1d655ee9d6fb4980319613fd716a6b237740b473355021bcffd4",
+     "upstream_sha256": "4761ee18ae0d6d0894e2e4b880ddb44c23cbd3e337a2be11576a7472e3cf2b07",
+     "upstream_blob_sha1": "94698f218e7696cd3a86dd6f56e7ead33e91bc68",
+     "classification": [
+      "other_inherited_local_adaptation"
+     ]
+    },
+    {
+     "path": "mi/mi.h",
+     "local_sha256": "740a5cc95065d26f54ffc5d9f835fb34ba1614a59802a779aa0c5b6074c161df",
+     "upstream_sha256": "36eb665e8c23684f8458086549d24c7d59169fc12272a2402ad4526e89f540cd",
+     "upstream_blob_sha1": "0adb915cd2f2f889bb94e05bf30a5c330ce71595",
+     "classification": [
+      "msvc_win32_adaptation"
+     ]
+    },
+    {
+     "path": "mi/miarc.c",
+     "local_sha256": "ddc70de667b1753aef28fee7ae7a5caf2aa5ee45c88a67c764a649c64e04adc2",
+     "upstream_sha256": "8f6b5d2a619b1cde3b30be2f501b49c83886f89005e6881bdbd1737daf439e66",
+     "upstream_blob_sha1": "3223bcb02540bcc589bd0482c57b035b26841f6a",
+     "classification": [
+      "msvc_win32_adaptation"
+     ]
+    },
+    {
+     "path": "mi/micmap.c",
+     "local_sha256": "451acaf4b283b10b3e4eb1c356ad3b20e7f4c24e2f223ae0357a9e64bb955215",
+     "upstream_sha256": "d86124d0c75e31ed7901826fa4ee5a75f808ffd7e9193ccbd20ecfde8030f24b",
+     "upstream_blob_sha1": "1259bbba240c6f5416a6d07103616bf06df132df",
+     "classification": [
+      "other_inherited_local_adaptation"
+     ]
+    },
+    {
+     "path": "mi/micoord.h",
+     "local_sha256": "1b98e1398e01028c0b29e17fb4db032476adf5fdddf0963171487871aba3890b",
+     "upstream_sha256": "dcfa61e7ae1dfa68f52519a2544276db920cc82a65df8ce6fba519163552b4cb",
+     "upstream_blob_sha1": "c83bffd9032701a9f3bf44abd49fcd4b8bfb985c",
+     "classification": [
+      "other_inherited_local_adaptation"
+     ]
+    },
+    {
+     "path": "mi/mieq.c",
+     "local_sha256": "b15c7c582e0d8374d8953325dfc8523f0f19864148433a14d12413105162d6e7",
+     "upstream_sha256": "d3c8b460a6fac798d18edb94248973fa31ebd36b1e81cd630864e2f87174d940",
+     "upstream_blob_sha1": "dea7761da4f55cd2712f7c6d67e3d208f9bab99b",
+     "classification": [
+      "other_inherited_local_adaptation"
+     ]
+    },
+    {
+     "path": "mi/miglblt.c",
+     "local_sha256": "bbc796f2b42adda3af147ba2edb300667e766b4f20a36f9f87f949be2148e4db",
+     "upstream_sha256": "8555477db1eba372328b478e3aec8d33f2b4e4e612fa3768cfcb3d63dd44de2a",
+     "upstream_blob_sha1": "accd55ffed06c73f1ea4d7f22755c714fb1f077a",
+     "classification": [
+      "registered_upstream_patch"
+     ]
+    },
+    {
+     "path": "mi/miline.h",
+     "local_sha256": "2e47b65a82a8f83a3c54e633d360d087e22a6ac25907f649c1faaf51d57272b2",
+     "upstream_sha256": "a2bcfdbd751d991e7506be49038d5a0df6b897600e07e26b8491cdba1ff8b26d",
+     "upstream_blob_sha1": "7ef3b015a421091646c20fbf35d5c329f1f16b56",
+     "classification": [
+      "other_inherited_local_adaptation"
+     ]
+    },
+    {
+     "path": "mi/miscrinit.c",
+     "local_sha256": "dcf1b74623a216afb1334bf077e39cdccf9664c147bb122c3566ac0afd25a80e",
+     "upstream_sha256": "e9fe8049e7052eca8d36170fb09a4b0acaab99dbd2478f534be018b6bc5eba04",
+     "upstream_blob_sha1": "1372cf7542b3f33a2ff895c1e82f46e28635615c",
+     "classification": [
+      "other_inherited_local_adaptation"
+     ]
+    },
+    {
+     "path": "mi/misprite.c",
+     "local_sha256": "a98a4cd2bb52ae3deba60891dcc5bf18717e012d608ff2b6948ed57e3aeeae54",
+     "upstream_sha256": "dac2cf59d73e47118f23ed475a8ad3e91c5d924f42b5f24f99fb42a9e3f0577a",
+     "upstream_blob_sha1": "67357a914d6b9da6417ff98f87bfea392e48c264",
+     "classification": [
+      "other_inherited_local_adaptation"
+     ]
+    },
+    {
+     "path": "mi/mivaltree.c",
+     "local_sha256": "5bbf185464bcc1c2750996bd6af56dbc4ff5596b7fa5465d9c2475d27ee8cea7",
+     "upstream_sha256": "188c375bd881bfef7a2082d8578ed439eca932d18afffbc51628129de06c841a",
+     "upstream_blob_sha1": "edab5dc1ba7ef843ffe385ff6c07eaa27a215970",
+     "classification": [
+      "other_inherited_local_adaptation"
+     ]
+    },
+    {
+     "path": "mi/miwideline.c",
+     "local_sha256": "669b64b07ecc41c654b478d3ac1da78f78127e805b30e7991ef35bb113553f90",
+     "upstream_sha256": "d909746865040929a4f636c32fe76c6278474c8a8efea14f1a89c2a2e66d8ab6",
+     "upstream_blob_sha1": "0498e9cd8a87cddc67033b2cf3046491f7902346",
+     "classification": [
+      "msvc_win32_adaptation"
+     ]
+    },
+    {
+     "path": "mi/miwindow.c",
+     "local_sha256": "ae99bb55b724a5958d6cd980974be51eb4b499702696868481e1ffc60504e96f",
+     "upstream_sha256": "9bd3719f5a27d465d66baf408a1b75b7f17090ea4b21d47774e02dcd391252ac",
+     "upstream_blob_sha1": "a4b97a7b83b5ce68a1a3e985284558763893c490",
+     "classification": [
+      "other_inherited_local_adaptation"
+     ]
+    },
+    {
+     "path": "miext/damage/damage.c",
+     "local_sha256": "1e3e738ca026b40c9ac77154f06af872bc5c35bc740799a5bd0769d8629bf6e2",
+     "upstream_sha256": "bf175e03a2fae5105d3ff7df2a254a79e3408419f0df942ee33ebfdf672cbdb7",
+     "upstream_blob_sha1": "0b626eba477ec98845945082bc0702a82c5fd5f3",
+     "classification": [
+      "other_inherited_local_adaptation"
+     ]
+    },
+    {
+     "path": "miext/rootless/rootlessGC.c",
+     "local_sha256": "e7004dbe759d330e71c0d2ac312644b1a4405cdc3101cd698f8064f73a50db1e",
+     "upstream_sha256": "393ac5a9ef3dd90a801351d0835e9dd67110e4559f1be340046b3866818e241e",
+     "upstream_blob_sha1": "1f6822831722e4786855ff81dc6eed353afb1c79",
+     "classification": [
+      "msvc_win32_adaptation"
+     ]
+    },
+    {
+     "path": "miext/rootless/rootlessWindow.c",
+     "local_sha256": "d269508b5fbefa5bb38427139cb946c814e72f0e89f3607a34ef82fa97bebd42",
+     "upstream_sha256": "f8c6d4e133823db9a8708c9fa648ab1d53c590daafdf3d0c1895675cb36f110c",
+     "upstream_blob_sha1": "f1cdec3078d3c2bec928694d91ab0a55bd179362",
+     "classification": [
+      "msvc_win32_adaptation"
+     ]
+    },
+    {
+     "path": "miext/shadow/sh3224.c",
+     "local_sha256": "e6881a37a0e7ebd145d95379777b4a6170921f6867e959e6da522b578c6889c0",
+     "upstream_sha256": "21317d9da9500d7560d68f916cf7aa28ac4aa610da6ee5e007af570b549f2660",
+     "upstream_blob_sha1": "e93b5a7fda7716e3d226fe54cb56a33a62cad95e",
+     "classification": [
+      "other_inherited_local_adaptation"
+     ]
+    },
+    {
+     "path": "miext/sync/misync.c",
+     "local_sha256": "db937de0462068eec60276f71a135d8308575651625e7a23751b4bb75fe5cf6a",
+     "upstream_sha256": "dc177d987e22a07e0f2e70dbf1ef718e9d538d5584142ae4dba7ef62bf2ecb66",
+     "upstream_blob_sha1": "806f7adbe02fe9a554edebc8f8642c1f4168b2ce",
+     "classification": [
+      "registered_upstream_patch"
+     ]
+    },
+    {
+     "path": "os/WaitFor.c",
+     "local_sha256": "0cefd9540bd3ef887ca2983e953dd3e307b022fa733b69cc4bdcdecb9ee79e80",
+     "upstream_sha256": "6932b677289f5963216e05961626a9c944a0f0031b0d54582fdc81894ac7d9cb",
+     "upstream_blob_sha1": "973a3495d789c64d3c98b9ba9de102dde4815654",
+     "classification": [
+      "other_inherited_local_adaptation"
+     ]
+    },
+    {
+     "path": "os/access.c",
+     "local_sha256": "df0c1dc44983b25ec1a47c2311416a16d1d0922a7fd9d5b0bb16539755ad8b2f",
+     "upstream_sha256": "46faefe4a31b093f9ee25b018530334f45e0d40dadec5fbcdaabee7aea26ce4e",
+     "upstream_blob_sha1": "98095a5a10b0ef190ee0a506ff093c76fae323de",
+     "classification": [
+      "other_inherited_local_adaptation"
+     ]
+    },
+    {
+     "path": "os/auth.c",
+     "local_sha256": "26989f6361b4cedf239213895ba0e236cef89508a0714fcf3ed89d7bdefdc811",
+     "upstream_sha256": "73014ed659f7aec785d9f917103d1845670122cdae349258bd30e81740a4a7bd",
+     "upstream_blob_sha1": "de2aae917266492252de2413916fdaab20134fc8",
+     "classification": [
+      "msvc_win32_adaptation"
+     ]
+    },
+    {
+     "path": "os/connection.c",
+     "local_sha256": "3d3fd508562bb6c3a0535971c468e4b34e431db1a7ac4d5de71da96b8fad25fb",
+     "upstream_sha256": "827038530bee127edd88fee211c67eed3812d420cc740c63a05d67807dce5897",
+     "upstream_blob_sha1": "07d6cbe8aff3c7b3deef5d5cb8008629646c2223",
+     "classification": [
+      "msvc_win32_adaptation"
+     ]
+    },
+    {
+     "path": "os/inputthread.c",
+     "local_sha256": "475d86135d1eee508f8237664fb171611d97ef9065a582e5f99b3725f79fd89e",
+     "upstream_sha256": "c308b0f3949881809a39b9131df92694a5c70a5bf46a3e0a204ac20161e9aca6",
+     "upstream_blob_sha1": "623648256c9e09418cc41aa25c057eb799d869bb",
+     "classification": [
+      "other_inherited_local_adaptation"
+     ]
+    },
+    {
+     "path": "os/io.c",
+     "local_sha256": "27d5d7060acdf6baa110ab9d0e2ec0938848742c23e78e4bb5a976422c9635c9",
+     "upstream_sha256": "1cf17fed3ea6c9b0d14889955a309f66711db8b92537a507ad828b767c650e4f",
+     "upstream_blob_sha1": "17fba560228d79d83e6e2399589cc3c8c7af6ad7",
+     "classification": [
+      "registered_upstream_patch"
+     ]
+    },
+    {
+     "path": "os/log.c",
+     "local_sha256": "02188d266876df6f9d8d0187cbe3bdac21e34b4abd97eaa3599509022709c6cc",
+     "upstream_sha256": "82d337dff35a929ef8ce61acc0c86c3a19e4fb04b030997a58f553102933b3eb",
+     "upstream_blob_sha1": "779615e5722a5cc3ee51a8e17cd7c7707c0d1305",
+     "classification": [
+      "msvc_win32_adaptation"
+     ]
+    },
+    {
+     "path": "os/osdep.h",
+     "local_sha256": "9d6be68b13611927eadc7671cdd8d97d59de6c9513d72b0d8e9fba2e4a98fbad",
+     "upstream_sha256": "76125335386429120c4fa1eb2ba34a7b7597de4ce85b316a46f71cb28d2f9fed",
+     "upstream_blob_sha1": "3c198a712ecc941fb88d186dc6c7227021aa7a7b",
+     "classification": [
+      "other_inherited_local_adaptation"
+     ]
+    },
+    {
+     "path": "os/ospoll.c",
+     "local_sha256": "bb76bbc1dfee17abaccc5abc9d8dec1d43a68ca44bb25273dc5a3d763d3a2990",
+     "upstream_sha256": "f8a4ef5c58d169b40ffbfc34dde241a50675922229a00530f4b15a519128cae9",
+     "upstream_blob_sha1": "dc2ecd10fc86d4cb2962df713f6c21fa9bc73bd4",
+     "classification": [
+      "other_inherited_local_adaptation"
+     ]
+    },
+    {
+     "path": "os/serverlock.c",
+     "local_sha256": "aeda826b899e90b93a583e217b237d1f7529986ea2511d60e61ccc43784e4d22",
+     "upstream_sha256": "4bfa4810c830571216600f3641fdfa0e543e0aa9556068c0285e113ac9ba62c6",
+     "upstream_blob_sha1": "36efc9bc01b8cb23cc76d6fe0de44702cfef10ef",
+     "classification": [
+      "msvc_win32_adaptation"
+     ]
+    },
+    {
+     "path": "os/utils.c",
+     "local_sha256": "a4fa0e88d3ab2984cbbe87e53a2075750e7485aef76be57f7a2d98b09193ba34",
+     "upstream_sha256": "c74fd85bada1903a026833f9b5a1be0cdfd6778e416995a645279f49d08df2fb",
+     "upstream_blob_sha1": "fbf91c3c100f8e5c6d1ec22860803454de6c523d",
+     "classification": [
+      "msvc_win32_adaptation"
+     ]
+    },
+    {
+     "path": "os/xdmcp.c",
+     "local_sha256": "b6c911dd7d5e4c755ec1db9b562e6474d169b6f1b2e595ec41fbf3f23911404e",
+     "upstream_sha256": "6acbaace77f87438e383646fe984fb607044006bc2cb9019140aaa58b815715b",
+     "upstream_blob_sha1": "955cee1b49c9f5640697823d8a4758f5fdf6a17f",
+     "classification": [
+      "msvc_win32_adaptation"
+     ]
+    },
+    {
+     "path": "os/xprintf.c",
+     "local_sha256": "7d52afbd971c546554ab7536161d2e8defb752be3c486bfe0441a7b1c1f02fee",
+     "upstream_sha256": "3b10f7e333a7c348181649a35d81511c3ef6323511176a2a05d0cc2ba40e06b4",
+     "upstream_blob_sha1": "9e93ac9b2919a50ac754eadcbbcaa87216c71f0b",
+     "classification": [
+      "msvc_win32_adaptation"
+     ]
+    },
+    {
+     "path": "os/xstrans.c",
+     "local_sha256": "1cbd39ed5a96ad68cc456bc9083a1143d5477476d444ba0f2de3cd0340c126c2",
+     "upstream_sha256": "9df1b3a19e428f527879b5f14d641e90aed50a14d99bb2b696c555ad2e1b52b4",
+     "upstream_blob_sha1": "c9363db71d88ceed5f603cc222751bbca2d5498c",
+     "classification": [
+      "msvc_win32_adaptation"
+     ]
+    },
+    {
+     "path": "present/present.c",
+     "local_sha256": "d75d1c293ab7df5b0530679f23762df059d5d4a899bd406887a3c7869274f666",
+     "upstream_sha256": "579684e27efbe811c068bc726d9c9e1050af55548843ac07febfe34d95ed9e35",
+     "upstream_blob_sha1": "336816e275094ac9d7c500e3a9001927dbf8491a",
+     "classification": [
+      "other_inherited_local_adaptation"
+     ]
+    },
+    {
+     "path": "present/present_event.c",
+     "local_sha256": "541ef5a4bef8d11a7b6e9880e4868a465ef5838a12fe700fd4f6090903b11201",
+     "upstream_sha256": "d1963fc263503c06cae145c7b4dcfb08086f0efb8c896062dff703305079fe91",
+     "upstream_blob_sha1": "0c1855ec4cb605485916f6a5b187a38fcb36b7c6",
+     "classification": [
+      "other_inherited_local_adaptation"
+     ]
+    },
+    {
+     "path": "present/present_execute.c",
+     "local_sha256": "012e8a5e2e1f2fbbfd3432f437621df929c3ae76fd1d402ca3ea31150fdf75dd",
+     "upstream_sha256": "9555ca610bb08d0da5bf7a41357df490d55c1c581008b015726da95b67f96abd",
+     "upstream_blob_sha1": "449ea5c539eb7b08bf707288fde95733ef1d8124",
+     "classification": [
+      "other_inherited_local_adaptation"
+     ]
+    },
+    {
+     "path": "present/present_fake.c",
+     "local_sha256": "9ecc18d3f246506c63ee5a9945ab5cb48d35a39571e3df29edd7215883b079ce",
+     "upstream_sha256": "fd46fdc78f757e20b49825381a829eaa6dc776a24eeb9e7b5e0f40d212a4b001",
+     "upstream_blob_sha1": "3ce7295aa271ab34b2404969d7368ff7dc106d90",
+     "classification": [
+      "other_inherited_local_adaptation"
+     ]
+    },
+    {
+     "path": "present/present_fence.c",
+     "local_sha256": "e86983e1b82c3f696d6e09bd60595373abec46c5279325208ad154dfa8e47784",
+     "upstream_sha256": "2f2f534440a7a543e4cd16ba6fe477de2c3afe7719c490abe7abc19d5d08024d",
+     "upstream_blob_sha1": "821cd609879100521b29d5bcf2db8c1a0a5700f5",
+     "classification": [
+      "other_inherited_local_adaptation"
+     ]
+    },
+    {
+     "path": "present/present_notify.c",
+     "local_sha256": "0ea282f33c70cae17533b6d9bb51344312a72a8fa4cef813c7e8bafa21083b61",
+     "upstream_sha256": "dd9eb065238b98667b176c1b63a247540525777bba07a270a5d15f1788d962a2",
+     "upstream_blob_sha1": "7d19d9cfe1261adeb6d433346aeeda8a7564bdb9",
+     "classification": [
+      "registered_upstream_patch"
+     ]
+    },
+    {
+     "path": "present/present_request.c",
+     "local_sha256": "62faad2dc7bc3583b68180fd4faebc9f6fc7f6424dee6a9cd9192e41dfabf308",
+     "upstream_sha256": "14d3efae4da29bca68e40db9758b137c765fd6d8b9f1f2eff018c99bb80263c8",
+     "upstream_blob_sha1": "02f8846c89c2b4fb506a544673e1497106723372",
+     "classification": [
+      "other_inherited_local_adaptation"
+     ]
+    },
+    {
+     "path": "present/present_scmd.c",
+     "local_sha256": "e5cbf304c04282cbd38c141a2f3435ba2f054a121c87cd1e808a463c2fe12a1a",
+     "upstream_sha256": "7ac97ce80572859aa225b69f53fcd295973618ff8b76ce9446cdede2e7065fbc",
+     "upstream_blob_sha1": "b60e1b143bf06d0a4d61700c2e5d0c5a34b3d275",
+     "classification": [
+      "other_inherited_local_adaptation"
+     ]
+    },
+    {
+     "path": "present/present_screen.c",
+     "local_sha256": "44a0edc5d61f232ca20b3f2b11470efc189c055044dad5407aac60a4da22ab3f",
+     "upstream_sha256": "6eec062a01d6a64baa352992504f242b5964b2931ea3aa75a1da98ad95f2ff0c",
+     "upstream_blob_sha1": "ae56f9032bc99806819fe0f1212d69bfef4d5dfd",
+     "classification": [
+      "other_inherited_local_adaptation"
+     ]
+    },
+    {
+     "path": "present/present_vblank.c",
+     "local_sha256": "c495edefdba724b5f3f8dd31a3cdca258cb384028dc3d38761f575c9fa117a71",
+     "upstream_sha256": "9f63caac7720d84b4b1df62c4948438a63663ab59aa0325ac71fe9476e856418",
+     "upstream_blob_sha1": "72a8b2e3e8f9c7f015384f41e54e6e5982168ab4",
+     "classification": [
+      "other_inherited_local_adaptation"
+     ]
+    },
+    {
+     "path": "randr/rrlease.c",
+     "local_sha256": "6d470d4bbc9a0d8629fd8422c3d47c8f06620f441dd57474c26f112c290191b4",
+     "upstream_sha256": "172047ece22312471429984b28d70b63bf7f87c2e30c08eb53e93dd76df92f51",
+     "upstream_blob_sha1": "e73307807b4e81818c22c8a7b507fe2e3b10b2d0",
+     "classification": [
+      "other_inherited_local_adaptation"
+     ]
+    },
+    {
+     "path": "randr/rrproviderproperty.c",
+     "local_sha256": "eda71803ce7aa6ef72d028b1a32a16722c298eaebe9bd32775cb5874fc18765c",
+     "upstream_sha256": "65918e5b811509c5927bf47f7b2351c69064c8408768b1fa0a79e7e7367fb53e",
+     "upstream_blob_sha1": "23a105c024e7b3e66408beecdcb642aa67c16355",
+     "classification": [
+      "registered_upstream_patch"
+     ]
+    },
+    {
+     "path": "record/record.c",
+     "local_sha256": "47d4ef68777d8730fb50970bf6a916f18542131260039376bbb00d641d3754b8",
+     "upstream_sha256": "656ca8ba2c425964fec57b3726d46c20c5b20d7543b854af75651eda382c9c4d",
+     "upstream_blob_sha1": "d8e730972e1fa22db4af5929297a15e382093878",
+     "classification": [
+      "registered_upstream_patch",
+      "msvc_designated_initializer_revert"
+     ]
+    },
+    {
+     "path": "record/set.c",
+     "local_sha256": "748d5f3d7fe82b24ecdb23ee7cb712edccff3d3f6a6592888d238ab382b1dd88",
+     "upstream_sha256": "4baacdf08d4f275b4cee0b21005ea083e323179fafd9a536544408d3b4c0a873",
+     "upstream_blob_sha1": "f071a4b3fe720a0f076abbd144cd60111f3c6400",
+     "classification": [
+      "other_inherited_local_adaptation"
+     ]
+    },
+    {
+     "path": "render/animcur.c",
+     "local_sha256": "8bea6aead28ba6e0611838e1ac405da96fb05dec7d1ba26b93dd7fba4a71357d",
+     "upstream_sha256": "0cd0372f30a78adb97959dbf9d33d6c4f11216eea19cdc4b699ef29712d7214a",
+     "upstream_blob_sha1": "f906cd8130244ff8916356e3121bfd21d0a90857",
+     "classification": [
+      "registered_upstream_patch"
+     ]
+    },
+    {
+     "path": "render/mipict.c",
+     "local_sha256": "c3407ab4ebf74cc473de419a968a0f640335d88d5e477bc0cddf74dcd4ce3c25",
+     "upstream_sha256": "e9ef90648c7cf72dc2c83711d863789edfada38428a601204479a0bfbfff9ae6",
+     "upstream_blob_sha1": "0bc5417c6c00ce769c248cf4bff1d76d8f63f275",
+     "classification": [
+      "other_inherited_local_adaptation"
+     ]
+    },
+    {
+     "path": "render/render.c",
+     "local_sha256": "84f8c8a8a3a573e11ddb899b1c62f4071549c8601a0fa6f8ad1333f4ab2d9c38",
+     "upstream_sha256": "6b8837b032801b98a91efecf88a7e0e7a49f06e4d7d785032d29ad321d24cf59",
+     "upstream_blob_sha1": "113f6e0c5aa2f10b711356225b2ed4865570824d",
+     "classification": [
+      "registered_upstream_patch",
+      "msvc_designated_initializer_revert"
+     ]
+    },
+    {
+     "path": "xfixes/cursor.c",
+     "local_sha256": "4d92d26307d8d5bc1e846bb5d4246aa7c84bffa67bf80d0bc970b278d15d81c8",
+     "upstream_sha256": "13716f8d469fcbb485cfa6a57a8caf6617f2c816b7bf9efa810bba0f71b9146b",
+     "upstream_blob_sha1": "0feb46bdf9c2d7dd1a777e6252108a6e666f4a3d",
+     "classification": [
+      "msvc_designated_initializer_revert"
+     ]
+    },
+    {
+     "path": "xfixes/disconnect.c",
+     "local_sha256": "79a4888b6866a445b233ab8cb3901f3c8750ba012b9abff17fe296790163ea2b",
+     "upstream_sha256": "889aabe56658c17d92e2e83187cb9bf695871105245a1ab856d8b5960fe20563",
+     "upstream_blob_sha1": "937d6a4be737a6d08be17a34560b6bc28b577e7a",
+     "classification": [
+      "other_inherited_local_adaptation"
+     ]
+    },
+    {
+     "path": "xfixes/xfixes.c",
+     "local_sha256": "04b548552acca9af75d4868ae4e49dde5287d69411577129c1e2793a4e5d1115",
+     "upstream_sha256": "9716c23b69453008b7357cd1366b5e8e57146c21c53dd65563bdac8bc032c17a",
+     "upstream_blob_sha1": "007515c556569d1da7ade6ad3302fd7506fca6f5",
+     "classification": [
+      "msvc_designated_initializer_revert"
+     ]
+    },
+    {
+     "path": "xkb/XKBGAlloc.c",
+     "local_sha256": "f1fa881271ce1371c95c87fbfe56976c5919c1b608b839430e78c7e4ee2635e1",
+     "upstream_sha256": "5ad08b73356b0e32962c9fba11c45fce104dc7af581a225dd739b35f40c5b713",
+     "upstream_blob_sha1": "d0cc51e99994d0a965d860f0155680958adbd131",
+     "classification": [
+      "registered_upstream_patch"
+     ]
+    },
+    {
+     "path": "xkb/XKBMisc.c",
+     "local_sha256": "c0240fc41336fd6b4e466e7a2a4dcb55d083f4d1d98e32d39e56e884cbb61758",
+     "upstream_sha256": "f541a9feb5a6ad716307c4edf3bc896956d801b0ec76f0812f6c0f0691b3b425",
+     "upstream_blob_sha1": "fd180fad2ca21474c430c4fc638f4068c2c2a7e4",
+     "classification": [
+      "other_inherited_local_adaptation"
+     ]
+    },
+    {
+     "path": "xkb/ddxLoad.c",
+     "local_sha256": "cd427e9212c09074c1497e27c3886722db678754e04103891e5262a9893b04f4",
+     "upstream_sha256": "d250fab2178ba6e8132108ac9874a4784c26cc4e692e10825c778ecd10b6047e",
+     "upstream_blob_sha1": "a231e96bf7bf81022c53d52a99d0a018b7c5eb4c",
+     "classification": [
+      "other_inherited_local_adaptation"
+     ]
+    },
+    {
+     "path": "xkb/maprules.c",
+     "local_sha256": "9ed53991e12ff80e9d80440fdacdf7fe123fccea07fa49da351fe3d849fcc9ab",
+     "upstream_sha256": "a2873f9ee9972f252921cfcd9a7b8c5665742fe7dc603dbeb88ef2c54d1f210f",
+     "upstream_blob_sha1": "8a1944ef52d3c8b8daad3c5651d448fa2869df97",
+     "classification": [
+      "registered_upstream_patch"
+     ]
+    },
+    {
+     "path": "xkb/xkb.c",
+     "local_sha256": "8f49459031e112728a9956a6ee10fcc8d16e6ecc038c7e6e0c227e9918e284cb",
+     "upstream_sha256": "f350d27be9aae243ef02b3ed8a60d1684f40255941613c366274000c9edf910e",
+     "upstream_blob_sha1": "744dba63d7e12cfd09d0f38695341bf70100bc41",
+     "classification": [
+      "registered_upstream_patch",
+      "msvc_designated_initializer_revert"
+     ]
+    },
+    {
+     "path": "xkb/xkbActions.c",
+     "local_sha256": "5df227fca3486f54a3b3a77c7e0a546b229eb477626a817a0fc981df854c6488",
+     "upstream_sha256": "482d51a4e05f86dbcef7892a469204b970a058a086828cecdbf3bde5f94de6a9",
+     "upstream_blob_sha1": "aad475e6f26561c0c02a06cc629f9611448ab87e",
+     "classification": [
+      "other_inherited_local_adaptation"
+     ]
+    },
+    {
+     "path": "xkb/xkbEvents.c",
+     "local_sha256": "36d7d2ec59d2bd7c7bf65c7e3b411a1c2aaddc38563234155d68443d9fba5f53",
+     "upstream_sha256": "be113c53664f6886001fa62ee3e141a59041482cc4edc937d3c0cbfea8ade821",
+     "upstream_blob_sha1": "cfe9ba11c23a74b4e382b8e634e70fc2f2d39e3f",
+     "classification": [
+      "registered_upstream_patch",
+      "msvc_designated_initializer_revert"
+     ]
+    },
+    {
+     "path": "xkb/xkbInit.c",
+     "local_sha256": "9077652c3404a735ff3e5dd50026c143340e7dfead4fe08c740de5b649b2012c",
+     "upstream_sha256": "ea2b118f118cdd22b524541b89cbc42a1bd0337b1db45efd29a030e3f2b9765d",
+     "upstream_blob_sha1": "d3259225f8383a12ba4e569028fef45bfe6218cf",
+     "classification": [
+      "msvc_win32_adaptation"
+     ]
+    },
+    {
+     "path": "xkb/xkbsrv_priv.h",
+     "local_sha256": "a7cf6823bd435505dd4132910ae47d499e126c9537e5de61789947ea7b864ab6",
+     "upstream_sha256": "a9407b8e793230e93705a03a6b0ab21f95dd41b7215acfb481eea5c6467c36d4",
+     "upstream_blob_sha1": "8a9592314d4db811da1f296f8ca9014ab0160fb2",
+     "classification": [
+      "registered_upstream_patch"
+     ]
+    },
+    {
+     "path": "xkb/xkbtext.c",
+     "local_sha256": "68b62afede01f0d25b8a5355f490b07b0d214478bf6194aec9713f4f9cd0ae0e",
+     "upstream_sha256": "21e58b414eb0020cc90343d1b3a24b39d0877c66c8f45dd376d24afc823471ac",
+     "upstream_blob_sha1": "5d8caf4fb7d835d8a59f46da13c821abb60000fc",
+     "classification": [
+      "registered_upstream_patch"
+     ]
+    }
+   ],
+   "local_only_files": [
+    {
+     "path": ".Xdefaults",
+     "local_sha256": "88c4ecf9cf5ced6bbfe42b46d48d773bff2487f6a14de58cc13f7a743a46a58f",
+     "size": 23
+    },
+    {
+     "path": "X0.hosts",
+     "local_sha256": "1b96d314224b778c9406dc2b25e4c32eb53d4ff6c80eb1c8a34aabacda1b8148",
+     "size": 26
+    },
+    {
+     "path": "Xext/Makefile",
+     "local_sha256": "5e50ac758873355b16e928b91fdedcf3f6dfa4704e236bafa5ca67b2d99f5551",
+     "size": 465
+    },
+    {
+     "path": "Xi/makefile",
+     "local_sha256": "2a38a1f10956c1f701112ecc0d2ca4e6131cf6758056f4a1471170c15451db8b",
+     "size": 845
+    },
+    {
+     "path": "XtErrorDB",
+     "local_sha256": "64037d15906f174b70677fba179ee86a861459910264723b8778ce0f70e3c2ed",
+     "size": 13700
+    },
+    {
+     "path": "composite/makefile",
+     "local_sha256": "e86a4a2cfa2f6e6c4d4a52260ee9cbe390a68f3dea6a515e26771d233154e969",
+     "size": 166
+    },
+    {
+     "path": "config/makefile",
+     "local_sha256": "2316e8ff48676dc5842f61bd09f12a61d96127f0db9d9c629d8f85c6c5afb24c",
+     "size": 81
+    },
+    {
+     "path": "damageext/makefile",
+     "local_sha256": "da506f3217ff664ac623fd0fb31174682d1d580a9d7059255b128b6ccd3e5405",
+     "size": 94
+    },
+    {
+     "path": "dbe/makefile",
+     "local_sha256": "56f281c42fb9a063d0ae21ab1b1785b7f99436a5e5b832a8cc0cf089589a3878",
+     "size": 83
+    },
+    {
+     "path": "dix/Xserver-dtrace.h",
+     "local_sha256": "c647d2979e5d32928dcab937bcb84e17b9c06b6cff7635eafee32e2e5f1eeab4",
+     "size": 3190
+    },
+    {
+     "path": "dix/generate-atoms.py",
+     "local_sha256": "472ea560af7b78c1b94b1e36e8f3da02a7b8bf5f9276bb5ea65b0130e1ddafcc",
+     "size": 1552
+    },
+    {
+     "path": "dix/makefile",
+     "local_sha256": "d32cdef916d5afbffad8a46f448b59b288460156f2bc2a22913156ea22bac380",
+     "size": 882
+    },
+    {
+     "path": "exa/makefile",
+     "local_sha256": "d4be57990b55816bfabad8af7c838e9eff335ba9751304ccf8ff886a60e907b8",
+     "size": 230
+    },
+    {
+     "path": "fb/makefile",
+     "local_sha256": "3a029e9d6da6c80c1a25d5f9564a0c7391f73182dd2a2aa0b59653acc215ad41",
+     "size": 488
+    },
+    {
+     "path": "font-dirs",
+     "local_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+     "size": 0
+    },
+    {
+     "path": "glx/dispatch.h",
+     "local_sha256": "2d01765a4bf441ca98918909a3a130ad33bb494c6a0fbcea10dfab5a97cdb944",
+     "size": 893628
+    },
+    {
+     "path": "glx/glapi.c",
+     "local_sha256": "e3d0dcf877d9cbf266ffcea5f5d4082d0a3644fc92ab95105a7f92a228d0b386",
+     "size": 15725
+    },
+    {
+     "path": "glx/glapi.h",
+     "local_sha256": "3403a8b1a347af78751714ba3cfa26c55b04790b654e62841cc575ee19d70f22",
+     "size": 4893
+    },
+    {
+     "path": "glx/glapitable.h",
+     "local_sha256": "62192c65b5ac88aa22cdcbe7aed9a30438e436dfe381791c53a1b62be000b43c",
+     "size": 177604
+    },
+    {
+     "path": "glx/glfunctions.h",
+     "local_sha256": "02cc3abdf67e2da82d15480ee89d8699eca9f86ec4d6dba504e7ddd739498662",
+     "size": 162308
+    },
+    {
+     "path": "glx/glheader.h",
+     "local_sha256": "7600a40b0948770ba01cb34274753315db9985fff5b320f59010d43d430d3447",
+     "size": 543
+    },
+    {
+     "path": "glx/glprocs.h",
+     "local_sha256": "bc63a16dcadcfbf4688c71d4a5e7f439d7aa05717c96dcfac7b3c9b773a136ef",
+     "size": 326655
+    },
+    {
+     "path": "glx/makefile",
+     "local_sha256": "40cac76179c2c29c7893cf80c5ea9c697c0df05fcb44709100da470539dfea60",
+     "size": 1118
+    },
+    {
+     "path": "glx/util/detect_os.h",
+     "local_sha256": "143d669562560a4613e47beb0e7e06c4dc608e7db156600600a6dccd7e87e7b8",
+     "size": 2921
+    },
+    {
+     "path": "glx/util/macros.h",
+     "local_sha256": "832d5427f597ee5d2e2e975c5ee3213a5038a307d9292b04269b78921d3ec479",
+     "size": 16574
+    },
+    {
+     "path": "glx/util/u_thread.h",
+     "local_sha256": "fa4c0adc1e50bb4ca601309620729d8dd5a67ec46d598c3f656d405e7b4e2d35",
+     "size": 6460
+    },
+    {
+     "path": "hw/kdrive/ephyr/makefile",
+     "local_sha256": "8d80438fcd4c9d13b54b5c52ac900a29f961f3f4e5d0ce7cfc6e2b1f71fcb023",
+     "size": 89
+    },
+    {
+     "path": "hw/kdrive/src/makefile",
+     "local_sha256": "2879c20dfd56e13806119322f1e8c9e4bd3282fefe96d0218206277f55144758",
+     "size": 130
+    },
+    {
+     "path": "hw/xwin/doflexbison.bat",
+     "local_sha256": "9aa4d0c33acf1478abfee81861ab47b49de372d1dc91a903d75a881796b1fedd",
+     "size": 326
+    },
+    {
+     "path": "hw/xwin/glx/buildsimpledib.bat",
+     "local_sha256": "8a823859a82d06fbcc344fc52c44352668b4f3f632b673c45441eb72d28569cb",
+     "size": 65
+    },
+    {
+     "path": "hw/xwin/glx/genheaders.py",
+     "local_sha256": "924e80c85ba50456de482be22d49cb7ec436c8b0fd8507819022dabe5089a85c",
+     "size": 22788
+    },
+    {
+     "path": "hw/xwin/glx/gl.xml",
+     "local_sha256": "090dad97422f82dca2729ca6b0263364bfa61f44898f74511cda186805df9fe2",
+     "size": 2757312
+    },
+    {
+     "path": "hw/xwin/glx/glwrap.c",
+     "local_sha256": "0c00b44dab860d3b67620baf59b6fb3adb327851bcc4fb50799efd99107f063e",
+     "size": 4728
+    },
+    {
+     "path": "hw/xwin/glx/makefile",
+     "local_sha256": "bd0a72a236cf84a64d3dadfdcf2e9d4a79db31eaaec035c89d8147feec6c8448",
+     "size": 1531
+    },
+    {
+     "path": "hw/xwin/glx/reg.py",
+     "local_sha256": "c0dd64808334115cf67bf6b36f750e8eb34373e5c019ed23a0665c7f7837fece",
+     "size": 53922
+    },
+    {
+     "path": "hw/xwin/glx/simpledib.c",
+     "local_sha256": "9efa36a1afc6f4143661d6bf387065b71c335b93f3eba3126c48af9e1b7b63b8",
+     "size": 16041
+    },
+    {
+     "path": "hw/xwin/glx/wgl.xml",
+     "local_sha256": "1f99dfc68d76d7ac4e7b41c25ea41cd9dffc193287b0d1b4171bb283c4fa65d0",
+     "size": 104356
+    },
+    {
+     "path": "hw/xwin/glx/wglext.h",
+     "local_sha256": "a363aeda14c15d5582222df8849cf402f642183517322a1432b039637d5b4e21",
+     "size": 43098
+    },
+    {
+     "path": "hw/xwin/makefile",
+     "local_sha256": "04469495e8644b1ae7c492b144975b137023a1a11950611ea95e933362b6185f",
+     "size": 1913
+    },
+    {
+     "path": "hw/xwin/swrastwgl_dri/.gitignore",
+     "local_sha256": "7cd65adef63ec6f5db562fd4af39d660db077dd656a09d60e6fdc74f1c0ad3bf",
+     "size": 9
+    },
+    {
+     "path": "hw/xwin/swrastwgl_dri/glwindows.h",
+     "local_sha256": "f4cf977edbde32ce0adee9b07ded264c193911f4f26868f306cb14bac52ab9ea",
+     "size": 1635
+    },
+    {
+     "path": "hw/xwin/swrastwgl_dri/glwrap.c",
+     "local_sha256": "5018742bb95a5e1402bdb5cd36b2dbdfafc196d45f8b205fced0128ad0586664",
+     "size": 4436
+    },
+    {
+     "path": "hw/xwin/swrastwgl_dri/makefile",
+     "local_sha256": "393794ff12786a43abc7e8ae5f760b740c1706bc5a02e931074ed72c7618b126",
+     "size": 883
+    },
+    {
+     "path": "hw/xwin/swrastwgl_dri/swrastwgl_dri.c",
+     "local_sha256": "2d8d6a15abddf71fe4c2f43edfef57b8a187cac772d27940281ece8d260ff385",
+     "size": 99541
+    },
+    {
+     "path": "hw/xwin/swrastwgl_dri/swrastwgl_dri.def",
+     "local_sha256": "da4b86cfa8e3072c6becb8a1663a71298b280b0b995fc7214194cfa5a5bbb2ce",
+     "size": 11
+    },
+    {
+     "path": "hw/xwin/taskbar.h",
+     "local_sha256": "740805e071e34557923137b54f8d64e99a4f178e7d600fd2809da81ef7b168fa",
+     "size": 1636
+    },
+    {
+     "path": "hw/xwin/winclipboard/makefile",
+     "local_sha256": "b28707c54f8fa50e5e654ced3fa828ceef083bf3ab2651d879d7b3d12acd7109",
+     "size": 224
+    },
+    {
+     "path": "hw/xwin/xdmcphostselect.c",
+     "local_sha256": "58d55a6e0e7a74fa5969ed410a9c310ebfd2f4e7eae0e20e513e097b8e24faad",
+     "size": 5114
+    },
+    {
+     "path": "hw/xwin/xlaunch/COPYING",
+     "local_sha256": "1d0fd642186d5f95ae90bbd0e8a8cbd3732b3fb7cf937b361585f9f693881a95",
+     "size": 1310
+    },
+    {
+     "path": "hw/xwin/xlaunch/config.cc",
+     "local_sha256": "4921ccde5b4a016a4e431e43f30a50347febcfca2c2ec236ab39f4c20db5ec34",
+     "size": 6411
+    },
+    {
+     "path": "hw/xwin/xlaunch/config.h",
+     "local_sha256": "ca9854a3c3a6f6c10edf0e7201ec35f45edca21192f39f1b96d3005e6f363a31",
+     "size": 2936
+    },
+    {
+     "path": "hw/xwin/xlaunch/main.cc",
+     "local_sha256": "28aaf377cf156911ba9d338633f9d3e2330793fd14691cd8b0f7dc9bb32fdef8",
+     "size": 42024
+    },
+    {
+     "path": "hw/xwin/xlaunch/makefile",
+     "local_sha256": "5fe17bc659a1b0aae8d04adb92fe09e2d36b707b770cff45eb1b2940abcc3da8",
+     "size": 705
+    },
+    {
+     "path": "hw/xwin/xlaunch/resources/dialog.rc",
+     "local_sha256": "2092796551820e32072f018fdfde1ac74d9ce53c74fde6e89ec2b32c59e035ca",
+     "size": 7155
+    },
+    {
+     "path": "hw/xwin/xlaunch/resources/fullscreen.bmp",
+     "local_sha256": "a1ca6404e7542e17c478c54fe7936f073017e2e57426a61e5a59bc5a9fe4e706",
+     "size": 22554
+    },
+    {
+     "path": "hw/xwin/xlaunch/resources/images.rc",
+     "local_sha256": "cd079d92804866d5e2459c235dcd9db803c7dc46c364016b6032682f19955c04",
+     "size": 1592
+    },
+    {
+     "path": "hw/xwin/xlaunch/resources/manifest.xml",
+     "local_sha256": "c466499c4748958e6575803da9dfe0c63d71274ae609b9ff63d13c31d7b3eb95",
+     "size": 843
+    },
+    {
+     "path": "hw/xwin/xlaunch/resources/multiwindow.bmp",
+     "local_sha256": "ba8c8d443d5c49cfa1f1ad58ca4a8140a28518fa1c692a1ee9a0e73ac04eb0c1",
+     "size": 22554
+    },
+    {
+     "path": "hw/xwin/xlaunch/resources/nodecoration.bmp",
+     "local_sha256": "32d664fbf8987a04c756680bb1ef782f95268d35792d8b251058abfe913b1e08",
+     "size": 22554
+    },
+    {
+     "path": "hw/xwin/xlaunch/resources/resources.h",
+     "local_sha256": "129ff81ab4f22fe88a260002e42bac9ad07c4a6d14b1f85601ee26397481f81b",
+     "size": 4950
+    },
+    {
+     "path": "hw/xwin/xlaunch/resources/resources.rc",
+     "local_sha256": "b80fc6b159d7a13a3db0f177a9f2f800ff635ed4900bd8358d21fd31c60d7239",
+     "size": 1504
+    },
+    {
+     "path": "hw/xwin/xlaunch/resources/strings.rc",
+     "local_sha256": "acf867240a15b83e6d10e295f8adeb084cf6124caa3bd01a6dbcb115431afaa7",
+     "size": 6461
+    },
+    {
+     "path": "hw/xwin/xlaunch/resources/windowed.bmp",
+     "local_sha256": "a5becb9a0028d68135e233a903ca6c7f415541d7ca728e638858b44e7068dffe",
+     "size": 22554
+    },
+    {
+     "path": "hw/xwin/xlaunch/window/dialog.cc",
+     "local_sha256": "e9315f259a32cbde40434a8fd3bdfedda35dfe907281d999112f2ae49e3592cd",
+     "size": 2858
+    },
+    {
+     "path": "hw/xwin/xlaunch/window/dialog.h",
+     "local_sha256": "e4c2505094948be0805c155da3b26115bd752720d4e85b35c0014770adcf8616",
+     "size": 2054
+    },
+    {
+     "path": "hw/xwin/xlaunch/window/makefile",
+     "local_sha256": "516f08fd10a540a13feba7399f9421fa9d1d2913ca6c411fdea68f8fb95f3fc0",
+     "size": 67
+    },
+    {
+     "path": "hw/xwin/xlaunch/window/util.cc",
+     "local_sha256": "3baba15fb6dcb1f9c5c11b52d849becc9c62cddbfbf7998b96c94bf73901e5ef",
+     "size": 13633
+    },
+    {
+     "path": "hw/xwin/xlaunch/window/util.h",
+     "local_sha256": "e9e386fe207a0ef74bc5b5f24de919793ba8788e90adfb3b643d2e441e329f73",
+     "size": 2082
+    },
+    {
+     "path": "hw/xwin/xlaunch/window/window.cc",
+     "local_sha256": "c20be8ff969951ab3fcd2943812ecfce46e4ea068846c798227e7a8bd7d0d1ec",
+     "size": 7893
+    },
+    {
+     "path": "hw/xwin/xlaunch/window/window.h",
+     "local_sha256": "3dacb406f5d5b423ccfa66e87daff7f813fb95b7ff16f2ee6308a0e87806616f",
+     "size": 3753
+    },
+    {
+     "path": "hw/xwin/xlaunch/window/wizard.cc",
+     "local_sha256": "91f8a9df2ca0c59fa00ceb43987441a047b7955ec68b3835805d6f483ed79840",
+     "size": 7284
+    },
+    {
+     "path": "hw/xwin/xlaunch/window/wizard.h",
+     "local_sha256": "3750063acbc9918a96c9c7139fcb37d50fddc631d3760e600fcf72b64666c6ef",
+     "size": 2833
+    },
+    {
+     "path": "hw/xwin/xlaunch/xml_input.cpp",
+     "local_sha256": "bac4a1cf3298d9443b2fd4c6760708fb3cdaf530769f7c42e57606c505caeede",
+     "size": 8413
+    },
+    {
+     "path": "hw/xwin/xlaunch/xml_input.h",
+     "local_sha256": "aa8bd542651fedf8014eedb6e8c575e9a49427d5ad772746d93544dd566aed43",
+     "size": 139
+    },
+    {
+     "path": "include/version-config.h",
+     "local_sha256": "1dc1ae06fd9122f64efc493475d925f3d70c3e0afcf4e886c616df9f435990e8",
+     "size": 296
+    },
+    {
+     "path": "include/xkb-config.h",
+     "local_sha256": "7b43258abee4450e1b2a6e1ca7a99579abb569ef80a5fb740a58db0b797f6c90",
+     "size": 730
+    },
+    {
+     "path": "include/xwin-config.h",
+     "local_sha256": "d501007d4091253940cc3c8e1b4cc3df7e0653e92e88d5cd072ae7e5277cfaae",
+     "size": 812
+    },
+    {
+     "path": "makefile",
+     "local_sha256": "d5adbcb161c9e8a3cd7ab9a0ade281334d9a4dbbd677a332764022f2a7bf3a34",
+     "size": 3451
+    },
+    {
+     "path": "mi/makefile",
+     "local_sha256": "d2e073b7a4de188414c37f33238c1805a5ee0af15e1b840a66137d075fe1a772",
+     "size": 451
+    },
+    {
+     "path": "miext/damage/makefile",
+     "local_sha256": "a18ef6772925e236619a0acf755f5a47f7061cc4164d3a5f94a6e9eb23b2123d",
+     "size": 149
+    },
+    {
+     "path": "miext/rootless/makefile",
+     "local_sha256": "2700ca3082ca65b2d6f96763e8b7d31cda54059a4d3636e958d1c3cf3670bfda",
+     "size": 244
+    },
+    {
+     "path": "miext/rootless/xplugin.h",
+     "local_sha256": "c388eb6d320d5d572218496632953713cfbaa294b517da899b41049611311079",
+     "size": 19754
+    },
+    {
+     "path": "miext/shadow/makefile",
+     "local_sha256": "a82dc2d9c1e0b8db661c028aabc5d7056ac0825751dee66a137a2d854f27d32a",
+     "size": 561
+    },
+    {
+     "path": "miext/sync/makefile",
+     "local_sha256": "bdd89128c78937961df712dff441fb089ae60097637e0192e2dd4f68a12e17f3",
+     "size": 107
+    },
+    {
+     "path": "os/makefile",
+     "local_sha256": "34cca618a4562aa3e80f206d01c66e7506d4a69bee8ec42a0453a0b750c5401b",
+     "size": 1104
+    },
+    {
+     "path": "present/makefile",
+     "local_sha256": "2278135cba0964567db13767bd96c3efcbaf825a84803a48b367c99ca289758a",
+     "size": 265
+    },
+    {
+     "path": "pseudoramiX/makefile",
+     "local_sha256": "1d9b79436299053593a534b9afad432d2006fdc9c7ce82c13ae397177b52cbf3",
+     "size": 184
+    },
+    {
+     "path": "randr/makefile",
+     "local_sha256": "0194df22749bd9b17a2af59cbce27f8de74a5de0cbb33b7c4855efea8167e00b",
+     "size": 521
+    },
+    {
+     "path": "record/makefile",
+     "local_sha256": "ac8fe67f6823b0ef15c31ec9f0bc4081716f4035c6adcfec57f1e4b2f0551269",
+     "size": 82
+    },
+    {
+     "path": "render/makefile",
+     "local_sha256": "390ed9dadb04d24e0b23a888113950e274b5d98e9ca0a1c8b1eb5f0e534f5693",
+     "size": 220
+    },
+    {
+     "path": "startmulti.bat",
+     "local_sha256": "4d89c4676cf449b062ddb638717c079242af6a82aef124cae3d56e5c6b74e76e",
+     "size": 107
+    },
+    {
+     "path": "startxdmcp.bat",
+     "local_sha256": "4976a5d984f0248e5b757eebb93038f10ad76b2745e37b04c18ecf27f14fa2c2",
+     "size": 99
+    },
+    {
+     "path": "system.XWinrc",
+     "local_sha256": "7f503023780b91755e15cdac028daa31b89fb1a220cd8057dcd01eead880b66a",
+     "size": 3710
+    },
+    {
+     "path": "vcxsrv.sln",
+     "local_sha256": "1120c5eec7590c5c028706bdd9a3df1ceec2ce9c49a4e088973971d4e442f449",
+     "size": 1021
+    },
+    {
+     "path": "xfixes/makefile",
+     "local_sha256": "7a275db8729d9a664ccaa04f2326c4ff37dc343e037d003c72d6a58ec89fa755",
+     "size": 141
+    },
+    {
+     "path": "xkb/makefile",
+     "local_sha256": "1ff4dbe067d6de0b2080ed7a86fb12f2524ba1caf0018206ff60304f9a8a5e00",
+     "size": 828
+    },
+    {
+     "path": "xkeysymdb",
+     "local_sha256": "e7bdb4a06d1b0011c8cd07c3c4b064364c7cbd6d068f7bcc7f77071e0c8e1c78",
+     "size": 8881
+    }
+   ],
+   "local_only_note": "97 local-only files: mhmake makefiles and build glue, generated GLX dispatch headers (glx/dispatch.h, glapitable.h, glprocs.h, glfunctions.h), VcXsrv-only sources (hw/xwin/xlaunch, hw/xwin/swrastwgl_dri, taskbar.h, xdmcphostselect.c), local config headers (include/version-config.h, xkb-config.h, xwin-config.h), and VcXsrv runtime files (vcxsrv.sln, system.XWinrc, *.bat); 46 under hw/xwin",
+   "upstream_only_files": [
+    {
+     "path": "hw/xwin/ddraw.h",
+     "upstream_blob_sha1": "720fa5a9cf427a1a6185c74257a58f83d7d06de0",
+     "mode": "100644"
+    },
+    {
+     "path": "hw/xwin/glx/glshim.c",
+     "upstream_blob_sha1": "a2704025779fa418f949c852a87f445bbfaa45cc",
+     "mode": "100644"
+    },
+    {
+     "path": "hw/xwin/glx/glthunk.c",
+     "upstream_blob_sha1": "3d2702ddb86a110038794f5823b10d045783a058",
+     "mode": "100644"
+    }
+   ],
+   "upstream_only_note": "3 files exist only upstream: hw/xwin/ddraw.h and hw/xwin/glx/{glshim.c,glthunk.c}; VcXsrv removed the ddraw engine and replaced glshim/glthunk with its own generated wrapper (glwrap.c, simpledib.c, swrastwgl_dri)",
+   "registered_patch_crosscheck": {
+    "registered_patches": 39,
+    "registered_patch_files": {
+     "Xext/saver.c": [
+      "ecc634f1b2f7"
+     ],
+     "Xext/sync.c": [
+      "f5abfb619944",
+      "bdd7bf57af20"
+     ],
+     "dix/closestr.h": [
+      "bb5158f962dc"
+     ],
+     "dix/dixfonts.c": [
+      "0237462d326c",
+      "dd5c2595a42d",
+      "bb5158f962dc",
+      "e710e570b170",
+      "f959f1e51f36",
+      "5d011bf3da81"
+     ],
+     "fb/fbglyph.c": [
+      "e31efd3e106e"
+     ],
+     "glx/glxcmds.c": [
+      "6d459e4daf71"
+     ],
+     "glx/glxcmdsswap.c": [
+      "6d459e4daf71"
+     ],
+     "mi/miglblt.c": [
+      "e31efd3e106e"
+     ],
+     "miext/sync/misync.c": [
+      "f19ab94ba9c8",
+      "f5abfb619944"
+     ],
+     "os/io.c": [
+      "03731b326a80",
+      "4fc4d76b2c7a",
+      "d55c54cecb5e"
+     ],
+     "present/present_notify.c": [
+      "5a4286b13f63",
+      "f70cc16c6831"
+     ],
+     "randr/rrproviderproperty.c": [
+      "3c3a4b767b16"
+     ],
+     "record/record.c": [
+      "2bde9ca49a8f"
+     ],
+     "render/animcur.c": [
+      "0885e0b26225"
+     ],
+     "render/render.c": [
+      "0885e0b26225"
+     ],
+     "xkb/XKBGAlloc.c": [
+      "dd8b8cf49d32"
+     ],
+     "xkb/maprules.c": [
+      "d6c462f59927"
+     ],
+     "xkb/xkb.c": [
+      "99790a2c9205",
+      "475d9f49acd0",
+      "b024ae1749ee",
+      "b85b00dd7b9e",
+      "f056ce1cc96e",
+      "d38c563fab5c",
+      "a439a7340ad9",
+      "543e10851642",
+      "867b59b33bee",
+      "81b6a34f90b2",
+      "ed19312c4bda",
+      "6b6e8020b902",
+      "86a321ad9821"
+     ],
+     "xkb/xkbEvents.c": [
+      "10c94238bdad"
+     ],
+     "xkb/xkbsrv_priv.h": [
+      "99790a2c9205"
+     ],
+     "xkb/xkbtext.c": [
+      "5dfb435c1d86"
+     ]
+    },
+    "registered_patch_files_missing_from_diff_set": [],
+    "result": "all 21 distinct files touched by the 39 registered patches are present in the content_different set; spot checks confirm patch hunks present (xkb bounds checks, BigRequest length guard in os/io.c, animated cursor count guard in render/animcur.c). Classification categories can overlap (a file can carry both a registered patch and MSVC adaptations), so classification counts sum above 263"
+   },
+   "upstream_assessment": "see .local-validation/r9-xserver-20260917/upstream-applicability.md; 193 commits on server-21.1-branch since tag xorg-server-21.1.16: 39 applied locally (registered, incl. 2 stable twins matched by subject), 50 already in the pinned master baseline via subject match, 104 not in local tree, of which the security/robustness-relevant ones for the Windows build are listed in the report"
+  }
+ }
+}

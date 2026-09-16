@@ -3346,10 +3346,12 @@
       "revision_kind": "reported_upstream_commit",
       "upstream_url": "https://gitlab.freedesktop.org/xorg/xserver/-/commit/af86c5cbc2475b410a2edeb0482ac58309296adb",
       "evidence": [
-        "docs/history/upstream-releases/releasenote_21.1.16.1.txt:10"
+        "docs/history/upstream-releases/releasenote_21.1.16.1.txt:10",
+        "src/xorg-server/source-audit.json",
+        "docs/validation/2026-09-17-r9-xserver.md"
       ],
-      "confidence": "high-reported,remote-unverified",
-      "notes": "发行说明记录的固定提交，当前包含VcXsrv及fork修改。远端对象未独立验证。 meson.build版本21.1.99.1，产品版本21.1.16不是源码tag。",
+      "confidence": "high-reported,remote-verified",
+      "notes": "发行说明记录的固定提交，当前包含VcXsrv及fork修改。R9.8 克隆官方仓库核验该提交存在：Enrico Weigelt，2025-02-26，Xnest: use authorative declarations from X11/XKBlib.h，describe 为 xorg-server-21.0.99.1-1772-gaf86c5cbc，位于 master，不是 server-21.1-branch 或 xorg-server-21.1.16 tag 的祖先。 meson.build版本21.1.99.1，产品版本21.1.16不是源码tag。本体逐文件比对：上游1580文件中1314个逐字节相同、263个内容不同（21个已登记补丁触及文件、65个hw/xwin fork改动、95个MSVC/Win32适配标记、其余为继承适配，抽样核对均可解释）、3个仅上游（hw/xwin ddraw/glshim/glthunk，VcXsrv未采用）；97个仅本地文件为mhmake构建文件、生成GLX头与VcXsrv专有源码。fonts.src、xkeyboard-config、bitmaps、installer为单独登记子树，不与xserver树直接比。",
       "id": "dep-110",
       "category": "server_apps_tools",
       "inherited_material_urls": [
