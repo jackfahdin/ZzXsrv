@@ -95,22 +95,22 @@
 #define PACKAGE_NAME "pixman"
 
 /* Define to the full name and version of this package. */
-#define PACKAGE_STRING "pixman 0.19.1"
+#define PACKAGE_STRING "pixman 0.46.4"
 
 /* Define to the one symbol short name of this package. */
 #define PACKAGE_TARNAME "pixman"
 
 /* Define to the version of this package. */
-#define PACKAGE_VERSION "0.19.1"
+#define PACKAGE_VERSION "0.46.4"
 
 /* Major version of this package */
 #define PACKAGE_VERSION_MAJOR 0
 
 /* Minor version of this package */
-#define PACKAGE_VERSION_MINOR 19
+#define PACKAGE_VERSION_MINOR 46
 
 /* Patch version of this package */
-#define PACKAGE_VERSION_PATCHLEVEL 1
+#define PACKAGE_VERSION_PATCHLEVEL 4
 
 /* Define to 1 if you have the ANSI C header files. */
 #define STDC_HEADERS 1
@@ -146,7 +146,7 @@
 #define USE_XCB 1
 
 /* Version number of package */
-#define VERSION "0.15.18"
+#define VERSION "0.46.4"
 
 /* Support bdf format bitmap font files */
 #define XFONT_BDFFORMAT 1

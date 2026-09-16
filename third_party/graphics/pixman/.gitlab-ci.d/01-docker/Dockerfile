@@ -1,17 +1,18 @@
 ARG BASE_IMAGE=docker.io/debian
 ARG BASE_IMAGE_TAG=bookworm-slim
-FROM ${BASE_IMAGE}:${BASE_IMAGE_TAG} AS base
+FROM ${BASE_IMAGE}:${BASE_IMAGE_TAG} AS base-image
+
+ENV APT_UPDATE="apt-get update" \
+    APT_INSTALL="env DEBIAN_FRONTEND=noninteractive apt-get install -y --no-install-recommends" \
+    APT_CLEANUP="rm -rf /var/lib/apt/lists/* /var/cache/apt/archives/*"
+
+FROM base-image AS base
 
 LABEL org.opencontainers.image.title="Pixman build environment for platform coverage" \
       org.opencontainers.image.authors="Marek Pikuła <m.pikula@partner.samsung.com>"
 
-ARG DEBIAN_FRONTEND=noninteractive
-ENV APT_UPDATE="apt-get update" \
-    APT_INSTALL="apt-get install -y --no-install-recommends" \
-    APT_CLEANUP="rm -rf /var/lib/apt/lists/* /var/cache/apt/archives/*"
-
 ARG GCOVR_VERSION="~=7.2"
-ARG MESON_VERSION="~=1.6"
+ARG MESON_VERSION="~=1.7"
 RUN echo "deb http://deb.debian.org/debian bookworm-backports main" >  /etc/apt/sources.list.d/debian-12-backports.list \
     && ${APT_UPDATE} \
     && ${APT_INSTALL} \
@@ -27,9 +28,7 @@ RUN echo "deb http://deb.debian.org/debian bookworm-backports main" >  /etc/apt/
         python3-userpath \
         python3-venv \
         # gcovr dependencies.
-        libxml2-dev \
-        libxslt-dev \
-        python3-dev \
+        python3-lxml \
     # User bookworm-backports for QEMU, as it has version 7 by default, which
     # has some issues.
     && ${APT_INSTALL} \
@@ -41,7 +40,7 @@ RUN echo "deb http://deb.debian.org/debian bookworm-backports main" >  /etc/apt/
     && pip install pipx --break-system-packages \
     # Install a recent version of meson and gcovr using pipx to have the same
     # version across all variants regardless of base.
-    && pipx install --global \
+    && pipx install --global --system-site-packages \
         gcovr${GCOVR_VERSION} \
         meson${MESON_VERSION} \
     && gcovr --version \
@@ -107,17 +106,24 @@ RUN ${APT_UPDATE} \
     && ${APT_CLEANUP}
 
 # Windows base image with a pre-built LLVM MinGW toolchain.
-FROM base AS windows-llvm-base
-ARG LLVM_MINGW_RELEASE=20241203
+FROM base-image AS windows-llvm-base-build
+ARG LLVM_MINGW_RELEASE=20250402
 ARG LLVM_MINGW_VARIANT=llvm-mingw-${LLVM_MINGW_RELEASE}-ucrt-ubuntu-20.04
 RUN ${APT_UPDATE} \
     && ${APT_INSTALL} \
-        procps \
+        ca-certificates \
         wget \
+        xz-utils \
     && ${APT_CLEANUP} \
     && wget https://github.com/mstorsjo/llvm-mingw/releases/download/${LLVM_MINGW_RELEASE}/${LLVM_MINGW_VARIANT}-`uname -m`.tar.xz \
         -O - | tar -xJ -C /opt \
     && mv /opt/llvm* /opt/llvm
+
+FROM base AS windows-llvm-base
+RUN ${APT_UPDATE} \
+    && ${APT_INSTALL} procps \
+    && ${APT_CLEANUP}
+COPY --from=windows-llvm-base-build /opt/llvm /opt/llvm
 ENV PATH=/opt/llvm/bin:${PATH} \
     # Inspired by https://code.videolan.org/videolan/docker-images
     WINE_BOOT='wine wineboot --init \
@@ -136,17 +142,6 @@ RUN dpkg --add-architecture i386 \
         libwine:i386 \
         wine \
         wine32 \
-    && ${APT_CLEANUP} \
-    && ${WINE_BOOT}
-
-FROM windows-llvm-base AS windows-amd64
-ENV WINEPATH=/opt/llvm/x86_64-w64-mingw32/bin \
-    WINEARCH=win64
-RUN ${APT_UPDATE} \
-    && ${APT_INSTALL} \
-        libwine \
-        wine \
-        wine64 \
     && ${APT_CLEANUP} \
     && ${WINE_BOOT}
 
@@ -179,7 +174,7 @@ RUN ${APT_UPDATE} \
         lld \
         llvm \
     && ${APT_CLEANUP}
-ARG WINE_VERSION=9.22
+ARG WINE_VERSION=10.5
 RUN git clone https://gitlab.winehq.org/wine/wine.git \
         -b wine-${WINE_VERSION} \
         --depth 1
@@ -187,6 +182,12 @@ RUN cd wine \
     && ./configure --enable-win64 --disable-tests --without-unwind --prefix=/opt/wine \
     && make -j`nproc` \
     && make install
+
+FROM windows-llvm-base AS windows-amd64
+COPY --from=windows-wine-build /opt/wine /opt/wine
+ENV PATH=/opt/wine/bin:${PATH} \
+    WINEPATH=/opt/llvm/x86_64-w64-mingw32/bin
+RUN ${WINE_BOOT}
 
 FROM windows-wine-build-base AS windows-arm64-v8
 COPY --from=windows-wine-build /opt/wine /opt/wine

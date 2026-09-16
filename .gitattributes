@@ -11,3 +11,4 @@ third_party/zlib/** -text -whitespace
 include/X11/xpm.h -text -whitespace
 third_party/xorg/libX11/** -text -whitespace
 third_party/xorg/libxcb/patches/** -text -whitespace
+third_party/graphics/pixman/** -text -whitespace

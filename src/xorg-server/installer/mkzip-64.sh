@@ -33,6 +33,7 @@ tar -rf $OutFile -C ../../../third_party/graphics/dxtn/obj64/release dxtn.dll
 tar -rf $OutFile -C ../../../third_party/libxml2/build/x64/Release libxml2.dll
 tar -rf $OutFile -C ../../../third_party/libiconv/build/x64/Release libiconv.dll
 tar -rf $OutFile -C ../../../third_party/xorg/xkbcomp --transform='s|^|licenses/xkbcomp/|' COPYING README.vcxsrv.md
+tar -rf $OutFile -C ../../../third_party/graphics/pixman --transform='s|^|licenses/pixman/|' COPYING README.vcxsrv.md
 tar -rf $OutFile -C ../../../third_party/xorg/libxcb --transform='s|^|licenses/libxcb/|' COPYING README.vcxsrv.md
 tar -rf $OutFile -C ../../../third_party/xorg/libxcb/xcb-proto --transform='s|^|licenses/xcb-proto/|' COPYING
 tar -rf $OutFile -C ../../../third_party/xorg/libX11 --transform='s|^|licenses/libX11/|' COPYING README.vcxsrv.md

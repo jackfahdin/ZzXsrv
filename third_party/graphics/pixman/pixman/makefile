@@ -27,6 +27,8 @@ CSRCS =			\
 	pixman-noop.c			\
 	pixman-radial-gradient.c	\
 	pixman-region16.c		\
+	pixman-filter.c			\
+	pixman-region64f.c		\
 	pixman-region32.c		\
 	pixman-solid-fill.c		\
 	pixman-timer.c			\

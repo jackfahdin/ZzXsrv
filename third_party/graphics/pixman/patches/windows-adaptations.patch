@@ -1,0 +1,234 @@
+--- a/pixman/pixman-compiler.h
++++ b/pixman/pixman-compiler.h
+@@ -124,6 +124,9 @@
+ 
+ #   define _NO_W32_PSEUDO_MODIFIERS
+ #   include <windows.h>
++#ifdef IN
++#undef IN
++#endif
+ 
+ #   define PIXMAN_DEFINE_THREAD_LOCAL(type, name)			\
+     static volatile int tls_ ## name ## _initialized = 0;		\
+--- a/pixman/pixman-glyph.c
++++ b/pixman/pixman-glyph.c
+@@ -88,7 +88,7 @@
+     key = key + (key << 3) + (key << 11);
+     key = key ^ (key >> 16);
+ 
+-    return key;
++    return key&0xffffffff;
+ }
+ 
+ static glyph_t *
+--- a/pixman/pixman-implementation.c
++++ b/pixman/pixman-implementation.c
+@@ -33,7 +33,7 @@
+ {
+     pixman_implementation_t *imp;
+ 
+-    assert (fast_paths);
++    assert (fast_paths!=NULL);
+ 
+     if ((imp = malloc (sizeof (pixman_implementation_t))))
+     {
+--- a/pixman/pixman-mmx.c
++++ b/pixman/pixman-mmx.c
+@@ -1883,7 +1883,7 @@
+ 	    vdest = pack_565 (
+ 		over (vsrc, expand_alpha (vsrc), vdest), vdest, 0);
+ 
+-	    *dst = to_uint64 (vdest);
++	    *dst = to_uint64 (vdest)&0xffff;
+ 
+ 	    w--;
+ 	    dst++;
+@@ -1927,7 +1927,7 @@
+ 
+ 	    vdest = pack_565 (over (vsrc, expand_alpha (vsrc), vdest), vdest, 0);
+ 
+-	    *dst = to_uint64 (vdest);
++	    *dst = to_uint64 (vdest) & 0xffff;
+ 
+ 	    w--;
+ 	    dst++;
+@@ -2129,7 +2129,7 @@
+ 
+ 	if (w >= 2 && ((uintptr_t)d & 3))
+ 	{
+-	    *(uint16_t *)d = filler;
++	    *(uint16_t *)d = (filler & 0xffff);
+ 	    w -= 2;
+ 	    d += 2;
+ 	}
+@@ -2182,7 +2182,7 @@
+ 	}
+ 	if (w >= 2)
+ 	{
+-	    *(uint16_t *)d = filler;
++	    *(uint16_t *)d = (filler & 0xffff);
+ 	    w -= 2;
+ 	    d += 2;
+ 	}
+@@ -2466,7 +2466,7 @@
+ 		vm3 = to_m64 (m3);
+ 		v3 = in_over (vsrc, vsrca, expand_alpha_rev (vm3), v3);
+ 
+-		*(__m64 *)dst = pack_4x565 (v0, v1, v2, v3);;
++		*(__m64 *)dst = pack_4x565 (v0, v1, v2, v3);
+ 	    }
+ 
+ 	    w -= 4;
+@@ -3650,13 +3650,14 @@
+     __m64 b_lo = _mm_mullo_pi16 (_mm_unpacklo_pi8 (b, mm_zero), mm_wb);		\
+     __m64 hi = _mm_add_pi16 (t_hi, b_hi);					\
+     __m64 lo = _mm_add_pi16 (t_lo, b_lo);					\
++    __m64 mm_wh,p,q;\
+     /* calculate horizontal weights */						\
+-    __m64 mm_wh = _mm_add_pi16 (mm_addc7, _mm_xor_si64 (mm_xorc7,		\
++    mm_wh = _mm_add_pi16 (mm_addc7, _mm_xor_si64 (mm_xorc7,		\
+ 			  _mm_srli_pi16 (mm_x,					\
+ 					 16 - BILINEAR_INTERPOLATION_BITS)));	\
+     /* horizontal interpolation */						\
+-    __m64 p = _mm_unpacklo_pi16 (lo, hi);					\
+-    __m64 q = _mm_unpackhi_pi16 (lo, hi);					\
++    p = _mm_unpacklo_pi16 (lo, hi);					\
++    q = _mm_unpackhi_pi16 (lo, hi);					\
+     vx += unit_x;								\
+     lo = _mm_madd_pi16 (p, mm_wh);						\
+     hi = _mm_madd_pi16 (q, mm_wh);						\
+--- a/pixman/pixman-sse2.c
++++ b/pixman/pixman-sse2.c
+@@ -3361,14 +3361,14 @@
+ 
+ 	if (w >= 1 && ((uintptr_t)d & 1))
+ 	{
+-	    *(uint8_t *)d = filler;
++	    *(uint8_t *)d = filler&0xff;
+ 	    w -= 1;
+ 	    d += 1;
+ 	}
+ 
+ 	while (w >= 2 && ((uintptr_t)d & 3))
+ 	{
+-	    *(uint16_t *)d = filler;
++	    *(uint16_t *)d = filler&0xffff;
+ 	    w -= 2;
+ 	    d += 2;
+ 	}
+@@ -3434,14 +3434,14 @@
+ 
+ 	if (w >= 2)
+ 	{
+-	    *(uint16_t *)d = filler;
++	    *(uint16_t *)d = filler&0xffff;
+ 	    w -= 2;
+ 	    d += 2;
+ 	}
+ 
+ 	if (w >= 1)
+ 	{
+-	    *(uint8_t *)d = filler;
++	    *(uint8_t *)d = filler&0xff;
+ 	    w -= 1;
+ 	    d += 1;
+ 	}
+@@ -4404,10 +4404,10 @@
+ 
+ 	while (w && ((uintptr_t)dst & 15))
+ 	{
+-	    *dst = (uint8_t)_mm_cvtsi128_si32 (
++	    *dst = (uint8_t)(0xff&_mm_cvtsi128_si32 (
+ 		_mm_adds_epu8 (
+ 		    xmm_src,
+-		    _mm_cvtsi32_si128 (*dst)));
++		    _mm_cvtsi32_si128 (*dst))));
+ 
+ 	    w--;
+ 	    dst++;
+@@ -4424,10 +4424,10 @@
+ 
+ 	while (w)
+ 	{
+-	    *dst = (uint8_t)_mm_cvtsi128_si32 (
++	    *dst = (uint8_t)(0xff&_mm_cvtsi128_si32 (
+ 		_mm_adds_epu8 (
+ 		    xmm_src,
+-		    _mm_cvtsi32_si128 (*dst)));
++		    _mm_cvtsi32_si128 (*dst))));
+ 
+ 	    w--;
+ 	    dst++;
+@@ -5549,20 +5549,20 @@
+ /***********************************************************************************/
+ 
+ # define BILINEAR_DECLARE_VARIABLES						\
+-    const __m128i xmm_wt = _mm_set_epi16 (wt, wt, wt, wt, wt, wt, wt, wt);	\
+-    const __m128i xmm_wb = _mm_set_epi16 (wb, wb, wb, wb, wb, wb, wb, wb);	\
++	const __m128i xmm_wt = _mm_set_epi16(wt & 0xffff, wt & 0xffff, wt & 0xffff, wt & 0xffff, wt & 0xffff, wt & 0xffff, wt & 0xffff, wt & 0xffff);	\
++	const __m128i xmm_wb = _mm_set_epi16(wb & 0xffff, wb & 0xffff, wb & 0xffff, wb & 0xffff, wb & 0xffff, wb & 0xffff, wb & 0xffff, wb & 0xffff);	\
+     const __m128i xmm_addc = _mm_set_epi16 (0, 1, 0, 1, 0, 1, 0, 1);		\
+-    const __m128i xmm_ux1 = _mm_set_epi16 (unit_x, -unit_x, unit_x, -unit_x,	\
+-					   unit_x, -unit_x, unit_x, -unit_x);	\
+-    const __m128i xmm_ux4 = _mm_set_epi16 (unit_x * 4, -unit_x * 4,		\
+-					   unit_x * 4, -unit_x * 4,		\
+-					   unit_x * 4, -unit_x * 4,		\
+-					   unit_x * 4, -unit_x * 4);		\
++    const __m128i xmm_ux1 = _mm_set_epi16 ((unit_x)&0xffff, (-unit_x)&0xffff, (unit_x)&0xffff, (-unit_x)&0xffff,	\
++					   (unit_x)&0xffff, (-unit_x)&0xffff, (unit_x)&0xffff, (-unit_x)&0xffff);	\
++    const __m128i xmm_ux4 = _mm_set_epi16 ((unit_x * 4)&0xffff, (-unit_x * 4)&0xffff,		\
++					   (unit_x * 4)&0xffff, (-unit_x * 4)&0xffff,		\
++					   (unit_x * 4)&0xffff, (-unit_x * 4)&0xffff,		\
++					   (unit_x * 4)&0xffff, (-unit_x * 4)&0xffff);		\
+     const __m128i xmm_zero = _mm_setzero_si128 ();				\
+-    __m128i xmm_x = _mm_set_epi16 (vx + unit_x * 3, -(vx + 1) - unit_x * 3,	\
+-				   vx + unit_x * 2, -(vx + 1) - unit_x * 2,	\
+-				   vx + unit_x * 1, -(vx + 1) - unit_x * 1,	\
+-				   vx + unit_x * 0, -(vx + 1) - unit_x * 0);	\
++	__m128i xmm_x = _mm_set_epi16((vx + unit_x * 3) & 0xffff, (-(vx + 1) - unit_x * 3) & 0xffff, \
++								  (vx + unit_x * 2) & 0xffff, (-(vx + 1) - unit_x * 2) & 0xffff, \
++								  (vx + unit_x * 1) & 0xffff, (-(vx + 1) - unit_x * 1) & 0xffff, \
++								  (vx + unit_x * 0) & 0xffff, (-(vx + 1) - unit_x * 0) & 0xffff);	\
+     __m128i xmm_wh_state;
+ 
+ #define BILINEAR_INTERPOLATE_ONE_PIXEL_HELPER(pix, phase_)			\
+@@ -5597,18 +5597,18 @@
+ #else /************************************************************************/
+ 
+ # define BILINEAR_DECLARE_VARIABLES						\
+-    const __m128i xmm_wt = _mm_set_epi16 (wt, wt, wt, wt, wt, wt, wt, wt);	\
+-    const __m128i xmm_wb = _mm_set_epi16 (wb, wb, wb, wb, wb, wb, wb, wb);	\
++	const __m128i xmm_wt = _mm_set_epi16(wt & 0xffff, wt & 0xffff, wt & 0xffff, wt & 0xffff, wt & 0xffff, wt & 0xffff, wt & 0xffff, wt & 0xffff);	\
++	const __m128i xmm_wb = _mm_set_epi16(wb & 0xffff, wb & 0xffff, wb & 0xffff, wb & 0xffff, wb & 0xffff, wb & 0xffff, wb & 0xffff, wb & 0xffff);	\
+     const __m128i xmm_addc = _mm_set_epi16 (0, 1, 0, 1, 0, 1, 0, 1);		\
+-    const __m128i xmm_ux1 = _mm_set_epi16 (unit_x, -unit_x, unit_x, -unit_x,	\
+-					  unit_x, -unit_x, unit_x, -unit_x);	\
+-    const __m128i xmm_ux4 = _mm_set_epi16 (unit_x * 4, -unit_x * 4,		\
+-					   unit_x * 4, -unit_x * 4,		\
+-					   unit_x * 4, -unit_x * 4,		\
+-					   unit_x * 4, -unit_x * 4);		\
++	const __m128i xmm_ux1 = _mm_set_epi16((unit_x) & 0xffff, (-unit_x) & 0xffff, (unit_x) & 0xffff, (-unit_x) & 0xffff, \
++	(unit_x) & 0xffff, (-unit_x) & 0xffff, (unit_x) & 0xffff, (-unit_x) & 0xffff);	\
++					  const __m128i xmm_ux4 = _mm_set_epi16((unit_x * 4) & 0xffff, (-unit_x * 4) & 0xffff, \
++					  (unit_x * 4) & 0xffff, (-unit_x * 4) & 0xffff, \
++					  (unit_x * 4) & 0xffff, (-unit_x * 4) & 0xffff, \
++					  (unit_x * 4) & 0xffff, (-unit_x * 4) & 0xffff);		\
+     const __m128i xmm_zero = _mm_setzero_si128 ();				\
+-    __m128i xmm_x = _mm_set_epi16 (vx, -(vx + 1), vx, -(vx + 1),		\
+-				   vx, -(vx + 1), vx, -(vx + 1))
++    __m128i xmm_x = _mm_set_epi16 (vx&0xffff, (-(vx + 1))&0xffff, vx&0xffff, (-(vx + 1))&0xffff,		\
++				   vx&0xffff, (-(vx + 1))&0xffff, vx&0xffff, (-(vx + 1))&0xffff)
+ 
+ #define BILINEAR_INTERPOLATE_ONE_PIXEL_HELPER(pix, phase)			\
+ do {										\
+--- a/pixman/pixman-trap.c
++++ b/pixman/pixman-trap.c
+@@ -138,7 +138,7 @@
+ 
+     if (ne > 0)
+     {
+-	int nx = ne / e->dy;
++	pixman_fixed_48_16_t nx = ne / e->dy;
+ 	ne -= nx * (pixman_fixed_48_16_t)e->dy;
+ 	stepx += nx * e->signdx;
+     }

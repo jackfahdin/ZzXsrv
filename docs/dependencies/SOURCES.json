@@ -550,26 +550,31 @@
     {
       "name": "pixman",
       "path": "third_party/graphics/pixman",
-      "revision": "aafb4caea2f440c8ca9fad2cfa2c2fb9e2779ae6",
-      "revision_kind": "recorded_sync_commit",
+      "revision": "0.46.4",
+      "revision_kind": "verified_release_archive_with_recorded_adaptations",
       "upstream_url": "https://gitlab.freedesktop.org/pixman/pixman",
       "evidence": [
         "docs/history/upstream-releases/releasenote_21.1.16.1.txt: Changes in 21.1.16 records pixman aafb4caea2f440c8ca9fad2cfa2c2fb9e2779ae6",
-        "third_party/graphics/pixman/meson.build: 0.44.3"
+        "third_party/graphics/pixman/meson.build: 0.46.4 (inherited baseline declared 0.44.3)",
+        "third_party/graphics/pixman/source-files.json: 224 official files, six recorded source adaptations and three native build/config files",
+        "docs/validation/2026-09-16-r9-pixman.md"
       ],
       "confidence": "high",
-      "notes": "原作者记录同步 SHA，未逐文件证实等同上游。",
+      "notes": "官方 0.46.4 归档及公开 SHA-512 已核验，224 个文件全部纳入、218 个原始字节保留，6 个保留的本地适配由补丁和摘要记录；原同步 SHA 未独立验证。修正版本头并补齐原生静态库构建项。未独立验证 PGP 签名。",
       "nested": false,
       "id": "dep-020",
       "category": "core_libraries_headers",
       "inherited_material_urls": [
         "https://github.com/marchaesen/vcxsrv/tree/d0a1eaf7ee15fcdf4f683388a88fec49078e6408/pixman"
       ],
-      "import_method": "inherited_vcxsrv_source_collection",
+      "import_method": "official_release_archive_with_inherited_windows_adaptations",
       "actual_import_urls": [
-        "https://github.com/marchaesen/vcxsrv/tree/d0a1eaf7ee15fcdf4f683388a88fec49078e6408/pixman"
+        "https://www.cairographics.org/releases/pixman-0.46.4.tar.xz"
       ],
-      "upstream_revision_url": "https://gitlab.freedesktop.org/pixman/pixman/-/commit/aafb4caea2f440c8ca9fad2cfa2c2fb9e2779ae6"
+      "upstream_revision_url": "https://www.cairographics.org/releases/pixman-0.46.4.tar.xz",
+      "previous_recorded_sync_commit": "aafb4caea2f440c8ca9fad2cfa2c2fb9e2779ae6",
+      "archive_sha256": "a098c33924754ad43f981b740f6d576c70f9ed1006e12221b1845431ebce1239",
+      "archive_sha512": "83b133e7969ba34f883f4e08dcc5d388c4397f43ce836c191c05945fe77c16ff501d531600780c12678a0d08105828a6bdeff2156b63f9c1a84087bc7f40ae9f"
     },
     {
       "name": "fontconfig",
