@@ -139,15 +139,17 @@ class FreeTypeConsumerTests(unittest.TestCase):
         self.assertIn('PASS fontconfig build',
                       run_logged([exe, config, self.fontdir, 'build'], cwd=self.work, env=self.env))
         caches = list(cache.glob('*.cache-12'))
-        self.assertEqual(len(caches), 1, 'Fontconfig must write the new cache format')
-        cache_bytes = caches[0].read_bytes()
-        self.assertEqual(struct.unpack_from('<i', cache_bytes, 4)[0], 12)
-        self.assertEqual(struct.unpack_from('<q', cache_bytes, 64)[0],
-                         (2 << 24) + (18 << 12) + 3)
+        self.assertTrue(caches, 'Fontconfig must write the new cache format')
+        # Windows slash/backslash spellings can produce separate cache keys.
+        cache_bytes = {p: p.read_bytes() for p in caches}
+        for data in cache_bytes.values():
+            self.assertEqual(struct.unpack_from('<i', data, 4)[0], 12)
+            self.assertEqual(struct.unpack_from('<q', data, 64)[0],
+                             (2 << 24) + (18 << 12) + 3)
         # A second process must load the disk cache; it cannot use in-memory state.
         self.assertIn('PASS fontconfig reload',
                       run_logged([exe, config, self.fontdir, 'reload'], cwd=self.work, env=self.env))
-        self.assertEqual(caches[0].read_bytes(), cache_bytes,
+        self.assertEqual({p: p.read_bytes() for p in cache.glob('*.cache-12')}, cache_bytes,
                          'Reload must consume the existing cache without rewriting it')
 
     def test_mkfontscale_indexes_ttf_and_cff(self):

@@ -6,7 +6,7 @@ deliberately needs no fontTools installation or downloaded fonts.
 import struct
 
 
-def make_cff_font():
+def make_cff_font(family='FreeType Test Rectangle'):
     def pack(fmt, *values):
         return struct.pack('>' + fmt, *values)
 
@@ -32,8 +32,8 @@ def make_cff_font():
     cff = prefix + top + b'\0\0\0\0' + index([b'\x0e', rectangle])
     cmap4 = pack('7H', 4, 32, 0, 4, 4, 1, 0)
     cmap4 += pack('9H', 65, 65535, 0, 65, 65535, 65472, 1, 0, 0)
-    name_strings = [('FreeType Test Rectangle', 1), ('Regular', 2),
-                    ('FreeType Test Rectangle Regular', 4),
+    name_strings = [(family, 1), ('Regular', 2),
+                    (family + ' Regular', 4),
                     ('FreeTypeTestRectangle', 6)]
     records, strings = b'', b''
     for value, name_id in name_strings:

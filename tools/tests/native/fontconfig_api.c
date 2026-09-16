@@ -3,12 +3,13 @@
 #include <string.h>
 #include <locale.h>
 #include <fontconfig/fontconfig.h>
+#include <fontconfig/fcfreetype.h>
 
 #define CHECK(c) do { if (!(c)) { fprintf(stderr, "FAIL line %d: %s\n", __LINE__, #c); return 1; } } while (0)
 
 int main(int argc, char **argv)
 {
-    CHECK(argc == 2);
+    CHECK(argc == 2 || argc == 3);
     if (strcmp(argv[1], "version") == 0) {
         printf("Fontconfig header=%d library=%d\n", FC_VERSION, FcGetVersion());
         CHECK(FcGetVersion() == 21803);
@@ -28,9 +29,31 @@ int main(int argc, char **argv)
         FcPatternDestroy(again);
         FcStrFree(name);
         FcPatternDestroy(p);
+    } else if (strcmp(argv[1], "userconfig") == 0) {
+        FcConfig *config = FcConfigCreate();
+        FcPattern *p = FcPatternCreate();
+        FcChar8 *family;
+        double size;
+        CHECK(argc == 3 && config && p);
+        CHECK(FcConfigParseAndLoad(config, (const FcChar8 *)argv[2], FcTrue));
+        CHECK(FcConfigSubstitute(config, p, FcMatchPattern));
+        CHECK(FcPatternGetString(p, FC_FAMILY, 0, &family) == FcResultMatch);
+        CHECK(strcmp((const char *)family, "Legacy User") == 0);
+        CHECK(FcPatternGetDouble(p, FC_SIZE, 0, &size) == FcResultMatch && size == 29.5);
+        FcPatternDestroy(p);
+        FcConfigDestroy(config);
     } else {
 #if FC_VERSION >= 21803
-        if (strcmp(argv[1], "constants") == 0) {
+        if (strcmp(argv[1], "classification") == 0) {
+            FcPattern *p;
+            int faces, value;
+            CHECK(argc == 3);
+            p = FcFreeTypeQuery((const FcChar8 *)argv[2], 0, NULL, &faces);
+            CHECK(p && faces == 1);
+            CHECK(FcPatternGetInteger(p, FC_GENERIC_FAMILY, 0, &value) == FcResultMatch);
+            CHECK(value == FC_FAMILY_MONO);
+            FcPatternDestroy(p);
+        } else if (strcmp(argv[1], "constants") == 0) {
             const FcChar8 *name = FcNameGetConstantNameFrom(FC_WEIGHT, FC_WEIGHT_BOLD);
             int value;
             CHECK(name && FcNameConstant(name, &value) && value == FC_WEIGHT_BOLD);
