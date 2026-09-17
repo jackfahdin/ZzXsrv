@@ -1,0 +1,152 @@
+name: continuous-build
+
+# Daily rolling prerelease of master. The scheduled run skips itself when the
+# continuous-build snapshot tag already points at origin/master.
+
+on:
+  schedule:
+    - cron: '0 16 * * *' # 16:00 UTC
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  prepare:
+    runs-on: ubuntu-latest
+    outputs:
+      should_build: ${{ steps.resolve.outputs.should_build }}
+      sha: ${{ steps.resolve.outputs.sha }}
+      version: ${{ steps.resolve.outputs.version }}
+    steps:
+      - uses: actions/checkout@v5
+        with:
+          fetch-depth: 0
+      - id: resolve
+        shell: bash
+        run: |
+          set -euo pipefail
+          git fetch --force origin master:refs/remotes/origin/master
+          sha="$(git rev-parse refs/remotes/origin/master)"
+          version="$(date -u +%Y.%-m.%-d)"
+          should_build=true
+          if [[ "${GITHUB_EVENT_NAME}" == "schedule" ]]; then
+            tag_sha="$(git rev-parse --verify --quiet refs/tags/continuous-build || true)"
+            if [[ -n "$tag_sha" && "$tag_sha" == "$sha" ]]; then
+              echo "No new commits since the continuous-build snapshot tag; skipping."
+              should_build=false
+            fi
+          fi
+          {
+            echo "sha=$sha"
+            echo "version=$version"
+            echo "should_build=$should_build"
+          } >> "$GITHUB_OUTPUT"
+
+  package:
+    needs: prepare
+    if: needs.prepare.outputs.should_build == 'true'
+    runs-on: windows-2025
+    timeout-minutes: 180
+    steps:
+      - uses: actions/checkout@v5
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Install Python build dependencies
+        run: python -m pip install --disable-pip-version-check lxml mako pyyaml
+
+      - name: Install Inno Setup
+        shell: pwsh
+        run: scripts/ci/install-innosetup.ps1
+
+      - name: Install native build tools (NASM, WinFlexBison, gperf)
+        shell: pwsh
+        run: scripts/ci/install-build-tools.ps1
+
+      - name: Build server and portable runtime
+        shell: pwsh
+        run: |
+          # Keep Git Bash's usr/bin, bin and mingw tools off PATH so they
+          # cannot shadow MSVC (link.exe) or inject MSYS/Cygwin binaries.
+          $env:PATH = ($env:PATH -split ';' | Where-Object { $_ -notmatch 'Git\\usr|Git\\bin|Git\\mingw' }) -join ';'
+          scripts/build/buildall.ps1 -Stage All -Configuration Release -Architecture x64 -Jobs 4 `
+              -EnvironmentReport .local-validation/ci-environment.json
+
+      - name: Run test suite
+        shell: pwsh
+        run: |
+          $vswhere = Join-Path ${env:ProgramFiles(x86)} 'Microsoft Visual Studio\Installer\vswhere.exe'
+          $vs = & $vswhere -latest -products '*' -version '[17.0,18.0)' -property installationPath
+          $vcvars = Join-Path $vs 'VC\Auxiliary\Build\vcvarsall.bat'
+          $vcEnvironment = & $env:ComSpec /d /c "call `"$vcvars`" amd64 >nul && set"
+          foreach ($line in $vcEnvironment) {
+              if ($line -match '^([^=]+)=(.*)$') {
+                  [Environment]::SetEnvironmentVariable($Matches[1], $Matches[2], 'Process')
+              }
+          }
+          $env:PATH = ($env:PATH -split ';' | Where-Object { $_ -notmatch 'Git\\usr|Git\\bin|Git\\mingw' }) -join ';'
+          $env:VCXSRV_TEST_LOCAL_TOOLS = '1'
+          $env:MHMAKECONF = (Resolve-Path '.').Path
+          $env:IS64 = '1'
+          $env:PYTHONUTF8 = '1'
+          python -B -m unittest discover -s tools/tests -v
+
+      - name: Package full and slim editions
+        shell: pwsh
+        run: |
+          $version = '${{ needs.prepare.outputs.version }}'
+          $dist = 'dist/x64/Release'
+          python -B tools/package_release.py --dist-dir $dist --version $version
+          python -B tools/package_release.py --dist-dir $dist --version $version --edition slim
+
+      - name: Generate SHA256 checksums
+        shell: pwsh
+        run: |
+          $lines = Get-ChildItem dist/release -File | Sort-Object Name | ForEach-Object {
+              '{0}  {1}' -f (Get-FileHash -LiteralPath $_.FullName -Algorithm SHA256).Hash.ToLowerInvariant(), $_.Name
+          }
+          [System.IO.File]::WriteAllLines("$PWD/dist/release/SHA256SUMS.txt", $lines)
+
+      - name: Upload artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: zzxsrv-${{ needs.prepare.outputs.version }}-x64
+          path: dist/release/*
+          retention-days: 7
+
+  publish:
+    needs: [prepare, package]
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v5
+        with:
+          fetch-depth: 0
+
+      - name: Download artifacts
+        uses: actions/download-artifact@v4
+        with:
+          name: zzxsrv-${{ needs.prepare.outputs.version }}-x64
+          path: dist/release
+
+      - name: Publish rolling prerelease
+        env:
+          GH_TOKEN: ${{ github.token }}
+          SHA: ${{ needs.prepare.outputs.sha }}
+          VERSION: ${{ needs.prepare.outputs.version }}
+        shell: bash
+        run: |
+          set -euo pipefail
+          if ! gh release view continuous-build >/dev/null 2>&1; then
+            gh release create continuous-build --prerelease \
+              --title "Continuous build" --notes "Rolling prerelease of the latest master build."
+          fi
+          gh release upload continuous-build dist/release/* --clobber
+          gh release edit continuous-build --prerelease \
+            --title "Continuous build ${VERSION}" \
+            --notes "Rolling prerelease built from commit ${SHA}. Artifacts: full and slim editions (portable zip + installer) plus SHA256SUMS.txt."
+          # Move the snapshot tag so the next scheduled run can detect changes.
+          git tag --force continuous-build "$SHA"
+          git push --force origin refs/tags/continuous-build
