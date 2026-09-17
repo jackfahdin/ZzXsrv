@@ -50,6 +50,32 @@
 | fix potential buff overflow in XkbVModIndexText for XkbCFile format | [5dfb435c1d864bf154369cb86d085d4159730378](https://gitlab.freedesktop.org/xorg/xserver/-/commit/5dfb435c1d864bf154369cb86d085d4159730378) | [实际下载的固定 SHA API](https://api.github.com/repos/LizardByte-infrastructure/xserver/commits/5dfb435c1d864bf154369cb86d085d4159730378) | `b9081dd495558c1f0f8ef911179015ae109b4256` / [XKB 整合报告](../validation/2026-09-10-xkb.md) |
 | preserve buffer on realloc failure | [d6c462f59927b3702a54e0e8ea2a5de7639294e6](https://gitlab.freedesktop.org/xorg/xserver/-/commit/d6c462f59927b3702a54e0e8ea2a5de7639294e6) | [实际下载的固定 SHA API](https://api.github.com/repos/LizardByte-infrastructure/xserver/commits/d6c462f59927b3702a54e0e8ea2a5de7639294e6) | `b9081dd495558c1f0f8ef911179015ae109b4256` / [XKB 整合报告](../validation/2026-09-10-xkb.md) |
 
+### R12 上游 21.1 分支补丁批次（19 项）
+
+2026-09-17 按 [R11 适用性评估](../validation/2026-09-17-r11-xserver-applicability.md) 的 A 档从 server-21.1-branch cherry-pick；来源克隆与逐 commit 判定证据见对应报告。本地提交为分支 `codex/r12-xserver-20260917` 上的逐个提交。
+
+| 改动 | 上游 commit（server-21.1-branch） | 本地提交 | 备注 |
+| --- | --- | --- | --- |
+| Fix use-after-free caused by duplicate glyphs in one glyphset | [8d604fa14969](https://gitlab.freedesktop.org/xorg/xserver/-/commit/8d604fa14969ca5bf941c6f9002e1d8798f7f5b2) | `8e1b607654d0` | 干净 cherry-pick |
+| Xi: Check window attribute is valid in XIChangeCursor | [ab2766f3473e](https://gitlab.freedesktop.org/xorg/xserver/-/commit/ab2766f3473efdc9d13234553d21b0dc4dd780d8) | `a2df88261e0a` | 干净 cherry-pick |
+| dix/colormap: fix out-of-bounds read in FindColorInRootCmap | [8a6e5f0fcdf1](https://gitlab.freedesktop.org/xorg/xserver/-/commit/8a6e5f0fcdf196bd5ba2059816069806d523b665) | `0586a942aa93` | 干净 cherry-pick |
+| glx: reject negative size in FeedbackBuffer and SelectBuffer requests | [1888711ce489](https://gitlab.freedesktop.org/xorg/xserver/-/commit/1888711ce4899b76fc5230e9367231c901716bb8) | `aea7f956be9b` | 干净 cherry-pick |
+| dix: handle allocation failure in ChangeWindowDeviceCursor() | [78368d1b23d4](https://gitlab.freedesktop.org/xorg/xserver/-/commit/78368d1b23d439470f2291102f3122b133802581) | `b22a0bb01c1f` | 干净 cherry-pick |
+| dix: handle allocation failure in DeviceFocusEvent() | [04321adc5916](https://gitlab.freedesktop.org/xorg/xserver/-/commit/04321adc59165b5b0a92e061a58c4c64d2b17839) | `41bb2d0e460e` | 干净 cherry-pick |
+| dix: pick the right keyboard for focus FollowKeyboard | [a3a37c56998e](https://gitlab.freedesktop.org/xorg/xserver/-/commit/a3a37c56998e85ac2ab98d3a3778c312fc0e8fad) | `e5f4a7b10319` | 干净 cherry-pick |
+| dix: fix erroneous BUG_RETURN check | [0249e717d4cb](https://gitlab.freedesktop.org/xorg/xserver/-/commit/0249e717d4cbc40559d6072655d5a873320cb085) | `de515d5ec6e9` | 干净 cherry-pick |
+| Xi: handle allocation failure in add_master_func() | [757a0d03b4a5](https://gitlab.freedesktop.org/xorg/xserver/-/commit/757a0d03b4a5b56d61f23d8ffbf14b104c1d7e11) | `df3771e43c01` | 干净 cherry-pick |
+| Xi: handle allocation failure in ProcXListInputDevices() | [d31e4534a600](https://gitlab.freedesktop.org/xorg/xserver/-/commit/d31e4534a600e77e3408d57032239fda4420fa2c) | `767837d6f3d1` | 干净 cherry-pick |
+| Xi: handle allocation failure in ProcXGetDeviceDontPropagateList() | [fd6d04089c62](https://gitlab.freedesktop.org/xorg/xserver/-/commit/fd6d04089c62dfbf00969053fb307718fbea386f) | `d353695c7051` | 干净 cherry-pick |
+| Xi: set value for led_values in CopySwapKbdFeedback() | [995fe28ebffb](https://gitlab.freedesktop.org/xorg/xserver/-/commit/995fe28ebffb349e453a2586e48b441ac6d5c71c) | `57d9d831281e` | 干净 cherry-pick |
+| Xi: avoid null dereference if wOtherInputMasks() returns NULL | [b171669dc0c9](https://gitlab.freedesktop.org/xorg/xserver/-/commit/b171669dc0c94c07c87eae9e761ff2c520c3bab0) | `608cb4eca885` | 第 4 个 hunk 手工适配（本地 `X11_RESTYPE_NONE` 改名） |
+| Xi: disallow grabbing disabled devices | [bf37ce8edc25](https://gitlab.freedesktop.org/xorg/xserver/-/commit/bf37ce8edc252beb4aa2c6b942c86672f5bb2815) | `462b1a2a212a` | 干净 cherry-pick |
+| Xext/xtest: avoid null dereference in ProcXTestFakeInput() | [d29339ed3f1b](https://gitlab.freedesktop.org/xorg/xserver/-/commit/d29339ed3f1b3688ed012f3ae4666e35d1a986d0) | `dfdc21b7bfdb` | 干净 cherry-pick |
+| Xext/xres: avoid null dereference in ProcXResQueryClients() | [a39d4c3a303c](https://gitlab.freedesktop.org/xorg/xserver/-/commit/a39d4c3a303cb6170123a77aa8696d98706c28be) | `52c9b9d99ccd` | 干净 cherry-pick |
+| Xext/sync: avoid null dereference if SysCounterGetPrivate() returns NULL | [7097560cfb23](https://gitlab.freedesktop.org/xorg/xserver/-/commit/7097560cfb2386e16782c37c1cbae77aa9650c58) | `407a61361b96` | 干净 cherry-pick；sync 三连第 1 个 |
+| Xext/sync: avoid null dereference in init_system_idle_counter() | [9bad510a45ca](https://gitlab.freedesktop.org/xorg/xserver/-/commit/9bad510a45ca4997b371e9c3bfa9be10e3a0ff51) | `273ccc23a75e` | 干净 cherry-pick；sync 三连第 2 个 |
+| Xext/sync: Avoid dereference of invalid pointer if malloc() fails | [976ef43f95a3](https://gitlab.freedesktop.org/xorg/xserver/-/commit/976ef43f95a372c7485ee51a7b1e07e13fbf972a) | `13c4428707c8` | 手工适配（本地 `X11_RESTYPE_NONE` 改名）；sync 三连第 3 个 |
+
 ### R5 原生 XML 配置读取适配
 
 已合入的源码 `af0cd70e417d8bce105afe07b59e6b5c8298a396` 为 XLaunch 增加解析上下文局部的 gzip/WinHTTP 输入适配，与固定 libxml2 2.15.4 源码配套。此为本地兼容实现，不计入 X Server 上游补丁数；原 39 项上游补丁记录不变，另列为第 4 项本地兼容记录。源码导入的 Winlibs 适配在 libiconv 组件字段中单独追溯。2026-09-15 取得本版本实际使用正常的反馈后快进合入 master，测试及未验收范围见 [R5 报告](../validation/2026-09-15-libxml2-native.md)。

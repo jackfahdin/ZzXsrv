@@ -6319,6 +6319,351 @@
         "evidence": "../validation/2026-09-09-xserver-core-audit.md"
       },
       "report": "../validation/2026-09-14-r3-final.md"
+    },
+    {
+      "component": "xserver",
+      "name": "Fix use-after-free caused by duplicate glyphs in one glyphset",
+      "upstream_stable_commit": "8d604fa14969ca5bf941c6f9002e1d8798f7f5b2",
+      "upstream_url": "https://gitlab.freedesktop.org/xorg/xserver/-/commit/8d604fa14969ca5bf941c6f9002e1d8798f7f5b2",
+      "upstream_author": {
+        "name": "Octavia Togami",
+        "email": "octy@octyl.net",
+        "date": "2026-06-18T11:56:58-07:00"
+      },
+      "local_commit": "8e1b607654d0880282403243287638f323ac6dbd",
+      "local_paths": [
+        "src/xorg-server/render/glyph.c"
+      ],
+      "applied_date": "2026-09-17",
+      "selection_report": "../validation/2026-09-17-r11-xserver-applicability.md",
+      "report": "../validation/2026-09-17-r12-xserver.md"
+    },
+    {
+      "component": "xserver",
+      "name": "Xi: Check window attribute is valid in XIChangeCursor",
+      "upstream_stable_commit": "ab2766f3473efdc9d13234553d21b0dc4dd780d8",
+      "upstream_url": "https://gitlab.freedesktop.org/xorg/xserver/-/commit/ab2766f3473efdc9d13234553d21b0dc4dd780d8",
+      "upstream_author": {
+        "name": "Olivier Fourdan",
+        "email": "ofourdan@redhat.com",
+        "date": "2026-06-23T14:10:44+02:00"
+      },
+      "local_commit": "a2df88261e0a7cbbd1ac58f9944a89fdb1a7580f",
+      "local_paths": [
+        "src/xorg-server/Xi/xichangecursor.c"
+      ],
+      "applied_date": "2026-09-17",
+      "selection_report": "../validation/2026-09-17-r11-xserver-applicability.md",
+      "report": "../validation/2026-09-17-r12-xserver.md"
+    },
+    {
+      "component": "xserver",
+      "name": "dix/colormap: fix out-of-bounds read in FindColorInRootCmap",
+      "upstream_stable_commit": "8a6e5f0fcdf196bd5ba2059816069806d523b665",
+      "upstream_url": "https://gitlab.freedesktop.org/xorg/xserver/-/commit/8a6e5f0fcdf196bd5ba2059816069806d523b665",
+      "upstream_author": {
+        "name": "Peter Hutterer",
+        "email": "peter.hutterer@who-t.net",
+        "date": "2026-04-17T10:13:51+10:00"
+      },
+      "local_commit": "0586a942aa93eb1e5966b0bbcbe2c4b6fc2d33da",
+      "local_paths": [
+        "src/xorg-server/dix/colormap.c"
+      ],
+      "applied_date": "2026-09-17",
+      "selection_report": "../validation/2026-09-17-r11-xserver-applicability.md",
+      "report": "../validation/2026-09-17-r12-xserver.md"
+    },
+    {
+      "component": "xserver",
+      "name": "glx: reject negative size in FeedbackBuffer and SelectBuffer requests",
+      "upstream_stable_commit": "1888711ce4899b76fc5230e9367231c901716bb8",
+      "upstream_url": "https://gitlab.freedesktop.org/xorg/xserver/-/commit/1888711ce4899b76fc5230e9367231c901716bb8",
+      "upstream_author": {
+        "name": "Peter Hutterer",
+        "email": "peter.hutterer@who-t.net",
+        "date": "2026-04-17T12:02:13+10:00"
+      },
+      "local_commit": "aea7f956be9b344c6069e0c2b58f28d05d580950",
+      "local_paths": [
+        "src/xorg-server/glx/single2.c",
+        "src/xorg-server/glx/single2swap.c"
+      ],
+      "applied_date": "2026-09-17",
+      "selection_report": "../validation/2026-09-17-r11-xserver-applicability.md",
+      "report": "../validation/2026-09-17-r12-xserver.md"
+    },
+    {
+      "component": "xserver",
+      "name": "dix: handle allocation failure in ChangeWindowDeviceCursor()",
+      "upstream_stable_commit": "78368d1b23d439470f2291102f3122b133802581",
+      "upstream_url": "https://gitlab.freedesktop.org/xorg/xserver/-/commit/78368d1b23d439470f2291102f3122b133802581",
+      "upstream_author": {
+        "name": "Alan Coopersmith",
+        "email": "alan.coopersmith@oracle.com",
+        "date": "2025-10-12T09:48:15-07:00"
+      },
+      "local_commit": "b22a0bb01c1fcb98e87e74178c7b3dd4cab97110",
+      "local_paths": [
+        "src/xorg-server/dix/window.c"
+      ],
+      "applied_date": "2026-09-17",
+      "selection_report": "../validation/2026-09-17-r11-xserver-applicability.md",
+      "report": "../validation/2026-09-17-r12-xserver.md"
+    },
+    {
+      "component": "xserver",
+      "name": "dix: handle allocation failure in DeviceFocusEvent()",
+      "upstream_stable_commit": "04321adc59165b5b0a92e061a58c4c64d2b17839",
+      "upstream_url": "https://gitlab.freedesktop.org/xorg/xserver/-/commit/04321adc59165b5b0a92e061a58c4c64d2b17839",
+      "upstream_author": {
+        "name": "Alan Coopersmith",
+        "email": "alan.coopersmith@oracle.com",
+        "date": "2025-10-11T12:59:04-07:00"
+      },
+      "local_commit": "41bb2d0e460e67dfd6e9b9d0be48d478005d60f8",
+      "local_paths": [
+        "src/xorg-server/dix/enterleave.c"
+      ],
+      "applied_date": "2026-09-17",
+      "selection_report": "../validation/2026-09-17-r11-xserver-applicability.md",
+      "report": "../validation/2026-09-17-r12-xserver.md"
+    },
+    {
+      "component": "xserver",
+      "name": "dix: pick the right keyboard for focus FollowKeyboard",
+      "upstream_stable_commit": "a3a37c56998e85ac2ab98d3a3778c312fc0e8fad",
+      "upstream_url": "https://gitlab.freedesktop.org/xorg/xserver/-/commit/a3a37c56998e85ac2ab98d3a3778c312fc0e8fad",
+      "upstream_author": {
+        "name": "Peter Hutterer",
+        "email": "peter.hutterer@who-t.net",
+        "date": "2025-03-20T10:37:53+10:00"
+      },
+      "local_commit": "e5f4a7b1031942b0a29aaa2aba758c485b21abc1",
+      "local_paths": [
+        "src/xorg-server/dix/events.c"
+      ],
+      "applied_date": "2026-09-17",
+      "selection_report": "../validation/2026-09-17-r11-xserver-applicability.md",
+      "report": "../validation/2026-09-17-r12-xserver.md"
+    },
+    {
+      "component": "xserver",
+      "name": "dix: fix erroneous BUG_RETURN check",
+      "upstream_stable_commit": "0249e717d4cbc40559d6072655d5a873320cb085",
+      "upstream_url": "https://gitlab.freedesktop.org/xorg/xserver/-/commit/0249e717d4cbc40559d6072655d5a873320cb085",
+      "upstream_author": {
+        "name": "Peter Hutterer",
+        "email": "peter.hutterer@who-t.net",
+        "date": "2025-03-20T11:24:32+10:00"
+      },
+      "local_commit": "de515d5ec6e9e8b627d9b4e00242bdb4f670a0f7",
+      "local_paths": [
+        "src/xorg-server/dix/enterleave.c"
+      ],
+      "applied_date": "2026-09-17",
+      "selection_report": "../validation/2026-09-17-r11-xserver-applicability.md",
+      "report": "../validation/2026-09-17-r12-xserver.md"
+    },
+    {
+      "component": "xserver",
+      "name": "Xi: handle allocation failure in add_master_func()",
+      "upstream_stable_commit": "757a0d03b4a5b56d61f23d8ffbf14b104c1d7e11",
+      "upstream_url": "https://gitlab.freedesktop.org/xorg/xserver/-/commit/757a0d03b4a5b56d61f23d8ffbf14b104c1d7e11",
+      "upstream_author": {
+        "name": "Alan Coopersmith",
+        "email": "alan.coopersmith@oracle.com",
+        "date": "2025-10-05T17:52:39-07:00"
+      },
+      "local_commit": "df3771e43c0151939238b86a9829912ee21cc89f",
+      "local_paths": [
+        "src/xorg-server/Xi/xibarriers.c"
+      ],
+      "applied_date": "2026-09-17",
+      "selection_report": "../validation/2026-09-17-r11-xserver-applicability.md",
+      "report": "../validation/2026-09-17-r12-xserver.md"
+    },
+    {
+      "component": "xserver",
+      "name": "Xi: handle allocation failure in ProcXListInputDevices()",
+      "upstream_stable_commit": "d31e4534a600e77e3408d57032239fda4420fa2c",
+      "upstream_url": "https://gitlab.freedesktop.org/xorg/xserver/-/commit/d31e4534a600e77e3408d57032239fda4420fa2c",
+      "upstream_author": {
+        "name": "Alan Coopersmith",
+        "email": "alan.coopersmith@oracle.com",
+        "date": "2025-10-05T17:37:48-07:00"
+      },
+      "local_commit": "767837d6f3d17a8b3c0a58246dabd3468f5c3f19",
+      "local_paths": [
+        "src/xorg-server/Xi/listdev.c"
+      ],
+      "applied_date": "2026-09-17",
+      "selection_report": "../validation/2026-09-17-r11-xserver-applicability.md",
+      "report": "../validation/2026-09-17-r12-xserver.md"
+    },
+    {
+      "component": "xserver",
+      "name": "Xi: handle allocation failure in ProcXGetDeviceDontPropagateList()",
+      "upstream_stable_commit": "fd6d04089c62dfbf00969053fb307718fbea386f",
+      "upstream_url": "https://gitlab.freedesktop.org/xorg/xserver/-/commit/fd6d04089c62dfbf00969053fb307718fbea386f",
+      "upstream_author": {
+        "name": "Alan Coopersmith",
+        "email": "alan.coopersmith@oracle.com",
+        "date": "2025-10-05T17:32:45-07:00"
+      },
+      "local_commit": "d353695c7051a0e283f794bc474d488cfbc8a327",
+      "local_paths": [
+        "src/xorg-server/Xi/getprop.c"
+      ],
+      "applied_date": "2026-09-17",
+      "selection_report": "../validation/2026-09-17-r11-xserver-applicability.md",
+      "report": "../validation/2026-09-17-r12-xserver.md"
+    },
+    {
+      "component": "xserver",
+      "name": "Xi: set value for led_values in CopySwapKbdFeedback()",
+      "upstream_stable_commit": "995fe28ebffb349e453a2586e48b441ac6d5c71c",
+      "upstream_url": "https://gitlab.freedesktop.org/xorg/xserver/-/commit/995fe28ebffb349e453a2586e48b441ac6d5c71c",
+      "upstream_author": {
+        "name": "Alan Coopersmith",
+        "email": "alan.coopersmith@oracle.com",
+        "date": "2025-10-05T17:12:29-07:00"
+      },
+      "local_commit": "57d9d831281ea5d091376ed5c98ea3ffd3d971b9",
+      "local_paths": [
+        "src/xorg-server/Xi/getfctl.c"
+      ],
+      "applied_date": "2026-09-17",
+      "selection_report": "../validation/2026-09-17-r11-xserver-applicability.md",
+      "report": "../validation/2026-09-17-r12-xserver.md"
+    },
+    {
+      "component": "xserver",
+      "name": "Xi: avoid null dereference if wOtherInputMasks() returns NULL",
+      "upstream_stable_commit": "b171669dc0c94c07c87eae9e761ff2c520c3bab0",
+      "upstream_url": "https://gitlab.freedesktop.org/xorg/xserver/-/commit/b171669dc0c94c07c87eae9e761ff2c520c3bab0",
+      "upstream_author": {
+        "name": "Alan Coopersmith",
+        "email": "alan.coopersmith@oracle.com",
+        "date": "2025-10-05T15:38:35-07:00"
+      },
+      "local_commit": "608cb4eca885b9f9a73a3da7c94e76c29a350133",
+      "local_paths": [
+        "src/xorg-server/Xi/exevents.c"
+      ],
+      "applied_date": "2026-09-17",
+      "selection_report": "../validation/2026-09-17-r11-xserver-applicability.md",
+      "report": "../validation/2026-09-17-r12-xserver.md",
+      "local_adaptation": "hunk 4 (DeviceEventSuppressForWindow) manually adapted: local fork renames RT_NONE to X11_RESTYPE_NONE; other 4 hunks applied cleanly with line offsets."
+    },
+    {
+      "component": "xserver",
+      "name": "Xi: disallow grabbing disabled devices",
+      "upstream_stable_commit": "bf37ce8edc252beb4aa2c6b942c86672f5bb2815",
+      "upstream_url": "https://gitlab.freedesktop.org/xorg/xserver/-/commit/bf37ce8edc252beb4aa2c6b942c86672f5bb2815",
+      "upstream_author": {
+        "name": "Peter Hutterer",
+        "email": "peter.hutterer@who-t.net",
+        "date": "2025-03-06T09:40:22+10:00"
+      },
+      "local_commit": "462b1a2a212ac534249a3dc4e8d58b93080c2f41",
+      "local_paths": [
+        "src/xorg-server/Xi/xigrabdev.c"
+      ],
+      "applied_date": "2026-09-17",
+      "selection_report": "../validation/2026-09-17-r11-xserver-applicability.md",
+      "report": "../validation/2026-09-17-r12-xserver.md"
+    },
+    {
+      "component": "xserver",
+      "name": "Xext/xtest: avoid null dereference in ProcXTestFakeInput()",
+      "upstream_stable_commit": "d29339ed3f1b3688ed012f3ae4666e35d1a986d0",
+      "upstream_url": "https://gitlab.freedesktop.org/xorg/xserver/-/commit/d29339ed3f1b3688ed012f3ae4666e35d1a986d0",
+      "upstream_author": {
+        "name": "Alan Coopersmith",
+        "email": "alan.coopersmith@oracle.com",
+        "date": "2025-10-04T17:38:32-07:00"
+      },
+      "local_commit": "dfdc21b7bfdb3f0fd881c3889c545e52a60ab030",
+      "local_paths": [
+        "src/xorg-server/Xext/xtest.c"
+      ],
+      "applied_date": "2026-09-17",
+      "selection_report": "../validation/2026-09-17-r11-xserver-applicability.md",
+      "report": "../validation/2026-09-17-r12-xserver.md"
+    },
+    {
+      "component": "xserver",
+      "name": "Xext/xres: avoid null dereference in ProcXResQueryClients()",
+      "upstream_stable_commit": "a39d4c3a303cb6170123a77aa8696d98706c28be",
+      "upstream_url": "https://gitlab.freedesktop.org/xorg/xserver/-/commit/a39d4c3a303cb6170123a77aa8696d98706c28be",
+      "upstream_author": {
+        "name": "Alan Coopersmith",
+        "email": "alan.coopersmith@oracle.com",
+        "date": "2025-10-04T17:10:20-07:00"
+      },
+      "local_commit": "52c9b9d99ccdc6f4e7184c97ca264b0ae32779d6",
+      "local_paths": [
+        "src/xorg-server/Xext/xres.c"
+      ],
+      "applied_date": "2026-09-17",
+      "selection_report": "../validation/2026-09-17-r11-xserver-applicability.md",
+      "report": "../validation/2026-09-17-r12-xserver.md"
+    },
+    {
+      "component": "xserver",
+      "name": "Xext/sync: avoid null dereference if SysCounterGetPrivate() returns NULL",
+      "upstream_stable_commit": "7097560cfb2386e16782c37c1cbae77aa9650c58",
+      "upstream_url": "https://gitlab.freedesktop.org/xorg/xserver/-/commit/7097560cfb2386e16782c37c1cbae77aa9650c58",
+      "upstream_author": {
+        "name": "Alan Coopersmith",
+        "email": "alan.coopersmith@oracle.com",
+        "date": "2025-10-04T15:26:19-07:00"
+      },
+      "local_commit": "407a61361b96ac8be497bec9ca226023d17cf2e6",
+      "local_paths": [
+        "src/xorg-server/Xext/sync.c"
+      ],
+      "applied_date": "2026-09-17",
+      "selection_report": "../validation/2026-09-17-r11-xserver-applicability.md",
+      "report": "../validation/2026-09-17-r12-xserver.md"
+    },
+    {
+      "component": "xserver",
+      "name": "Xext/sync: avoid null dereference in init_system_idle_counter()",
+      "upstream_stable_commit": "9bad510a45ca4997b371e9c3bfa9be10e3a0ff51",
+      "upstream_url": "https://gitlab.freedesktop.org/xorg/xserver/-/commit/9bad510a45ca4997b371e9c3bfa9be10e3a0ff51",
+      "upstream_author": {
+        "name": "Alan Coopersmith",
+        "email": "alan.coopersmith@oracle.com",
+        "date": "2025-10-04T15:40:22-07:00"
+      },
+      "local_commit": "273ccc23a75e2d2a530011800f234823dc4a3980",
+      "local_paths": [
+        "src/xorg-server/Xext/sync.c"
+      ],
+      "applied_date": "2026-09-17",
+      "selection_report": "../validation/2026-09-17-r11-xserver-applicability.md",
+      "report": "../validation/2026-09-17-r12-xserver.md"
+    },
+    {
+      "component": "xserver",
+      "name": "Xext/sync: Avoid dereference of invalid pointer if malloc() failed",
+      "upstream_stable_commit": "976ef43f95a372c7485ee51a7b1e07e13fbf972a",
+      "upstream_url": "https://gitlab.freedesktop.org/xorg/xserver/-/commit/976ef43f95a372c7485ee51a7b1e07e13fbf972a",
+      "upstream_author": {
+        "name": "Alan Coopersmith",
+        "email": "alan.coopersmith@oracle.com",
+        "date": "2025-10-04T16:04:50-07:00"
+      },
+      "local_commit": "13c4428707c8ce76602f220dc365774f961b701c",
+      "local_paths": [
+        "src/xorg-server/Xext/sync.c"
+      ],
+      "applied_date": "2026-09-17",
+      "selection_report": "../validation/2026-09-17-r11-xserver-applicability.md",
+      "report": "../validation/2026-09-17-r12-xserver.md",
+      "local_adaptation": "Context manually adapted: local fork renames RT_NONE to X11_RESTYPE_NONE; semantic change (return NULL instead of freed pCounter) identical to upstream."
     }
   ],
   "layout_note": "2026-09-10 源码分层后，path/evidence 表示当前仓库位置；完整旧路径映射见 docs/history/2026-09-10-source-path-mapping.json。actual_import_urls、inherited_material_urls 和 declaration_url 保留原固定提交的路径。",
