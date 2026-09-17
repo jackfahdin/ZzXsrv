@@ -150,6 +150,12 @@ class RuntimeUnitTests(unittest.TestCase):
         self.assertIn("wrong.dll", json.dumps(report))
         self.assertFalse(any(Path(args[0]).name != "dumpbin.exe" for args, _ in self.commands))
 
+    def test_installer_uninstaller_stub_is_not_a_packaged_image(self):
+        pe_file(self.runtime / "unins000.exe", 0x14c)
+        report = self.verify()
+        self.assertEqual(report["status"], "PASS", report)
+        self.assertNotIn("unins000", json.dumps(report))
+
     def test_missing_import_names_referrer(self):
         self.dependencies = "Image has the following dependencies:\n  missing.dll\n  Summary\n"
         report = self.verify()

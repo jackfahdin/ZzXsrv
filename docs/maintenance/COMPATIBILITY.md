@@ -2,6 +2,10 @@
 
 更新日期：2026-09-17。任务状态见 [PLAN_STATUS.md](PLAN_STATUS.md)。本表记录实际操作结果，不把自动启动成功或笼统的“能用”换算成全部场景通过。最新反馈对应 R13 上游补充批次版本（编译源码 `cda929acaa`）；下列源码号为对应构建来源。
 
+## R14 发布打包候选
+
+R14 新增发布打包能力（无产品代码改动）：Inno Setup 7 安装包 + 免安装 zip，安装包默认 per-user 免提权、可选整机安装。以 R13 运行目录实测：zip 文件集与 dist 一致，静默安装/卸载通过，安装产物运行时冒烟通过。待维护者试用两个产物后合入。详见 [R14 报告](../validation/2026-09-17-r14-release.md)。
+
 ## R13 xserver 上游补充批次（收官）
 
 R13 已于 2026-09-17 取得维护者"没问题"的反馈并快进合入 master（未提供逐项明细，未确认范围保留）：R11 评估的 B/C 档精选 6 个上游提交全部干净 cherry-pick（xkb 成对序列化修复、render 泄漏、rootless Glyphs damage box、2 项许可证文本同步），其余 16 个 B/C 档明确不再导入。完整 x64 Release 构建与合入前后各 452 项回归（0 跳过）通过。最新反馈对应本版本；已验收入口为 `zzxsrv-r13-xserver-20260917/dist/x64/Release/xlaunch.exe`。详见 [R13 报告](../validation/2026-09-17-r13-xserver.md)。

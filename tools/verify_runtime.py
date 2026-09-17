@@ -153,7 +153,10 @@ def write_json(path, data):
 
 def scan_dependencies(runtime, dumpbin, output, timeout, system32, step):
     files = sorted((path for path in runtime.rglob("*")
-                    if path.is_file() and path.suffix.lower() in (".exe", ".dll")),
+                    if path.is_file() and path.suffix.lower() in (".exe", ".dll")
+                    # unins*.exe are Inno Setup uninstaller stubs generated at install
+                    # time (32-bit by design), not part of the packaged runtime.
+                    and not path.name.lower().startswith("unins")),
                    key=lambda path: str(path).casefold())
     local = {path.name.casefold(): path for path in runtime.iterdir() if path.is_file()}
     system = {path.name.casefold(): path for path in system32.iterdir() if path.is_file()}
