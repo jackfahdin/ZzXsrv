@@ -1,6 +1,6 @@
 # 本地验证记录
 
-[R14 发布打包](2026-09-17-r14-release.md)：新增 `tools/package_release.py` 与 `installer/zzxsrv-64.iss`，从便携运行目录产出免安装 zip（49.3 MB，5152 文件与 dist 逐路径一致）与 Inno Setup 安装包（43.2 MB，默认 per-user 免提权、对话框可选整机安装）。静默安装/卸载实测通过；安装产物运行时冒烟通过（verify_runtime 20 项 + x11/xcb/font/auth 消费者模块）；`verify_runtime.py` 排除 Inno 生成的 32 位卸载器存根并新增 1 项测试，package_release 新增 2 项测试（套件 452 → 455 项）。无产品代码改动；候选待验收，未合入或推送。
+[R14 发布打包](2026-09-17-r14-release.md)：新增 `tools/package_release.py` 与 `installer/zzxsrv-64.iss`，从便携运行目录产出免安装 zip（49.3 MB，5152 文件与 dist 逐路径一致）与 Inno Setup 安装包（43.2 MB，默认 per-user 免提权、对话框可选整机安装）。静默安装/卸载实测通过；安装产物运行时冒烟通过（verify_runtime 20 项 + x11/xcb/font/auth 消费者模块）；`verify_runtime.py` 排除 Inno 生成的 32 位卸载器存根并新增 1 项测试，package_release 新增 2 项测试（套件 452 → 455 项）。无产品代码改动；已于 2026-09-17 取得维护者验收并快进合入 master（未人工走安装包 GUI，依据自动化验证结果指示合入；整机 admin 安装路径与 GUI 流程边界保留），合并后 455 项回归通过、0 跳过。未推送。
 
 [R13 xserver 上游补充批次（收官）](2026-09-17-r13-xserver.md)：已于 2026-09-17 取得维护者"没问题"的反馈并快进合入 master（未提供逐项明细，未确认范围保留）。按 R11 评估的 B/C 档精选 6 个上游提交全部干净 cherry-pick——xkb 成对序列化修复（`bdc7eb8f`+`5ebf0a9d`）、render gradient 错误路径泄漏（`123f50ac`）、rootless Glyphs damage box 并集计算错误（`09eb9aa3`，multiwindow 文本重绘）、2 项 xserver 许可证文本同步（作用于 `src/xorg-server/COPYING`）。其余 B/C 档 16 个评估为不适用或收益不足，明确不再导入。完整 x64 Release 构建通过（5155 个交付文件），合入前后各 452 项回归通过、0 跳过。编译源码 `cda929acaafb96d533ec0beb209635ea356458c8`；已验收入口 `D:/File/Program/GitHub/zzxsrv-r13-xserver-20260917/dist/x64/Release/xlaunch.exe`。分支、工作区与运行目录保留，未推送。R11 台账（104 个提交）至此全部处置完毕。
 
