@@ -1,6 +1,7 @@
 ; ZzXsrv x64 installer (Inno Setup 7)
 ; Build via tools/package_release.py, which passes:
 ;   /DZxVersion=... /DZxDistDir=... /DZxOutDir=... [/DZxOutName=...]
+;   [/DZxEdition=full|slim] [/DZxExcludes=comma,separated,names]
 
 #ifndef ZxVersion
   #define ZxVersion "2026.9.17"
@@ -16,6 +17,13 @@
 #endif
 #ifndef ZxLicenseFile
   #define ZxLicenseFile "COPYING"
+#endif
+#ifndef ZxEdition
+  #define ZxEdition "full"
+#endif
+; Comma-separated wildcard list for Inno's Excludes (slim edition file set).
+#ifndef ZxExcludes
+  #define ZxExcludes ""
 #endif
 
 [Setup]
@@ -45,9 +53,15 @@ UninstallDisplayIcon={app}\vcxsrv.exe
 Name: "english"; MessagesFile: "compiler:Default.isl"
 
 [Files]
+#if ZxExcludes == ""
 Source: "{#ZxDistDir}\*"; DestDir: "{app}"; Flags: ignoreversion recursesubdirs createallsubdirs
+#else
+Source: "{#ZxDistDir}\*"; DestDir: "{app}"; Excludes: "{#ZxExcludes}"; Flags: ignoreversion recursesubdirs createallsubdirs
+#endif
 
 [Icons]
+#if ZxEdition != "slim"
 Name: "{group}\XLaunch"; Filename: "{app}\xlaunch.exe"
+#endif
 Name: "{group}\ZzXsrv (multiwindow)"; Filename: "{app}\vcxsrv.exe"; Parameters: "-multiwindow -clipboard"
 Name: "{group}\Uninstall ZzXsrv"; Filename: "{uninstallexe}"
