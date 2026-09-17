@@ -2,9 +2,9 @@
 
 更新日期：2026-09-16。任务状态见 [PLAN_STATUS.md](PLAN_STATUS.md)。本表记录实际操作结果，不把自动启动成功或笼统的“能用”换算成全部场景通过。最新反馈对应 R9.6 PuTTY 0.85 版本；下列源码号为对应构建来源。
 
-## R9.9 嵌套片段归属澄清候选
+## R9.9 嵌套片段归属澄清
 
-R9.9 为纯来源归属核查：SOURCES 清单中 7 个"未知/未固定"嵌套片段全部得到确定性结论（libregex=gnulib 2014 年初提交窗口、libwinmain=VcXsrv 项目原创、dxtn=libtxc_dxtn 20070518 快照经 O3D、dirent.h=1.10、msinttypes=r26、xcb utility 头逐文件定位、zlib 条目修正为已验证的 1.3.2），仅更新 SOURCES 清单。无产品代码改动，运行目录与最新反馈版本均不因此变化（最新反馈仍对应 R9.6）。待维护者核对报告与证据后合入。详见 [R9.9 报告](../validation/2026-09-17-r9-fragments.md)。
+R9.9 为纯来源归属核查，已于 2026-09-17 取得维护者验收并快进合入 master：SOURCES 清单中 7 个"未知/未固定"嵌套片段全部得到确定性结论（libregex=gnulib 2014 年初提交窗口、libwinmain=VcXsrv 项目原创、dxtn=libtxc_dxtn 20070518 快照经 O3D、dirent.h=1.10、msinttypes=r26、xcb utility 头逐文件定位、zlib 条目修正为已验证的 1.3.2），仅更新 SOURCES 清单。无产品代码改动，运行目录与最新反馈版本均不因此变化（最新反馈仍对应 R9.6）。详见 [R9.9 报告](../validation/2026-09-17-r9-fragments.md)。
 
 ## R11 xserver 上游未合入提交适用性评估
 

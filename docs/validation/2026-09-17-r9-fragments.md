@@ -2,7 +2,7 @@
 
 日期：2026-09-17。基线 `077377e17d`；分支 `codex/r9-fragments-20260917`，独立工作区 `D:/File/Program/GitHub/zzxsrv-r9-fragments-20260917`。
 
-状态：候选待验收。本轮为纯来源归属核查：对 SOURCES 清单中 7 个"未知 / 未固定"的嵌套片段逐一以上游证据澄清归属，全部得到确定性结论；仅更新 `docs/dependencies/SOURCES.md` 与 `SOURCES.json` 对应条目，未修改任何产品代码。纯文档改动不改变构建输入，dist 产物与合入点无关，无需重建；验收后快进合入即可。
+状态：已验收并合入 master。本轮为纯来源归属核查：对 SOURCES 清单中 7 个"未知 / 未固定"的嵌套片段逐一以上游证据澄清归属，全部得到确定性结论；仅更新 `docs/dependencies/SOURCES.md` 与 `SOURCES.json` 对应条目，未修改任何产品代码。纯文档改动不改变构建输入，dist 产物与合入点无关，无需重建；验收后快进合入即可。
 
 ## 结论汇总
 
@@ -32,3 +32,11 @@
 ## 下一步
 
 候选交付维护者验收。本轮收官 R9 嵌套片段归属澄清；验收后 R9 系列全部完成。
+
+## 本版本反馈与主线整合
+
+2026-09-17 维护者验收通过（"通过"）。分支 `codex/r9-fragments-20260917`（`af20372d38`）从基线 `077377e17d` 快进合入 master，无冲突；合并差异仅 SOURCES 清单与状态文档，无产品代码改动，不需要重建。合入前回归为 R11 整合时的 452 项通过（49.622 秒）；合入后在主仓库合并顶端对保留的 R9.6 候选运行目录重跑 452 项通过，49.903 秒，均为 0 跳过（dist 构建源码 `e0cad4dbca`，与合并后 HEAD 产品代码逐字节相同）。
+
+主仓库检出合入后干净。整合证据：`.local-validation/r9-fragments-integration-20260917/`（`merge.log`、`tests-before-merge.log`、`tests-after-merge.log`、`verification.json`）。分支、工作区与运行目录保留，未推送。
+
+已验收入口不变：`D:/File/Program/GitHub/zzxsrv-r9-putty-20260916/dist/x64/Release/xlaunch.exe`。R9 系列至此全部完成；剩余为 R11 A 档 19 个修复是否另立 R12 补丁整合，由维护者决策。
