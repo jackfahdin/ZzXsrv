@@ -22,6 +22,8 @@ R4 整合：[字体依赖升级](../validation/2026-09-14-font-dependencies.md)�
 
 前组整合：[R7 OpenSSL 3.5.8 LTS](../validation/2026-09-15-openssl.md)，构建源码 `e41de0979`。完整 x64 Release All 构建成功，独立运行及旧对象/新 DLL 兼容对照通过。2026-09-15 取得“R7 正常，合入”的反馈后快进合入 master；合入前后各 410 项测试通过、0 跳过，5136 个运行文件不变，运行目录及工作区保留，未推送。
 
+当前候选：[R13 xserver 上游补充批次（收官）](../validation/2026-09-17-r13-xserver.md)：按 R11 评估的 B/C 档精选 6 个上游提交全部干净 cherry-pick——xkb 成对序列化修复、render 错误路径泄漏、rootless Glyphs damage box 计算错误（multiwindow 文本重绘）、2 项 xserver 许可证文本同步；其余 B/C 档 16 个明确不再导入（理由见报告）。完整 x64 Release 构建通过（5155 个交付文件），452 项回归通过、0 跳过（针对新构建运行目录）。编译源码 `cda929acaafb96d533ec0beb209635ea356458c8`。尚未取得本版本人工反馈，未合入或推送。
+
 最新整合：[R12 xserver 上游安全补丁批次](../validation/2026-09-17-r12-xserver.md)：已于 2026-09-17 取得维护者"测试通过"的反馈并快进合入 master（未提供逐项明细，未确认范围保留）。按 R11 评估的 A 档从 server-21.1-branch cherry-pick 19 个安全/崩溃修复，17 个干净套用、2 个手工适配（本地 `X11_RESTYPE_NONE` 改名所致）。完整 x64 Release 构建通过（5155 个交付文件），合入前后各 452 项回归通过、0 跳过。编译源码 `2fe3f05341be968ede39821bbc6f8abb93dce83f`；已验收入口更新为 `D:/File/Program/GitHub/zzxsrv-r12-xserver-20260917/dist/x64/Release/xlaunch.exe`。分支、工作区与运行目录保留，未推送。B/C 档未导入。
 
 前组整合：[R9.9 嵌套片段归属澄清](../validation/2026-09-17-r9-fragments.md)：已于 2026-09-17 取得维护者验收并快进合入 master。7 个"未知/未固定"嵌套片段全部得到确定性结论——libregex=gnulib 2014-01-01..03-05 提交窗口（逐字节验证）、libwinmain=VcXsrv 项目原创已证实、dxtn=libtxc_dxtn 20070518 快照经 O3D 转引（逐字节验证）、dirent.h=1.10、msinttypes=r26、xcb utility 头逐文件定位（xcb-util 0.4.1 等）、zlib 条目修正为已验证的 1.3.2。仅更新 SOURCES 清单，无产品代码改动；合入后 452 项回归通过、0 跳过。分支与工作区保留，未推送。R9 系列至此全部完成。
@@ -139,6 +141,7 @@ R3 原清单的代码修复和主线整合已完成；临时登记清理的限�
 | codex/r11-xserver-20260917 | R11 已合入，分支与工作区保留 | 104 个未合入提交逐 commit 判定（A 19 / B 15 / C 5 / D 65）；纯评估，无产品代码改动 |
 | codex/r9-fragments-20260917 | R9.9 已合入，分支与工作区保留 | 7 个嵌套片段归属全部澄清并更新 SOURCES 清单；无产品代码改动 |
 | codex/r12-xserver-20260917 | R12 已合入，分支与工作区保留 | 19 个上游安全补丁 cherry-pick；编译源码 `2fe3f05341`，本版本实测通过，合入前后各 452 项通过、0 跳过 |
+| codex/r13-xserver-20260917 | R13 候选完成，待本版本反馈及整合 | 6 个上游补充补丁 cherry-pick（含许可证文本同步）；编译源码 `cda929acaa`，完整构建与 452 项回归通过 |
 | codex/r9-xcb-20260916 | R9.2 已合入，分支与工作区保留 | 构建源码 `17f39e75cfc44c42b8b1af8225841a643d1c510f`；本版本实际使用正常，合入前后各 433 项通过、0 跳过 |
 | codex/r3-final-20260914 | 已合入的临时分支，因自动审批阻止清理而保留 | 工作区及运行目录仍在原路径，未解除 Git 登记 |
 | 旧引用和提交 | 已归档；upstream、旧工作分支及旧 tags 已删除 | 通过[整理报告](../validation/2026-09-10-repository-reorganization.md)查映射和归档，不再按旧名称操作 |
@@ -183,4 +186,4 @@ R3 原清单、R4 依赖升级、Fontconfig 目录枚举修复、R5 原生 XML �
 
 当前已验收入口：`D:/File/Program/GitHub/zzxsrv-r12-xserver-20260917/dist/x64/Release/xlaunch.exe`（R12，编译源码 `2fe3f05341be968ede39821bbc6f8abb93dce83f`，本版本实测通过）。R9.6 已合入，SSH 转发真实场景未实测（边界见 COMPATIBILITY）；R9.7–R9.9 来源补证与归属澄清、R11 评估均已合入，无新构建。主仓库 dist 为 2026-09-16 晚按 master `139380a92` 的重建产物（449 项回归通过），后续合入的源码变化（含 R12 的 19 个补丁）不会自动反映到该目录。
 
-当前无待验收候选；R9 系列（R9.1–R9.9）、R11 评估与 R12 安全补丁批次均已收官。剩余为 R11 B/C 档是否继续导入（待决策）及上游 21.1 分支后续新修复的跟进（另立项）。
+当前待验收候选：R13 xserver 上游补充批次（收官），新构建已完成；验收为对 `D:/File/Program/GitHub/zzxsrv-r13-xserver-20260917/dist/x64/Release/xlaunch.exe` 的实际使用测试（启动、常用操作、多窗口、中文显示、剪贴板、重启）。R13 合入后 R11 台账全部处置完毕，xserver 上游跟进转入常态（新批次另立项）。

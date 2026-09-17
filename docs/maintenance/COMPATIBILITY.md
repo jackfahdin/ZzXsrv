@@ -2,6 +2,10 @@
 
 更新日期：2026-09-17。任务状态见 [PLAN_STATUS.md](PLAN_STATUS.md)。本表记录实际操作结果，不把自动启动成功或笼统的“能用”换算成全部场景通过。最新反馈对应 R12 上游安全补丁批次版本（编译源码 `2fe3f05341`）；下列源码号为对应构建来源。
 
+## R13 xserver 上游补充批次候选（收官）
+
+R13 为 R11 评估的收官批次：B/C 档精选 6 个上游提交全部干净 cherry-pick（xkb 成对序列化修复、render 泄漏、rootless Glyphs damage box、2 项许可证文本同步），其余 16 个 B/C 档明确不再导入。完整 x64 Release 构建与 452 项回归（0 跳过）通过；尚未取得本版本实际使用反馈，待维护者实测候选运行目录后合入。详见 [R13 报告](../validation/2026-09-17-r13-xserver.md)。
+
 ## R12 xserver 上游安全补丁批次
 
 R12 已于 2026-09-17 取得维护者"测试通过"的反馈并快进合入 master（未提供逐项明细，未确认范围保留）：按 R11 评估的 A 档从 server-21.1-branch cherry-pick 19 个安全/崩溃修复（glyph UAF、colormap 越界读、glx 负长度、dix/Xi/Xext 空指针等），17 个干净套用、2 个手工适配。完整 x64 Release 构建与合入前后各 452 项回归（0 跳过）通过。最新反馈对应本版本；已验收入口为 `zzxsrv-r12-xserver-20260917/dist/x64/Release/xlaunch.exe`。详见 [R12 报告](../validation/2026-09-17-r12-xserver.md)。
