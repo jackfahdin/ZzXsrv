@@ -828,16 +828,17 @@
     {
       "name": "GNU regex / GNU portability snippets",
       "path": "third_party/libregex",
-      "revision": null,
-      "revision_kind": "unknown",
-      "upstream_url": "https://sourceware.org/git/glibc.git",
+      "revision": "gnulib 提交窗口 1276a2c5f24c..8c7f2f9de84e（2014-01-01..2014-03-05）",
+      "revision_kind": "verified_upstream_commit_window",
+      "upstream_url": "https://git.savannah.gnu.org/git/gnulib.git",
       "evidence": [
         "third_party/libregex/src/regex.c:1-19 identifies GNU C Library",
         "third_party/libregex/src/nl_langinfo.c:1-16",
-        "third_party/libregex/src/langinfo.h:1-15"
+        "third_party/libregex/src/langinfo.h:1-15",
+        ".local-validation/r9-fragments-20260917/libregex/REPORT.md"
       ],
-      "confidence": "medium",
-      "notes": "regex 主体为 glibc 派生；nl_langinfo/langinfo 为 GNU 可移植片段，精确 glibc/gnulib 导入版本及来源打包者未知。不能用版权年份推版本。",
+      "confidence": "high",
+      "notes": "2026-09-17 R9 收尾核查：直接来源为 gnulib 而非 glibc posix/（glibc 2.5–2.36 全部 tag 已排除）。regcomp.c、regexec.c、regex_internal.c/h、nl_langinfo.c 与窗口内 gnulib 逐字节一致（git blob SHA-1 全历史扫描，51 个提交均满足）；regex.c 仅删 `# include <config.h>` 一行、regex.h 仅删一空行（本地构建适配）；langinfo.h 由 lib/langinfo.in.h 模板手工展开。窗口内文件内容相同，故精确到窗口而非单一提交。",
       "nested": false,
       "id": "dep-029",
       "category": "core_libraries_headers",
@@ -852,15 +853,16 @@
     {
       "name": "WinMain console adapter",
       "path": "src/platform/libwinmain",
-      "revision": null,
-      "revision_kind": "unknown",
+      "revision": "项目原创（VcXsrv/marha；引入提交 17cd2280a71d，2009-11-05）",
+      "revision_kind": "project_original_verified",
       "upstream_url": null,
       "evidence": [
         "src/platform/libwinmain/winmain.c",
-        "src/platform/libwinmain/makefile"
+        "src/platform/libwinmain/makefile",
+        ".local-validation/r9-fragments-20260917/libwinmain/"
       ],
-      "confidence": "low",
-      "notes": "继承 VcXsrv 的 Windows 入口/控制台适配；未发现独立第三方上游声明或版本。可追溯继承源 https://github.com/marchaesen/vcxsrv/tree/d0a1eaf7ee15fcdf4f683388a88fec49078e6408",
+      "confidence": "high",
+      "notes": "2026-09-17 R9 收尾核查：VcXsrv git 历史证实为作者 marha 原创（2009-08-07 34d4fe9da321 首次写入 xlaunch/main.cc，2009-11-05 抽为独立库；目录全部 10 个提交均为 marha）。PuTTY 上游 winplink.c（0.60–0.63 及 master）不含 WinMain，排除 PuTTY 来源。本地文件与上游 master 及继承点 d0a1eaf7 逐字节一致（winmain.c SHA-256 885cd92b…099bf）。",
       "nested": false,
       "id": "dep-030",
       "category": "core_libraries_headers",
@@ -875,15 +877,16 @@
     {
       "name": "libtxc_dxtn (O3D copy)",
       "path": "third_party/graphics/dxtn",
-      "revision": null,
-      "revision_kind": "unpinned_svn_source",
+      "revision": "20070518 dated 快照（0.1 线末端），经 O3D trunk 转引",
+      "revision_kind": "verified_dated_snapshot_with_local_adaptations",
       "upstream_url": "http://o3d.googlecode.com/svn/trunk/googleclient/third_party/libtxc_dxtn/files",
       "evidence": [
         "third_party/graphics/dxtn/getsrc.btm:1",
-        "third_party/graphics/dxtn/Changelog"
+        "third_party/graphics/dxtn/Changelog",
+        ".local-validation/r9-fragments-20260917/dxtn/EVIDENCE.md"
       ],
-      "confidence": "medium",
-      "notes": "脚本记录 Google O3D 的 libtxc_dxtn 副本；svn export 未固定 revision。Changelog 最后 20070518 不是已确认导入版本；原 URL 为历史来源。",
+      "confidence": "high",
+      "notes": "2026-09-17 R9 收尾核查：6/7 个上游文件与 O3D trunk 最终状态（镜像 petersont/o3d 1a13ccf）逐字节一致；txc_compress_dxtn.c 含 VcXsrv 本地补丁（+2 行 #include \"GL/gl.h\"）；O3D 对上游的唯一修改是 txc_dxtn.h 换 basictypes 头。deb-multimedia 1.0.1 已排除。O3D SVN revision 不可考（服务已下线），但内容等同 trunk 最终态。",
       "nested": false,
       "id": "dep-031",
       "category": "core_libraries_headers",
@@ -898,14 +901,15 @@
     {
       "name": "Chrome basictypes/port/build_config via O3D",
       "path": "third_party/graphics/dxtn/base; third_party/graphics/dxtn/build",
-      "revision": null,
-      "revision_kind": "unpinned_svn_source",
+      "revision": "O3D trunk 最终 vendored 副本（SVN revision 不可考）",
+      "revision_kind": "verified_against_o3d_trunk_final",
       "upstream_url": "http://o3d.googlecode.com/svn/trunk/googleclient/third_party/chrome/files",
       "evidence": [
-        "third_party/graphics/dxtn/getsrc.btm:2-4"
+        "third_party/graphics/dxtn/getsrc.btm:2-4",
+        ".local-validation/r9-fragments-20260917/dxtn/EVIDENCE.md"
       ],
       "confidence": "medium",
-      "notes": "未固定 SVN revision；basictypes.h、port.h、build_config.h 是明确独立嵌入来源。",
+      "notes": "2026-09-17 R9 收尾核查：basictypes.h、port.h、build_config.h（Chromium 2006–2008 署名头）与 O3D 最终 vendored 副本（镜像 petersont/o3d 1a13ccf）逐字节一致；无法进一步定位到具体 Chromium 版本。",
       "nested": true,
       "id": "dep-032",
       "category": "embedded_dependencies",
@@ -1086,14 +1090,15 @@
     {
       "name": "Toni Ronkko dirent",
       "path": "include/dirent.h",
-      "revision": null,
-      "revision_kind": "unknown",
+      "revision": "1.10（2010-08-11）",
+      "revision_kind": "verified_release_with_local_adaptations",
       "upstream_url": "https://github.com/tronkko/dirent",
       "evidence": [
-        "include/dirent.h:1-72"
+        "include/dirent.h:1-72",
+        ".local-validation/r9-fragments-20260917/dirent/diff-v1.10-vs-local.txt"
       ],
-      "confidence": "medium",
-      "notes": "署名与变更历史最新 2010-08-11；日期不是证实的 release 版本。",
+      "confidence": "high",
+      "notes": "2026-09-17 R9 收尾核查：与 Wayback Machine 取回的官方 dirent-1.10.zip 内 dirent.h 比对，除 3 处本地补丁外逐字节一致（新增 PATH_MAX 512、_set_errno 空白改动、尾部新增项目自有 scandir/alphasort 约 83 行）。GitHub 仓库历史（2015 年迁移起）无对应版本，属预期。",
       "nested": true,
       "id": "dep-039",
       "category": "embedded_dependencies",
@@ -1108,15 +1113,16 @@
     {
       "name": "Alexander Chemeris MSVC integer headers",
       "path": "include/inttypes.h; include/stdint.h",
-      "revision": null,
-      "revision_kind": "unknown",
-      "upstream_url": null,
+      "revision": "r26（2009-10-02）",
+      "revision_kind": "verified_release_with_local_adaptations",
+      "upstream_url": "https://github.com/chemeris/msinttypes",
       "evidence": [
         "include/inttypes.h:1-14",
-        "include/stdint.h"
+        "include/stdint.h",
+        ".local-validation/r9-fragments-20260917/msinttypes/"
       ],
-      "confidence": "low",
-      "notes": "原作者署名保留；具体包版本/下载地址未知。",
+      "confidence": "high",
+      "notes": "2026-09-17 R9 收尾核查：inttypes.h 与官方 msinttypes-r26.zip 逐字节一致（SHA-256 e91a80a4…702892）；stdint.h 基于 r26 含 3 处项目本地补丁（移除 __STDC_LIMIT_MACROS 包裹、16 个限值宏加 #ifndef 保护、新增 typedef intptr_t ssize_t）。镜像 HEAD（r26 后改动）已排除。",
       "nested": true,
       "id": "dep-040",
       "category": "embedded_dependencies",
@@ -1133,8 +1139,8 @@
     {
       "name": "XCB installed/generated headers",
       "path": "include/xcb",
-      "revision": null,
-      "revision_kind": "mixed_copies",
+      "revision": "xcb-util 0.4.1 / xcb-util-image 0.4.1 / xcb-util-wm 0.4.2（逐文件）",
+      "revision_kind": "verified_per_file_versions",
       "upstream_url": "https://gitlab.freedesktop.org/xorg/lib/libxcb",
       "evidence": [
         "include/xcb/xcb.h",
@@ -1142,10 +1148,11 @@
         "include/xcb/xcb_image.h",
         "include/xcb/xcb_icccm.h",
         "include/xcb/xcb_ewmh.h",
-        "include/xcb/xcb_aux.h"
+        "include/xcb/xcb_aux.h",
+        ".local-validation/r9-fragments-20260917/xcb-util-headers/EVIDENCE.md"
       ],
-      "confidence": "medium",
-      "notes": "包含 libxcb/xcb-proto 生成头和 xcb-util、xcb-util-image、xcb-util-wm、xcb-util-errors 的接口副本；除仓库对应源码已单列外，utility 头精确导入版本未知。",
+      "confidence": "high",
+      "notes": "2026-09-17 R9 收尾核查（全 tag blob 扫描 + Debian 安装头比对）：xcb_aux.h=xcb-util 0.4.1；xcb_image.h=xcb-util-image 0.4.1；xcb_icccm.h=xcb-util-wm 0.4.2（内容 0.3.9–0.4.2 间相同，取最新发布登记）；xcb_ewmh.h 为 m4 生成头，产物 0.4.0–0.4.2 相同；xcb_errors.h 与 third_party/xorg/xcb-util-errors（1.0.1）逐字节相同；xcb_windefs.h 与 third_party/xorg/libxcb 移植修改副本逐字节相同（非纯净上游，差异见 libxcb source-audit.json）。",
       "nested": true,
       "id": "dep-041",
       "category": "embedded_dependencies",
