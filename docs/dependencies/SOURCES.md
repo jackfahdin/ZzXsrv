@@ -76,6 +76,19 @@
 | Xext/sync: avoid null dereference in init_system_idle_counter() | [9bad510a45ca](https://gitlab.freedesktop.org/xorg/xserver/-/commit/9bad510a45ca4997b371e9c3bfa9be10e3a0ff51) | `273ccc23a75e` | 干净 cherry-pick；sync 三连第 2 个 |
 | Xext/sync: Avoid dereference of invalid pointer if malloc() fails | [976ef43f95a3](https://gitlab.freedesktop.org/xorg/xserver/-/commit/976ef43f95a372c7485ee51a7b1e07e13fbf972a) | `13c4428707c8` | 手工适配（本地 `X11_RESTYPE_NONE` 改名）；sync 三连第 3 个 |
 
+### R13 上游 21.1 分支补充批次（6 项）
+
+2026-09-17 按 R11 评估的 B/C 档精选（收官批次）：xkb 成对序列化修复、render 错误路径泄漏、rootless Glyphs damage box 计算错误（multiwindow 文本重绘），以及 2 项 xserver 许可证文本同步（作用于 `src/xorg-server/COPYING`，与仓库根目录 GPLv3 COPYING 无关）。其余 B/C 档评估为不适用或收益不足，不再导入，判定依据见 [R11 报告](../validation/2026-09-17-r11-xserver-applicability.md) 与 [R13 报告](../validation/2026-09-17-r13-xserver.md)。
+
+| 改动 | 上游 commit（server-21.1-branch） | 本地提交 | 备注 |
+| --- | --- | --- | --- |
+| xkb: Fix key type without level names in XkbCopyKeymap | [bdc7eb8f07f2](https://gitlab.freedesktop.org/xorg/xserver/-/commit/bdc7eb8f07f2c7457de2e07ae6983e6879f21b10) | `8aef52db91` | 干净 cherry-pick；xkb 成对第 1 个 |
+| xkb: Fix serialization of key type without level names | [5ebf0a9dd72e](https://gitlab.freedesktop.org/xorg/xserver/-/commit/5ebf0a9dd72eaeca4713685f024ec7cab0a66961) | `81057ac80e` | 干净 cherry-pick；必须与上一个成对，单独合入会弄坏 XkbGetNames 回复 |
+| render: fix multiple mem leaks on err paths | [123f50acb34e](https://gitlab.freedesktop.org/xorg/xserver/-/commit/123f50acb34ef8d7482b5c61d9a149d285991ca6) | `7d412ef81f` | 干净 cherry-pick |
+| rootless: Fix Glyphs damage bounding box to correctly compute union | [09eb9aa351a6](https://gitlab.freedesktop.org/xorg/xserver/-/commit/09eb9aa351a67b24de59cf0cdf33b8c61210d91e) | `c0aaef1c49` | 干净 cherry-pick |
+| COPYING: add missing paragraph to SGI-B-2.0 | [3069f64d691d](https://gitlab.freedesktop.org/xorg/xserver/-/commit/3069f64d691db5396706c1ec1182bd8db52ffb22) | `9380a82ce7` | 许可证文本同步 |
+| COPYING: add author to HPND-sell-MIT-disclaimer-xserver | [dd924b160c9b](https://gitlab.freedesktop.org/xorg/xserver/-/commit/dd924b160c9b434ff7687d1e1d2a9058cdefb6b8) | `2b8a2eed1a` | 许可证文本同步 |
+
 ### R5 原生 XML 配置读取适配
 
 已合入的源码 `af0cd70e417d8bce105afe07b59e6b5c8298a396` 为 XLaunch 增加解析上下文局部的 gzip/WinHTTP 输入适配，与固定 libxml2 2.15.4 源码配套。此为本地兼容实现，不计入 X Server 上游补丁数；原 39 项上游补丁记录不变，另列为第 4 项本地兼容记录。源码导入的 Winlibs 适配在 libiconv 组件字段中单独追溯。2026-09-15 取得本版本实际使用正常的反馈后快进合入 master，测试及未验收范围见 [R5 报告](../validation/2026-09-15-libxml2-native.md)。

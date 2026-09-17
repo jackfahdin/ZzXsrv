@@ -6664,6 +6664,117 @@
       "selection_report": "../validation/2026-09-17-r11-xserver-applicability.md",
       "report": "../validation/2026-09-17-r12-xserver.md",
       "local_adaptation": "Context manually adapted: local fork renames RT_NONE to X11_RESTYPE_NONE; semantic change (return NULL instead of freed pCounter) identical to upstream."
+    },
+    {
+      "component": "xserver",
+      "name": "xkb: Fix key type without level names in XkbCopyKeymap",
+      "upstream_stable_commit": "bdc7eb8f07f2c7457de2e07ae6983e6879f21b10",
+      "upstream_url": "https://gitlab.freedesktop.org/xorg/xserver/-/commit/bdc7eb8f07f2c7457de2e07ae6983e6879f21b10",
+      "upstream_author": {
+        "name": "Pierre Le Marre",
+        "email": "dev@wismill.eu",
+        "date": "2025-10-15T23:53:24+02:00"
+      },
+      "local_commit": "8aef52db9117d1ccd9b1007da375736a2e820b45",
+      "local_paths": [
+        "src/xorg-server/xkb/xkbUtils.c"
+      ],
+      "applied_date": "2026-09-17",
+      "selection_report": "../validation/2026-09-17-r11-xserver-applicability.md",
+      "report": "../validation/2026-09-17-r13-xserver.md"
+    },
+    {
+      "component": "xserver",
+      "name": "xkb: Fix serialization of key type without level names",
+      "upstream_stable_commit": "5ebf0a9dd72eaeca4713685f024ec7cab0a66961",
+      "upstream_url": "https://gitlab.freedesktop.org/xorg/xserver/-/commit/5ebf0a9dd72eaeca4713685f024ec7cab0a66961",
+      "upstream_author": {
+        "name": "Pierre Le Marre",
+        "email": "dev@wismill.eu",
+        "date": "2025-10-16T07:06:38+02:00"
+      },
+      "local_commit": "81057ac80eb0581d647596db8326bba9fdbef9cd",
+      "local_paths": [
+        "src/xorg-server/xkb/xkb.c"
+      ],
+      "applied_date": "2026-09-17",
+      "selection_report": "../validation/2026-09-17-r11-xserver-applicability.md",
+      "report": "../validation/2026-09-17-r13-xserver.md",
+      "local_adaptation": "Must be applied together with bdc7eb8f07f2 (applied here in upstream order bdc7eb8f first); per upstream, either one alone breaks XkbGetNames replies."
+    },
+    {
+      "component": "xserver",
+      "name": "render: fix multiple mem leaks on err paths",
+      "upstream_stable_commit": "123f50acb34ef8d7482b5c61d9a149d285991ca6",
+      "upstream_url": "https://gitlab.freedesktop.org/xorg/xserver/-/commit/123f50acb34ef8d7482b5c61d9a149d285991ca6",
+      "upstream_author": {
+        "name": "Mikhail Dmitrichenko",
+        "email": "m.dmitrichenko222@gmail.com",
+        "date": "2026-02-05T16:07:43+03:00"
+      },
+      "local_commit": "7d412ef81f2186026ee13926c01f84558c572d1e",
+      "local_paths": [
+        "src/xorg-server/render/picture.c"
+      ],
+      "applied_date": "2026-09-17",
+      "selection_report": "../validation/2026-09-17-r11-xserver-applicability.md",
+      "report": "../validation/2026-09-17-r13-xserver.md"
+    },
+    {
+      "component": "xserver",
+      "name": "rootless: Fix Glyphs damage bounding box to correctly compute union",
+      "upstream_stable_commit": "09eb9aa351a67b24de59cf0cdf33b8c61210d91e",
+      "upstream_url": "https://gitlab.freedesktop.org/xorg/xserver/-/commit/09eb9aa351a67b24de59cf0cdf33b8c61210d91e",
+      "upstream_author": {
+        "name": "Jeremy Huddleston Sequoia",
+        "email": "jeremyhu@apple.com",
+        "date": "2026-03-21T17:09:30-07:00"
+      },
+      "local_commit": "c0aaef1c4931cc8fb2ac60dc49543aef3f927148",
+      "local_paths": [
+        "src/xorg-server/miext/rootless/rootlessScreen.c"
+      ],
+      "applied_date": "2026-09-17",
+      "selection_report": "../validation/2026-09-17-r11-xserver-applicability.md",
+      "report": "../validation/2026-09-17-r13-xserver.md"
+    },
+    {
+      "component": "xserver",
+      "name": "COPYING: add missing paragraph to SGI-B-2.0",
+      "upstream_stable_commit": "3069f64d691db5396706c1ec1182bd8db52ffb22",
+      "upstream_url": "https://gitlab.freedesktop.org/xorg/xserver/-/commit/3069f64d691db5396706c1ec1182bd8db52ffb22",
+      "upstream_author": {
+        "name": "quantenzitrone",
+        "email": "general@dev.quantenzitrone.eu",
+        "date": "2025-11-09T21:52:49+01:00"
+      },
+      "local_commit": "9380a82ce74965f2073289ddc3794b79415be533",
+      "local_paths": [
+        "src/xorg-server/COPYING"
+      ],
+      "applied_date": "2026-09-17",
+      "selection_report": "../validation/2026-09-17-r11-xserver-applicability.md",
+      "report": "../validation/2026-09-17-r13-xserver.md",
+      "local_adaptation": "License text sync only; applies to src/xorg-server/COPYING, not the repo-root GPLv3 COPYING."
+    },
+    {
+      "component": "xserver",
+      "name": "COPYING: add author to HPND-sell-MIT-disclaimer-xserver",
+      "upstream_stable_commit": "dd924b160c9b434ff7687d1e1d2a9058cdefb6b8",
+      "upstream_url": "https://gitlab.freedesktop.org/xorg/xserver/-/commit/dd924b160c9b434ff7687d1e1d2a9058cdefb6b8",
+      "upstream_author": {
+        "name": "quantenzitrone",
+        "email": "general@dev.quantenzitrone.eu",
+        "date": "2025-11-10T00:08:14+01:00"
+      },
+      "local_commit": "2b8a2eed1ad5ae47955cc707bc39b59d09c1d17f",
+      "local_paths": [
+        "src/xorg-server/COPYING"
+      ],
+      "applied_date": "2026-09-17",
+      "selection_report": "../validation/2026-09-17-r11-xserver-applicability.md",
+      "report": "../validation/2026-09-17-r13-xserver.md",
+      "local_adaptation": "License text sync only; applies to src/xorg-server/COPYING, not the repo-root GPLv3 COPYING."
     }
   ],
   "layout_note": "2026-09-10 源码分层后，path/evidence 表示当前仓库位置；完整旧路径映射见 docs/history/2026-09-10-source-path-mapping.json。actual_import_urls、inherited_material_urls 和 declaration_url 保留原固定提交的路径。",
