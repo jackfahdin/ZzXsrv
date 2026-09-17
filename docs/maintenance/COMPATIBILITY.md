@@ -2,6 +2,10 @@
 
 更新日期：2026-09-17。任务状态见 [PLAN_STATUS.md](PLAN_STATUS.md)。本表记录实际操作结果，不把自动启动成功或笼统的“能用”换算成全部场景通过。最新反馈对应 R13 上游补充批次版本（编译源码 `cda929acaa`）；下列源码号为对应构建来源。
 
+## R15 简洁版打包与发布 CI
+
+R15 已于 2026-09-17 取得维护者验收并合入 master（依据子代理自动化验证结果指示直接合入推送）。简洁版（slim）= 同一服务器剔除 Mesa 软件渲染链（swrast_dri/swrastwgl_dri/dxtn）、plink SSH 转发助手、XLaunch 向导及其独占 libxml2/libiconv 栈、xclock/xcalc 演示客户端共 13 项，字体全部保留；产物矩阵为 full/slim × setup/portable 四个（zip 49.3MB→43.6MB、setup 43.2MB→39.5MB），slim setup 静默安装/卸载实测通过。新增 GitHub Actions 发包：continuous-build 每日快照 rolling prerelease，release.yml 按 v* tag 正式发布（Inno Setup 7.1.0 pin 哈希安装）。无产品代码改动；合并后 461 项回归通过、0 跳过。边界保留：GitHub runner 首跑未验证、actionlint 靠 CI 自校验、整机 admin 安装路径未实测、运行时桌面集成测试 CI 未启用。详见 [R15 报告](../validation/2026-09-17-r15-ci-slim.md)。
+
 ## R14 发布打包
 
 R14 新增发布打包能力（无产品代码改动）：Inno Setup 7 安装包 + 免安装 zip，安装包默认 per-user 免提权、可选整机安装。以 R13 运行目录实测：zip 文件集与 dist 一致，静默安装/卸载通过，安装产物运行时冒烟通过。已于 2026-09-17 取得维护者验收并快进合入 master（维护者未人工走安装包 GUI，依据自动化验证结果指示合入；整机 admin 安装路径与安装包 GUI 流程未实测，边界保留）；合并后 455 项回归通过、0 跳过。详见 [R14 报告](../validation/2026-09-17-r14-release.md)。

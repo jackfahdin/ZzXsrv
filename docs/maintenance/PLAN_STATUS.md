@@ -22,7 +22,9 @@ R4 整合：[字体依赖升级](../validation/2026-09-14-font-dependencies.md)�
 
 前组整合：[R7 OpenSSL 3.5.8 LTS](../validation/2026-09-15-openssl.md)，构建源码 `e41de0979`。完整 x64 Release All 构建成功，独立运行及旧对象/新 DLL 兼容对照通过。2026-09-15 取得“R7 正常，合入”的反馈后快进合入 master；合入前后各 410 项测试通过、0 跳过，5136 个运行文件不变，运行目录及工作区保留，未推送。
 
-最新整合：[R14 发布打包](../validation/2026-09-17-r14-release.md)：已于 2026-09-17 取得维护者验收并快进合入 master（维护者未人工走安装包 GUI，依据自动化验证结果指示合入；整机 admin 安装路径与安装包 GUI 流程未实测，边界保留）。新增 `tools/package_release.py` 与 `installer/zzxsrv-64.iss`（Inno Setup 7），从便携运行目录产出免安装 zip 与安装包两个产物；安装包默认 per-user 免提权、对话框可选整机安装（Inno 自动按模式路由注册表，无上游 NSIS noadmin 方案的 HKLM 静默失败问题）。以 R13 运行目录为输入实测：zip 5152 文件与 dist 逐路径一致，安装包静默安装/卸载通过，安装产物运行时冒烟（verify_runtime 20 项 + 四个消费者模块）通过；`verify_runtime.py` 排除 Inno 生成的 32 位卸载器存根（新增 1 项测试），新增 package_release 测试 2 项，回归套件 452 → 455 项。无产品代码改动；合并后 455 项回归通过、0 跳过（48.842 秒，针对 R13 候选运行目录，产品代码与合并后 HEAD 逐字节相同）。已验收入口仍为 R13 的 `D:/File/Program/GitHub/zzxsrv-r13-xserver-20260917/dist/x64/Release/xlaunch.exe`。分支、工作区与运行目录保留，未推送。
+最新整合：[R15 简洁版打包与发布 CI](../validation/2026-09-17-r15-ci-slim.md)：已于 2026-09-17 取得维护者验收（依据子代理自动化验证结果指示直接合入推送：28 项打包测试、4 产物本地产出、slim setup 静默安装/卸载实测；GitHub runner 首跑未验证、admin 安装路径未实测，边界保留）。`package_release.py` 新增 `--edition full|slim`：slim 剔除 Mesa 软件渲染链（swrast_dri/swrastwgl_dri/dxtn）、plink、xlaunch 及其独占 libxml2/libiconv 栈、xclock/xcalc 演示客户端共 13 项，字体全保留；产物矩阵 4 个（full/slim × setup/portable），zip 49.3MB→43.6MB、setup 43.2MB→39.5MB。新增 GitHub Actions：continuous-build 每日快照 rolling prerelease、release.yml 按 v* tag 正式发布（Inno Setup 7.1.0 pin 哈希安装，actionlint preflight 自校验）。无产品代码改动；合并后 461 项回归通过、0 跳过（49.139 秒，针对 R13 候选运行目录，产品代码与合并后 HEAD 逐字节相同）。已验收入口仍为 R13 的 `D:/File/Program/GitHub/zzxsrv-r13-xserver-20260917/dist/x64/Release/xlaunch.exe`。分支、工作区与运行目录保留。
+
+前组整合：[R14 发布打包](../validation/2026-09-17-r14-release.md)：已于 2026-09-17 取得维护者验收并快进合入 master（维护者未人工走安装包 GUI，依据自动化验证结果指示合入；整机 admin 安装路径与安装包 GUI 流程未实测，边界保留）。新增 `tools/package_release.py` 与 `installer/zzxsrv-64.iss`（Inno Setup 7），从便携运行目录产出免安装 zip 与安装包两个产物；安装包默认 per-user 免提权、对话框可选整机安装（Inno 自动按模式路由注册表，无上游 NSIS noadmin 方案的 HKLM 静默失败问题）。以 R13 运行目录为输入实测：zip 5152 文件与 dist 逐路径一致，安装包静默安装/卸载通过，安装产物运行时冒烟（verify_runtime 20 项 + 四个消费者模块）通过；`verify_runtime.py` 排除 Inno 生成的 32 位卸载器存根（新增 1 项测试），新增 package_release 测试 2 项，回归套件 452 → 455 项。无产品代码改动；合并后 455 项回归通过、0 跳过（48.842 秒，针对 R13 候选运行目录，产品代码与合并后 HEAD 逐字节相同）。已验收入口仍为 R13 的 `D:/File/Program/GitHub/zzxsrv-r13-xserver-20260917/dist/x64/Release/xlaunch.exe`。分支、工作区与运行目录保留，未推送。
 
 前组整合：[R13 xserver 上游补充批次（收官）](../validation/2026-09-17-r13-xserver.md)：已于 2026-09-17 取得维护者"没问题"的反馈并快进合入 master（未提供逐项明细，未确认范围保留）。R11 评估的 B/C 档精选 6 个上游提交全部干净 cherry-pick——xkb 成对序列化修复、render 错误路径泄漏、rootless Glyphs damage box 计算错误（multiwindow 文本重绘）、2 项 xserver 许可证文本同步；其余 B/C 档 16 个明确不再导入。完整 x64 Release 构建通过（5155 个交付文件），合入前后各 452 项回归通过、0 跳过。编译源码 `cda929acaafb96d533ec0beb209635ea356458c8`；已验收入口更新为 `D:/File/Program/GitHub/zzxsrv-r13-xserver-20260917/dist/x64/Release/xlaunch.exe`。分支、工作区与运行目录保留，未推送。R11 台账（104 个提交）至此全部处置完毕。
 
@@ -127,7 +129,7 @@ R3 原清单的代码修复和主线整合已完成；临时登记清理的限�
 
 | 对象 | 当前状态 | 使用边界 |
 | --- | --- | --- |
-| master | 唯一长期本地工作分支；R3 至 R8、R9.1 至 R9.9、R11 至 R14 及认证、Fontconfig 补充修复均已整合；已快进至 `164e30adf4` | 最新取得人工反馈的构建源码 `cda929acaafb96d533ec0beb209635ea356458c8`（R13，本版本实测通过）；随后的整合与来源补证文档提交不改变已验证的生产代码 |
+| master | 唯一长期本地工作分支；R3 至 R8、R9.1 至 R9.9、R11 至 R15 及认证、Fontconfig 补充修复均已整合；已快进至 `94bbdbd78a` | 最新取得人工反馈的构建源码 `cda929acaafb96d533ec0beb209635ea356458c8`（R13，本版本实测通过）；随后的整合与来源补证文档提交不改变已验证的生产代码 |
 | codex/fontconfig-20260914 | 修复已合入，分支与工作区保留 | 构建源码 `cd444aa641d50355c0d7b47f4a7167b78e313e45`；本版本实际使用正常，逐项未测范围保留 |
 | codex/libxml2-20260915 | R5 已合入，分支与工作区保留 | 构建源码 `af0cd70e417d8bce105afe07b59e6b5c8298a396`；本版本实际使用正常，逐项未测范围保留 |
 | codex/expat-20260915 | R6 已合入，分支与工作区保留 | 构建源码 `73e74d4bdc69b242d8605d41a7ae9c542312568f`；本版本实际使用正常，逐项未测范围保留 |
@@ -145,6 +147,7 @@ R3 原清单的代码修复和主线整合已完成；临时登记清理的限�
 | codex/r12-xserver-20260917 | R12 已合入，分支与工作区保留 | 19 个上游安全补丁 cherry-pick；编译源码 `2fe3f05341`，本版本实测通过，合入前后各 452 项通过、0 跳过 |
 | codex/r13-xserver-20260917 | R13 已合入，分支与工作区保留 | 6 个上游补充补丁 cherry-pick（含许可证文本同步）；编译源码 `cda929acaa`，本版本实测通过，合入前后各 452 项通过、0 跳过 |
 | codex/r14-release-20260917 | R14 已合入，分支与工作区保留 | Inno Setup 安装包 + 免安装 zip 打包能力；无产品代码改动，产物以 R13 运行目录实测 |
+| codex/r15-ci-slim-20260917 | R15 已合入，分支与工作区保留 | slim 简洁版打包（13 项剔除，字体保留）+ GitHub Actions 发布 CI；无产品代码改动 |
 | codex/r9-xcb-20260916 | R9.2 已合入，分支与工作区保留 | 构建源码 `17f39e75cfc44c42b8b1af8225841a643d1c510f`；本版本实际使用正常，合入前后各 433 项通过、0 跳过 |
 | codex/r3-final-20260914 | 已合入的临时分支，因自动审批阻止清理而保留 | 工作区及运行目录仍在原路径，未解除 Git 登记 |
 | 旧引用和提交 | 已归档；upstream、旧工作分支及旧 tags 已删除 | 通过[整理报告](../validation/2026-09-10-repository-reorganization.md)查映射和归档，不再按旧名称操作 |
