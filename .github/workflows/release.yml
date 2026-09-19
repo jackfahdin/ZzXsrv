@@ -48,7 +48,9 @@ jobs:
 
   package:
     needs: preflight
-    runs-on: windows-2025
+    # windows-2022 ships VS2022 17.x, which buildall.ps1 requires
+    # (vswhere -version '[17.0,18.0)'); windows-2025 moved to VS2026.
+    runs-on: windows-2022
     timeout-minutes: 180
     steps:
       - uses: actions/checkout@v5
