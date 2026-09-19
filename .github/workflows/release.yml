@@ -30,13 +30,17 @@ jobs:
           set -euo pipefail
           if [[ "${GITHUB_EVENT_NAME}" == "push" ]]; then
             version="${GITHUB_REF_NAME#v}"
-            if [[ ! "$version" =~ ^[0-9]+\.[0-9]+\.[0-9]+$ ]]; then
-              echo "Tag ${GITHUB_REF_NAME} must be v<major>.<minor>.<patch>" >&2
+            # Versioning follows the upstream VcXsrv scheme
+            # <xserver version>.<packaging revision> (e.g. 21.1.16.1), matching
+            # VER_FILEVERSION_STR in src/xorg-server/hw/xwin/XWin.rc.
+            if [[ ! "$version" =~ ^[0-9]+\.[0-9]+\.[0-9]+\.[0-9]+$ ]]; then
+              echo "Tag ${GITHUB_REF_NAME} must be v<major>.<minor>.<patch>.<revision>" >&2
               exit 1
             fi
             publish=true
           else
-            version="$(date -u +%Y.%-m.%-d)"
+            # Manual runs are not published; use the XWin.rc version.
+            version="$(grep -oP 'VER_FILEVERSION_STR\s+"\K[^"]+' src/xorg-server/hw/xwin/XWin.rc)"
             publish=false
           fi
           echo "version=$version" >> "$GITHUB_OUTPUT"

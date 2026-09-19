@@ -11,22 +11,28 @@ clients; artifact names gain a "-slim" infix.
 
 Usage:
   python tools/package_release.py --dist-dir dist/x64/Release \
-      [--version 2026.9.17] [--edition full|slim] \
+      [--version 21.1.16.1] [--edition full|slim] \
       [--output-dir dist/release] [--inno ISCC.exe] [--zip-only]
+
+The default --version is parsed from src/xorg-server/hw/xwin/XWin.rc
+(VER_FILEVERSION_STR), following the upstream VcXsrv scheme
+<xserver version>.<packaging revision>, e.g. 1.20.14.0.
 """
 
 import argparse
 import os
+import re
 import shutil
 import subprocess
 import sys
 import zipfile
-from datetime import date
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
 FALLBACK_INNO = r"D:\SoftWare\Inno Setup 7\ISCC.exe"
 EDITIONS = ("full", "slim")
+VERSION_RC = ROOT / "src" / "xorg-server" / "hw" / "xwin" / "XWin.rc"
+VERSION_RE = re.compile(r"\d+\.\d+\.\d+(\.\d+)?")
 
 # Files dropped from the slim edition, relative to the dist root. Every entry
 # was verified against the dist tree: libxml2.dll/libiconv.dll are only
@@ -53,9 +59,32 @@ SLIM_EXCLUDES = {
 }
 
 
+def rc_version(rc_path: Path = VERSION_RC) -> str:
+    """Parse VER_FILEVERSION_STR from XWin.rc: the single source of truth.
+
+    The value follows the upstream VcXsrv convention
+    <xserver version>.<packaging revision>, e.g. 21.1.16.1.
+    """
+    if not rc_path.is_file():
+        raise ValueError(f"cannot determine default version: {rc_path} not found")
+    match = re.search(
+        r'^\s*#define\s+VER_FILEVERSION_STR\s+"([^"]+)"',
+        rc_path.read_text(encoding="utf-8"),
+        re.MULTILINE,
+    )
+    if match is None:
+        raise ValueError(
+            f"cannot determine default version: VER_FILEVERSION_STR not found in {rc_path}")
+    version = match.group(1)
+    if not re.fullmatch(VERSION_RE, version):
+        raise ValueError(
+            f"cannot determine default version: VER_FILEVERSION_STR {version!r} in "
+            f"{rc_path} is not of the form <xserver>.<revision> (3 or 4 numeric parts)")
+    return version
+
+
 def default_version() -> str:
-    today = date.today()
-    return f"{today.year}.{today.month}.{today.day}"
+    return rc_version()
 
 
 def resolve_inno(explicit: str | None) -> Path | None:
@@ -133,7 +162,9 @@ def build_installer(args, iss: Path, inno: Path, excludes: set[str]) -> Path:
 def main() -> int:
     parser = argparse.ArgumentParser(description="Build ZzXsrv release artifacts")
     parser.add_argument("--dist-dir", required=True, help="portable runtime directory")
-    parser.add_argument("--version", default=default_version())
+    parser.add_argument("--version", default=None,
+                        help="artifact version (default: VER_FILEVERSION_STR from "
+                             f"{VERSION_RC.relative_to(ROOT)})")
     parser.add_argument("--edition", choices=EDITIONS, default="full")
     parser.add_argument("--output-dir", default=str(ROOT / "dist" / "release"))
     parser.add_argument("--inno", default=None,
@@ -141,6 +172,17 @@ def main() -> int:
                              f"then {FALLBACK_INNO})")
     parser.add_argument("--zip-only", action="store_true")
     args = parser.parse_args()
+
+    if args.version is None:
+        try:
+            args.version = default_version()
+        except ValueError as exc:
+            print(f"error: {exc}", file=sys.stderr)
+            return 1
+    if not re.fullmatch(VERSION_RE, args.version):
+        print(f"error: invalid version {args.version!r}; expected 3 or 4 numeric parts "
+              "(<xserver version>.<packaging revision>)", file=sys.stderr)
+        return 1
 
     dist_dir = Path(args.dist_dir)
     if not (dist_dir / "vcxsrv.exe").is_file():

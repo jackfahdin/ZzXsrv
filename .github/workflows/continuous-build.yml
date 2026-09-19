@@ -28,7 +28,10 @@ jobs:
           set -euo pipefail
           git fetch --force origin master:refs/remotes/origin/master
           sha="$(git rev-parse refs/remotes/origin/master)"
-          version="$(date -u +%Y.%-m.%-d)"
+          # Snapshots use the upstream-style version from XWin.rc
+          # (<xserver version>.<packaging revision>); the rolling tag stays
+          # "continuous-build" regardless.
+          version="$(grep -oP 'VER_FILEVERSION_STR\s+"\K[^"]+' src/xorg-server/hw/xwin/XWin.rc)"
           should_build=true
           if [[ "${GITHUB_EVENT_NAME}" == "schedule" ]]; then
             tag_sha="$(git rev-parse --verify --quiet refs/tags/continuous-build || true)"
