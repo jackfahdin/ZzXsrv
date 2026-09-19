@@ -2,6 +2,16 @@
 
 更新日期：2026-09-17。任务状态见 [PLAN_STATUS.md](PLAN_STATUS.md)。本表记录实际操作结果，不把自动启动成功或笼统的“能用”换算成全部场景通过。最新反馈对应 R13 上游补充批次版本（编译源码 `cda929acaa`）；下列源码号为对应构建来源。
 
+## R16 版本号对齐与 R17 CI 修复链
+
+R16/R17 已于 2026-09-19 合入 master 并推送 origin，以 CI 真实运行全绿验收（continuous-build run 35421088782，prepare/package/publish 三 job 全 success）。
+
+版本号约定：发布版本号对齐上游 VcXsrv 四段式 `<xserver 版本>.<打包修订号>`，默认解析自 XWin.rc `VER_FILEVERSION_STR`（当前 21.1.16.1）；产物名 `zzxsrv-21.1.16.1-x64[-slim]-{setup.exe,portable.zip}`。
+
+CI 现状：continuous-build 每日快照产出 rolling prerelease（tag `continuous-build`），当前资产 5 个——`zzxsrv-21.1.16.1-x64-setup.exe`、`zzxsrv-21.1.16.1-x64-slim-setup.exe`、`zzxsrv-21.1.16.1-x64-portable.zip`、`zzxsrv-21.1.16.1-x64-slim-portable.zip`、`SHA256SUMS.txt`；runner 基线固定 windows-2022（windows-2025 已换装 VS2026，构建脚本 vswhere 区间 [17.0,18.0) 不支持，VS2026 适配另行评估）；release.yml 以 tag `v<四段式>` 触发正式发布。ubuntu-latest 即将迁移 26.04 的注解暂不影响。
+
+xlaunch 中文路径修复（兼容性说明）：此前 libwinmain 的 WinMain shim 把命令行窄化到 ANSI 代码页，英文区域 Windows 上 `-load`/`-run` 指定中文名配置文件会静默加载失败；R17 起 xlaunch 改用宽字符命令行转 UTF-8，英文 Windows 现在能正常加载中文名配置。该改动经 CI 完整构建与 468 项测试验证，无单独 GUI 实测；R13 已验收运行目录不含此修复，需要时应用 CI 产物或重新构建。详见 [R16/R17 报告](../validation/2026-09-19-r16-r17-ci-green.md)。
+
 ## R15 简洁版打包与发布 CI
 
 R15 已于 2026-09-17 取得维护者验收并合入 master（依据子代理自动化验证结果指示直接合入推送）。简洁版（slim）= 同一服务器剔除 Mesa 软件渲染链（swrast_dri/swrastwgl_dri/dxtn）、plink SSH 转发助手、XLaunch 向导及其独占 libxml2/libiconv 栈、xclock/xcalc 演示客户端共 13 项，字体全部保留；产物矩阵为 full/slim × setup/portable 四个（zip 49.3MB→43.6MB、setup 43.2MB→39.5MB），slim setup 静默安装/卸载实测通过。新增 GitHub Actions 发包：continuous-build 每日快照 rolling prerelease，release.yml 按 v* tag 正式发布（Inno Setup 7.1.0 pin 哈希安装）。无产品代码改动；合并后 461 项回归通过、0 跳过。边界保留：GitHub runner 首跑未验证、actionlint 靠 CI 自校验、整机 admin 安装路径未实测、运行时桌面集成测试 CI 未启用。详见 [R15 报告](../validation/2026-09-17-r15-ci-slim.md)。

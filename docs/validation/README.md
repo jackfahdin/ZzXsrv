@@ -1,5 +1,7 @@
 # 本地验证记录
 
+[R16 版本号对齐与 R17 CI 修复链](2026-09-19-r16-r17-ci-green.md)：R16 发布版本号对齐上游四段式（XWin.rc `VER_FILEVERSION_STR`=21.1.16.1，产物名 `zzxsrv-21.1.16.1-x64[-slim]-*`，release.yml tag 改四段式），合并点本地回归 468 项通过、0 跳过。R17 修复 CI 真实运行暴露的三类问题：runner 固定 windows-2022（windows-2025 已换装 VS2026 秒挂）、两个环境敏感测试（8.3 短名比较测试侧规范化；xlaunch 中文路径配置加载失败为真实产品 bug，产品侧改宽字符命令行转 UTF-8）、ISCC 相对路径绝对化。最终验证：continuous-build run 35421088782 全绿，rolling prerelease 产出 5 个资产。已合入 master 并推送 origin（tip `02debbff17`）。边界：VS2026 未适配、xlaunch 改动无单独 GUI 实测。
+
 [R15 简洁版打包与发布 CI](2026-09-17-r15-ci-slim.md)：`package_release.py` 新增 `--edition full|slim`，slim 剔除 Mesa 软件渲染链、plink、xlaunch 及独占 libxml2/libiconv 栈、xclock/xcalc 演示客户端共 13 项（字体全保留）；产物矩阵 4 个（full/slim × setup/portable，zip 49.3MB→43.6MB、setup 43.2MB→39.5MB）。新增 GitHub Actions：continuous-build 每日快照 rolling prerelease、release.yml 按 v* tag 正式发布（Inno Setup 7.1.0 pin 哈希安装，actionlint preflight）。无产品代码改动；已于 2026-09-17 取得维护者验收（子代理自动化验证：28 项打包测试、4 产物本地产出、slim setup 静默安装/卸载实测；GitHub runner 首跑与 admin 路径边界保留）并合入 master，套件 455 → 461 项，合并后 461 项回归通过、0 跳过。未推送。
 
 [R14 发布打包](2026-09-17-r14-release.md)：新增 `tools/package_release.py` 与 `installer/zzxsrv-64.iss`，从便携运行目录产出免安装 zip（49.3 MB，5152 文件与 dist 逐路径一致）与 Inno Setup 安装包（43.2 MB，默认 per-user 免提权、对话框可选整机安装）。静默安装/卸载实测通过；安装产物运行时冒烟通过（verify_runtime 20 项 + x11/xcb/font/auth 消费者模块）；`verify_runtime.py` 排除 Inno 生成的 32 位卸载器存根并新增 1 项测试，package_release 新增 2 项测试（套件 452 → 455 项）。无产品代码改动；已于 2026-09-17 取得维护者验收并快进合入 master（未人工走安装包 GUI，依据自动化验证结果指示合入；整机 admin 安装路径与 GUI 流程边界保留），合并后 455 项回归通过、0 跳过。未推送。
