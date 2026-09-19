@@ -1,4 +1,5 @@
 """Runtime verification contracts; real desktop tests are explicitly opt-in."""
+import ctypes
 import importlib.util
 import json
 import os
@@ -18,6 +19,18 @@ spec = importlib.util.spec_from_file_location("verify_runtime", MODULE)
 runtime_tool = importlib.util.module_from_spec(spec) if MODULE.exists() else None
 if runtime_tool is not None:
     spec.loader.exec_module(runtime_tool)
+
+
+def long_path(path):
+    """Expand 8.3 short names for stable path comparison. verify() resolves
+    directories, and on volumes with 8.3 name generation enabled (e.g. C: on
+    GitHub Actions runners) the resolved path may surface short names such as
+    RUNNER~1 where the test's own paths carry the long form."""
+    if os.name != "nt":
+        return os.path.normcase(str(path))
+    buffer = ctypes.create_unicode_buffer(32768)
+    length = ctypes.windll.kernel32.GetLongPathNameW(str(path), buffer, len(buffer))
+    return os.path.normcase(buffer.value if length else str(path))
 
 
 def pe_file(path, machine=0x8664):
@@ -230,7 +243,8 @@ class RuntimeUnitTests(unittest.TestCase):
             self.assertEqual(report["status"], "PASS", report)
             self.assertEqual(dict(os.environ), original)
             for args, env in self.commands:
-                self.assertEqual(env["PATH"], str(self.runtime) + os.pathsep + str(self.system32))
+                self.assertEqual([long_path(entry) for entry in env["PATH"].split(os.pathsep)],
+                                 [long_path(self.runtime), long_path(self.system32)])
                 self.assertNotIn("DISPLAY", env)
                 self.assertNotIn("display", env)
                 self.assertNotIn("XLOCALEDIR", env)

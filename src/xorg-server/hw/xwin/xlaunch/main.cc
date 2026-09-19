@@ -37,8 +37,11 @@
 #include "config.h"
 #include <prsht.h>
 #include <commctrl.h>
+#include <shellapi.h>
 
 #include <stdexcept>
+#include <string>
+#include <vector>
 
 #include <X11/Xlib.h>
 
@@ -968,6 +971,20 @@ class CMyWizard : public CWizard
         }
 };
 
+/// @brief Convert a wide string to UTF-8.
+/// CConfig filenames are handed to libxml2, which opens them with _wfopen
+/// after a CP_UTF8 conversion, so they must be passed as UTF-8.
+static std::string Utf8FromWide(const wchar_t *text)
+{
+    int count = WideCharToMultiByte(CP_UTF8, 0, text, -1, NULL, 0, NULL, NULL);
+    if (count <= 1)
+        return std::string();
+    std::string result(count - 1, '\0');
+    if (!WideCharToMultiByte(CP_UTF8, 0, text, -1, &result[0], count, NULL, NULL))
+        return std::string();
+    return result;
+}
+
 int main(int argc, char **argv)
 {
     try {
@@ -979,22 +996,44 @@ int main(int argc, char **argv)
 
         bool skip_wizard = false;
 
-        for (int i = 1; i < argc; i++)
+        // The libwinmain WinMain shim narrows the command line to the ANSI
+        // code page, mangling config file names outside that code page
+        // (e.g. a Chinese name on an English-locale machine). Re-read the
+        // command line in wide form and convert the arguments to UTF-8.
+        std::vector<std::string> storage;
+        std::vector<const char *> arguments;
+        int wideCount = 0;
+        LPWSTR *wideArgv = CommandLineToArgvW(GetCommandLineW(), &wideCount);
+        if (wideArgv)
         {
-            if (argv[i] == NULL)
+            for (int i = 0; i < wideCount; i++)
+                storage.push_back(Utf8FromWide(wideArgv[i]));
+            LocalFree(wideArgv);
+            for (size_t i = 0; i < storage.size(); i++)
+                arguments.push_back(storage[i].c_str());
+        }
+        else
+        {
+            for (int i = 0; i < argc; i++)
+                arguments.push_back(argv[i]);
+        }
+
+        for (size_t i = 1; i < arguments.size(); i++)
+        {
+            if (arguments[i] == NULL)
                 continue;
 
-            std::string arg(argv[i]);
-            if (arg == "-load" && i + 1 < argc)
+            std::string arg(arguments[i]);
+            if (arg == "-load" && i + 1 < arguments.size())
             {
                 i++;
-                dialog.LoadConfig(argv[i]);
+                dialog.LoadConfig(arguments[i]);
                 continue;
             }
-            if (arg == "-run" && i + 1 < argc)
+            if (arg == "-run" && i + 1 < arguments.size())
             {
                 i++;
-                dialog.LoadConfig(argv[i]);
+                dialog.LoadConfig(arguments[i]);
                 skip_wizard = true;
                 continue;
             }
