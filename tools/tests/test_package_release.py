@@ -170,6 +170,26 @@ class ReleasePackageTests(unittest.TestCase):
                 mock.patch.object(self.module, "FALLBACK_INNO", str(self.root / "missing" / "ISCC.exe")):
             self.assertIsNone(self.module.resolve_inno(None))
 
+    def test_installer_command_absolutizes_relative_dirs(self):
+        # ISCC resolves relative Source paths against the .iss location, so a
+        # relative --dist-dir (as used by CI) must reach ISCC as absolute.
+        import os
+        args = mock.Mock(version="21.1.16.1", edition="full",
+                         dist_dir=os.path.join("dist", "x64", "Release"),
+                         output_dir=os.path.join("dist", "release"))
+        captured = {}
+        with mock.patch.object(self.module.subprocess, "run",
+                               side_effect=lambda cmd, check: captured.setdefault("cmd", cmd)):
+            self.module.build_installer(args, Path("installer") / "zzxsrv-64.iss",
+                                        Path("ISCC.exe"), set())
+        defines = captured["cmd"][1:-1]
+        dist_define = next(d for d in defines if d.startswith("/DZxDistDir="))
+        out_define = next(d for d in defines if d.startswith("/DZxOutDir="))
+        self.assertEqual(dist_define, "/DZxDistDir=" + os.path.normpath(
+            os.path.abspath(args.dist_dir)))
+        self.assertEqual(out_define, "/DZxOutDir=" + os.path.normpath(
+            os.path.abspath(args.output_dir)))
+
 
 if __name__ == "__main__":
     unittest.main()

@@ -139,13 +139,15 @@ def artifact_stem(version: str, edition: str) -> str:
 
 def build_installer(args, iss: Path, inno: Path, excludes: set[str]) -> Path:
     out_name = f"{artifact_stem(args.version, args.edition)}-setup"
-    # ISCC misparses forward slashes inside /D values as new options; pass
-    # Windows-native separators.
+    # ISCC resolves relative Source paths against the .iss location, not the
+    # caller's CWD, so dist/output must be absolute. ISCC also misparses
+    # forward slashes inside /D values as new options; pass Windows-native
+    # separators.
     cmd = [
         str(inno),
         f"/DZxVersion={args.version}",
-        f"/DZxDistDir={os.path.normpath(args.dist_dir)}",
-        f"/DZxOutDir={os.path.normpath(args.output_dir)}",
+        f"/DZxDistDir={os.path.normpath(os.path.abspath(args.dist_dir))}",
+        f"/DZxOutDir={os.path.normpath(os.path.abspath(args.output_dir))}",
         f"/DZxLicenseFile={ROOT / 'COPYING'}",
         f"/DZxOutName={out_name}",
         f"/DZxEdition={args.edition}",
