@@ -138,7 +138,10 @@ jobs:
         shell: bash
         run: |
           set -euo pipefail
+          # No checkout in this job: --repo makes gh use the API directly
+          # instead of shelling out to git to resolve the repository.
           gh release create "${GITHUB_REF_NAME}" \
+            --repo "${GITHUB_REPOSITORY}" \
             --title "ZzXsrv ${{ needs.preflight.outputs.version }}" \
             --generate-notes \
             dist/release/*
