@@ -9,6 +9,7 @@
 | 入口 | 内容 |
 | --- | --- |
 | [Windows 原生构建](build/WINDOWS.md) | 工具要求、PowerShell 参数、便携目录和运行验证 |
+| [vcxsrv.exe 命令行参数参考](usage/vcxsrv-options.md) | XWin 专属与 Xorg 通用参数、默认值与典型用法组合 |
 | [应用兼容性](maintenance/COMPATIBILITY.md) | 实际使用环境、场景与验证缺口 |
 | [验证记录索引](validation/README.md) | 固定源码、工具环境、构建与运行证据 |
 | [脚本与文档目录迁移验证](validation/2026-09-10-readme-layout.md) | 前次中文首页、脚本和文档目录整理的构建、测试与文件核对 |
