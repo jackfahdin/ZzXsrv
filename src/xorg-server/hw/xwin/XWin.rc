@@ -33,11 +33,11 @@
 #include "winresource.h"
 #include "xwin-config.h"
 
-#define VER_FILEVERSION             21,1,16,1
-#define VER_FILEVERSION_STR         "21.1.16.1"
+#define VER_FILEVERSION             21,1,16,2
+#define VER_FILEVERSION_STR         "21.1.16.2"
 
-#define VER_PRODUCTVERSION          21,1,16,1
-#define VER_PRODUCTVERSION_STR      "21.1.16.1"
+#define VER_PRODUCTVERSION          21,1,16,2
+#define VER_PRODUCTVERSION_STR      "21.1.16.2"
 
 VS_VERSION_INFO VERSIONINFO
 FILEVERSION    VER_FILEVERSION

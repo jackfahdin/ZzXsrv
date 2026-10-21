@@ -125,17 +125,25 @@ class ReleasePackageTests(unittest.TestCase):
         with self.assertRaisesRegex(ValueError, "VER_FILEVERSION_STR"):
             self.module.rc_version(rc)
 
+    def expected_repo_version(self):
+        # Independent regex against the real XWin.rc so version bumps do not
+        # require touching these tests.
+        import re
+        text = self.module.VERSION_RC.read_text(encoding="utf-8")
+        return re.search(r'VER_FILEVERSION_STR\s+"([^"]+)"', text).group(1)
+
     def test_rc_version_matches_repo_source_of_truth(self):
-        # The real XWin.rc in this checkout currently carries 21.1.16.1.
-        self.assertEqual(self.module.rc_version(self.module.VERSION_RC), "21.1.16.1")
-        self.assertEqual(self.module.default_version(), "21.1.16.1")
+        expected = self.expected_repo_version()
+        self.assertEqual(self.module.rc_version(self.module.VERSION_RC), expected)
+        self.assertEqual(self.module.default_version(), expected)
 
     def test_cli_defaults_to_rc_version(self):
         argv = ["package_release.py", "--dist-dir", str(self.dist),
                 "--output-dir", str(self.out), "--zip-only"]
         with unittest.mock.patch("sys.argv", argv):
             self.assertEqual(self.module.main(), 0)
-        self.assertTrue((self.out / "zzxsrv-21.1.16.1-x64-portable.zip").is_file())
+        expected = self.expected_repo_version()
+        self.assertTrue((self.out / f"zzxsrv-{expected}-x64-portable.zip").is_file())
 
     def test_cli_explicit_version_overrides_rc_default(self):
         argv = ["package_release.py", "--dist-dir", str(self.dist), "--version", "1.20.14.0",
