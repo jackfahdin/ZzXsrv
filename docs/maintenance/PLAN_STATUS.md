@@ -22,7 +22,9 @@ R4 整合：[字体依赖升级](../validation/2026-09-14-font-dependencies.md)�
 
 前组整合：[R7 OpenSSL 3.5.8 LTS](../validation/2026-09-15-openssl.md)，构建源码 `e41de0979`。完整 x64 Release All 构建成功，独立运行及旧对象/新 DLL 兼容对照通过。2026-09-15 取得“R7 正常，合入”的反馈后快进合入 master；合入前后各 410 项测试通过、0 跳过，5136 个运行文件不变，运行目录及工作区保留，未推送。
 
-最新整合：[R16 版本号对齐与 R17 CI 修复链](../validation/2026-09-19-r16-r17-ci-green.md)：已于 2026-09-19 以 CI 真实运行全绿验收并推送 origin（维护者目标"保证 CI 正常执行"达成）。R16 发布版本号对齐上游四段式（解析 XWin.rc `VER_FILEVERSION_STR`=21.1.16.1，产物名 `zzxsrv-21.1.16.1-x64[-slim]-*`，release.yml tag 校验改四段式），合并点本地回归 468 项通过。R17 修复链：runner 固定 windows-2022（windows-2025 已换装 VS2026，vswhere [17.0,18.0) 找不到 VS 秒挂）；两个环境敏感测试修复（8.3 短名比较测试侧 `GetLongPathNameW` 规范化；xlaunch 中文路径配置加载失败为真实产品 bug，`main.cc` 改 `GetCommandLineW`+`CommandLineToArgvW` 转 UTF-8，测试 helper 改 `wmain`）；ISCC 相对路径绝对化。最终验证：continuous-build run 35421088782 三 job 全 success，windows-2022 完整构建 + 468 项测试全过，rolling prerelease 产出 5 个资产（full/slim × setup/portable + SHA256SUMS.txt）。边界保留：VS2026 未适配、xlaunch 产品改动无单独 GUI 实测、ubuntu-latest 26.04 迁移注解暂不影响。分支与工作区保留。
+最新整合：[R18 xkbcomp 去控制台窗口 + 版本号 21.1.16.2 + Release 说明修复](../validation/2026-09-20-r18-xkb-noconsole.md)：已于 2026-09-20 取得维护者"没问题了"的实测验收并合入 master。R18 根因：`RunXkbComp()` WIN32 分支经 `system()`/cmd.exe 启动 xkbcomp，无控制台的 vcxsrv 派生控制台子系统程序时 Windows 创建可见控制台窗口、启动约闪两次；修复为 `CreateProcessA` + `CREATE_NO_WINDOW`（单文件 `xkb/ddxLoad.c`），同步等待返回退出码、xkbcomp 失败保持非致命，ANSI 编码语义与被替换的 `system()` 等价。自动化取证：无 cmd/conhost 子进程、xkm 生成 2 次、xwininfo 连通、改名 xkbcomp 非致命语义保持；合并后回归 469 项通过、0 跳过。收尾两提交：版本号 21.1.16.1 → 21.1.16.2（xserver 基底不变，打包修订号 +1；打包测试改独立正则读 XWin.rc，bump 不再动测试）；两个 workflow 的 Release 说明改真实变更列表（`git log --no-merges` 对上一版本/快照 tag 生成 "Changes since ..." + compare 链接，`--notes-file` 发布，本地已用真实 tag 演练）。收尾后全套件再跑 469 项通过、0 跳过。边界保留：英文 locale+中文用户名场景未覆盖（ANSI 语义不变，非回归未改善）、Release 说明新逻辑未在真实 tag 运行验证、新版二进制未单独 GUI 实测。分支与工作区保留。
+
+前组整合：[R16 版本号对齐与 R17 CI 修复链](../validation/2026-09-19-r16-r17-ci-green.md)：已于 2026-09-19 以 CI 真实运行全绿验收并推送 origin（维护者目标"保证 CI 正常执行"达成）。R16 发布版本号对齐上游四段式（解析 XWin.rc `VER_FILEVERSION_STR`=21.1.16.1，产物名 `zzxsrv-21.1.16.1-x64[-slim]-*`，release.yml tag 校验改四段式），合并点本地回归 468 项通过。R17 修复链：runner 固定 windows-2022（windows-2025 已换装 VS2026，vswhere [17.0,18.0) 找不到 VS 秒挂）；两个环境敏感测试修复（8.3 短名比较测试侧 `GetLongPathNameW` 规范化；xlaunch 中文路径配置加载失败为真实产品 bug，`main.cc` 改 `GetCommandLineW`+`CommandLineToArgvW` 转 UTF-8，测试 helper 改 `wmain`）；ISCC 相对路径绝对化。最终验证：continuous-build run 35421088782 三 job 全 success，windows-2022 完整构建 + 468 项测试全过，rolling prerelease 产出 5 个资产（full/slim × setup/portable + SHA256SUMS.txt）。边界保留：VS2026 未适配、xlaunch 产品改动无单独 GUI 实测、ubuntu-latest 26.04 迁移注解暂不影响。分支与工作区保留。
 
 前组整合：[R15 简洁版打包与发布 CI](../validation/2026-09-17-r15-ci-slim.md)：已于 2026-09-17 取得维护者验收（依据子代理自动化验证结果指示直接合入推送：28 项打包测试、4 产物本地产出、slim setup 静默安装/卸载实测；GitHub runner 首跑未验证、admin 安装路径未实测，边界保留）。`package_release.py` 新增 `--edition full|slim`：slim 剔除 Mesa 软件渲染链（swrast_dri/swrastwgl_dri/dxtn）、plink、xlaunch 及其独占 libxml2/libiconv 栈、xclock/xcalc 演示客户端共 13 项，字体全保留；产物矩阵 4 个（full/slim × setup/portable），zip 49.3MB→43.6MB、setup 43.2MB→39.5MB。新增 GitHub Actions：continuous-build 每日快照 rolling prerelease、release.yml 按 v* tag 正式发布（Inno Setup 7.1.0 pin 哈希安装，actionlint preflight 自校验）。无产品代码改动；合并后 461 项回归通过、0 跳过（49.139 秒，针对 R13 候选运行目录，产品代码与合并后 HEAD 逐字节相同）。已验收入口仍为 R13 的 `D:/File/Program/GitHub/zzxsrv-r13-xserver-20260917/dist/x64/Release/xlaunch.exe`。分支、工作区与运行目录保留。
 
@@ -131,7 +133,7 @@ R3 原清单的代码修复和主线整合已完成；临时登记清理的限�
 
 | 对象 | 当前状态 | 使用边界 |
 | --- | --- | --- |
-| master | 唯一长期本地工作分支；R3 至 R8、R9.1 至 R9.9、R11 至 R17 及认证、Fontconfig 补充修复均已整合；已快进至 `02debbff17` 并推送 origin | 最新取得人工反馈的构建源码 `cda929acaafb96d533ec0beb209635ea356458c8`（R13，本版本实测通过）；随后的整合与来源补证文档提交不改变已验证的生产代码 |
+| master | 唯一长期本地工作分支；R3 至 R8、R9.1 至 R9.9、R11 至 R18 及认证、Fontconfig 补充修复均已整合；已快进至 `3ba3f2256c`（当前版本号 21.1.16.2） | 最新取得人工反馈的构建源码 `cda929acaafb96d533ec0beb209635ea356458c8`（R13，本版本实测通过）；随后的整合与来源补证文档提交不改变已验证的生产代码 |
 | codex/fontconfig-20260914 | 修复已合入，分支与工作区保留 | 构建源码 `cd444aa641d50355c0d7b47f4a7167b78e313e45`；本版本实际使用正常，逐项未测范围保留 |
 | codex/libxml2-20260915 | R5 已合入，分支与工作区保留 | 构建源码 `af0cd70e417d8bce105afe07b59e6b5c8298a396`；本版本实际使用正常，逐项未测范围保留 |
 | codex/expat-20260915 | R6 已合入，分支与工作区保留 | 构建源码 `73e74d4bdc69b242d8605d41a7ae9c542312568f`；本版本实际使用正常，逐项未测范围保留 |
@@ -152,6 +154,7 @@ R3 原清单的代码修复和主线整合已完成；临时登记清理的限�
 | codex/r15-ci-slim-20260917 | R15 已合入，分支与工作区保留 | slim 简洁版打包（13 项剔除，字体保留）+ GitHub Actions 发布 CI；无产品代码改动 |
 | codex/r16-version-20260917 | R16 已合入并推送，分支与工作区保留 | 版本号对齐上游四段式（XWin.rc 21.1.16.1）；合并点本地回归 468 项通过 |
 | codex/r17-ci-testfixes-20260919 | R17 已合入并推送，分支与工作区保留 | CI 修复链（windows-2022 固定、8.3 短名、ISCC 绝对路径）+ xlaunch 中文路径真实产品修复；CI run 35421088782 全绿 |
+| codex/r18-xkb-noconsole-20260920 | R18 已合入，分支与工作区保留 | xkbcomp 去控制台窗口（CreateProcessA + CREATE_NO_WINDOW），维护者实测"没问题了"；含版本号 21.1.16.2 与 Release 说明修复两个收尾；合并后 469 项回归通过、0 跳过 |
 | codex/r9-xcb-20260916 | R9.2 已合入，分支与工作区保留 | 构建源码 `17f39e75cfc44c42b8b1af8225841a643d1c510f`；本版本实际使用正常，合入前后各 433 项通过、0 跳过 |
 | codex/r3-final-20260914 | 已合入的临时分支，因自动审批阻止清理而保留 | 工作区及运行目录仍在原路径，未解除 Git 登记 |
 | 旧引用和提交 | 已归档；upstream、旧工作分支及旧 tags 已删除 | 通过[整理报告](../validation/2026-09-10-repository-reorganization.md)查映射和归档，不再按旧名称操作 |

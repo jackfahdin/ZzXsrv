@@ -2,6 +2,10 @@
 
 更新日期：2026-09-17。任务状态见 [PLAN_STATUS.md](PLAN_STATUS.md)。本表记录实际操作结果，不把自动启动成功或笼统的“能用”换算成全部场景通过。最新反馈对应 R13 上游补充批次版本（编译源码 `cda929acaa`）；下列源码号为对应构建来源。
 
+## R18 xkbcomp 去控制台窗口
+
+R18 已于 2026-09-20 取得维护者"没问题了"的实测验收并合入 master（合并后 469 项回归通过、0 跳过）。行为差异：启动时不再闪现控制台窗口（xkbcomp 改由 `CreateProcessA` + `CREATE_NO_WINDOW` 直接启动，不再经 cmd.exe）；xkbcomp 的 stderr 不再进控制台（原来也没有持久控制台可读，诊断以 xkm 产物与服务器行为为准）；命令行不再经 cmd 解释，引号/特殊字符处理更稳。容错语义不变：xkbcomp 缺失或失败仍非致命（返回 -1 等价旧 `system()` 语义，自动化取证改名 xkbcomp 后启动正常）。遗留 ANSI 限制：英文 locale + 中文用户名（临时目录或安装路径含 ANSI 不可表示字符）场景未覆盖——`CreateProcessA` 与旧 `system()` 同为 ANSI 语义，该场景既非回归也未改善。同批收尾：版本号升为 21.1.16.2（xserver 基底不变、打包修订号 +1）；GitHub Release 说明改为真实变更列表（对上一版本/快照 tag 的 `git log`），新逻辑未在真实 tag 运行中验证，下次打 tag 时验证。新版二进制（含 21.1.16.2 版本戳）未单独 GUI 实测；R13 已验收运行目录不含 R17/R18 修复，需要时应用 CI 产物或重新构建。详见 [R18 报告](../validation/2026-09-20-r18-xkb-noconsole.md)。
+
 ## R16 版本号对齐与 R17 CI 修复链
 
 R16/R17 已于 2026-09-19 合入 master 并推送 origin，以 CI 真实运行全绿验收（continuous-build run 35421088782，prepare/package/publish 三 job 全 success）。
