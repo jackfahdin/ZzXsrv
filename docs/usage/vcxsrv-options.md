@@ -1,9 +1,9 @@
 # vcxsrv.exe 命令行参数参考
 
-本文整理 `vcxsrv.exe` 的全部命令行参数，以本仓库源码为准：
+本文整理 `vcxsrv.exe` 的全部命令行参数，以本仓库源码为准。覆盖范围不仅包括帮助文本，还包括实际解析代码的全部分支：
 
-- XWin 专属参数：`src/xorg-server/hw/xwin/InitOutput.c` 中 `winUseMsg()` 的帮助输出（`ErrorF` 块），默认值结合 `winglobals.c`、`winprocarg.c` 中的实际初始化。
-- Xorg 通用参数：`src/xorg-server/os/utils.c` 中 `UseMsg()` 的帮助输出，以及 `os/xdmcp.c`（XDMCP）、`os/serverlock.c`（锁）、`xkb/xkbInit.c`（AccessX）的补充帮助。
+- XWin 专属参数：`src/xorg-server/hw/xwin/InitOutput.c` 中 `winUseMsg()` 的帮助输出，以及 `src/xorg-server/hw/xwin/winprocarg.c` 中 `ddxProcessArgument()` 的全部解析分支；默认值结合 `winglobals.c`、`winprocarg.c` 中的实际初始化。
+- Xorg 通用参数：`src/xorg-server/os/utils.c` 中 `UseMsg()` 的帮助输出和 `ProcessCommandLine()` 的全部解析分支，以及 `os/xdmcp.c`（`XdmcpOptions()`）、`xkb/xkbInit.c`（`XkbProcessArguments()`）的补充解析。
 
 版本基准：xserver 21.1.16.1（tag `v21.1.16.1`），master 提交 `1acde235e8`。参数行为如有出入，以本机 `vcxsrv.exe -help` 的实际输出为准（帮助文本会写入日志文件并弹出提示框说明日志位置）。
 
@@ -11,6 +11,7 @@
 
 - `-[no]xxx` 表示该参数有成对形式 `-xxx` / `-noxxx`。
 - 「默认值」一栏只写源码中可以确定的值；源码未显式给出或依赖运行时环境的标「—」。
+- 标注「帮助未列出」的参数在代码中被真实解析、可用，但 `-help` 输出里没有印出来（隐藏参数）。
 - 带 ★ 的参数在典型用法一节有组合示例。
 
 ## 1. 窗口模式
@@ -23,6 +24,8 @@
 | `-screen scr_num [width height [x y] \| [[WxH[+X+Y]][@m]]]` | 启用编号为 scr_num 的屏幕，可选指定宽度、高度和初始位置；还可以用 `@m` 指定服务器启动所在的显示器编号，此后所有坐标都相对于该显示器。示例：`-screen 0 800x600+100+100@2`（第 2 台显示器，偏移 100,100，大小 800x600）；`-screen 0 1024x768@3`；`-screen 0 @1`（第 1 台显示器全分辨率，即默认行为）。 | `-screen 0 @1`（主显示器全分辨率） |
 | `-[no]multimonitors` / `-[no]multiplemonitors` | 存在多台显示器时使用整个虚拟屏幕。 | 关；但 `-multiwindow` 会自动置开（除非显式用 `-nomultimonitors` 覆盖），`-fullscreen` / `-rootless` / `-nodecoration` 则置关 |
 | `-resize=none\|scrollbars\|randr` | 窗口模式下（不）允许调整窗口大小：`scrollbars` 在需要时给窗口加滚动条；`randr` 通过 RANDR 扩展调整 X 屏幕大小。 | `randr`（全屏模式下为不允许调整） |
+| `-resize` / `-noresize` | 帮助未列出。旧式简写：`-resize` 等价于 `-resize=randr`，`-noresize` 等价于 `-resize=none`（`winprocarg.c` 中同一解析分支）。 | 同上 |
+| `-scrollbars` | 帮助未列出。等价于 `-resize=scrollbars`（`winprocarg.c` 中独立分支直接设置 resize 模式）。 | 关 |
 | `-nodecoration` | 不绘制窗口边框、标题栏等装饰。仅窗口模式有效，指定 `-fullscreen` 时被忽略。 | 关 |
 | `-[no]hostintitle` | multiwindow 模式下在窗口标题中附加远程主机名。 | 开 |
 | `-icon icon_specifier` | 设置窗口模式下屏幕窗口的图标。 | — |
@@ -64,56 +67,69 @@
 | `-xkbrules XKBRules` | 设置 XKB 规则。 | `xorg` |
 | `-xkbvariant XKBVariant` | 设置 XKB 变体。示例：`-xkbvariant nodeadkeys`。 | 不设置 |
 | `-xkboptions XKBOptions` | 设置 XKB 选项。 | 不设置 |
+| `-xkbdir path` | 帮助未列出。指定 XKB 键盘描述文件的基础目录（`xkb/xkbInit.c` 的 `XkbProcessArguments()`，Windows 构建中跳过 setuid 检查、可用）。 | 编译期内置 XKB 目录 |
+| `[+-]accessx [ timeout [ timeout_mask [ feedback [ options_mask ] ] ] ]` | 启用（`+`）/禁用（`-`）AccessX 辅助功能按键序列，可选带超时与掩码参数（十六进制掩码）。 | — |
 
-## 5. 诊断与日志
+## 5. 诊断、日志与启动器
 
 | 参数 | 说明 | 默认值 |
 | --- | --- | --- |
 | `-logfile filename` | 把日志消息写入指定文件。 | `XWin.log` |
 | `-logverbose verbosity` | 设置日志详细级别（目前只有少数消息遵循该设置）：`0` 只打印致命错误；`1` 额外打印配置信息；`2` 额外打印运行时信息；`3` 打印调试和跟踪信息。 | `2` |
 | `-silent-dup-error` | 不显示"同一显示号已有实例在运行"的致命错误弹出框。 | 关（弹框） |
+| `-version` / `--version` | 帮助未列出。把版本信息写入日志后退出（`winprocarg.c` 中显式分支；`-help` 另有别名 `-h`、`--help`）。 | — |
+| `-parentprocessid pid` | 帮助未列出。对指定进程调用 `AllowSetForegroundWindow()`，允许该进程把窗口带到前台；供 XLaunch 之类的启动器使用（`winprocarg.c`）。 | — |
+| `-displayfd fd` | 服务器就绪后把显示号写入指定文件描述符，并禁用服务器锁（供启动器探测端口）。 | — |
 
 ## 6. Xorg 通用：网络与安全
 
 | 参数 | 说明 | 默认值 |
 | --- | --- | --- |
 | ★ `:display-number` | 以指定显示号运行服务器（如 `:0`、`:1`）。运行多个实例时必须使用互不相同的显示号。 | `0` |
-| ★ `-listen protocol` / `-nolisten protocol` | 监听（不监听）指定协议，常用值为 `tcp`。例如 `-nolisten tcp` 关闭 TCP 端口 6000+N 的监听，只保留本地连接。 | 编译期默认 |
-| ★ `-auth file` | 指定授权文件（Xauthority），用于基于 cookie 的客户端认证。 | — |
+| ★ `-listen protocol` / `-nolisten protocol` | 监听（不监听）指定协议，常用值为 `tcp`（本构建还支持 `hyperv`，见下）。例如 `-nolisten tcp` 关闭 TCP 端口 6000+N 的监听，只保留本地连接。 | 编译期默认 |
+| `-vmid GUID` | 接受来自指定 Hyper-V 虚拟机 GUID 的 VSock 连接（本构建已编译 HYPERV 支持，如 WSL2 场景）。 | — |
+| `-vsockport port` | 监听 VSock 连接的整数端口号。 | `106000` |
+| ★ `-auth file` | 指定授权文件（Xauthority），用于基于 cookie 的客户端认证。文件打不开时会弹窗提示并继续运行。 | — |
 | `-ac` | 禁用访问控制限制（任何主机都能连接，**有安全风险**，见下文）。 | 访问控制启用 |
 | `-audit int` | 设置审计跟踪级别。 | — |
-| `-pn` / `-nopn` | 接受（拒绝）"无法监听所有端口"的失败继续运行。 | — |
-| `-nolock` | 禁用服务器锁机制。 | — |
-| `-displayfd fd` | 服务器就绪后把显示号写入指定文件描述符（供启动器探测）。 | — |
+| `-pn` / `-nopn` | 接受（拒绝）"无法监听所有端口"的失败继续运行。 | 接受（`-pn`） |
 | ★ `-query host-name` | 通过 XDMCP 连接指定主机。 | — |
 | `-broadcast` | 广播探测 XDMCP 主机。 | — |
+| `-multicast [addr [hops]]` | 通过 IPv6 组播探测 XDMCP 主机（本构建已启用 IPv6）。 | — |
 | `-indirect host-name` | 通过指定主机进行间接 XDMCP 查询。 | — |
-| `-port port-num` | XDMCP 发送消息使用的 UDP 端口号。 | — |
+| `-port port-num` | XDMCP 发送消息使用的 UDP 端口号。 | `177`（XDM 标准端口） |
 | `-from local-address` | 指定 XDMCP 连接使用的本地地址。 | — |
 | `-once` | 一个会话结束后即终止服务器（XDMCP）。 | 关 |
 | `-class display-class` | 指定 XDMCP manage 请求中发送的显示类。 | — |
+| `-cookie xdm-auth-bits` | 指定 XDMCP 认证使用的 magic cookie（本构建已启用 HASXDMAUTH）。 | — |
 | `-displayID display-id` | XDMCP 请求的制造商显示 ID。 | — |
 
 ## 7. Xorg 通用：其他
 
 | 参数 | 说明 | 默认值 |
 | --- | --- | --- |
-| `-help` | 打印本帮助信息（写入日志文件）。 | — |
+| `-help`（别名 `-h`、`--help`） | 打印本帮助信息（写入日志文件）后退出。 | — |
 | `-fp string` | 默认字体路径。 | 编译期内置字体路径 |
-| `-dpi [auto\|int]` | 屏幕分辨率：`auto` 使用原生 DPI，或指定数值（点/英寸）。 | `auto` |
+| `-dpi [auto\|int]` | 屏幕分辨率：`auto` 使用原生 DPI，或指定数值（点/英寸）。 | `auto`（原生 DPI，失败时回退到内置默认） |
 | `-br` | root window 使用黑色背景。 | — |
 | `-wr` | root window 使用白色背景。 | — |
 | `-retro` | 启动时使用经典网格（stipple）背景。 | — |
 | `-background [none]` | 创建无背景的 root window。 | — |
 | `+bs` / `-bs` | 启用（禁用）任意 backing store 支持。 | — |
+| `+byteswappedclients` / `-byteswappedclients` | 允许（禁止）字节序与服务器不同的客户端连接。 | 禁止 |
 | `-render [default\|mono\|gray\|color]` | 设置 render 颜色分配策略。 | `default` |
 | `+xinerama` / `-xinerama` | 启用（禁用）XINERAMA 扩展。 | 启用 |
+| `-disablexineramaextension` | 帮助未列出。禁用 Xinerama 扩展，但保留 Xinerama 的屏幕布局信息（供 RandR 使用）。 | 关 |
 | `+iglx` / `-iglx` | 允许（禁止）创建间接 GLX 上下文。 | 允许 |
 | `+extension name` / `-extension name` | 启用（禁用）指定扩展。 | — |
 | `-terminate [delay]` | 服务器 reset 时终止，可选延迟秒数。 | 关 |
+| `-pogo` | 帮助未列出。旧式参数：使服务器在下一次 reset 时终止（设置 dispatchException 为 terminate）。 | 关 |
 | `-noreset` / `-reset` | 最后一个客户端退出后不（/要）执行服务器 reset。 | `reset` |
-| `-maxclients n` | 设置最大客户端数（2 的幂）。 | — |
-| `-r` / `+r` | 关闭（开启）键盘自动重复。 | 开启 |
+| `-maxclients n` | 设置最大客户端数，必须是 64 / 128 / 256 / 512 / 1024 / 2048 之一。 | — |
+| `-maxbigreqsize n` | 帮助未列出。设置 BigRequests 扩展报告的最大请求大小（单位 MB，有效范围 0 < n < 128）。 | — |
+| `-s #` | 帮助未列出。屏幕保护超时（分钟）。 | — |
+| `-p #` | 帮助未列出。屏幕保护周期间隔（分钟）。 | — |
+| `-r` / `+r` | 关闭（开启）键盘自动重复。帮助文本中开启形式印作 `r`（无符号），代码里 `r` 与 `+r` 都被接受。 | 开启 |
 | `-a #` | 默认指针加速度（倍率）。 | — |
 | `-t #` | 默认指针阈值（像素/t）。 | — |
 | `-f #` | 响铃基准音量（0–100）。 | — |
@@ -123,14 +139,57 @@
 | `-I` | 忽略其后所有剩余参数。 | — |
 | `-dumbSched` | 禁用智能调度和线程化输入，恢复旧行为。 | — |
 | `-schedInterval int` | 设置调度间隔（毫秒）。 | — |
+| `-schedMax int` | 帮助未列出。设置智能调度的最大时间片。 | — |
 | `-nocursor` | 禁用光标。 | — |
-| `-dpms` | 禁用 VESA DPMS 显示器节能控制（需编译启用 DPMSExtension）。 | — |
+| `-dpms` | 禁用 VESA DPMS 显示器节能控制（本构建已启用 DPMSExtension，该参数可用）。 | — |
 | `-fakescreenfps #` | 虚拟屏幕默认帧率（1–600）。 | — |
-| `[+-]accessx [...]` | 启用/禁用 AccessX 按键序列（可带 timeout 等参数）。 | — |
 
-以下通用参数仅对 Unix/Linux 有意义，在 Windows 版 vcxsrv 中不适用或未编译进帮助输出，故不展开：`-vtN`、`-keeptty`、`-ld` / `-lf` / `-ls`（资源限制）、`-core`（core dump）、`-seat`（systemd seat）、`-vmid` / `-vsockport`（Hyper-V VSock）、`-ardelay` / `-arinterval`（MSVC 构建中不输出）。
+## 8. 已废弃、无效或未编译进本构建的参数
 
-另有一组 XWin 参数仅在启用对应编译宏时才出现在帮助中：`XWIN_XF86CONFIG` 下的 `-config` / `-configdir` / `-keyboard`（xorg.conf 风格配置文件），以及 `XWIN_EMULATEPSEUDO` 下的 `-emulatepseudo`（在 TrueColor 深度下创建 8 位 PseudoColor visual，颜色不正确且可能崩溃）。
+以下参数在代码中仍留有痕迹，但在当前 Windows/MSVC 构建下无效或不可达。列出它们是为了避免对照上游 Xorg/Cygwin 文档或旧教程时产生困惑：
+
+- **被接受但被忽略**：`-config` / `-xf86config` / `-configdir` / `-keyboard`（xorg.conf 风格配置，`XWIN_XF86CONFIG` 未定义：解析后弹出"该选项在此版本中不受支持"提示框并忽略）、`dpms`（不带短横线的形式，为兼容性直接忽略）。
+- **被接受但无任何效果（dead code）**：`-codepage`（`winprocarg.c` 仅设置 `g_iActualCodePage = TRUE`，全仓库没有任何代码读取该变量）。
+- **未编译进本构建，传入会报 "Unrecognized option" 致命错误**：`-emulatepseudo`（`XWIN_EMULATEPSEUDO` 未定义）、`-nolock`（`LOCK_SERVER` 未定义；注意 `-displayfd` 内部的 `DisableServerLock()` 调用因此也是空操作）、`-ld` / `-lf` / `-ls`（`RLIMIT_*` 未定义）、`-ardelay` / `-ar1` / `-arinterval` / `-ar2`（`xkbInit.c` 中 `#ifndef _MSC_VER` 排除）。
+- **纯 Unix 参数，本构建无意义或不适用**：`-vtN`、`-keeptty`（虚拟终端）、`-core`（只设置 `CoreDump` 标志，Windows 上跳过 rlimit 设置、不产生 core dump）、`-seat`（会被接受并设置 SeatId，但 Windows 上没有 systemd seat 概念，无实际效果）。
+
+## 9. 附：`.XWinrc` 配置文件（不是命令行参数）
+
+容易与命令行参数混淆：`vcxsrv.exe` 启动时还会读取一个菜单/图标配置文件。它不是命令行参数，语法由 `src/xorg-server/hw/xwin/winprefsyacc.y` / `winprefslex.l` 定义，查找顺序（`winprefs.c` 的 `LoadPreferences()`）：
+
+1. `%HOME%\.XWinrc`
+2. 可执行文件目录下的 `system.XWinrc`（本仓库在 `src/xorg-server/hw/xwin/system.XWinrc` 提供默认样例）
+3. 都找不到时使用内置的极简菜单
+
+支持的顶层指令（关键字大写）：
+
+| 指令 | 语法 | 作用 |
+| --- | --- | --- |
+| `MENU` | `MENU "名称" { ... }` | 定义一个菜单，可嵌套引用；菜单项见下表 |
+| `ROOTMENU` | `ROOTMENU "菜单名"` | 指定点击 root 窗口区域时弹出的菜单 |
+| `SYSMENU` | `SYSMENU { "匹配串" "菜单名" [ATSTART\|ATEND] ... }` | 按窗口标题/类匹配，把自定义菜单挂到该窗口的系统菜单 |
+| `DEFAULTSYSMENU` | `DEFAULTSYSMENU "菜单名" [ATSTART\|ATEND]` | 所有窗口系统菜单默认挂载的菜单 |
+| `ICONDIRECTORY` | `ICONDIRECTORY "路径"` | 图标文件查找目录 |
+| `DEFAULTICON` | `DEFAULTICON "文件"` | 默认窗口图标 |
+| `TRAYICON` | `TRAYICON "文件"` | 托盘区图标 |
+| `ICONS` | `ICONS { "匹配串" "图标文件" ... }` | 按窗口匹配指定图标 |
+| `STYLES` | `STYLES { "匹配串" 样式 ... }` | 按窗口匹配设置样式：`TOPMOST` / `MAXIMIZE` / `MINIMIZE` / `BOTTOM` 之一，可再组合 `NOTITLE` / `OUTLINE` / `NOFRAME` 之一 |
+| `TASKBAR` | `TASKBAR { "匹配串" NOTAB\|NEWTAB ... }` | 按窗口匹配控制任务栏按钮：`NOTAB` 不出现在任务栏，`NEWTAB` 强制新建任务栏按钮 |
+| `DEBUG` | `DEBUG "文本"` | 加载配置时把文本写入日志 |
+| `FORCEEXIT` | `FORCEEXIT` | 退出时不弹确认对话框，即使有活动客户端也直接退出 |
+| `SILENTEXIT` | `SILENTEXIT` | 仅在没有活动客户端时跳过退出确认对话框（有客户端时仍会弹框确认） |
+
+`MENU` 块内的菜单行有五种形式：
+
+```
+"显示文本" EXEC "命令"      执行本地命令
+"显示文本" MENU "子菜单"     打开子菜单
+"显示文本" RELOAD           重新加载 .XWinrc
+"显示文本" ALWAYSONTOP      切换"窗口置顶"状态
+SEPARATOR                   分隔线
+```
+
+完整语法可交叉阅读本仓库保留的上游 man 页 `src/xorg-server/hw/xwin/man/XWinrc.man`；个别表述与当前源码冲突时，以 `winprefsyacc.y` 的语法定义为准。
 
 ## 典型用法组合
 
