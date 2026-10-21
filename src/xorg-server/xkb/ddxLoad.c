@@ -49,6 +49,10 @@ THE USE OR PERFORMANCE OF THIS SOFTWARE.
 #include "windowstr.h"
 #include <xkbsrv.h>
 
+#ifdef WIN32
+#include <X11/Xwindows.h>
+#endif
+
 #define	PRE_ERROR_MSG "\"The XKEYBOARD keymap compiler (xkbcomp) reports:\""
 #define	ERROR_PREFIX	"\"> \""
 #define	POST_ERROR_MSG1 "\"Errors from xkbcomp are not fatal to the X server\""
@@ -103,6 +107,46 @@ OutputDirectory(char *outdir, size_t size)
  */
 typedef void (*xkbcomp_buffer_callback)(FILE *out, void *userdata);
 
+#ifdef WIN32
+/*
+ * Replacement for system() which does not pop up a console window.
+ * system() runs the command through cmd.exe, a console-subsystem program:
+ * when the X server (a /SUBSYSTEM:WINDOWS process with no console) spawns
+ * it, Windows creates a visible console window that flashes on screen.
+ * CreateProcessA with CREATE_NO_WINDOW avoids that.
+ * Win32TempDir() and XkbBinDirectory are ANSI (CP_ACP) narrow strings
+ * (from GetTempPathA / GetModuleFileNameA), so CreateProcessA has the same
+ * encoding semantics as the system() call it replaces.
+ * Returns the child exit code, or -1 if the process could not be started
+ * (matching the failure semantics of system()).
+ */
+static int
+XkbRunCommandNoConsole(char *cmdline)
+{
+    STARTUPINFOA si;
+    PROCESS_INFORMATION pi;
+    DWORD exitcode = (DWORD) -1;
+
+    ZeroMemory(&si, sizeof(si));
+    si.cb = sizeof(si);
+    si.dwFlags = STARTF_USESHOWWINDOW;
+    si.wShowWindow = SW_HIDE;
+    ZeroMemory(&pi, sizeof(pi));
+
+    /* CreateProcess requires a writable command line buffer; cmdline comes
+       from asprintf (malloc), so this is satisfied. */
+    if (!CreateProcessA(NULL, cmdline, NULL, NULL, FALSE,
+                        CREATE_NO_WINDOW, NULL, NULL, &si, &pi))
+        return -1;
+
+    WaitForSingleObject(pi.hProcess, INFINITE);
+    GetExitCodeProcess(pi.hProcess, &exitcode);
+    CloseHandle(pi.hProcess);
+    CloseHandle(pi.hThread);
+    return (int) exitcode;
+}
+#endif
+
 /**
  * Start xkbcomp, let the callback write into xkbcomp's stdin. When done,
  * return a strdup'd copy of the file name we've written to.
@@ -153,6 +197,20 @@ RunXkbComp(xkbcomp_buffer_callback callback, void *userdata)
         }
     }
 
+#ifdef WIN32
+    /* The command line is passed straight to CreateProcessA (no cmd.exe),
+       so the extra outer quotes cmd.exe requires are not wanted here. */
+    if (asprintf(&buf,
+                 "\"%s%sxkbcomp\" -w %d %s -xkm \"%s\" "
+                 "-em1 %s -emp %s -eml %s \"%s%s.xkm\"",
+                 xkbbindir, xkbbindirsep,
+                 ((xkbDebugFlags < 2) ? 1 :
+                  ((xkbDebugFlags > 10) ? 10 : (int) xkbDebugFlags)),
+                 xkbbasedirflag ? xkbbasedirflag : "", xkmfile,
+                 PRE_ERROR_MSG, ERROR_PREFIX, POST_ERROR_MSG1,
+                 xkm_output_dir, keymap) == -1)
+        buf = NULL;
+#else
     if (asprintf(&buf,
                  "\"\"%s%sxkbcomp\" -w %d %s -xkm \"%s\" "
                  "-em1 %s -emp %s -eml %s \"%s%s.xkm\"\"",
@@ -163,6 +221,7 @@ RunXkbComp(xkbcomp_buffer_callback callback, void *userdata)
                  PRE_ERROR_MSG, ERROR_PREFIX, POST_ERROR_MSG1,
                  xkm_output_dir, keymap) == -1)
         buf = NULL;
+#endif
 
     free(xkbbasedirflag);
 
@@ -185,7 +244,7 @@ RunXkbComp(xkbcomp_buffer_callback callback, void *userdata)
 #ifndef WIN32
         if (Pclose(out) == 0)
 #else
-        if (fclose(out) == 0 && system(buf) >= 0)
+        if (fclose(out) == 0 && XkbRunCommandNoConsole(buf) >= 0)
 #endif
         {
             if (xkbDebugFlags)
