@@ -145,7 +145,7 @@ jobs:
         run: |
           set -euo pipefail
           # Changelog baseline: the previous snapshot tag before it is moved.
-          prev="$(git rev-parse --verify --quiet refs/tags/continuous-build^{commit} || true)"
+          prev="$(git rev-parse --verify --quiet "refs/tags/continuous-build^{commit}" || true)"
           {
             echo "Rolling prerelease built from commit ${SHA}. Artifacts: full and slim editions (portable zip + installer) plus SHA256SUMS.txt."
             echo
