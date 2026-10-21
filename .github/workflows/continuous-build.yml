@@ -144,14 +144,27 @@ jobs:
         shell: bash
         run: |
           set -euo pipefail
+          # Changelog baseline: the previous snapshot tag before it is moved.
+          prev="$(git rev-parse --verify --quiet refs/tags/continuous-build^{commit} || true)"
+          {
+            echo "Rolling prerelease built from commit ${SHA}. Artifacts: full and slim editions (portable zip + installer) plus SHA256SUMS.txt."
+            echo
+            echo "Changes since the previous snapshot:"
+            echo
+            if [[ -n "$prev" && "$prev" != "$SHA" ]]; then
+              git log --no-merges --pretty=format:'* %s (%h)' "${prev}..${SHA}"
+            else
+              git log --no-merges --pretty=format:'* %s (%h)' -n 10 "${SHA}"
+            fi
+          } > release-notes.md
           if ! gh release view continuous-build >/dev/null 2>&1; then
             gh release create continuous-build --prerelease \
-              --title "Continuous build" --notes "Rolling prerelease of the latest master build."
+              --title "Continuous build ${VERSION}" --notes-file release-notes.md
           fi
           gh release upload continuous-build dist/release/* --clobber
           gh release edit continuous-build --prerelease \
             --title "Continuous build ${VERSION}" \
-            --notes "Rolling prerelease built from commit ${SHA}. Artifacts: full and slim editions (portable zip + installer) plus SHA256SUMS.txt."
+            --notes-file release-notes.md
           # Move the snapshot tag so the next scheduled run can detect changes.
           git tag --force continuous-build "$SHA"
           git push --force origin refs/tags/continuous-build

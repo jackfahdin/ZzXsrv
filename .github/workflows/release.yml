@@ -126,11 +126,38 @@ jobs:
     if: needs.preflight.outputs.publish == 'true'
     runs-on: ubuntu-latest
     steps:
+      - uses: actions/checkout@v5
+        with:
+          fetch-depth: 0
+
       - name: Download artifacts
         uses: actions/download-artifact@v4
         with:
           name: zzxsrv-${{ needs.preflight.outputs.version }}-x64
           path: dist/release
+
+      - name: Generate release notes
+        shell: bash
+        run: |
+          set -euo pipefail
+          # The tag-triggered checkout only fetches this tag; pull the rest so
+          # the previous version tag can serve as the changelog baseline.
+          git fetch --force --tags origin
+          prev="$(git tag -l 'v[0-9]*' --sort=-v:refname | grep -vx "${GITHUB_REF_NAME}" | head -n1 || true)"
+          {
+            if [[ -n "$prev" ]]; then
+              echo "Changes since ${prev}:"
+              echo
+              git log --no-merges --pretty=format:'* %s (%h)' "${prev}..${GITHUB_REF_NAME}"
+              echo
+              echo
+              echo "**Full Changelog**: https://github.com/${GITHUB_REPOSITORY}/compare/${prev}...${GITHUB_REF_NAME}"
+            else
+              echo "First tagged release."
+              echo
+              git log --no-merges --pretty=format:'* %s (%h)' -n 30 "${GITHUB_REF_NAME}"
+            fi
+          } > release-notes.md
 
       - name: Publish GitHub Release
         env:
@@ -138,10 +165,8 @@ jobs:
         shell: bash
         run: |
           set -euo pipefail
-          # No checkout in this job: --repo makes gh use the API directly
-          # instead of shelling out to git to resolve the repository.
           gh release create "${GITHUB_REF_NAME}" \
             --repo "${GITHUB_REPOSITORY}" \
             --title "ZzXsrv ${{ needs.preflight.outputs.version }}" \
-            --generate-notes \
+            --notes-file release-notes.md \
             dist/release/*
